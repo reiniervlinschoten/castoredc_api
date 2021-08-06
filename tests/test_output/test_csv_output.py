@@ -16,15 +16,15 @@ class TestCSVOutput:
             auth_data.test_study_study_id,
             "data.castoredc.com",
         )
-        time = study.export_to_csv()
-        return time
+        output_data = study.export_to_csv()
+        return output_data
 
     def test_study_export(self, output_data):
         """Tests if study export is correct."""
         diff = compare(
             load_csv(
                 open(
-                    f"output/{output_data} 15E88A04-9CB8-4B30-9A3C-B1DBFC96CD88 Study.csv"
+                    output_data["Study"]
                 ),
                 key="record_id",
             ),
@@ -63,7 +63,7 @@ class TestCSVOutput:
         diff = compare(
             load_csv(
                 open(
-                    f"output/{output_data} 15E88A04-9CB8-4B30-9A3C-B1DBFC96CD88 QOL Survey.csv"
+                    output_data["Surveys"]["QOL Survey"]
                 ),
                 key="survey_instance_id",
             ),
@@ -91,7 +91,7 @@ class TestCSVOutput:
         diff = compare(
             load_csv(
                 open(
-                    f"output/{output_data} 15E88A04-9CB8-4B30-9A3C-B1DBFC96CD88 Medication.csv"
+                    output_data["Reports"]["Medication"]
                 ),
                 key="custom_name",
             ),
@@ -114,7 +114,7 @@ class TestCSVOutput:
         diff = compare(
             load_csv(
                 open(
-                    f"output/{output_data} 15E88A04-9CB8-4B30-9A3C-B1DBFC96CD88 Unscheduled visit.csv"
+                    output_data["Reports"]["Unscheduled visit"]
                 ),
                 key="custom_name",
             ),
@@ -137,7 +137,8 @@ class TestCSVOutput:
         diff = compare(
             load_csv(
                 open(
-                    f"output/{output_data} 15E88A04-9CB8-4B30-9A3C-B1DBFC96CD88 Comorbidities.csv"
+                    output_data["Reports"]["Comorbidities"]
+
                 ),
                 key="custom_name",
             ),
@@ -160,7 +161,7 @@ class TestCSVOutput:
         diff = compare(
             load_csv(
                 open(
-                    f"output/{output_data} 15E88A04-9CB8-4B30-9A3C-B1DBFC96CD88 Adverse event.csv"
+                    output_data["Reports"]["Adverse event"]
                 ),
                 key="custom_name",
             ),
