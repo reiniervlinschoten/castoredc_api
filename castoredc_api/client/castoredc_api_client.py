@@ -964,9 +964,11 @@ class CastorClient:
     def retrieve_single_page(self, url, params, page):
         """Helper function to query a single page and return the data from that page."""
         if params is None:
-            params = {"page": page}
+            params = {"page": page,
+                      "page_size": 1000}
         else:
             params["page"] = page
+            params["page_size"] = 1000
         response = self.castor_get(url=url, params=params, content_type="JSON")
         return response
 
