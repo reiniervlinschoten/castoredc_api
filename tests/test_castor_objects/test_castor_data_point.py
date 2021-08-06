@@ -7,7 +7,7 @@ https://orcid.org/0000-0003-3052-596X
 """
 import pytest
 
-from castoredc_api_study.castor_objects.castor_data_point import CastorDataPoint
+from castoredc_api_client.study.castor_objects.castor_data_point import CastorDataPoint
 from castoredc_api_client import CastorException
 
 

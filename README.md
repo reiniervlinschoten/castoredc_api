@@ -55,7 +55,7 @@ c.create_survey_package_instance(survey_package_id="FAKESURVEY-PACKAGE-ID",
 2. Use the Study functions to start working with your database
 
 ```python
-from castoredc_api_study.castor_study import CastorStudy
+from castoredc_api_client.study import CastorStudy
 
 # Instantiate Study
 study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID', 'data.castoredc.com')
@@ -105,8 +105,8 @@ For datetime data, missing data values are with the years 2995, 2996, 2997, 2998
    * If set to false, it takes the integer values as is. 
 
 ```python
-from castoredc_api_study.castor_study import CastorStudy
-from castoredc_api_import.import_data import import_data
+from castoredc_api_client.study import CastorStudy
+from castoredc_api_client.importer import import_data
 
 # Create a Study with your credentials
 study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID')

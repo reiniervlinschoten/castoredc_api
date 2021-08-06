@@ -1,6 +1,6 @@
 import pytest
 
-from castoredc_api_import.helpers import read_excel, castorize_column
+from castoredc_api_client.importer.helpers import read_excel, castorize_column
 
 
 class TestValueTranslation:

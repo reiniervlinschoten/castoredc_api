@@ -11,7 +11,7 @@ setup(
     author_email="mail@reiniervl.com",
     url="https://github.com/reiniervlinschoten/castoredc_api",
     packages=find_packages(
-        exclude=("tests", "tests.*", "scripts", "scripts.*", "auth", "auth.*")
+        include=("castoredc_api_client", "castoredc_api_client.*")
     ),
     install_requires=[
         "pandas",

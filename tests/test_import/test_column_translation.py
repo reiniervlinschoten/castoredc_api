@@ -1,4 +1,4 @@
-from castoredc_api_import.helpers import create_column_translation
+from castoredc_api_client.importer.helpers import create_column_translation
 
 
 class TestColumnTranslation:

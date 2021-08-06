@@ -1,10 +1,10 @@
 from typing import List
 
-import castoredc_api_study.castor_objects.castor_field as castor_field
-import castoredc_api_study.castor_objects.castor_form as castor_form
-import castoredc_api_study.castor_objects.castor_step as castor_step
-import castoredc_api_study.castor_study as castor_study
-from castoredc_api_study.castor_objects import (
+import castoredc_api_client.study.castor_objects.castor_field as castor_field
+import castoredc_api_client.study.castor_objects.castor_form as castor_form
+import castoredc_api_client.study.castor_objects.castor_step as castor_step
+import castoredc_api_client.study.castor_study as castor_study
+from castoredc_api_client.study.castor_objects import (
     castor_data_point,
     castor_form_instance,
     castor_record,

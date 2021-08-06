@@ -1,6 +1,6 @@
 import pytest
 
-from castoredc_api_study.castor_study import CastorStudy
+from castoredc_api_client.study.castor_study import CastorStudy
 from auth import auth_data
 
 

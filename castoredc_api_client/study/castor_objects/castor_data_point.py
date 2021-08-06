@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 
 if TYPE_CHECKING:
-    from castoredc_api_study.castor_objects.castor_field import CastorField
-    from castoredc_api_study.castor_study import CastorStudy
+    from castoredc_api_client.study.castor_objects.castor_field import CastorField
+    from castoredc_api_client.study.castor_study import CastorStudy
 
 
 class CastorDataPoint:
