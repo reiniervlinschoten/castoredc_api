@@ -5,11 +5,11 @@ Testing class for the CastorStudy class.
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-from castoredc_api_study.castor_objects.castor_record import CastorRecord
-from castoredc_api_study.castor_study import CastorStudy
-from castoredc_api_study.castor_objects.castor_form import CastorForm
-from castoredc_api_study.castor_objects.castor_step import CastorStep
-from castoredc_api_study.castor_objects.castor_field import CastorField
+from castoredc_api_client.study.castor_objects.castor_record import CastorRecord
+from castoredc_api_client.study.castor_study import CastorStudy
+from castoredc_api_client.study.castor_objects.castor_form import CastorForm
+from castoredc_api_client.study.castor_objects.castor_step import CastorStep
+from castoredc_api_client.study.castor_objects.castor_field import CastorField
 
 
 class TestCastorStudy:
