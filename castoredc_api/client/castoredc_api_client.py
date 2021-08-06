@@ -11,6 +11,7 @@ import functools
 import json
 import math
 import requests
+from tqdm import tqdm
 
 
 class NotFoundException(Exception):
@@ -955,7 +956,7 @@ class CastorClient:
         fields = response["_embedded"][data_name]
         pages = response["page_count"] + 1
         variables.extend(fields)
-        for i in range(2, pages):
+        for i in tqdm(range(2, pages), "Downloading data"):
             response = self.retrieve_single_page(url, params, i)
             fields = response["_embedded"][data_name]
             variables.extend(fields)
