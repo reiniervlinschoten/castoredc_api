@@ -5,11 +5,11 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Dict, Optional
 from tqdm import tqdm
 
-from castoredc_api_client import CastorException
-from castoredc_api_client.importer.helpers import create_upload, update_feedback
+from castoredc_api import CastorException
+from castoredc_api.importer.helpers import create_upload, update_feedback
 
 if TYPE_CHECKING:
-    from castoredc_api_client.study import CastorStudy
+    from castoredc_api.study import CastorStudy
 
 
 def import_data(

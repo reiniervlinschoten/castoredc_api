@@ -1,13 +1,13 @@
 from datetime import datetime
 from typing import Union, Any, TYPE_CHECKING
-from castoredc_api_client import CastorException
+from castoredc_api import CastorException
 
 import numpy as np
 import pandas as pd
 
 if TYPE_CHECKING:
-    from castoredc_api_client.study.castor_objects.castor_field import CastorField
-    from castoredc_api_client.study.castor_study import CastorStudy
+    from castoredc_api.study.castor_objects.castor_field import CastorField
+    from castoredc_api.study.castor_study import CastorStudy
 
 
 class CastorDataPoint:

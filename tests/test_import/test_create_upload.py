@@ -1,4 +1,4 @@
-from castoredc_api_client.importer.helpers import read_excel, create_upload
+from castoredc_api.importer.helpers import read_excel, create_upload
 
 
 class TestCreateUpload:

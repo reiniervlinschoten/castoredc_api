@@ -1,7 +1,7 @@
 import pytest
 
-from castoredc_api_client import CastorException
-from castoredc_api_client.importer.import_data import import_data
+from castoredc_api import CastorException
+from castoredc_api.importer.import_data import import_data
 
 
 class TestImportReport:

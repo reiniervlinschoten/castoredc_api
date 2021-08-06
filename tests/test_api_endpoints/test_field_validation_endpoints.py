@@ -9,7 +9,7 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 
 from tests.test_api_endpoints.data_models import field_val_model
-from castoredc_api_client import CastorException
+from castoredc_api import CastorException
 
 
 class TestFieldValidation:

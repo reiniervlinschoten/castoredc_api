@@ -8,7 +8,7 @@ https://orcid.org/0000-0003-3052-596X
 """
 import pytest
 
-from castoredc_api_client import CastorException
+from castoredc_api import CastorException
 from tests.test_api_endpoints.data_models import survey_step_model
 
 

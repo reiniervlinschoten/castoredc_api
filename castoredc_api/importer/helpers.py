@@ -3,11 +3,11 @@ import pandas as pd
 
 from datetime import datetime
 from typing import Dict, TYPE_CHECKING, Optional, List
-from castoredc_api_client import CastorException
+from castoredc_api import CastorException
 
 
 if TYPE_CHECKING:
-    from castoredc_api_client.study import CastorStudy
+    from castoredc_api.study import CastorStudy
 
 
 def read_excel(path: str) -> pd.DataFrame:

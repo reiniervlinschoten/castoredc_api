@@ -1,7 +1,7 @@
 from auth import auth_data
 
 import pytest
-from castoredc_api_client import CastorClient
+from castoredc_api import CastorClient
 
 
 @pytest.fixture(scope="class")

@@ -31,10 +31,10 @@ See for more information below.
 For all implemented functions, see: https://data.castoredc.com/api#/
 
 ```python
-from castoredc_api_client.castoredc_api_client import CastorClient
+from castoredc_api import CastorClient
 
 # Create a client with your credentials
-c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET', 'data.castoredc.com') 
+c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET', 'data.castoredc.com')
 
 # Link the client to your study in the Castor EDC database
 c.link_study('MYSTUDYID')
@@ -55,7 +55,7 @@ c.create_survey_package_instance(survey_package_id="FAKESURVEY-PACKAGE-ID",
 2. Use the Study functions to start working with your database
 
 ```python
-from castoredc_api_client.study import CastorStudy
+from castoredc_api import CastorStudy
 
 # Instantiate Study
 study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID', 'data.castoredc.com')
@@ -102,11 +102,11 @@ For datetime data, missing data values are with the years 2995, 2996, 2997, 2998
 3. Create a link file to link external and Castor variables (see below)
 4. Import your data with the import_data function.
    * If label_data is set to true, it translates the string values to their integer values of the optiongroup in Castor.
-   * If set to false, it takes the integer values as is. 
+   * If set to false, it takes the integer values as is.
 
 ```python
-from castoredc_api_client.study import CastorStudy
-from castoredc_api_client.importer import import_data
+from castoredc_api import CastorStudy
+from castoredc_api import import_data
 
 # Create a Study with your credentials
 study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID')

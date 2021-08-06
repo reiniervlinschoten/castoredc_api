@@ -12,7 +12,7 @@ from tests.test_api_endpoints.data_models import (
     report_data_point_extended_model,
     data_options,
 )
-from castoredc_api_client import CastorException
+from castoredc_api import CastorException
 from tests.test_api_endpoints.helpers_api_endpoints import allowed_value
 
 

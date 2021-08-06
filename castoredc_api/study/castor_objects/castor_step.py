@@ -1,5 +1,5 @@
 from typing import List, Any, Union
-from castoredc_api_client.study.castor_objects.castor_field import CastorField
+from castoredc_api.study.castor_objects.castor_field import CastorField
 
 
 class CastorStep:

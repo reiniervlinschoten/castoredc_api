@@ -11,14 +11,13 @@ from typing import List, Optional, Any, Union, Dict
 from pandas import CategoricalDtype
 from tqdm import tqdm
 
-from castoredc_api_client import CastorException
-from castoredc_api_client.castoredc_api_client import CastorClient
-from castoredc_api_client.study.castor_objects.castor_data_point import CastorDataPoint
-from castoredc_api_client.study.castor_objects.castor_field import CastorField
-from castoredc_api_client.study.castor_objects.castor_form_instance import CastorFormInstance
-from castoredc_api_client.study.castor_objects.castor_record import CastorRecord
-from castoredc_api_client.study.castor_objects.castor_step import CastorStep
-from castoredc_api_client.study.castor_objects.castor_form import CastorForm
+from castoredc_api import CastorClient, CastorException
+from castoredc_api.study.castor_objects.castor_data_point import CastorDataPoint
+from castoredc_api.study.castor_objects.castor_field import CastorField
+from castoredc_api.study.castor_objects.castor_form_instance import CastorFormInstance
+from castoredc_api.study.castor_objects.castor_record import CastorRecord
+from castoredc_api.study.castor_objects.castor_step import CastorStep
+from castoredc_api.study.castor_objects.castor_form import CastorForm
 
 
 class CastorStudy:

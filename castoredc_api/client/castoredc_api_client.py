@@ -7,11 +7,31 @@ Link: https://data.castoredc.com/api
 https://orcid.org/0000-0003-3052-596X
 """
 import csv
+import functools
 import json
 import math
 import requests
 
-from castoredc_api_client.exceptions.exceptions import CastorException, castor_exception_handler
+
+class NotFoundException(Exception):
+    pass
+
+
+class CastorException(Exception):
+    pass
+
+
+def castor_exception_handler(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        arguments = list(args)
+        client = arguments[0]
+        try:
+            return func(*args, **kwargs)
+        except CastorException as e:
+            raise
+
+    return wrapper
 
 
 class CastorClient:

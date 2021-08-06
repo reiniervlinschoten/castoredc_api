@@ -1,13 +1,13 @@
 from typing import List
 import pytest
 
-import castoredc_api_client.study.castor_objects.castor_record as castor_record
-import castoredc_api_client.study.castor_objects.castor_field as castor_field
-import castoredc_api_client.study.castor_objects.castor_form as castor_form
-import castoredc_api_client.study.castor_objects.castor_step as castor_step
-import castoredc_api_client.study.castor_study as castor_study
-import castoredc_api_client.study.castor_objects.castor_form_instance as castor_form_instance
-from castoredc_api_client.study.castor_objects import castor_data_point
+import castoredc_api.study.castor_objects.castor_record as castor_record
+import castoredc_api.study.castor_objects.castor_field as castor_field
+import castoredc_api.study.castor_objects.castor_form as castor_form
+import castoredc_api.study.castor_objects.castor_step as castor_step
+import castoredc_api.study.castor_study as castor_study
+import castoredc_api.study.castor_objects.castor_form_instance as castor_form_instance
+from castoredc_api.study.castor_objects import castor_data_point
 
 from tests.test_castor_objects.helpers_castor_objects import (
     link_study_with_forms,

@@ -5,8 +5,8 @@ Testing class for the CastorStep class.
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
-from castoredc_api_client.study.castor_objects.castor_field import CastorField
-from castoredc_api_client.study.castor_objects.castor_step import CastorStep
+from castoredc_api.study.castor_objects.castor_field import CastorField
+from castoredc_api.study.castor_objects.castor_step import CastorStep
 
 
 class TestCastorStep:

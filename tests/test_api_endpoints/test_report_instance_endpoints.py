@@ -10,7 +10,7 @@ import pytest
 import random
 
 from tests.test_api_endpoints.data_models import report_instance_model
-from castoredc_api_client import CastorException
+from castoredc_api import CastorException
 
 
 def create_report_instance(record_id, fake):
