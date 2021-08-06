@@ -10,24 +10,33 @@ class TestValueTranslation:
 
     @pytest.fixture(scope="class")
     def study_value_data(self):
-        dataframe = read_excel("tests/test_import/data_files_for_import_tests/data_file_study_values.xlsx")
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_study_values.xlsx"
+        )
         return dataframe
 
     @pytest.fixture(scope="class")
     def medication_value_data(self):
-        dataframe = read_excel("tests/test_import/data_files_for_import_tests/data_file_report_medication_values.xlsx")
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_report_medication_values.xlsx"
+        )
         return dataframe
 
     @pytest.fixture(scope="class")
     def survey_value_data(self):
-        dataframe = read_excel("tests/test_import/data_files_for_import_tests/data_file_survey_values.xlsx")
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_survey_values.xlsx"
+        )
         return dataframe
 
     def test_record_field_success(self, study_value_data, import_study):
         """Tests whether the proper format is returned when castorizing a record field."""
         column = study_value_data["patient"]
         import_column = castorize_column(
-            to_import=column, new_name=["record_id"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["record_id"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -37,7 +46,10 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a checkbox field."""
         column = study_value_data["family disease history"]
         import_column = castorize_column(
-            to_import=column, new_name=["his_family"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["his_family"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {"his_family": ["2;3;4", "1;2", "0", "5;7", "8"]}
 
@@ -45,7 +57,10 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a date field."""
         column = study_value_data["date baseline blood sample"]
         import_column = castorize_column(
-            to_import=column, new_name=["base_bl_date"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["base_bl_date"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "base_bl_date": [
@@ -61,7 +76,10 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a datetime field."""
         column = study_value_data["datetime onset stroke"]
         import_column = castorize_column(
-            to_import=column, new_name=["onset_stroke"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["onset_stroke"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "onset_stroke": [
@@ -77,7 +95,10 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a dropdown field."""
         column = study_value_data["patient race"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_race"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_race"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {"pat_race": ["1", "2", "3", "4", "5"]}
 
@@ -85,7 +106,10 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a numberdate field."""
         column = study_value_data["factor V Leiden"]
         import_column = castorize_column(
-            to_import=column, new_name=["fac_V_leiden"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["fac_V_leiden"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -113,7 +137,9 @@ class TestValueTranslation:
         )
         assert import_column == {"pat_sex": ["0", "0", "1", "1", "0"]}
 
-    def test_radio_field_with_dependency_success(self, medication_value_data, import_study):
+    def test_radio_field_with_dependency_success(
+        self, medication_value_data, import_study
+    ):
         """Tests whether the proper format is returned when castorizing a radio field with a dependency."""
         column = medication_value_data["units"]
         import_column = castorize_column(
@@ -139,7 +165,10 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a string field."""
         column = medication_value_data["medication"]
         import_column = castorize_column(
-            to_import=column, new_name=["med_name"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["med_name"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "med_name": [
@@ -168,7 +197,10 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a year field."""
         column = study_value_data["year of birth"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_birth_year"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_birth_year"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "pat_birth_year": ["1999", "1956", "1945", "1933", "1921"]
@@ -180,7 +212,9 @@ class TestValueTranslationMissing:
 
     @pytest.fixture(scope="class")
     def study_value_data(self):
-        dataframe = read_excel("tests/test_import/data_files_for_import_tests/data_file_study_values_missings.xlsx")
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_study_values_missings.xlsx"
+        )
         return dataframe
 
     @pytest.fixture(scope="class")
@@ -192,14 +226,19 @@ class TestValueTranslationMissing:
 
     @pytest.fixture(scope="class")
     def survey_value_data(self):
-        dataframe = read_excel("tests/test_import/data_files_for_import_tests/data_file_survey_values_missings.xlsx")
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_survey_values_missings.xlsx"
+        )
         return dataframe
 
     def test_record_field_missing(self, study_value_data, import_study):
         """Tests whether the proper format is returned when castorizing a record field."""
         column = study_value_data["patient"]
         import_column = castorize_column(
-            to_import=column, new_name=["record_id"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["record_id"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -209,7 +248,10 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a checkbox field."""
         column = study_value_data["family disease history"]
         import_column = castorize_column(
-            to_import=column, new_name=["his_family"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["his_family"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {"his_family": [None, None, "0", "5;7", "8"]}
 
@@ -217,7 +259,10 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a date field."""
         column = study_value_data["date baseline blood sample"]
         import_column = castorize_column(
-            to_import=column, new_name=["base_bl_date"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["base_bl_date"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "base_bl_date": [
@@ -233,7 +278,10 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a datetime field."""
         column = study_value_data["datetime onset stroke"]
         import_column = castorize_column(
-            to_import=column, new_name=["onset_stroke"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["onset_stroke"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "onset_stroke": [
@@ -249,7 +297,10 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a dropdown field."""
         column = study_value_data["patient race"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_race"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_race"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {"pat_race": ["1", "2", None, "4", "5"]}
 
@@ -257,7 +308,10 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a numberdate field."""
         column = study_value_data["factor V Leiden"]
         import_column = castorize_column(
-            to_import=column, new_name=["fac_V_leiden"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["fac_V_leiden"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -285,7 +339,9 @@ class TestValueTranslationMissing:
         )
         assert import_column == {"pat_sex": ["0", "0", None, "1", "0"]}
 
-    def test_radio_field_with_dependency_missing(self, medication_value_data, import_study):
+    def test_radio_field_with_dependency_missing(
+        self, medication_value_data, import_study
+    ):
         """Tests whether the proper format is returned when castorizing a radio field with missings and a dependency."""
         column = medication_value_data["units"]
         import_column = castorize_column(
@@ -311,7 +367,10 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a string field."""
         column = medication_value_data["medication"]
         import_column = castorize_column(
-            to_import=column, new_name=["med_name"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["med_name"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "med_name": ["Azathioprine", None, None, "Thioguanine", "Tofacitinib"]
@@ -334,7 +393,10 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a year field."""
         column = study_value_data["year of birth"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_birth_year"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_birth_year"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {"pat_birth_year": ["1999", None, None, None, "1921"]}
 
@@ -344,7 +406,9 @@ class TestValueTranslationFail:
 
     @pytest.fixture(scope="class")
     def study_value_data_error(self):
-        dataframe = read_excel("tests/test_import/data_files_for_import_tests/data_file_study_values_errors.xlsx")
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_study_values_errors.xlsx"
+        )
         return dataframe
 
     @pytest.fixture(scope="class")
@@ -356,14 +420,19 @@ class TestValueTranslationFail:
 
     @pytest.fixture(scope="class")
     def survey_value_data_error(self):
-        dataframe = read_excel("tests/test_import/data_files_for_import_tests/data_file_survey_values_errors.xlsx")
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_survey_values_errors.xlsx"
+        )
         return dataframe
 
     def test_record_field_fail(self, study_value_data_error, import_study):
         """Tests whether the proper error is returned when castorizing a record field."""
         column = study_value_data_error["patient"]
         import_column = castorize_column(
-            to_import=column, new_name=["record_id"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["record_id"],
+            label_data=False,
+            study=import_study,
         )
         # Record checking fails at the import stage
         assert import_column == {"record_id": ["a", "b", "c", "d", "e"]}
@@ -372,7 +441,10 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a checkbox field."""
         column = study_value_data_error["family disease history"]
         import_column = castorize_column(
-            to_import=column, new_name=["his_family"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["his_family"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "his_family": [
@@ -388,7 +460,10 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a date field."""
         column = study_value_data_error["date baseline blood sample"]
         import_column = castorize_column(
-            to_import=column, new_name=["base_bl_date"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["base_bl_date"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "base_bl_date": ["Error", "Error", "Error", "Error", "Error"]
@@ -398,7 +473,10 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a datetime field."""
         column = study_value_data_error["datetime onset stroke"]
         import_column = castorize_column(
-            to_import=column, new_name=["onset_stroke"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["onset_stroke"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "onset_stroke": ["Error", "Error", "Error", "Error", "Error"]
@@ -408,7 +486,10 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a dropdown field."""
         column = study_value_data_error["patient race"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_race"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_race"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "pat_race": ["Error", "Error", "Error", "Error;Error", "Error"]
@@ -418,7 +499,10 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a numberdate field."""
         column = study_value_data_error["factor V Leiden"]
         import_column = castorize_column(
-            to_import=column, new_name=["fac_V_leiden"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["fac_V_leiden"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -450,7 +534,9 @@ class TestValueTranslationFail:
             "pat_sex": ["Error", "Error", "Error", "Error", "Error"]
         }
 
-    def test_radio_field_with_dependency_fail(self, medication_value_data, import_study):
+    def test_radio_field_with_dependency_fail(
+        self, medication_value_data, import_study
+    ):
         """Tests whether the proper error is returned when castorizing a radio field with a dependency."""
         column = medication_value_data["units"]
         import_column = castorize_column(
@@ -476,7 +562,10 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a string field."""
         column = medication_value_data["medication"]
         import_column = castorize_column(
-            to_import=column, new_name=["med_name"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["med_name"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {"med_name": ["cant", "be", "wrong", "cuz", "text"]}
 
@@ -497,7 +586,10 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a year field."""
         column = study_value_data_error["year of birth"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_birth_year"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_birth_year"],
+            label_data=False,
+            study=import_study,
         )
         assert import_column == {
             "pat_birth_year": ["Error", "Error", "Error", "Error", "Error"]

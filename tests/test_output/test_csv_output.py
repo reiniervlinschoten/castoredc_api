@@ -29,7 +29,8 @@ class TestCSVOutput:
                 key="record_id",
             ),
             load_csv(
-                open("tests/test_output/data_files_for_output_tests/CastorStudy.csv"), key="record_id"
+                open("tests/test_output/data_files_for_output_tests/CastorStudy.csv"),
+                key="record_id",
             ),
         )
         assert diff["added"] == []
@@ -67,7 +68,9 @@ class TestCSVOutput:
                 key="survey_instance_id",
             ),
             load_csv(
-                open("tests/test_output/data_files_for_output_tests/CastorQOLSurvey.csv"),
+                open(
+                    "tests/test_output/data_files_for_output_tests/CastorQOLSurvey.csv"
+                ),
                 key="survey_instance_id",
             ),
         )
@@ -93,7 +96,9 @@ class TestCSVOutput:
                 key="custom_name",
             ),
             load_csv(
-                open("tests/test_output/data_files_for_output_tests/CastorMedication.csv"),
+                open(
+                    "tests/test_output/data_files_for_output_tests/CastorMedication.csv"
+                ),
                 key="custom_name",
             ),
         )
@@ -114,7 +119,9 @@ class TestCSVOutput:
                 key="custom_name",
             ),
             load_csv(
-                open("tests/test_output/data_files_for_output_tests/CastorUnscheduledVisit.csv"),
+                open(
+                    "tests/test_output/data_files_for_output_tests/CastorUnscheduledVisit.csv"
+                ),
                 key="custom_name",
             ),
         )
@@ -135,7 +142,9 @@ class TestCSVOutput:
                 key="custom_name",
             ),
             load_csv(
-                open("tests/test_output/data_files_for_output_tests/CastorComorbidities.csv"),
+                open(
+                    "tests/test_output/data_files_for_output_tests/CastorComorbidities.csv"
+                ),
                 key="custom_name",
             ),
         )
@@ -156,7 +165,9 @@ class TestCSVOutput:
                 key="custom_name",
             ),
             load_csv(
-                open("tests/test_output/data_files_for_output_tests/CastorAdverseEvent.csv"),
+                open(
+                    "tests/test_output/data_files_for_output_tests/CastorAdverseEvent.csv"
+                ),
                 key="custom_name",
             ),
         )

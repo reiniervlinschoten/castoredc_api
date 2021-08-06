@@ -380,8 +380,7 @@ class TestDataPoint:
         assert str(e.value) == "404 Survey Package Instance not found"
 
     def test_single_survey_data_points_record_success(
-        self,
-        client,
+        self, client,
     ):
         """Tests returning data from a specific survey for a specific record is the right model"""
         survey_data = client.single_survey_data_points_record(
@@ -575,8 +574,7 @@ class TestDataPoint:
         assert str(e.value) == "404 Record not found"
 
     def test_create_survey_instance_data_points_success(
-        self,
-        client,
+        self, client,
     ):
         """Tests changing survey data"""
         fields = [
@@ -659,8 +657,7 @@ class TestDataPoint:
         assert str(e.value) == "404 Record not found"
 
     def test_create_survey_package_instance_data_points_success(
-        self,
-        client,
+        self, client,
     ):
         """Tests changing survey package data"""
         fields = [

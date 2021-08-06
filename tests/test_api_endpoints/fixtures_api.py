@@ -6,7 +6,9 @@ from castoredc_api import CastorClient
 
 @pytest.fixture(scope="class")
 def client():
-    client = CastorClient(auth_data.client_id, auth_data.client_secret, "data.castoredc.com")
+    client = CastorClient(
+        auth_data.client_id, auth_data.client_secret, "data.castoredc.com"
+    )
     client.link_study(auth_data.test_client_study_id)
     return client
 

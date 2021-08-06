@@ -10,17 +10,8 @@ setup(
     author="Reinier van Linschoten",
     author_email="mail@reiniervl.com",
     url="https://github.com/reiniervlinschoten/castoredc_api",
-    packages=find_packages(
-        include=("castoredc_api", "castoredc_api.*")
-    ),
-    install_requires=[
-        "pandas",
-        "numpy",
-        "openpyxl",
-        "tqdm",
-        "requests",
-        "pyarrow",
-    ],
+    packages=find_packages(include=("castoredc_api", "castoredc_api.*")),
+    install_requires=["pandas", "numpy", "openpyxl", "tqdm", "requests", "pyarrow",],
     license="MIT",
     long_description=long_description,
     long_description_content_type="text/markdown",

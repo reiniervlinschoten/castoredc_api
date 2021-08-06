@@ -28,7 +28,9 @@ class TestColumnTranslation:
 
     def test_import_working_columns_base(self):
         """Tests the base case of creating a column link Dict."""
-        link = create_column_translation("tests/test_import/link_files_for_import_tests/study_link_file.xlsx")
+        link = create_column_translation(
+            "tests/test_import/link_files_for_import_tests/study_link_file.xlsx"
+        )
         assert len(link) == len(self.study_link)
         for key in self.study_link:
             assert key in link
@@ -38,7 +40,9 @@ class TestColumnTranslation:
     def test_import_working_columns_extended_dependency(self):
         """Tests the extended case of creating a column link Dict where the optiongroup option 'other' points to a free
         from text field."""
-        link = create_column_translation("tests/test_import/link_files_for_import_tests/report_link_file.xlsx")
+        link = create_column_translation(
+            "tests/test_import/link_files_for_import_tests/report_link_file.xlsx"
+        )
         assert len(link) == len(self.report_link)
         for key in self.report_link:
             assert key in link

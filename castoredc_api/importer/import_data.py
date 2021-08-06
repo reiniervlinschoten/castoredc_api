@@ -71,9 +71,7 @@ def upload_data(
     }
 
     if target == "Study":
-        return upload_study(
-            castorized_dataframe, common, upload_datetime, study
-        )
+        return upload_study(castorized_dataframe, common, upload_datetime, study)
     elif target == "Survey":
         target_form = next(
             (
@@ -83,17 +81,11 @@ def upload_data(
             ),
             None,
         )
-        return upload_survey(
-            castorized_dataframe, study, target_form["id"], email
-        )
+        return upload_survey(castorized_dataframe, study, target_form["id"], email)
     elif target == "Report":
         target_form = study.get_single_form(target_name)
         return upload_report(
-            castorized_dataframe,
-            common,
-            upload_datetime,
-            study,
-            target_form.form_id,
+            castorized_dataframe, common, upload_datetime, study, target_form.form_id,
         )
     else:
         raise CastorException(
@@ -281,8 +273,12 @@ def upload_report(
     feedback_total = {}
     imported = []
 
-    for record_id, record_frame in tqdm(castorized_dataframe.groupby("record_id"), "Uploading Data"):
-        instances = create_report_instances(study, imported, package_id, record_id, record_frame)
+    for record_id, record_frame in tqdm(
+        castorized_dataframe.groupby("record_id"), "Uploading Data"
+    ):
+        instances = create_report_instances(
+            study, imported, package_id, record_id, record_frame
+        )
         count = 0
         for row in record_frame.to_dict("records"):
             # Create body to send
@@ -299,7 +295,9 @@ def upload_report(
             ]
 
             # Upload the data
-            feedback_row = upload_report_data(body, study, imported, instances[count], row, common)
+            feedback_row = upload_report_data(
+                body, study, imported, instances[count], row, common
+            )
             count += 1
             feedback_total = update_feedback(feedback_row, feedback_total, row, study)
 
@@ -308,7 +306,8 @@ def upload_report(
             pathlib.Path(
                 pathlib.Path.cwd(),
                 "output",
-                f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}" + "successful_upload.csv",
+                f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+                + "successful_upload.csv",
             ),
             index=False,
         )
@@ -326,10 +325,7 @@ def upload_report_data(
     """Tries to upload the survey data."""
     try:
         feedback_row = study.client.update_report_data_record(
-            record_id=row["record_id"],
-            report_id=instance,
-            common=common,
-            body=body,
+            record_id=row["record_id"], report_id=instance, common=common, body=body,
         )
         imported.append(row)
     except CastorException as e:
@@ -352,19 +348,26 @@ def upload_report_data(
 
 
 def create_report_instances(
-    study: "CastorStudy", imported: list, package_id: str, record: str, record_frame: pd.DataFrame
+    study: "CastorStudy",
+    imported: list,
+    package_id: str,
+    record: str,
+    record_frame: pd.DataFrame,
 ) -> list:
     """Tries to create a new survey package instance of package and for record."""
     try:
         # Create a report for each row in the dataframe
-        body = [{"report_id": package_id,
-                 "parent_id": None,
-                 "report_name_custom": f"{record} - api_upload_Report_{datetime.now().strftime('%Y%m%d %H%M%S.%f')}-{row}"}
-                for row in range(1, len(record_frame.index) + 1)]
+        body = [
+            {
+                "report_id": package_id,
+                "parent_id": None,
+                "report_name_custom": f"{record} - api_upload_Report_{datetime.now().strftime('%Y%m%d %H%M%S.%f')}-{row}",
+            }
+            for row in range(1, len(record_frame.index) + 1)
+        ]
 
         instances = study.client.create_multiple_report_instances_record(
-            record_id=record,
-            body=body
+            record_id=record, body=body
         )
 
     except CastorException as e:

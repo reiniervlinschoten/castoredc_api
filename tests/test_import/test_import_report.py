@@ -254,7 +254,7 @@ class TestImportReport:
                     "med_other_unit": "mg/8 weeks",
                 },
                 "failed": {},
-            }
+            },
         ],
         "110002": [
             {
@@ -276,7 +276,7 @@ class TestImportReport:
                     "med_units": "2",
                 },
                 "failed": {},
-            }
+            },
         ],
     }
 
@@ -284,4 +284,6 @@ class TestImportReport:
         "Non-viable data found in dataset to be imported. See output folder for details"
     )
 
-    report_error_during_upload = "404 Record not found caused at b.\n See output folder for successful imports"
+    report_error_during_upload = (
+        "404 Record not found caused at b.\n See output folder for successful imports"
+    )
