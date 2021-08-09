@@ -15,7 +15,7 @@ class TestImportTranslation:
             study=import_study,
             label_data=False,
             target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx"
+            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx",
         )
 
         assert imported_data == self.study_success
@@ -28,7 +28,7 @@ class TestImportTranslation:
             study=import_study,
             label_data=True,
             target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx"
+            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx",
         )
 
         assert imported_data == self.study_success
@@ -41,7 +41,7 @@ class TestImportTranslation:
             study=import_study,
             label_data=False,
             target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx"
+            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx",
         )
 
         assert imported_data == self.study_missing
@@ -54,7 +54,7 @@ class TestImportTranslation:
             study=import_study,
             label_data=True,
             target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx"
+            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx",
         )
 
         assert imported_data == self.study_missing
@@ -68,7 +68,7 @@ class TestImportTranslation:
                 study=import_study,
                 label_data=False,
                 target="Study",
-                translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx"
+                translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx",
             )
 
         assert str(e.value) == self.study_error
@@ -82,7 +82,7 @@ class TestImportTranslation:
                 study=import_study,
                 label_data=True,
                 target="Study",
-                translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx"
+                translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx",
             )
 
         assert str(e.value) == self.study_error
@@ -96,7 +96,7 @@ class TestImportTranslation:
             label_data=True,
             target="Report",
             target_name="Medication",
-            translation_path="tests/test_import/translate_files_for_import_tests/report_label_translate_file.xlsx"
+            translation_path="tests/test_import/translate_files_for_import_tests/report_label_translate_file.xlsx",
         )
 
         assert imported_data == self.report_success

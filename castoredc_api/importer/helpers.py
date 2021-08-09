@@ -58,7 +58,11 @@ def create_variable_translation(path: str) -> Dict:
 
 
 def castorize_column(
-        to_import: pd.Series, new_name: list, label_data: bool, study: "CastorStudy", variable_translation: Dict
+    to_import: pd.Series,
+    new_name: list,
+    label_data: bool,
+    study: "CastorStudy",
+    variable_translation: Dict,
 ) -> Dict:
     """Translates the values in a column to Castorized values ready for import."""
     # TODO: Add data validation with data validation from Castor database.
@@ -77,7 +81,12 @@ def castorize_column(
             if len(new_name) == 1:
                 # There is no dependent 'other' field in the Castor database
                 return castorize_optiongroup_column(
-                    to_import, options, new_name[0], label_data, None, variable_translation
+                    to_import,
+                    options,
+                    new_name[0],
+                    label_data,
+                    None,
+                    variable_translation,
                 )
             elif len(new_name) == 2:
                 # Get the value for the parent that opens the dependent field
@@ -86,7 +95,12 @@ def castorize_column(
                 ]
                 # Castorize the parent column
                 parent_import = castorize_optiongroup_column(
-                    to_import, options, new_name[0], label_data, parent_value, variable_translation
+                    to_import,
+                    options,
+                    new_name[0],
+                    label_data,
+                    parent_value,
+                    variable_translation,
                 )
                 # Castorize the dependent column
                 dep_import = castorize_dep_column(
@@ -119,7 +133,7 @@ def castorize_column(
 
 
 def castorize_dep_column(
-        to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
+    to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
 ):
     """Takes a column and extracts the values that need to be imported in the dependent column."""
     # Get the (checkbox can have multiple inputs) index where the 'other' field is used
@@ -134,12 +148,12 @@ def castorize_dep_column(
 
 
 def castorize_optiongroup_column(
-        to_import: pd.Series,
-        options: Dict,
-        new_name: str,
-        label_data: bool,
-        parent_value: Optional[str],
-        variable_translation: Optional[Dict]
+    to_import: pd.Series,
+    options: Dict,
+    new_name: str,
+    label_data: bool,
+    parent_value: Optional[str],
+    variable_translation: Optional[Dict],
 ) -> Dict:
     """Takes a column with optiongroup data, splits it, translates it into castor data and merges it back"""
     other_name = to_import.name
@@ -147,7 +161,8 @@ def castorize_optiongroup_column(
     to_import = to_import.str.split(";")
     # To each list or None element in the series, translate the value/label to the correct optiongroup value
     to_import = to_import.apply(
-        castorize_optiongroup_datapoint, args=(options, label_data, parent_value, variable_translation, other_name)
+        castorize_optiongroup_datapoint,
+        args=(options, label_data, parent_value, variable_translation, other_name),
     )
     # Merge them to a ; seperated string for import in castor
     to_import = to_import.str.join(";")
@@ -155,8 +170,12 @@ def castorize_optiongroup_column(
 
 
 def castorize_optiongroup_datapoint(
-        values: List, options: Dict, label_data: bool, parent_value: Optional[str],
-        variable_translation: Optional[Dict], other_name: str
+    values: List,
+    options: Dict,
+    label_data: bool,
+    parent_value: Optional[str],
+    variable_translation: Optional[Dict],
+    other_name: str,
 ) -> Optional[List]:
     """Translates a list of values split by ; into Castor Values."""
     # If the datapoint was None or NaN, return an empty datapoint
@@ -169,14 +188,24 @@ def castorize_optiongroup_datapoint(
         translate_dict = get_translation_dict(other_name, variable_translation)
         # If labelled data was provided, translate this to optiongroup values (False or parent_value for failures)
         if label_data:
-            new_values = translate_value_data(new_values, options, parent_value, translate_dict, values)
+            new_values = translate_value_data(
+                new_values, options, parent_value, translate_dict, values
+            )
         # If value data was provided, check if this exists in the optiongroup (False or parent_value for failures)
         else:
-            new_values = translate_label_data(new_values, options, parent_value, translate_dict, values)
+            new_values = translate_label_data(
+                new_values, options, parent_value, translate_dict, values
+            )
     return new_values
 
 
-def translate_label_data(new_values: list, options: dict, parent_value: str, translate_dict: Optional[Dict], values: list):
+def translate_label_data(
+    new_values: list,
+    options: dict,
+    parent_value: str,
+    translate_dict: Optional[Dict],
+    values: list,
+):
     """Translates label data if necessary and checks if it falls within the Castor optiongroup"""
     translate = False if translate_dict is None else True
     for value in values:
@@ -197,7 +226,13 @@ def translate_label_data(new_values: list, options: dict, parent_value: str, tra
     return new_values
 
 
-def translate_value_data(new_values: list, options: dict, parent_value: str, translate_dict: Optional[Dict], values: list):
+def translate_value_data(
+    new_values: list,
+    options: dict,
+    parent_value: str,
+    translate_dict: Optional[Dict],
+    values: list,
+):
     """Translates value data if necessary and checks if it falls within the Castor optiongroup"""
     translate = False if translate_dict is None else True
     for value in values:
@@ -369,14 +404,21 @@ def castorize_numberdate_column(data: List):
 
 
 def create_upload(
-        path_to_upload: str, path_to_col_link: str, path_to_translation: Optional[str], label_data: bool,
-        study: "CastorStudy"
+    path_to_upload: str,
+    path_to_col_link: str,
+    path_to_translation: Optional[str],
+    label_data: bool,
+    study: "CastorStudy",
 ) -> pd.DataFrame:
     """Takes a path to an Excel file and returns a dataframe that is ready to be uploaded into Castor."""
     to_upload = read_excel(path_to_upload)
     # Create translation dicts
     column_translation = create_column_translation(path_to_col_link)
-    variable_translation = create_variable_translation(path_to_translation) if path_to_translation is not None else None
+    variable_translation = (
+        create_variable_translation(path_to_translation)
+        if path_to_translation is not None
+        else None
+    )
     new_data = {}
     for column in to_upload:
         new_column = castorize_column(
@@ -384,7 +426,7 @@ def create_upload(
             new_name=column_translation[column],
             label_data=label_data,
             study=study,
-            variable_translation=variable_translation
+            variable_translation=variable_translation,
         )
         new_data = {**new_data, **new_column}
     return pd.DataFrame.from_dict(new_data)

@@ -308,8 +308,7 @@ def upload_report(
         pathlib.Path(
             pathlib.Path.cwd(),
             "output",
-            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
-            + "successful_upload.csv",
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}" + "successful_upload.csv",
         ),
         index=False,
     )

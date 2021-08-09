@@ -182,9 +182,7 @@ class CastorStudy:
     def __load_survey_information(self) -> None:
         """Adds auxiliary data to survey forms."""
         print("Downloading survey information.", flush=True)
-        survey_package_data = (
-            self.client.all_survey_package_instances()
-        )
+        survey_package_data = self.client.all_survey_package_instances()
         survey_form_instances = [
             instance
             for instance in self.get_all_form_instances()
