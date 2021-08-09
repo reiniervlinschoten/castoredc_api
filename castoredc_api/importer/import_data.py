@@ -20,6 +20,7 @@ def import_data(
     target: str,
     target_name: Optional[str] = None,
     email: Optional[str] = None,
+    translation_path: Optional[str] = None,
 ) -> Dict:
     """Takes a path to an xls(x) file, a path to an xls(x) file specifying the link between the external columns and
     the Castor columns and imports the data into Castor using the given client, study and target form name or Study.
@@ -35,6 +36,7 @@ def import_data(
     castorized_dataframe = create_upload(
         path_to_upload=data_source_path,
         path_to_col_link=column_link_path,
+        path_to_translation=translation_path,
         label_data=label_data,
         study=study,
     )
