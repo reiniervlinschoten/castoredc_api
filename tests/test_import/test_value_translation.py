@@ -37,6 +37,7 @@ class TestValueTranslation:
             new_name=["record_id"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -50,6 +51,7 @@ class TestValueTranslation:
             new_name=["his_family"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"his_family": ["2;3;4", "1;2", "0", "5;7", "8"]}
 
@@ -61,6 +63,7 @@ class TestValueTranslation:
             new_name=["base_bl_date"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "base_bl_date": [
@@ -80,6 +83,7 @@ class TestValueTranslation:
             new_name=["onset_stroke"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "onset_stroke": [
@@ -99,6 +103,7 @@ class TestValueTranslation:
             new_name=["pat_race"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"pat_race": ["1", "2", "3", "4", "5"]}
 
@@ -110,6 +115,7 @@ class TestValueTranslation:
             new_name=["fac_V_leiden"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -125,7 +131,11 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a number field."""
         column = study_value_data["baseline hemoglobin"]
         import_column = castorize_column(
-            to_import=column, new_name=["base_hb"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["base_hb"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"base_hb": ["8.3", "7.2", "9.1", "3.2", "10.3"]}
 
@@ -133,7 +143,11 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a radio field."""
         column = study_value_data["patient sex"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_sex"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_sex"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"pat_sex": ["0", "0", "1", "1", "0"]}
 
@@ -147,6 +161,7 @@ class TestValueTranslation:
             new_name=["med_units", "med_other_unit"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "med_units": ["3", "7", "7", "2", "2"],
@@ -157,7 +172,11 @@ class TestValueTranslation:
         """Tests whether the proper format is returned when castorizing a slider field."""
         column = survey_value_data["visual analog scale"]
         import_column = castorize_column(
-            to_import=column, new_name=["VAS"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["VAS"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"VAS": ["25", "88", "13"]}
 
@@ -169,6 +188,7 @@ class TestValueTranslation:
             new_name=["med_name"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "med_name": [
@@ -188,6 +208,7 @@ class TestValueTranslation:
             new_name=["onset_trombectomy"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "onset_trombectomy": ["09:25", "06:33", "12:24", "23:23", "08:14"]
@@ -201,6 +222,7 @@ class TestValueTranslation:
             new_name=["pat_birth_year"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "pat_birth_year": ["1999", "1956", "1945", "1933", "1921"]
@@ -239,6 +261,7 @@ class TestValueTranslationMissing:
             new_name=["record_id"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -252,6 +275,7 @@ class TestValueTranslationMissing:
             new_name=["his_family"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"his_family": [None, None, "0", "5;7", "8"]}
 
@@ -263,6 +287,7 @@ class TestValueTranslationMissing:
             new_name=["base_bl_date"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "base_bl_date": [
@@ -282,6 +307,7 @@ class TestValueTranslationMissing:
             new_name=["onset_stroke"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "onset_stroke": [
@@ -301,6 +327,7 @@ class TestValueTranslationMissing:
             new_name=["pat_race"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"pat_race": ["1", "2", None, "4", "5"]}
 
@@ -312,6 +339,7 @@ class TestValueTranslationMissing:
             new_name=["fac_V_leiden"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -327,7 +355,11 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a number field."""
         column = study_value_data["baseline hemoglobin"]
         import_column = castorize_column(
-            to_import=column, new_name=["base_hb"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["base_hb"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"base_hb": ["8.3", None, "9.1", "3.2", "10.3"]}
 
@@ -335,7 +367,11 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a radio field with missings."""
         column = study_value_data["patient sex"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_sex"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_sex"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"pat_sex": ["0", "0", None, "1", "0"]}
 
@@ -349,6 +385,7 @@ class TestValueTranslationMissing:
             new_name=["med_units", "med_other_unit"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "med_units": ["3", None, "7", "2", None],
@@ -359,7 +396,11 @@ class TestValueTranslationMissing:
         """Tests whether the proper format is returned when castorizing a slider field with missings."""
         column = survey_value_data["visual analog scale"]
         import_column = castorize_column(
-            to_import=column, new_name=["VAS"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["VAS"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"VAS": ["25", None, "13"]}
 
@@ -371,6 +412,7 @@ class TestValueTranslationMissing:
             new_name=["med_name"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "med_name": ["Azathioprine", None, None, "Thioguanine", "Tofacitinib"]
@@ -384,6 +426,7 @@ class TestValueTranslationMissing:
             new_name=["onset_trombectomy"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "onset_trombectomy": ["09:25", "06:33", "12:24", None, "08:14"]
@@ -397,6 +440,7 @@ class TestValueTranslationMissing:
             new_name=["pat_birth_year"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"pat_birth_year": ["1999", None, None, None, "1921"]}
 
@@ -433,6 +477,7 @@ class TestValueTranslationFail:
             new_name=["record_id"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         # Record checking fails at the import stage
         assert import_column == {"record_id": ["a", "b", "c", "d", "e"]}
@@ -445,6 +490,7 @@ class TestValueTranslationFail:
             new_name=["his_family"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "his_family": [
@@ -464,6 +510,7 @@ class TestValueTranslationFail:
             new_name=["base_bl_date"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "base_bl_date": ["Error", "Error", "Error", "Error", "Error"]
@@ -477,6 +524,7 @@ class TestValueTranslationFail:
             new_name=["onset_stroke"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "onset_stroke": ["Error", "Error", "Error", "Error", "Error"]
@@ -490,6 +538,7 @@ class TestValueTranslationFail:
             new_name=["pat_race"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "pat_race": ["Error", "Error", "Error", "Error;Error", "Error"]
@@ -503,6 +552,7 @@ class TestValueTranslationFail:
             new_name=["fac_V_leiden"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -518,7 +568,11 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a number field."""
         column = study_value_data_error["baseline hemoglobin"]
         import_column = castorize_column(
-            to_import=column, new_name=["base_hb"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["base_hb"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "base_hb": ["Error", "Error", "Error", "Error", "Error"]
@@ -528,7 +582,11 @@ class TestValueTranslationFail:
         """Tests whether the proper error is returned when castorizing a radio field."""
         column = study_value_data_error["patient sex"]
         import_column = castorize_column(
-            to_import=column, new_name=["pat_sex"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["pat_sex"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "pat_sex": ["Error", "Error", "Error", "Error", "Error"]
@@ -544,6 +602,7 @@ class TestValueTranslationFail:
             new_name=["med_units", "med_other_unit"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "med_units": ["7", "7", "7", "7", "7"],
@@ -554,7 +613,11 @@ class TestValueTranslationFail:
         """Tests whether the proper format is returned when castorizing a slider field with errors."""
         column = survey_value_data_error["visual analog scale"]
         import_column = castorize_column(
-            to_import=column, new_name=["VAS"], label_data=False, study=import_study
+            to_import=column,
+            new_name=["VAS"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"VAS": ["Error", "Error", "Error"]}
 
@@ -566,6 +629,7 @@ class TestValueTranslationFail:
             new_name=["med_name"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {"med_name": ["cant", "be", "wrong", "cuz", "text"]}
 
@@ -577,6 +641,7 @@ class TestValueTranslationFail:
             new_name=["onset_trombectomy"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "onset_trombectomy": ["Error", "Error", "Error", "Error", "Error"]
@@ -590,6 +655,7 @@ class TestValueTranslationFail:
             new_name=["pat_birth_year"],
             label_data=False,
             study=import_study,
+            variable_translation=None,
         )
         assert import_column == {
             "pat_birth_year": ["Error", "Error", "Error", "Error", "Error"]

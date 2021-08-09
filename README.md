@@ -100,7 +100,8 @@ For datetime data, missing data values are with the years 2995, 2996, 2997, 2998
 1. Instantiate the CastorStudy with your credentials, study ID and server url.
 2. Format your data in the right format (see below)
 3. Create a link file to link external and Castor variables (see below)
-4. Import your data with the import_data function.
+4. (Optional) Create a variable translation file to translate optiongroup values and labels to Castor optiongroups (see below).
+5. Import your data with the import_data function.
    * If label_data is set to true, it translates the string values to their integer values of the optiongroup in Castor.
    * If set to false, it takes the integer values as is.
 
@@ -130,6 +131,17 @@ imported_data = import_data(
     target_name="Medication",
 )
 
+# Import labelled report data that needs to be translated
+imported_data = import_data(
+    data_source_path="PATH/TO/YOUR/REPORT/DATA",
+    column_link_path="PATH/TO/YOUR/LINK/FILE",
+    study=study,
+    label_data=False,
+    target="Report",
+    target_name="Medication",
+    translation_path="PATH/TO/YOUR/TRANSLATION/FILE",
+)
+
 # Import labelled survey data
 imported_data = import_data(
     data_source_path="PATH/TO/YOUR/LABELLED/SURVEY/DATA",
@@ -150,6 +162,8 @@ See below for an examples.
 ##### Labels
 The mg/4 weeks and mg/8 weeks under units will be imported to the med_other_unit fields as they do not match any option of the optiongroup, see link files.
 
+##### Example
+
 | patient | medication   | startdate  | stopdate   | dose | units      |
 | ------- | ------------ | ---------- | ---------- | ---- | ---------- |
 | 110001  | Azathioprine | 05-12-2019 | 05-12-2020 | 0.05 | g/day      |
@@ -160,6 +174,8 @@ The mg/4 weeks and mg/8 weeks under units will be imported to the med_other_unit
 
 ##### Values
 The non-integer variables under units will be imported to the med_other_unit fields as they do not match any optionvalue of the optiongroup, see link files.
+
+##### Example
 
 | patient | medication   | startdate  | stopdate   | dose | units      |
 | ------- | ------------ | ---------- | ---------- | ---- | ---------- |
@@ -189,6 +205,8 @@ This is treated in the following manner:
 * For all data that could not be mapped to the first variable, the 'other' category is selected in the first variable
 * Then the data that could not be mapped is written to the second variable referenced.
 
+##### Example
+
 | other      | castor           |
 | ---------- | ---------------- |
 | patient    | record\_id       |
@@ -199,6 +217,26 @@ This is treated in the following manner:
 | units      | med\_units       |
 | units      | med\_other\_unit |
 
+##### Translation files
+Translation files link the optiongroup value or label from the external database to the optiongroups from Castor.
+Values are translated for all variables specified in the first column of the file.
+
+Two situations can occur when a value is encountered for which no translation is given:
+* If a dependent field is specified (see link files): the value is not translated and imported to the dependent field.
+* If no dependent field is specified: the program gives an error. In this situation, every value that occurs in the external database needs to be mapped.
+
+##### Example
+| variable               | other                  | castor                              |
+| ---------------------- | ---------------------- | ----------------------------------- |
+| family disease history | none                   | None                                |
+| family disease history | don't know             | Unknown                             |
+| family disease history | deaf                   | Deafness                            |
+| family disease history | cardiomyopathy         | (Cardio)myopathy                    |
+| family disease history | encephalopathy         | Encephalopathy                      |
+| family disease history | diabetes               | Diabetes Mellitus                   |
+| family disease history | cardiovascular disease | Hypertension/Cardiovascular disease |
+| family disease history | thromboembolism        | Thrombosis                          |
+| family disease history | tumor                  | Malignancy                          |
 
 ## Prerequisites
 
