@@ -143,10 +143,13 @@ def castorize_optiongroup_column(
 ) -> Dict:
     """Takes a column with optiongroup data, splits it, translates it into castor data and merges it back"""
     other_name = to_import.name
+    # Split the string into a list based on the ; seperator
     to_import = to_import.str.split(";")
+    # To each list or None element in the series, translate the value/label to the correct optiongroup value
     to_import = to_import.apply(
         castorize_optiongroup_datapoint, args=(options, label_data, parent_value, variable_translation, other_name)
     )
+    # Merge them to a ; seperated string for import in castor
     to_import = to_import.str.join(";")
     return {new_name: to_import.tolist()}
 
@@ -156,55 +159,72 @@ def castorize_optiongroup_datapoint(
         variable_translation: Optional[Dict], other_name: str
 ) -> Optional[List]:
     """Translates a list of values split by ; into Castor Values."""
-    # If the datapoint was empty, return an empty datapoint
+    # If the datapoint was None or NaN, return an empty datapoint
     if not isinstance(values, list):
         if pd.isnull(values):
             new_values = None
 
     else:
-        # Translate if variable_translation exists
-        if variable_translation is None:
-            translate = False
-        else:
-            try:
-                # Sometimes not all variables are translated, only set translate to true if this variable has a
-                # translation dict
-                translate_dict = variable_translation[other_name]
-                translate = True
-            except KeyError:
-                translate = False
-
         new_values = []
+        translate_dict = get_translation_dict(other_name, variable_translation)
         # If labelled data was provided, translate this to optiongroup values (False or parent_value for failures)
         if label_data:
-            for value in values:
-                if pd.isnull(parent_value):
-                    if translate:
-                        value = translate_dict.get(str(value), "Error")
-                    new_values.append(options.get(str(value), "Error"))
-                else:
-                    if translate:
-                        value = translate_dict.get(str(value), parent_value)
-                    new_values.append(options.get(str(value), parent_value))
+            new_values = translate_value_data(new_values, options, parent_value, translate_dict, values)
         # If value data was provided, check if this exists in the optiongroup (False or parent_value for failures)
         else:
-            for value in values:
-                if pd.isnull(parent_value):
-                    if translate:
-                        value = translate_dict.get(str(value), "Error")
-                    if str(value) in options.values():
-                        new_values.append(value)
-                    else:
-                        new_values.append("Error")
-                else:
-                    if translate:
-                        value = translate_dict.get(str(value), parent_value)
-                    if str(value) in options.values():
-                        new_values.append(value)
-                    else:
-                        new_values.append(parent_value)
-
+            new_values = translate_label_data(new_values, options, parent_value, translate_dict, values)
     return new_values
+
+
+def translate_label_data(new_values: list, options: dict, parent_value: str, translate_dict: Optional[Dict], values: list):
+    """Translates label data if necessary and checks if it falls within the Castor optiongroup"""
+    translate = False if translate_dict is None else True
+    for value in values:
+        if pd.isnull(parent_value):
+            if translate:
+                value = translate_dict.get(str(value), "Error")
+            if str(value) in options.values():
+                new_values.append(value)
+            else:
+                new_values.append("Error")
+        else:
+            if translate:
+                value = translate_dict.get(str(value), parent_value)
+            if str(value) in options.values():
+                new_values.append(value)
+            else:
+                new_values.append(parent_value)
+    return new_values
+
+
+def translate_value_data(new_values: list, options: dict, parent_value: str, translate_dict: Optional[Dict], values: list):
+    """Translates value data if necessary and checks if it falls within the Castor optiongroup"""
+    translate = False if translate_dict is None else True
+    for value in values:
+        if pd.isnull(parent_value):
+            if translate:
+                value = translate_dict.get(str(value), "Error")
+            new_values.append(options.get(str(value), "Error"))
+        else:
+            if translate:
+                value = translate_dict.get(str(value), parent_value)
+            new_values.append(options.get(str(value), parent_value))
+    return new_values
+
+
+def get_translation_dict(other_name: str, variable_translation: Dict) -> Optional[Dict]:
+    """Returns the translation dict or None if no translation necessary."""
+    # Translate if variable_translation exists
+    if variable_translation is None:
+        translate_dict = None
+    else:
+        try:
+            # Sometimes not all variables are translated, only set translate to true if this variable has a
+            # translation dict
+            translate_dict = variable_translation[other_name]
+        except KeyError:
+            translate_dict = None
+    return translate_dict
 
 
 def get_index(item: Optional[List], value: int):
