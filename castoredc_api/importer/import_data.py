@@ -301,16 +301,16 @@ def upload_report(
             count += 1
             feedback_total = update_feedback(feedback_row, feedback_total, row, study)
 
-        # Save output
-        pd.DataFrame(imported).to_csv(
-            pathlib.Path(
-                pathlib.Path.cwd(),
-                "output",
-                f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
-                + "successful_upload.csv",
-            ),
-            index=False,
-        )
+    # Save output
+    pd.DataFrame(imported).to_csv(
+        pathlib.Path(
+            pathlib.Path.cwd(),
+            "output",
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+            + "successful_upload.csv",
+        ),
+        index=False,
+    )
     return feedback_total
 
 
