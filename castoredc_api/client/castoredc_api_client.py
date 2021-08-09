@@ -809,7 +809,6 @@ class CastorClient:
         number_of_records = len(self.all_records())
         # There are 25 records per page
         pages = math.ceil(number_of_records / 25) + 1
-        print(pages)
         url = self.study_url + "/record-progress/steps"
         response = self.retrieve_single_page(url=url, params=None, page="1")
         fields = response["_embedded"]["records"]

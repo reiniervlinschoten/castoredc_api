@@ -56,7 +56,7 @@ class CastorStudy:
         self.form_links = {}
 
         # Get the structure from the API
-        print("Downloading study structure.")
+        print("Downloading study structure.", flush=True)
         data = self.client.export_study_structure()
 
         # Loop over all fields
@@ -123,7 +123,7 @@ class CastorStudy:
             form_links["Survey"][form.form_id] = []
 
         # Get the name of the survey forms, as the export data can only be linked on name, not on id
-        print("Downloading survey instances.")
+        print("Downloading survey instances.", flush=True)
         surveys = self.client.all_surveys()
         # Link form id to form name
         for survey in tqdm(surveys, desc="Mapping Survey Instances"):
@@ -135,7 +135,7 @@ class CastorStudy:
             form_links["Report"][form.form_id] = []
 
         # Get all report instances that need to be linked
-        print("Downloading report instances.")
+        print("Downloading report instances.", flush=True)
 
         # Save this data from the database to save time later
         report_instances = self.client.all_report_instances(archived=0)
@@ -156,13 +156,13 @@ class CastorStudy:
     def load_optiongroups(self) -> None:
         """Loads all optiongroups through the client"""
         # Get the optiongroups
-        print("Downloading optiongroups.")
+        print("Downloading optiongroups.", flush=True)
         self.optiongroups = self.client.all_field_optiongroups()
 
     # AUXILIARY DATA
     def __load_record_information(self) -> None:
         """Adds auxiliary data to records."""
-        print("Downloading record information.")
+        print("Downloading record information.", flush=True)
         record_data = self.client.all_records()
         for record in tqdm(self.records, desc="Augmenting Record Data"):
             record_api = next(
@@ -181,10 +181,10 @@ class CastorStudy:
 
     def __load_survey_information(self) -> None:
         """Adds auxiliary data to survey forms."""
-        print("Downloading survey information.")
+        print("Downloading survey information.", flush=True)
         survey_package_data = (
             self.client.all_survey_package_instances()
-        )  # TODO: this call takes ~30s, optimise?
+        )
         survey_form_instances = [
             instance
             for instance in self.get_all_form_instances()
@@ -264,7 +264,7 @@ class CastorStudy:
     # FIELD DEPENDENCIES
     def __map_field_dependencies(self) -> None:
         """Retrieves all field_dependencies and links them to the right field."""
-        print("Downloading field dependencies.")
+        print("Downloading field dependencies.", flush=True)
         dependencies = self.client.all_field_dependencies()
         # Format to dict of {child_id: {"parent_field": parent_field, "parent_value": value}
         dependencies = {
@@ -558,7 +558,7 @@ class CastorStudy:
     def __link_data(self) -> None:
         """Links the study data"""
         # Get the data from the API
-        print("Downloading study data.")
+        print("Downloading study data.", flush=True)
         data = self.client.export_study_data()
 
         # Loop over all fields
