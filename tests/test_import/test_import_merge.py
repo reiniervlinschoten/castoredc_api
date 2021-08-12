@@ -6,44 +6,32 @@ from castoredc_api.importer.import_data import import_data
 
 class TestImportMerge:
     """Tests uploading data to Castor while translating external data points."""
-
     def test_import_study_label_merge_success(self, import_study):
         """Tests if uploading label data is successful when merging external optiongroups"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_merge.xlsx",
             column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Study",
-            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
-        )
+            study=import_study, label_data=True, target="Study", merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx")
 
         assert imported_data == self.study_success
 
-    def test_import_study_label_translate_missing(self, import_study):
+    def test_import_study_label_merge_missing(self, import_study):
         """Tests if uploading label data with missings is successful"""
-        imported_data = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings_translate.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Study",
-            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
-        )
+        imported_data=import_data(
+                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings_merge.xlsx",
+                column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
+                study=import_study, label_data=True, target="Study",
+                merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx")
 
         assert imported_data == self.study_missing
 
-    def test_import_study_label_translate_error(self, import_study):
+    def test_import_study_label_merge_error(self, import_study):
         """Tests if uploading label data with errors is successful"""
         with pytest.raises(CastorException) as e:
             import_data(
-                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors_translate.xlsx",
-                column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study,
-                label_data=True,
-                target="Study",
-                merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
-            )
+                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors_merge.xlsx",
+                column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
+                study=import_study, label_data=True, target="Study", merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx")
 
         assert str(e.value) == self.study_error
 

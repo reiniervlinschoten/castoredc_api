@@ -11,12 +11,8 @@ class TestImportReport:
         """Tests if uploading value data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_values.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            study=import_study,
-            label_data=False,
-            target="Report",
-            target_name="Medication",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx", study=import_study,
+            label_data=False, target="Report", target_name="Medication")
 
         assert imported_data == self.report_success
 
@@ -24,12 +20,8 @@ class TestImportReport:
         """Tests if uploading label data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Report",
-            target_name="Medication",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx", study=import_study,
+            label_data=True, target="Report", target_name="Medication")
 
         assert imported_data == self.report_success
 
@@ -37,12 +29,8 @@ class TestImportReport:
         """Tests if uploading label data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_bulk.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Report",
-            target_name="Medication",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx", study=import_study,
+            label_data=True, target="Report", target_name="Medication")
 
         assert imported_data == self.report_success_bulk
 
@@ -50,12 +38,8 @@ class TestImportReport:
         """Tests if uploading value data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_values_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            study=import_study,
-            label_data=False,
-            target="Report",
-            target_name="Medication",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx", study=import_study,
+            label_data=False, target="Report", target_name="Medication")
 
         assert imported_data == self.report_missing
 
@@ -63,12 +47,8 @@ class TestImportReport:
         """Tests if uploading label data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Report",
-            target_name="Medication",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx", study=import_study,
+            label_data=True, target="Report", target_name="Medication")
 
         assert imported_data == self.report_missing
 
@@ -78,11 +58,7 @@ class TestImportReport:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_values_errors.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-                study=import_study,
-                label_data=False,
-                target="Report",
-                target_name="Medication",
-            )
+                study=import_study, label_data=False, target="Report", target_name="Medication")
 
         assert str(e.value) == self.report_error
 
@@ -92,11 +68,7 @@ class TestImportReport:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_errors.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-                study=import_study,
-                label_data=True,
-                target="Report",
-                target_name="Medication",
-            )
+                study=import_study, label_data=True, target="Report", target_name="Medication")
 
         assert str(e.value) == self.report_error
 
@@ -106,11 +78,7 @@ class TestImportReport:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_values_errors_upload.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-                study=import_study,
-                label_data=False,
-                target="Report",
-                target_name="Medication",
-            )
+                study=import_study, label_data=False, target="Report", target_name="Medication")
 
         assert str(e.value) == self.report_error_during_upload
 

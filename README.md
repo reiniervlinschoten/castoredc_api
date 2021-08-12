@@ -113,47 +113,25 @@ from castoredc_api import import_data
 study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID')
 
 # Import labelled study data
-imported_data = import_data(
-    data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
-    column_link_path="PATH/TO/YOUR/LINK/FILE",
-    study=study,
-    label_data=True,
-    target="Study",
-)
+imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", study=study, label_data=True, target="Study")
 
 # Import non-labelled report data
-imported_data = import_data(
-    data_source_path="PATH/TO/YOUR/REPORT/DATA",
-    column_link_path="PATH/TO/YOUR/LINK/FILE",
-    study=study,
-    label_data=False,
-    target="Report",
-    target_name="Medication",
-)
-
-# Import labelled report data that needs to be translated
-imported_data = import_data(
-    data_source_path="PATH/TO/YOUR/REPORT/DATA",
-    column_link_path="PATH/TO/YOUR/LINK/FILE",
-    study=study,
-    label_data=False,
-    target="Report",
-    target_name="Medication",
-    translation_path="PATH/TO/YOUR/TRANSLATION/FILE",
-)
+imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", column_link_path="PATH/TO/YOUR/LINK/FILE",
+                            study=study, label_data=False, target="Report", target_name="Medication")
 
 # Import labelled survey data
-imported_data = import_data(
-    data_source_path="PATH/TO/YOUR/LABELLED/SURVEY/DATA",
-    column_link_path="PATH/TO/YOUR/LINK/FILE",
-    study=study,
-    label_data=True,
-    target="Survey",
-    target_name="My first survey package",
-    email="python_wrapper@you-spam.com",
-)
+imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/SURVEY/DATA",
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", study=study, label_data=True, target="Survey",
+                            target_name="My first survey package", email="python_wrapper@you-spam.com")
+
+# Import labelled report data that needs to be translated
+imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", column_link_path="PATH/TO/YOUR/LINK/FILE",
+                            study=study, label_data=False, target="Report", target_name="Medication",
+                            translation_path="PATH/TO/YOUR/TRANSLATION/FILE")
+
 ```
-#### Link and data files
+#### Specifying the data structure
 #### Data files
 See below for an examples.
 * Dates should be formatted as dd-mm-yyyy.
@@ -237,6 +215,43 @@ Two situations can occur when a value is encountered for which no translation is
 | family disease history | cardiovascular disease | Hypertension/Cardiovascular disease |
 | family disease history | thromboembolism        | Thrombosis                          |
 | family disease history | tumor                  | Malignancy                          |
+
+##### Merge files
+Merge files link the multiple columns from the external database to a single checkbox field in Castor.  
+For each column from the external database specified under other_variable the value under other_value is mapped to the castor_value for the castor_variable.  
+If specifying a merge file, note that castor_value is the new other variable for your link file (see below).  
+All other_values not defined are thrown out.  
+Only supports many-to-one matching.
+
+##### Example
+
+###### Merge File
+
+| other\_variable          | other\_value | castor\_variable | castor\_value                       |
+| ------------------------ | ------------ | ---------------- | ----------------------------------- |
+| famhhist\_cardiomyopathy | Yes          | his\_family      | (Cardio)myopathy                    |
+| famhist\_encephalopathy  | Yes          | his\_family      | Encephalopathy                      |
+| famhist\_diabmell        | Yes          | his\_family      | Diabetes Mellitus                   |
+| famhist\_deaf            | Yes          | his\_family      | Deafness                            |
+| famhist\_none            | Yes          | his\_family      | None                                |
+| famhist\_unknown         | Yes          | his\_family      | Unknown                             |
+| famhist\_malignancy      | Yes          | his\_family      | Malignancy                          |
+| famhist\_cardiovasc      | Yes          | his\_family      | Hypertension/Cardiovascular disease |
+
+###### Link File
+
+| other                      | castor             |
+| -------------------------- | ------------------ |
+| patient                    | record\_id         |
+| date baseline blood sample | base\_bl\_date     |
+| baseline hemoglobin        | base\_hb           |
+| factor V Leiden            | fac\_V\_leiden     |
+| datetime onset stroke      | onset\_stroke      |
+| time onset trombectomy     | onset\_trombectomy |
+| year of birth              | pat\_birth\_year   |
+| patient sex                | pat\_sex           |
+| patient race               | pat\_race          |
+| **his\_family**            | **his\_family**    |
 
 ## Prerequisites
 
