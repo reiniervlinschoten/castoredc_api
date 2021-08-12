@@ -11,8 +11,11 @@ class TestImportStudy:
         """Tests if uploading value data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=False, target="Study")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=False,
+            target="Study",
+        )
 
         assert imported_data == self.study_success
 
@@ -20,8 +23,11 @@ class TestImportStudy:
         """Tests if uploading label data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=True, target="Study")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=True,
+            target="Study",
+        )
 
         assert imported_data == self.study_success
 
@@ -29,8 +35,11 @@ class TestImportStudy:
         """Tests if uploading value data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=False, target="Study")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=False,
+            target="Study",
+        )
 
         assert imported_data == self.study_missing
 
@@ -38,8 +47,11 @@ class TestImportStudy:
         """Tests if uploading label data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=True, target="Study")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=True,
+            target="Study",
+        )
 
         assert imported_data == self.study_missing
 
@@ -49,7 +61,10 @@ class TestImportStudy:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_errors.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -59,7 +74,10 @@ class TestImportStudy:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=True, target="Study")
+                study=import_study,
+                label_data=True,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -69,7 +87,10 @@ class TestImportStudy:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_errors_upload.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error_during_upload
 

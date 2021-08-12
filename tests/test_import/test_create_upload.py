@@ -9,7 +9,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_study_values.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final.xlsx"
         )
@@ -20,7 +24,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_study_labels.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final.xlsx"
         )
@@ -31,7 +39,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_study_values_missings.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_missings.xlsx"
         )
@@ -42,7 +54,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_missings.xlsx"
         )
@@ -53,7 +69,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_study_values_errors.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_errors.xlsx"
         )
@@ -64,7 +84,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_errors.xlsx"
         )
@@ -75,7 +99,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_report_medication_values.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final.xlsx"
         )
@@ -86,7 +114,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final.xlsx"
         )
@@ -97,7 +129,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_report_medication_values_missings.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_missings.xlsx"
         )
@@ -108,7 +144,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_missings.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_missings.xlsx"
         )
@@ -119,7 +159,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_report_medication_values_errors.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_errors.xlsx"
         )
@@ -130,7 +174,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_errors.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_errors.xlsx"
         )
@@ -141,7 +189,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_survey_values.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final.xlsx"
         )
@@ -152,7 +204,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_survey_labels.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final.xlsx"
         )
@@ -163,7 +219,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_survey_values_missings.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_missings.xlsx"
         )
@@ -174,7 +234,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_survey_labels_missings.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_missings.xlsx"
         )
@@ -185,7 +249,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_survey_values_errors.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=False, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=False,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_errors.xlsx"
         )
@@ -196,7 +264,11 @@ class TestCreateUpload:
         to_upload = create_upload(
             path_to_upload="tests/test_import/data_files_for_import_tests/data_file_survey_labels_errors.xlsx",
             path_to_col_link="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            path_to_translation=None, path_to_merge=None, label_data=True, study=import_study)
+            path_to_translation=None,
+            path_to_merge=None,
+            label_data=True,
+            study=import_study,
+        )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_errors.xlsx"
         )

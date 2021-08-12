@@ -60,8 +60,7 @@ def create_variable_translation(path: str) -> Dict:
 def create_merge_translation(path: str) -> Dict:
     """Translates an excel sheet of merge links to a dict of merge links"""
     link_dataframe = read_excel(path)
-    merge_column_dict = {"variable_translations": {},
-                         "column_links": {}}
+    merge_column_dict = {"variable_translations": {}, "column_links": {}}
     # Transform dataframe to dict
     data_dict = link_dataframe.to_dict("index")
     # For every row in the dataframe, add the link to the dict
@@ -74,22 +73,28 @@ def create_merge_translation(path: str) -> Dict:
         # Link columns if they are not already linked
         if castor_variable in merge_column_dict["column_links"]:
             if other_variable not in merge_column_dict["column_links"][castor_variable]:
-                merge_column_dict["column_links"][castor_variable].append(other_variable)
+                merge_column_dict["column_links"][castor_variable].append(
+                    other_variable
+                )
         else:
             merge_column_dict["column_links"][castor_variable] = [other_variable]
         if other_variable in merge_column_dict["variable_translations"]:
-            merge_column_dict["variable_translations"][other_variable][other_value] = castor_value
+            merge_column_dict["variable_translations"][other_variable][
+                other_value
+            ] = castor_value
         else:
-            merge_column_dict["variable_translations"][other_variable] = {other_value: castor_value}
+            merge_column_dict["variable_translations"][other_variable] = {
+                other_value: castor_value
+            }
     return merge_column_dict
 
 
 def castorize_column(
-        to_import: pd.Series,
-        new_name: list,
-        label_data: bool,
-        study: "CastorStudy",
-        variable_translation: Dict,
+    to_import: pd.Series,
+    new_name: list,
+    label_data: bool,
+    study: "CastorStudy",
+    variable_translation: Dict,
 ) -> Dict:
     """Translates the values in a column to Castorized values ready for import."""
     # TODO: Add data validation with data validation from Castor database.
@@ -160,7 +165,7 @@ def castorize_column(
 
 
 def castorize_dep_column(
-        to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
+    to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
 ):
     """Takes a column and extracts the values that need to be imported in the dependent column."""
     # Get the (checkbox can have multiple inputs) index where the 'other' field is used
@@ -175,12 +180,12 @@ def castorize_dep_column(
 
 
 def castorize_optiongroup_column(
-        to_import: pd.Series,
-        options: Dict,
-        new_name: str,
-        label_data: bool,
-        parent_value: Optional[str],
-        variable_translation: Optional[Dict],
+    to_import: pd.Series,
+    options: Dict,
+    new_name: str,
+    label_data: bool,
+    parent_value: Optional[str],
+    variable_translation: Optional[Dict],
 ) -> Dict:
     """Takes a column with optiongroup data, splits it, translates it into castor data and merges it back"""
     other_name = to_import.name
@@ -197,12 +202,12 @@ def castorize_optiongroup_column(
 
 
 def castorize_optiongroup_datapoint(
-        values: List,
-        options: Dict,
-        label_data: bool,
-        parent_value: Optional[str],
-        variable_translation: Optional[Dict],
-        other_name: str,
+    values: List,
+    options: Dict,
+    label_data: bool,
+    parent_value: Optional[str],
+    variable_translation: Optional[Dict],
+    other_name: str,
 ) -> Optional[List]:
     """Translates a list of values split by ; into Castor Values."""
     # If the datapoint was None or NaN, return an empty datapoint
@@ -227,11 +232,11 @@ def castorize_optiongroup_datapoint(
 
 
 def translate_label_data(
-        new_values: list,
-        options: dict,
-        parent_value: str,
-        translate_dict: Optional[Dict],
-        values: list,
+    new_values: list,
+    options: dict,
+    parent_value: str,
+    translate_dict: Optional[Dict],
+    values: list,
 ):
     """Translates label data if necessary and checks if it falls within the Castor optiongroup"""
     translate = False if translate_dict is None else True
@@ -254,11 +259,11 @@ def translate_label_data(
 
 
 def translate_value_data(
-        new_values: list,
-        options: dict,
-        parent_value: str,
-        translate_dict: Optional[Dict],
-        values: list,
+    new_values: list,
+    options: dict,
+    parent_value: str,
+    translate_dict: Optional[Dict],
+    values: list,
 ):
     """Translates value data if necessary and checks if it falls within the Castor optiongroup"""
     translate = False if translate_dict is None else True
@@ -441,7 +446,7 @@ def translate_merge(value: Optional[str], translation: dict) -> str:
 def merge_row(row: pd.Series) -> str:
     """Merges multiple columns in a row to a single column."""
     row = row.dropna()
-    row = ';'.join(row.values.astype(str))
+    row = ";".join(row.values.astype(str))
     row = np.nan if row == "" else row
     return row
 
@@ -451,19 +456,27 @@ def merge_columns(to_upload: pd.DataFrame, path_to_merge: str) -> pd.DataFrame:
     merge_link = create_merge_translation(path_to_merge)
     # Translate Values
     for other_variable in merge_link["variable_translations"]:
-        to_upload[other_variable] = to_upload[other_variable].apply(translate_merge, args=(
-            merge_link["variable_translations"][other_variable],))
+        to_upload[other_variable] = to_upload[other_variable].apply(
+            translate_merge, args=(merge_link["variable_translations"][other_variable],)
+        )
     # Merge Columns
     for castor_variable in merge_link["column_links"]:
-        to_upload[castor_variable] = to_upload[merge_link["column_links"][castor_variable]].apply(merge_row, axis=1)
+        to_upload[castor_variable] = to_upload[
+            merge_link["column_links"][castor_variable]
+        ].apply(merge_row, axis=1)
         to_upload = to_upload.drop(columns=merge_link["column_links"][castor_variable])
 
     return to_upload
 
 
-def create_upload(path_to_upload: str, path_to_col_link: str, path_to_translation: Optional[str],
-                  path_to_merge: Optional[str],
-                  label_data: bool, study: "CastorStudy") -> pd.DataFrame:
+def create_upload(
+    path_to_upload: str,
+    path_to_col_link: str,
+    path_to_translation: Optional[str],
+    path_to_merge: Optional[str],
+    label_data: bool,
+    study: "CastorStudy",
+) -> pd.DataFrame:
     """Takes a path to an Excel file and returns a dataframe that is ready to be uploaded into Castor.
     """
     to_upload = read_excel(path_to_upload)

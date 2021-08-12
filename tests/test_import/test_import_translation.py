@@ -11,9 +11,12 @@ class TestImportTranslation:
         """Tests if uploading value data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_translate.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=False, target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=False,
+            target="Study",
+            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx",
+        )
 
         assert imported_data == self.study_success
 
@@ -21,9 +24,12 @@ class TestImportTranslation:
         """Tests if uploading label data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_translate.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=True, target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=True,
+            target="Study",
+            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx",
+        )
 
         assert imported_data == self.study_success
 
@@ -31,9 +37,12 @@ class TestImportTranslation:
         """Tests if uploading value data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_missings_translate.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=False, target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=False,
+            target="Study",
+            translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx",
+        )
 
         assert imported_data == self.study_missing
 
@@ -41,9 +50,12 @@ class TestImportTranslation:
         """Tests if uploading label data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings_translate.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx", study=import_study,
-            label_data=True, target="Study",
-            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx")
+            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            study=import_study,
+            label_data=True,
+            target="Study",
+            translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx",
+        )
 
         assert imported_data == self.study_missing
 
@@ -53,8 +65,11 @@ class TestImportTranslation:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_errors_translate.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study",
-                translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx")
+                study=import_study,
+                label_data=False,
+                target="Study",
+                translation_path="tests/test_import/translate_files_for_import_tests/study_value_translate_file.xlsx",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -64,8 +79,11 @@ class TestImportTranslation:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors_translate.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=True, target="Study",
-                translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx")
+                study=import_study,
+                label_data=True,
+                target="Study",
+                translation_path="tests/test_import/translate_files_for_import_tests/study_label_translate_file.xlsx",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -73,9 +91,13 @@ class TestImportTranslation:
         """Tests if uploading label data with a translation and dependency is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_translation.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx", study=import_study,
-            label_data=True, target="Report", target_name="Medication",
-            translation_path="tests/test_import/translate_files_for_import_tests/report_label_translate_file.xlsx")
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
+            study=import_study,
+            label_data=True,
+            target="Report",
+            target_name="Medication",
+            translation_path="tests/test_import/translate_files_for_import_tests/report_label_translate_file.xlsx",
+        )
 
         assert imported_data == self.report_success
 

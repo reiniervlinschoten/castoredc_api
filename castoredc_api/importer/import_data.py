@@ -12,9 +12,17 @@ if TYPE_CHECKING:
     from castoredc_api import CastorStudy
 
 
-def import_data(data_source_path: str, column_link_path: str, study: "CastorStudy", label_data: bool, target: str,
-                target_name: Optional[str] = None, email: Optional[str] = None, translation_path: Optional[str] = None,
-                merge_path: Optional[str] = None) -> Dict:
+def import_data(
+    data_source_path: str,
+    column_link_path: str,
+    study: "CastorStudy",
+    label_data: bool,
+    target: str,
+    target_name: Optional[str] = None,
+    email: Optional[str] = None,
+    translation_path: Optional[str] = None,
+    merge_path: Optional[str] = None,
+) -> Dict:
     """Takes a path to an xls(x) file, a path to an xls(x) file specifying the link between the external columns and
     the Castor columns and imports the data into Castor using the given study and target form name or Study. Study needs to be authenticated.
     Optionally one can define translation and merge files.
@@ -27,9 +35,14 @@ def import_data(data_source_path: str, column_link_path: str, study: "CastorStud
     pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
 
     # Create the castorized dataframe
-    castorized_dataframe = create_upload(path_to_upload=data_source_path, path_to_col_link=column_link_path,
-                                         path_to_translation=translation_path, path_to_merge=merge_path,
-                                         label_data=label_data, study=study)
+    castorized_dataframe = create_upload(
+        path_to_upload=data_source_path,
+        path_to_col_link=column_link_path,
+        path_to_translation=translation_path,
+        path_to_merge=merge_path,
+        label_data=label_data,
+        study=study,
+    )
     # Tests if Error is anywhere in the dataframe
     if "Error" in castorized_dataframe.to_string():
         castorized_dataframe.to_csv(

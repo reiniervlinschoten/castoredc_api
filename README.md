@@ -220,23 +220,40 @@ Two situations can occur when a value is encountered for which no translation is
 Merge files link the multiple columns from the external database to a single checkbox field in Castor.  
 For each column from the external database specified under other_variable the value under other_value is mapped to the castor_value for the castor_variable.  
 If specifying a merge file, note that castor_value is the new other variable for your link file (see below).  
-All other_values not defined are thrown out.  
+All other_values not defined raise an Error.
 Only supports many-to-one matching.
 
 ##### Example
 
+###### Data File
+| patient | date baseline blood sample | baseline hemoglobin | factor V Leiden | datetime onset stroke | time onset trombectomy | year of birth | patient sex | patient race    | famhist\_none | famhist\_deaf | famhist\_cardiomyopathy | famhist\_encephalopathy | famhist\_diabmell | famhist\_cardiovasc | famhist\_malignancy | famhist\_unknown |
+| ------- | -------------------------- | ------------------- | --------------- | --------------------- | ---------------------- | ------------- | ----------- | --------------- | ------------- | ------------- | ----------------------- | ----------------------- | ----------------- | ------------------- | ------------------- | ---------------- |
+| 110001  | 16-03-2021                 | 8.3                 | 55;16-03-2021   | 16-03-2021;07:30      | 09:25                  | 1999          | Female      | Asian           | No            | No            | Yes                     | Yes                     | Yes               | No                  | No                  | No               |
+| 110002  | 17-03-2021                 | 7.2                 | 33;17-03-2021   | 17-03-2021;15:30      | 06:33                  | 1956          | Female      | African/black   | No            | Yes           | Yes                     | No                      | No                | No                  | No                  | No               |
+| 110003  | 16-03-2022                 | 9.1                 | \-45;18-03-2022 | 18-03-2022;02:00      | 12:24                  | 1945          | Male        | Chinese         | Yes           | No            | No                      | No                      | No                | No                  | No                  | No               |
+| 110004  | 17-03-2022                 | 3.2                 | 28;19-03-2022   | 17-03-2022;21:43      | 23:23                  | 1933          | Male        | Caucasian/white | No            | No            | No                      | No                      | No                | Yes                 | Yes                 | No               |
+| 110005  | 16-03-2023                 | 10.3                | 5;20-03-2023    | 16-03-2023;07:22      | 08:14                  | 1921          | Female      | Hispanic        | No            | No            | No                      | No                      | No                | No                  | No                  | Yes              |
+
 ###### Merge File
 
-| other\_variable          | other\_value | castor\_variable | castor\_value                       |
-| ------------------------ | ------------ | ---------------- | ----------------------------------- |
-| famhhist\_cardiomyopathy | Yes          | his\_family      | (Cardio)myopathy                    |
-| famhist\_encephalopathy  | Yes          | his\_family      | Encephalopathy                      |
-| famhist\_diabmell        | Yes          | his\_family      | Diabetes Mellitus                   |
-| famhist\_deaf            | Yes          | his\_family      | Deafness                            |
-| famhist\_none            | Yes          | his\_family      | None                                |
-| famhist\_unknown         | Yes          | his\_family      | Unknown                             |
-| famhist\_malignancy      | Yes          | his\_family      | Malignancy                          |
-| famhist\_cardiovasc      | Yes          | his\_family      | Hypertension/Cardiovascular disease |
+| other\_variable         | other\_value | castor\_variable | castor\_value                       |
+| ----------------------- | ------------ | ---------------- | ----------------------------------- |
+| famhist\_none           | Yes          | his\_family      | None                                |
+| famhist\_deaf           | Yes          | his\_family      | Deafness                            |
+| famhist\_cardiomyopathy | Yes          | his\_family      | (Cardio)myopathy                    |
+| famhist\_encephalopathy | Yes          | his\_family      | Encephalopathy                      |
+| famhist\_diabmell       | Yes          | his\_family      | Diabetes Mellitus                   |
+| famhist\_cardiovasc     | Yes          | his\_family      | Hypertension/Cardiovascular disease |
+| famhist\_malignancy     | Yes          | his\_family      | Malignancy                          |
+| famhist\_unknown        | Yes          | his\_family      | Unknown                             |
+| famhist\_none           | No           | his\_family      |                                     |
+| famhist\_deaf           | No           | his\_family      |                                     |
+| famhist\_cardiomyopathy | No           | his\_family      |                                     |
+| famhist\_encephalopathy | No           | his\_family      |                                     |
+| famhist\_diabmell       | No           | his\_family      |                                     |
+| famhist\_cardiovasc     | No           | his\_family      |                                     |
+| famhist\_malignancy     | No           | his\_family      |                                     |
+| famhist\_unknown        | No           | his\_family      |                                     |
 
 ###### Link File
 
