@@ -1,6 +1,7 @@
 # CastorEDC API
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-![example workflow](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml/badge.svg)
+![pylint workflow](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml/badge.svg)
+![pytest workflow](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pytest.yml/badge.svg)
 
 ## Features
 This is a Python package for interacting with the API of Castor Electronic Data Capture (EDC). 

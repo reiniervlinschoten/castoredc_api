@@ -1,8 +1,8 @@
 # Personal scripts and folders
 scripts/
-auth/
 logs/
 output/
+run_tests.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
