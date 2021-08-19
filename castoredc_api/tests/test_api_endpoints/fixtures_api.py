@@ -1,4 +1,4 @@
-from auth import auth_data
+from castoredc_api.auth import auth_data
 
 import pytest
 from castoredc_api import CastorClient
