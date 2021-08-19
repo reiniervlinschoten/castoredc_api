@@ -22,7 +22,10 @@ class TestCSVOutput:
     def test_study_export(self, output_data):
         """Tests if study export is correct."""
         diff = compare(
-            load_csv(open(output_data["Study"]), key="record_id",),
+            load_csv(
+                open(output_data["Study"]),
+                key="record_id",
+            ),
             load_csv(
                 open("tests/test_output/data_files_for_output_tests/CastorStudy.csv"),
                 key="record_id",
@@ -57,7 +60,8 @@ class TestCSVOutput:
         """Tests if survey export is correct."""
         diff = compare(
             load_csv(
-                open(output_data["Surveys"]["QOL Survey"]), key="survey_instance_id",
+                open(output_data["Surveys"]["QOL Survey"]),
+                key="survey_instance_id",
             ),
             load_csv(
                 open(
@@ -81,7 +85,10 @@ class TestCSVOutput:
     def test_medication_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(
-            load_csv(open(output_data["Reports"]["Medication"]), key="custom_name",),
+            load_csv(
+                open(output_data["Reports"]["Medication"]),
+                key="custom_name",
+            ),
             load_csv(
                 open(
                     "tests/test_output/data_files_for_output_tests/CastorMedication.csv"
@@ -100,7 +107,8 @@ class TestCSVOutput:
         """Tests if report export is correct."""
         diff = compare(
             load_csv(
-                open(output_data["Reports"]["Unscheduled visit"]), key="custom_name",
+                open(output_data["Reports"]["Unscheduled visit"]),
+                key="custom_name",
             ),
             load_csv(
                 open(
@@ -119,7 +127,10 @@ class TestCSVOutput:
     def test_comorbidities_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(
-            load_csv(open(output_data["Reports"]["Comorbidities"]), key="custom_name",),
+            load_csv(
+                open(output_data["Reports"]["Comorbidities"]),
+                key="custom_name",
+            ),
             load_csv(
                 open(
                     "tests/test_output/data_files_for_output_tests/CastorComorbidities.csv"
@@ -137,7 +148,10 @@ class TestCSVOutput:
     def test_adverse_event_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(
-            load_csv(open(output_data["Reports"]["Adverse event"]), key="custom_name",),
+            load_csv(
+                open(output_data["Reports"]["Adverse event"]),
+                key="custom_name",
+            ),
             load_csv(
                 open(
                     "tests/test_output/data_files_for_output_tests/CastorAdverseEvent.csv"

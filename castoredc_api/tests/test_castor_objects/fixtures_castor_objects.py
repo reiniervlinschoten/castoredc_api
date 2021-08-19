@@ -377,8 +377,12 @@ def study() -> castor_study.CastorStudy:
     study.form_links = {
         "Survey": {"FAKE-SURVEY-ID1": ["Fake Survey"]},
         "Report": {
-            "FAKE-REPORT-ID1": ["FAKE-REPORT-INSTANCE-ID1",],
-            "FAKE-REPORT-ID2": ["FAKE-REPORT-INSTANCE-ID2",],
+            "FAKE-REPORT-ID1": [
+                "FAKE-REPORT-INSTANCE-ID1",
+            ],
+            "FAKE-REPORT-ID2": [
+                "FAKE-REPORT-INSTANCE-ID2",
+            ],
         },
     }
     return study
