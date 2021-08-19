@@ -1,10 +1,9 @@
-name: pytest
+name: pytest-unittests
 
 'on':
   push:
-    branches:
+    branches-ignore:
       - main
-      - github_actions
     tags:
       - '**'
   pull_request:
@@ -33,4 +32,4 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest
+        pytest --ignore=tests/test_import --ignore=tests/test_integration --ignore=tests/test_output
