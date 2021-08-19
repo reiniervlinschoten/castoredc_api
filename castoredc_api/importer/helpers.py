@@ -477,8 +477,7 @@ def create_upload(
     label_data: bool,
     study: "CastorStudy",
 ) -> pd.DataFrame:
-    """Takes a path to an Excel file and returns a dataframe that is ready to be uploaded into Castor.
-    """
+    """Takes a path to an Excel file and returns a dataframe that is ready to be uploaded into Castor."""
     to_upload = read_excel(path_to_upload)
     # Merge columns into a single one
     if path_to_merge is not None:

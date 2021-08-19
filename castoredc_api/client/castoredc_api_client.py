@@ -252,12 +252,9 @@ class CastorClient:
             "field_value": "string",
                 }]
         """
-        url = (
-            self.study_url
-            + "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
-                record_id=record_id,
-                survey_package_instance_id=survey_package_instance_id,
-            )
+        url = self.study_url + "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
+            record_id=record_id,
+            survey_package_instance_id=survey_package_instance_id,
         )
         post_data = {"data": body}
         return self.castor_post(url, post_data)
@@ -761,13 +758,10 @@ class CastorClient:
     ):
         """Update a field result for a survey (package) instance.
         Returns None if survey not found"""
-        url = (
-            self.study_url
-            + "/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}".format(
-                record_id=record_id,
-                survey_instance_id=survey_instance_id,
-                field_id=field_id,
-            )
+        url = self.study_url + "/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}".format(
+            record_id=record_id,
+            survey_instance_id=survey_instance_id,
+            field_id=field_id,
         )
 
         body = {
