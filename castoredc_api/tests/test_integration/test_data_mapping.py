@@ -3,7 +3,7 @@ class TestDataMap:
 
     def test_records_exist(self, integration_study):
         integration_study.map_data()
-        record_ids = [record.record_id for record in integration_study.records]
+        record_ids = [integration_study.records[record].record_id for record in integration_study.records]
         # Record with leading zeroes
         assert "000001" in record_ids
         # Archived record

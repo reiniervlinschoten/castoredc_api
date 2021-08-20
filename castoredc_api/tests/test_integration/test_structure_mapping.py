@@ -71,7 +71,7 @@ class TestStudyMap:
         )
         assert (
             "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
-            in integration_study.form_links["Survey"]
+            in integration_study.form_links["Survey"]["QOL Survey"]
         )
 
     def test_study_form_links_form_instances(self, integration_study):
@@ -80,34 +80,34 @@ class TestStudyMap:
         integration_study.update_links()
         # Test Reports
         assert (
-            "B68E831D-1347-4237-9F38-F79E86A58D64"
+            "89FF2394-0D41-4D4C-89FE-AA9AB287B31E"
             in integration_study.form_links["Report"][
-                "89FF2394-0D41-4D4C-89FE-AA9AB287B31E"
+                "B68E831D-1347-4237-9F38-F79E86A58D64"
             ]
         )
         assert (
-            "98CB10D0-B392-4EB9-BEEF-BCBCC59D9A6F"
+            "C4ADC387-9BFD-4171-A861-6B973699A6ED"
             in integration_study.form_links["Report"][
-                "C4ADC387-9BFD-4171-A861-6B973699A6ED"
+                "98CB10D0-B392-4EB9-BEEF-BCBCC59D9A6F"
             ]
         )
         assert (
-            "C8EE71C5-F266-4F59-BFD3-A643643C4FE1"
+            "770DB401-6100-4CF5-A95F-3402B55EAC48"
             in integration_study.form_links["Report"][
-                "770DB401-6100-4CF5-A95F-3402B55EAC48"
+                "C8EE71C5-F266-4F59-BFD3-A643643C4FE1"
             ]
         )
         assert (
-            "2924E308-5718-48D6-881B-7492F350B8F7"
+            "8D4F696E-DA2E-4A0E-ACD8-2F1B71718D6E"
             in integration_study.form_links["Report"][
-                "8D4F696E-DA2E-4A0E-ACD8-2F1B71718D6E"
+                "2924E308-5718-48D6-881B-7492F350B8F7"
             ]
         )
         # Test Surveys
         assert (
-            "QOL Survey"
+            "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
             in integration_study.form_links["Survey"][
-                "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
+                "QOL Survey"
             ]
         )
 

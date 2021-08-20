@@ -1,7 +1,7 @@
 import pytest
 from csv_diff import load_csv, compare
-from castoredc_api import auth as auth_data
 
+from castoredc_api.auth import auth_data
 from castoredc_api.study.castor_study import CastorStudy
 
 

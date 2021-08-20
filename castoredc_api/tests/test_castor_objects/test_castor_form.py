@@ -60,7 +60,7 @@ class TestCastorForm:
 
     def test_form_get_all_fields(self, complete_study):
         """Tests getting all fields from a form."""
-        form = complete_study.forms[0]
+        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
         fields = form.get_all_fields()
         assert len(fields) == 6
         for field in fields:
@@ -68,7 +68,7 @@ class TestCastorForm:
 
     def test_form_get_single_field(self, complete_study):
         """Tests getting a single field by id."""
-        form = complete_study.forms[0]
+        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
         field = form.get_single_field("FAKE-SURVEY-FIELD-ID3")
         assert type(field) is CastorField
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
@@ -76,7 +76,7 @@ class TestCastorForm:
 
     def test_form_get_single_field_name(self, complete_study):
         """Tests getting a single field by name."""
-        form = complete_study.forms[0]
+        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
         field = form.get_single_field("Survey Field 1a3")
         assert type(field) is CastorField
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
@@ -84,6 +84,6 @@ class TestCastorForm:
 
     def test_form_get_single_field_fail(self, complete_study):
         """Tests failing to get a single field by id."""
-        form = complete_study.forms[0]
+        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
         field = form.get_single_field("FAKE-SURVEY-FIELD-ID7")
         assert field is None

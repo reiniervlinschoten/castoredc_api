@@ -52,7 +52,7 @@ class TestCastorFormInstance:
 
     def test_survey_form_instance_create_fail(self, complete_study):
         """Tests creation of a Survey form instance."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(KeyError)  as e:
             CastorFormInstance(
                 "FAKE-SURVEY-INSTANCE-ID60",
                 "Survey",
@@ -60,13 +60,12 @@ class TestCastorFormInstance:
                 complete_study,
             )
         assert (
-            str(e.value)
-            == "Survey Maximum Fake Survey FAKE-SURVEY-INSTANCE-ID60 - The form that this is an instance of does not exist in the study!"
+            str(e.value) == "'Maximum Fake Survey'"
         )
 
     def test_report_form_instance_create_fail(self, complete_study):
         """Tests creation of a Report form instance."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(KeyError) as e:
             CastorFormInstance(
                 "FAKE-REPORT-INSTANCE-ID3",
                 "Report",
@@ -74,8 +73,7 @@ class TestCastorFormInstance:
                 complete_study,
             )
         assert (
-            str(e.value)
-            == "Report Report Name #90212 FAKE-REPORT-INSTANCE-ID3 - The form that this is an instance of does not exist in the study!"
+            str(e.value) == "'FAKE-REPORT-INSTANCE-ID3'"
         )
 
     def test_form_instance_add_data_point(self, complete_study):

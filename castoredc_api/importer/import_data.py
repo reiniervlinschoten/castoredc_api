@@ -89,7 +89,7 @@ def upload_data(
         )
         return upload_survey(castorized_dataframe, study, target_form["id"], email)
     elif target == "Report":
-        target_form = study.get_single_form(target_name)
+        target_form = study.get_single_form_name(target_name)
         return upload_report(
             castorized_dataframe,
             common,

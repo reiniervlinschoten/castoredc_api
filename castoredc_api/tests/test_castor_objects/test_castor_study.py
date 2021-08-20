@@ -29,7 +29,7 @@ class TestCastorStudy:
         record = CastorRecord("110001")
         study.add_record(record)
         assert len(study.records) == 1
-        assert study.records[0] == record
+        assert study.records["110001"] == record
         assert record.study == study
 
     def test_study_get_all_records(self, study_with_records):
@@ -53,11 +53,11 @@ class TestCastorStudy:
     def test_study_add_form(self):
         """Tests adding a form to a study."""
         study = CastorStudy("", "", "FAKE-ID", "", test=True)
-        assert len(study.forms) == 0
+        assert len(study.forms_id) == 0
         form = CastorForm("Survey", "FAKE-FORM-ID", "Fake Survey", "1")
         study.add_form(form)
-        assert len(study.forms) == 1
-        assert study.forms[0] == form
+        assert len(study.forms_id) == 1
+        assert study.forms_id["FAKE-FORM-ID"] == form
         assert form.study == study
 
     def test_study_get_all_forms(self, study_with_forms):
@@ -77,7 +77,7 @@ class TestCastorStudy:
 
     def test_study_get_single_form_name(self, study_with_forms):
         """Tests getting a single form from the study."""
-        form = study_with_forms.get_single_form("Fake Report 2")
+        form = study_with_forms.get_single_form_name("Fake Report 2")
         assert type(form) is CastorForm
         assert form.form_id == "FAKE-REPORT-ID2"
         assert form.form_type == "Report"
