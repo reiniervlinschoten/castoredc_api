@@ -11,6 +11,8 @@ import functools
 import json
 import math
 import requests
+import asyncio
+import httpx
 from tqdm import tqdm
 
 
@@ -49,14 +51,9 @@ class CastorClient:
         self.base_url = f"https://{url}/api"
         self.auth_url = f"https://{url}/oauth/token"
 
-        # Instantiate Requests sessions
-        self.session = requests.Session()
-        self.session.headers.update(self.headers)
-
         # Grab authentication token for given client
         token = self.request_auth_token(client_id, client_secret)
         self.headers["authorization"] = "Bearer " + token
-        self.session.headers.update(self.headers)
 
         # Instantiate global study variables
         self.study_url = None
@@ -815,24 +812,25 @@ class CastorClient:
         return variables
 
     # HELPER FUNCTIONS
-    # noinspection PyMethodMayBeStatic
-    def castor_get(self, url: str, params: dict or None, content_type: str) -> dict:
+    def castor_get(self, url: str, params: list or None, content_type: str) -> dict:
         """Queries the Castor EDC API on given url with parameters params.
         Returns a dict.
 
-        :param url: the url for the request
-        :param params: the parameters to be send with the request
+        :param url: the urls for the request
+        :param params: a list of the parameters to be send with the request
         :param content_type: the type of content expected to be returned
         """
         try:
-            response = self.session.get(url=url, params=params)
+            responses = asyncio.run(self.async_get(url, params))
+            # TODO test for errors
         except requests.exceptions.RequestException as e:
             raise CastorException(e)
         else:
             if content_type == "JSON":
-                return self.format_json_content(response)
-            elif content_type == "CSV":
-                return self.format_csv_content(response)
+                # TODO CSV and error check
+                return [response.json() for response in responses]
+            #elif content_type == "CSV":
+                #return self.format_csv_content(response)
 
     # noinspection PyMethodMayBeStatic
     def format_json_content(self, response: requests.models.Response) -> dict:
@@ -902,9 +900,18 @@ class CastorClient:
             "client_secret": client_secret,
             "grant_type": "client_credentials",
         }
-        response = self.castor_post(url=self.auth_url, body=auth_data)
-        token = response["access_token"]
-        return token
+        try:
+            response = httpx.post(url=self.auth_url, data=auth_data)
+        except requests.exceptions.RequestException as e:
+            raise CastorException(e)
+        else:
+            content = response.json()
+            # Check if the return object is an error
+            if "status" in content.keys() and "detail" in content.keys():
+                # If Castor server throws an error, raise an error
+                raise CastorException(str(content["status"]) + " " + content["detail"])
+            else:
+                return content["access_token"]
 
     @castor_exception_handler
     def retrieve_general_data(self, endpoint, embedded=False, data_id=""):
@@ -945,24 +952,35 @@ class CastorClient:
         data_name is that which holds data within ['_embedded'] (ex: 'fields')
         """
         variables = []
-        response = self.retrieve_single_page(url=url, params=params, page="1")
-        fields = response["_embedded"][data_name]
-        pages = response["page_count"] + 1
-        variables.extend(fields)
-        for i in tqdm(range(2, pages), "Downloading data"):
-            response = self.retrieve_single_page(url, params, i)
-            fields = response["_embedded"][data_name]
-            variables.extend(fields)
+        # Retrieve the first page to see the size
+        first_response = self.retrieve_single_page(url=url, params=params)
+        print(first_response[0])
+        #fields = first_response["_embedded"][data_name]
+        pages = first_response[0]["page_count"] + 1
+        rest_response = self.retrieve_rest_of_pages(url, params, pages)
+        # TODO: Not getting the rest of the response???
+        print(rest_response)
+        #variables.extend(fields)
         return variables
 
-    def retrieve_single_page(self, url, params, page):
+    def retrieve_rest_of_pages(self, url, params, pages):
+        """Helper function to gather all data when there are multiple pages.
+        data_name is that which holds data within ['_embedded'] (ex: 'fields')
+        """
+        if params is None:
+            params = [{"page": str(page), "page_size": "1000"} for page in range(2, pages)]
+        else:
+            params = [{"page": str(page), "page_size": "1000", **params} for page in range(2, pages)]
+        return self.castor_get(url=url, params=params, content_type="JSON")
+
+    def retrieve_single_page(self, url, params):
         """Helper function to query a single page and return the data from that page."""
         if params is None:
-            params = {"page": page, "page_size": 1000}
+            params = {"page": "1", "page_size": "10"}
         else:
-            params["page"] = page
-            params["page_size"] = 1000
-        response = self.castor_get(url=url, params=params, content_type="JSON")
+            params["page"] = "1"
+            params["page_size"] = "10"
+        response = self.castor_get(url=url, params=[params], content_type="JSON")
         return response
 
     @castor_exception_handler
@@ -973,3 +991,8 @@ class CastorClient:
             url = self.base_url + endpoint
         response = self.castor_get(url=url, params=None, content_type="JSON")
         return response["total_items"]
+
+    # Asynchonous callers
+    async def async_get(self, url: str, parameters: list):
+        async with httpx.AsyncClient(headers=self.headers) as client:
+            return await asyncio.gather(*[client.get(url=url, params=param) for param in parameters])
