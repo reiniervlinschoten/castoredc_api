@@ -136,13 +136,18 @@ class CastorStudy:
         # Save this data from the database to save time later
         report_instances = self.client.all_report_instances(archived=0)
         archived_report_instances = self.client.all_report_instances(archived=1)
-        self.__all_report_instances = {report["id"]: report for report in report_instances + archived_report_instances}
+        self.__all_report_instances = {
+            report["id"]: report
+            for report in report_instances + archived_report_instances
+        }
 
         # Link instance to form on id
         for instance_id in tqdm(
             self.__all_report_instances, desc="Mapping Report Instances"
         ):
-            form_links["Report"][instance_id] = self.__all_report_instances[instance_id]["_embedded"]["report"]["id"]
+            form_links["Report"][instance_id] = self.__all_report_instances[
+                instance_id
+            ]["_embedded"]["report"]["id"]
 
         self.form_links = form_links
 
@@ -414,7 +419,9 @@ class CastorStudy:
     def get_all_steps(self) -> List[CastorStep]:
         """Get all linked CastorSteps."""
         steps = list(
-            itertools.chain.from_iterable([self.forms_id[_form].steps for _form in self.forms_id])
+            itertools.chain.from_iterable(
+                [self.forms_id[_form].steps for _form in self.forms_id]
+            )
         )
         return steps
 
@@ -503,7 +510,10 @@ class CastorStudy:
         """Returns all data_points of the study"""
         data_points = list(
             itertools.chain.from_iterable(
-                [self.records[_record].get_all_data_points() for _record in self.records]
+                [
+                    self.records[_record].get_all_data_points()
+                    for _record in self.records
+                ]
             )
         )
         return data_points

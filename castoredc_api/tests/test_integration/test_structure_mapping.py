@@ -106,9 +106,7 @@ class TestStudyMap:
         # Test Surveys
         assert (
             "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
-            in integration_study.form_links["Survey"][
-                "QOL Survey"
-            ]
+            in integration_study.form_links["Survey"]["QOL Survey"]
         )
 
     def test_map_study_data(self, integration_study):

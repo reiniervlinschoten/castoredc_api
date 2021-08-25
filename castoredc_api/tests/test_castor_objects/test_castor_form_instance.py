@@ -52,16 +52,14 @@ class TestCastorFormInstance:
 
     def test_survey_form_instance_create_fail(self, complete_study):
         """Tests creation of a Survey form instance."""
-        with pytest.raises(KeyError)  as e:
+        with pytest.raises(KeyError) as e:
             CastorFormInstance(
                 "FAKE-SURVEY-INSTANCE-ID60",
                 "Survey",
                 "Maximum Fake Survey",
                 complete_study,
             )
-        assert (
-            str(e.value) == "'Maximum Fake Survey'"
-        )
+        assert str(e.value) == "'Maximum Fake Survey'"
 
     def test_report_form_instance_create_fail(self, complete_study):
         """Tests creation of a Report form instance."""
@@ -72,9 +70,7 @@ class TestCastorFormInstance:
                 "Report Name #90212",
                 complete_study,
             )
-        assert (
-            str(e.value) == "'FAKE-REPORT-INSTANCE-ID3'"
-        )
+        assert str(e.value) == "'FAKE-REPORT-INSTANCE-ID3'"
 
     def test_form_instance_add_data_point(self, complete_study):
         """Tests adding a data point to a form instance.."""

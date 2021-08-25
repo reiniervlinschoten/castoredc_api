@@ -510,7 +510,10 @@ def update_feedback(feedback_row, feedback_total, row, study):
             for field in feedback_row["success"]
         },
         "failed": {
-            study.get_single_field(field["field_id"]).field_name: [field["code"], field["message"]]
+            study.get_single_field(field["field_id"]).field_name: [
+                field["code"],
+                field["message"],
+            ]
             for field in feedback_row["failed"]
         },
     }

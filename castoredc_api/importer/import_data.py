@@ -344,7 +344,9 @@ def upload_report(
             )
             count += 1
             try:
-                feedback_total = update_feedback(feedback_row, feedback_total, row, study)
+                feedback_total = update_feedback(
+                    feedback_row, feedback_total, row, study
+                )
             except CastorException as e:
                 pd.DataFrame(imported).to_csv(
                     pathlib.Path(
