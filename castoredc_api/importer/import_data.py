@@ -128,7 +128,24 @@ def upload_study(
 
         # Upload the data
         feedback_row = upload_study_data(body, study, common, imported, row)
-        feedback_total = update_feedback(feedback_row, feedback_total, row, study)
+        try:
+            feedback_total = update_feedback(feedback_row, feedback_total, row, study)
+        except CastorException as e:
+            pd.DataFrame(imported).to_csv(
+                pathlib.Path(
+                    pathlib.Path.cwd(),
+                    "output",
+                    f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+                    + "error_during_upload.csv",
+                ),
+                index=False,
+            )
+            raise CastorException(
+                str(e)
+                + " caused at "
+                + str(row)
+                + ".\n See output folder for successful imports"
+            )
 
     pd.DataFrame(imported).to_csv(
         pathlib.Path(
@@ -197,7 +214,24 @@ def upload_survey(
 
         # Upload the data
         feedback_row = upload_survey_data(body, study, imported, instance, row)
-        feedback_total = update_feedback(feedback_row, feedback_total, row, study)
+        try:
+            feedback_total = update_feedback(feedback_row, feedback_total, row, study)
+        except CastorException as e:
+            pd.DataFrame(imported).to_csv(
+                pathlib.Path(
+                    pathlib.Path.cwd(),
+                    "output",
+                    f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+                    + "error_during_upload.csv",
+                ),
+                index=False,
+            )
+            raise CastorException(
+                str(e)
+                + " caused at "
+                + str(row)
+                + ".\n See output folder for successful imports"
+            )
 
     # Save output
     pd.DataFrame(imported).to_csv(
@@ -309,7 +343,24 @@ def upload_report(
                 body, study, imported, instances[count], row, common
             )
             count += 1
-            feedback_total = update_feedback(feedback_row, feedback_total, row, study)
+            try:
+                feedback_total = update_feedback(feedback_row, feedback_total, row, study)
+            except CastorException as e:
+                pd.DataFrame(imported).to_csv(
+                    pathlib.Path(
+                        pathlib.Path.cwd(),
+                        "output",
+                        f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+                        + "error_during_upload.csv",
+                    ),
+                    index=False,
+                )
+                raise CastorException(
+                    str(e)
+                    + " caused at "
+                    + str(row)
+                    + ".\n See output folder for successful imports"
+                )
 
     # Save output
     pd.DataFrame(imported).to_csv(

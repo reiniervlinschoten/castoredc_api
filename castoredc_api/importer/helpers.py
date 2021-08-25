@@ -510,7 +510,7 @@ def update_feedback(feedback_row, feedback_total, row, study):
             for field in feedback_row["success"]
         },
         "failed": {
-            study.get_single_field(field["field_id"]).field_name: field["code"]
+            study.get_single_field(field["field_id"]).field_name: [field["code"], field["message"]]
             for field in feedback_row["failed"]
         },
     }
@@ -519,4 +519,8 @@ def update_feedback(feedback_row, feedback_total, row, study):
         feedback_total[row["record_id"]] = [formatted_feedback_row]
     else:
         feedback_total[row["record_id"]].append(formatted_feedback_row)
+
+    if len(formatted_feedback_row["failed"]) > 0:
+        raise CastorException(formatted_feedback_row["failed"])
+
     return feedback_total
