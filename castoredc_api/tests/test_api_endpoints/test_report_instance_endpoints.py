@@ -139,7 +139,7 @@ class TestReportInstance:
             client.single_report_instance_record(
                 "000001", "61870790-F83E-4B1B-AF09-6F2CBA4632EA"
             )
-        assert str(e.value) == "404 Report instance not found"
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_create_report_instance_record_success(self, client):
         """Tests creating a report for a record."""

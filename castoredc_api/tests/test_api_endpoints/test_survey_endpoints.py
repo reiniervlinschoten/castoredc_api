@@ -297,7 +297,7 @@ class TestSurveyEndpoints:
         """Test calling on a non-existent survey"""
         with pytest.raises(CastorException) as e:
             client.single_survey("D70C1273-B5D8-45CD-BFE8-A0BA75C4FAKE")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     # SURVEY PACKAGES
     def test_all_survey_packages(self, all_survey_packages):
@@ -318,7 +318,7 @@ class TestSurveyEndpoints:
         """Test calling on a non-existent survey package"""
         with pytest.raises(CastorException) as e:
             client.single_survey_package("71C01598-4682-4A4C-90E6-69C0BD38FAKE")
-        assert str(e.value) == "404 SurveyPackage Not Found"
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     # SURVEY PACKAGE INSTANCES
     def test_all_survey_package_instances(self, all_survey_package_instances):
@@ -350,7 +350,7 @@ class TestSurveyEndpoints:
         """Test filtering on non-existent record"""
         with pytest.raises(CastorException) as e:
             client.all_survey_package_instances(record="00FAKE")
-        assert str(e.value) == "404 Not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_survey_package_instance_success(
         self, client, all_survey_package_instances
@@ -369,7 +369,7 @@ class TestSurveyEndpoints:
             client.single_survey_package_instance(
                 "115DF660-A00A-4927-9E5F-A07D030DFAKE"
             )
-        assert str(e.value) == "404 Survey package invitation not found"
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     # POST
     def test_create_survey_package_instance_success(self, client):
@@ -429,7 +429,7 @@ class TestSurveyEndpoints:
 
         with pytest.raises(CastorException) as e:
             client.patch_survey_package_instance(fake_id, target_status)
-        assert str(e.value) == "404 Survey package invitation not found"
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
         package = client.single_survey_package_instance(
             "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C"

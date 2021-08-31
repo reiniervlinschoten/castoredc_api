@@ -66,4 +66,4 @@ class TestMetadataType:
         """Tests if single metadata_type returns an error."""
         with pytest.raises(CastorException) as e:
             client.single_metadata_type("2")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

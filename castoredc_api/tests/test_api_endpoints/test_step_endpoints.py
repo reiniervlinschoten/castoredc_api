@@ -76,4 +76,4 @@ class TestStep:
     def test_single_step_fail(self, all_steps, client):
         with pytest.raises(CastorException) as e:
             client.single_step("F6BB55C9-FC35-4375-86D0-A4F5E239FAKE")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

@@ -73,4 +73,4 @@ class TestReport:
         """Tests if single report returns an error."""
         with pytest.raises(CastorException) as e:
             client.single_report("FAKEB401-6100-4CF5-A95F-3402B55EAC48")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

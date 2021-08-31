@@ -67,4 +67,4 @@ class TestPhase:
         """Tests if single phase returns an error."""
         with pytest.raises(CastorException) as e:
             client.single_phase("FAKE95D-4F8D-4B4A-96A1-14D026D0328E")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

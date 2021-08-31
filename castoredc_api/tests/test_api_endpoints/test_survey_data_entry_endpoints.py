@@ -135,7 +135,7 @@ class TestSurveyDataEntry:
             client.single_survey_instance_all_fields_record(
                 "00FAKE", "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E"
             )
-        assert str(e.value) == "404 The record you requested data for does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_survey_instance_single_field_record_success(self, client):
         """Tests if single survey field returns the proper data."""
@@ -154,7 +154,7 @@ class TestSurveyDataEntry:
                 "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
                 "FC4FAA2D-08FD-41F7-B482-444B2B6D3116",
             )
-        assert str(e.value) == "404 The record you requested data for does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_update_survey_instance_single_field_record_success(self, client):
         """Tests correctly changing a single survey field"""

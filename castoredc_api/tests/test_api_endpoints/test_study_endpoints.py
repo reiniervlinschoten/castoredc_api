@@ -80,7 +80,7 @@ class TestStudy:
         """Tests failing to return a study"""
         with pytest.raises(CastorException) as e:
             client.single_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert str(e.value) == "403 You are not authorized to view this study."
+        assert "403 Client Error: Forbidden for url" in str(e.value)
 
     def test_all_users_success(self, all_studies, client):
         """Tests if the API returns all users belonging to a study"""
@@ -102,7 +102,7 @@ class TestStudy:
         """Tests failing to return all users for a study"""
         with pytest.raises(CastorException) as e:
             client.all_users_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert str(e.value) == "403 Forbidden"
+        assert "403 Client Error: Forbidden for url" in str(e.value)
 
     def test_single_user_success(self, all_studies, client):
         """Tests returning a single user"""
@@ -124,4 +124,4 @@ class TestStudy:
                 "D234215B-D956-482D-BF17-71F2BB12A2FD",
                 "B23ABCC4-3A53-FB32-7B78-3960CC90FAKE",
             )
-        assert str(e.value) == "404 User not found"
+        assert "403 Client Error: Forbidden for url" in str(e.value)

@@ -71,4 +71,4 @@ class TestInstitute:
         """Tests if single institute returns an error."""
         with pytest.raises(CastorException) as e:
             client.single_institute("FAKE6A79-E02E-4545-9719-95B8DDED9108")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

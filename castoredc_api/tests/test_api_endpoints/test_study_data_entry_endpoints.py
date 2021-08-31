@@ -127,7 +127,7 @@ class TestStudyDataEntry:
         """Test failing to return all study_data_points for a record"""
         with pytest.raises(CastorException) as e:
             client.all_study_fields_record("00FAKE")
-        assert str(e.value) == "404 The record you requested data for does not exist"
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_study_data_point_record_success(self, client):
         """Tests returning a single study data point for a record"""

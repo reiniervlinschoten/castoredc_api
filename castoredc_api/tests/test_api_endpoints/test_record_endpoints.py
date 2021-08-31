@@ -139,7 +139,7 @@ class TestRecord:
         """Tests if single record returns an error."""
         with pytest.raises(CastorException) as e:
             client.single_record("FAKE06")
-        assert str(e.value) == "404 Record not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_create_record_success(self, client):
         """Tests creating a new record."""

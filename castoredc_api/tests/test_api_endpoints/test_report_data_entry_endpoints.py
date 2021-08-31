@@ -166,7 +166,7 @@ class TestReportDataEntry:
             client.single_report_instance_all_fields_record(
                 "00FAKE", "2711B1EF-6118-4EBD-9858-47E4830C4EC5"
             )
-        assert str(e.value) == "404 The record you requested data for does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_report_instance_single_field_record_success(self, client):
         """Tests returning a single field from a report instance"""
@@ -185,7 +185,7 @@ class TestReportDataEntry:
                 "2711B1EF-6118-4EBD-9858-47E4830C4EC5",
                 "AFD46D4F-5C17-4B9B-BE19-8A5A7026FAKE",
             )
-        assert str(e.value) == "404 The field you are interacting with does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_update_report_instance_single_field_record_success(self, client):
         """Tests updating a single field from a report instance"""
@@ -238,7 +238,7 @@ class TestReportDataEntry:
                 change_reason,
                 post_value,
             )
-        assert str(e.value) == "404 The field you are interacting with does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
         # Check if changing actually failed
         new_value = client.single_report_instance_single_field_record(
