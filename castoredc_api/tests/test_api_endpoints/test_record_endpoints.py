@@ -162,7 +162,7 @@ class TestRecord:
         record = create_record(fake=True)
         with pytest.raises(CastorException) as e:
             client.create_record(**record)
-        assert str(e.value) == "422 Failed Validation"
+        assert "422 Client Error: Unprocessable Entity for url:" in str(e.value)
 
         new_records = client.all_records()
         new_len = len(new_records)

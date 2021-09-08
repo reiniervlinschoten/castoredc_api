@@ -391,7 +391,7 @@ class TestSurveyEndpoints:
 
         with pytest.raises(CastorException) as e:
             client.create_survey_package_instance(**body)
-        assert str(e.value) == "422 Failed Validation"
+        assert "422 Client Error: Unprocessable Entity for url:" in str(e.value)
 
         new_amount = len(client.all_survey_package_instances(record="000001"))
         assert new_amount == old_amount

@@ -102,7 +102,7 @@ class TestStudy:
         """Tests failing to return all users for a study"""
         with pytest.raises(CastorException) as e:
             client.all_users_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert "403 Client Error: Forbidden for url" in str(e.value)
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_user_success(self, all_studies, client):
         """Tests returning a single user"""

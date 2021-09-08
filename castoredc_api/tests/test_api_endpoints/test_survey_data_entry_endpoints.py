@@ -196,7 +196,7 @@ class TestSurveyDataEntry:
                 post_value,
                 change_reason,
             )
-        assert str(e.value) == "400 The request you made was malformed"
+        assert "400 Client Error: Bad Request for url:" in str(e.value)
 
         # Check if changing failed
         new_value = client.single_survey_instance_single_field_record(

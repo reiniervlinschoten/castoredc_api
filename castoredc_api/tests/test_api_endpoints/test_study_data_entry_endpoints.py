@@ -142,7 +142,7 @@ class TestStudyDataEntry:
             client.single_study_field_record(
                 "000004", "28D1A17B-51C3-4BDC-A604-7B2F6D5DFAKE"
             )
-        assert str(e.value) == "500 The application has encountered an error"
+        assert "500 Server Error: Internal Server Error for url:" in str(e.value)
 
     def test_update_single_study_field_record_success(self, client):
         """Tests changing a single study field."""
@@ -174,7 +174,8 @@ class TestStudyDataEntry:
             client.update_single_study_field_record(
                 record, "FAKE" + field + "FAKE", post_value, change_reason
             )
-        assert str(e.value) == "500 Could not create data point(s)"
+
+        assert "500 Server Error: Internal Server Error for url:" in str(e.value)
 
         new_value = client.single_study_field_record(record, field)
         assert new_value["value"] == old_value["value"]

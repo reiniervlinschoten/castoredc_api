@@ -95,11 +95,11 @@ class TestReportInstance:
         )
         assert report_instance == self.test_report_instance
 
-    def test_single_report_instance_failure(self, client):
+    def test_single_report_instance_fail(self, client):
         """Tests if single report_instance returns an error."""
         with pytest.raises(CastorException) as e:
             client.single_report_instance("FAKEE5BD-E728-4575-B467-142EA83813DE")
-        assert "The request you made was malformed" in str(e.value)
+        assert "400 Client Error: Bad Request for url:" in str(e.value)
 
     def test_all_report_instances_record_success(self, client):
         """Tests if the model that is returned if filtered on record is proper."""
@@ -117,7 +117,7 @@ class TestReportInstance:
         """Tests if a proper error is thrown when the wrong record is filtered on."""
         with pytest.raises(CastorException) as e:
             client.all_report_instances_record("FAKE01")
-        assert "The request you made was malformed" in str(e.value)
+        assert "404 Client Error: Not Found for url:" in str(e.value)
 
     def test_single_report_instance_record_success(self, client):
         """Tests if the model of a single report after filtering on record is right"""
@@ -170,7 +170,7 @@ class TestReportInstance:
         # Create the record
         with pytest.raises(CastorException) as e:
             client.create_report_instance_record(**report_instance)
-        assert "The request you made was malformed" in str(e.value)
+        assert "400 Client Error: Bad Request for url:" in str(e.value)
 
         # Test that nothing changed
         record_reports = client.all_report_instances_record("000004")
