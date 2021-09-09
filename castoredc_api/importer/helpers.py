@@ -97,7 +97,6 @@ def castorize_column(
     variable_translation: Dict,
 ) -> Dict:
     """Translates the values in a column to Castorized values ready for import."""
-    # TODO: Add data validation with data validation from Castor database.
     if new_name[0] == "record_id":
         return {new_name[0]: to_import.tolist()}
 
@@ -349,7 +348,6 @@ def castorize_year_column(data: List):
 
 def castorize_date_column(data: List):
     """Castorizes a date column and replaces errors with 'Error'."""
-    # TODO: add config file with preferred formats
     new_list = []
     for datapoint in data:
         if datapoint is None:
@@ -366,7 +364,6 @@ def castorize_date_column(data: List):
 
 def castorize_datetime_column(data: List):
     """Castorizes a datetime column and replaces errors with 'Error'."""
-    # TODO: add config file with preferred formats
     new_list = []
     for datapoint in data:
         if datapoint is None:
@@ -383,7 +380,6 @@ def castorize_datetime_column(data: List):
 
 def castorize_time_column(data: List):
     """Castorizes a time column and replaces errors with 'Error'."""
-    # TODO: add config file with preferred formats
     new_list = []
     for datapoint in data:
         if datapoint is None:
@@ -400,7 +396,6 @@ def castorize_time_column(data: List):
 
 def castorize_numberdate_column(data: List):
     """Castorizes a numberdate column and replaces errors with 'Error'."""
-    # TODO: add config file with preferred formats
     new_list = []
     for datapoint in data:
         if datapoint is None:

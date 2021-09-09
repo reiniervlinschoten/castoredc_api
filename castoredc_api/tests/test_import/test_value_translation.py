@@ -6,8 +6,6 @@ from castoredc_api.importer.helpers import read_excel, castorize_column
 class TestValueTranslation:
     """Tests the helper functions for translation of external variable values to Castor values."""
 
-    # TODO: Create tests for fields other than radio with a dependency for other
-
     @pytest.fixture(scope="class")
     def study_value_data(self):
         dataframe = read_excel(

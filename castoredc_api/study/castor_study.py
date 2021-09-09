@@ -181,7 +181,6 @@ class CastorStudy:
             if instance.instance_of.form_type == "Survey"
         ]
         for form_instance in tqdm(survey_form_instances, desc="Augmenting Survey Data"):
-            # TODO: ugly, refactor
             # Now finds survey_instance_id somewhere far embedded in the data returned by the survey package instances
             # and returns the overlying survey package instance
             parent_package = next(
@@ -212,7 +211,6 @@ class CastorStudy:
                 parent_package["finished_on"]
             )
             form_instance.archived = parent_package["archived"]
-            # TODO: decide if we want this in output, Castor doesn't
             # form_instance.survey_package_id = parent_package["id"]
 
     def __load_report_information(self) -> None:
@@ -348,12 +346,11 @@ class CastorStudy:
         self, dataframe: pd.DataFrame, name: str, now: str
     ) -> str:
         """Exports a single dataframe to feather and returns the destination path."""
-        # TODO: reset_index() necessary?
         filename = re.sub("[^\w\-_\. ]", "_", name)
         path = pathlib.Path(
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
-        dataframe.reset_index().to_feather(
+        dataframe.to_feather(
             path,
             compression="uncompressed",
         )
@@ -926,7 +923,6 @@ class CastorStudy:
         # Get all records
         records = self.get_all_records()
         data = []
-        # TODO: Add empty surveys, these are not found because they have no datapoints.
 
         for record in records:
             # Get all data points and select only relevant ones
@@ -969,7 +965,6 @@ class CastorStudy:
         # Get all records
         records = self.get_all_records()
         data = []
-        # TODO: Add empty reports, these are not found because they have no datapoints.
 
         for record in records:
             # Get all data points and select only relevant ones

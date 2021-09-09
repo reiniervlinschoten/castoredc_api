@@ -154,7 +154,7 @@ class TestStudyDataEntry:
         # Update the field
         change_reason = "Testing API"
         client.update_single_study_field_record(
-            record, field, post_value, change_reason
+            record, field, change_reason, post_value
         )
 
         # Check if changing worked
@@ -173,7 +173,7 @@ class TestStudyDataEntry:
 
         with pytest.raises(HTTPStatusError) as e:
             client.update_single_study_field_record(
-                record, "FAKE" + field + "FAKE", post_value, change_reason
+                record, "FAKE" + field + "FAKE", change_reason, post_value
             )
 
         assert "500 Server Error: Internal Server Error for url:" in str(e.value)

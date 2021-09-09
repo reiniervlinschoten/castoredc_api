@@ -56,7 +56,9 @@ class TestCSVOutput:
             }
         ]
 
-    @pytest.mark.xfail(reason="Misses Empty Surveys - Awaiting Castor Ticket", strict=True)
+    @pytest.mark.xfail(
+        reason="Misses Empty Surveys - Awaiting Castor Ticket", strict=True
+    )
     def test_qol_survey_export(self, output_data):
         """Tests if survey export is correct."""
         diff = compare(
@@ -82,7 +84,9 @@ class TestCSVOutput:
         ]
         assert diff["added"] == []
 
-    @pytest.mark.xfail(reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True)
+    @pytest.mark.xfail(
+        reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True
+    )
     def test_medication_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(
@@ -143,7 +147,9 @@ class TestCSVOutput:
         assert diff["changed"] == []
         assert diff["added"] == []
 
-    @pytest.mark.xfail(reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True)
+    @pytest.mark.xfail(
+        reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True
+    )
     def test_adverse_event_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(

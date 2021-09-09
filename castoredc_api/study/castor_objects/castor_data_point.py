@@ -29,7 +29,6 @@ class CastorDataPoint:
                 "The field that this is an instance of does not exist in the study!"
             )
         self.form_instance = None
-        # TODO: Castor sometimes doesn't return the filled in date for certain fields?
         self.filled_in = (
             "" if filled_in == "" else datetime.strptime(filled_in, "%Y-%m-%d %H:%M:%S")
         )

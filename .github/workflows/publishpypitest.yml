@@ -1,8 +1,8 @@
-name: publishpypi
+name: publishpypitest
 
 on:
   push:
-    branches: [improve_speed]
+    branches: [main]
 
 jobs:
   deploy:

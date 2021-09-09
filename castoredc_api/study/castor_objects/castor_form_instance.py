@@ -33,9 +33,8 @@ class CastorFormInstance:
         self.data_points = []
 
         # Relevant survey data
-        # TODO: probably better to refactor and make special class survey_form that inherits from this class
-        self.created_on = None  # Also for report
-        self.parent = None  # Also for report, TODO: not retrieved from API for survey_package_instance?
+        self.created_on = None
+        self.parent = None
         self.archived = None
         self.sent_on = None
         self.progress = None

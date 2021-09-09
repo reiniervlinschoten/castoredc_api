@@ -16,7 +16,39 @@ from castoredc_api import CastorException
 class TestField:
     model_keys = field_model.keys()
 
-    test_field = {'id': '07FAD531-6335-44FD-8C5B-A59FA396F12F', 'parent_id': '62062F44-0314-4B76-9527-914717786A42', 'field_id': '07FAD531-6335-44FD-8C5B-A59FA396F12F', 'field_number': 2, 'field_label': 'Medication', 'field_variable_name': None, 'field_type': 'repeated_measures', 'field_required': 0, 'field_hidden': 0, 'field_info': '', 'field_units': '', 'field_min': None, 'field_min_label': '', 'field_max': None, 'field_max_label': '', 'field_summary_template': '', 'field_slider_step': None, 'report_id': '89FF2394-0D41-4D4C-89FE-AA9AB287B31E', 'field_length': None, 'additional_config': '{"showReportOfAllPhases":"0"}', 'exclude_on_data_export': False, 'option_group': None, 'metadata_points': [], 'validations': [], 'dependency_parents': [], 'dependency_children': [], '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/07FAD531-6335-44FD-8C5B-A59FA396F12F'}}}
+    test_field = {
+        "id": "07FAD531-6335-44FD-8C5B-A59FA396F12F",
+        "parent_id": "62062F44-0314-4B76-9527-914717786A42",
+        "field_id": "07FAD531-6335-44FD-8C5B-A59FA396F12F",
+        "field_number": 2,
+        "field_label": "Medication",
+        "field_variable_name": None,
+        "field_type": "repeated_measures",
+        "field_required": 0,
+        "field_hidden": 0,
+        "field_info": "",
+        "field_units": "",
+        "field_min": None,
+        "field_min_label": "",
+        "field_max": None,
+        "field_max_label": "",
+        "field_summary_template": "",
+        "field_slider_step": None,
+        "report_id": "89FF2394-0D41-4D4C-89FE-AA9AB287B31E",
+        "field_length": None,
+        "additional_config": '{"showReportOfAllPhases":"0"}',
+        "exclude_on_data_export": False,
+        "option_group": None,
+        "metadata_points": [],
+        "validations": [],
+        "dependency_parents": [],
+        "dependency_children": [],
+        "_links": {
+            "self": {
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/07FAD531-6335-44FD-8C5B-A59FA396F12F"
+            }
+        },
+    }
 
     @pytest.fixture(scope="class")
     def all_fields(self, client):

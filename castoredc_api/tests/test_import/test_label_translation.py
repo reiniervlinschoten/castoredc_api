@@ -6,8 +6,6 @@ from castoredc_api.importer.helpers import read_excel, castorize_column
 class TestLabelTranslation:
     """Tests the helper functions for translation of external variable labels to Castor labels."""
 
-    # TODO: Create tests for fields other than radio with a dependency for other
-
     @pytest.fixture(scope="class")
     def study_label_data(self):
         dataframe = read_excel(
