@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/report-step
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import report_step_model
 from castoredc_api import CastorException
@@ -75,7 +76,7 @@ class TestReportStep:
 
     def test_single_report_single_step_failure(self, client, reports_with_steps):
         """Tests whether the right error is thrown when a non-existent step is queried."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report_single_step(
                 "89FF2394-0D41-4D4C-89FE-AA9AB287B31E",
                 "111BA2F0-BC6B-47ED-9159-802BF760FAKE",

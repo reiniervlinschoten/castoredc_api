@@ -7,8 +7,8 @@ Link: https://data.castoredc.com/api#/data-point-collection
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
-from castoredc_api import CastorException
 from castoredc_api.tests.test_api_endpoints.data_models import (
     study_data_point_model,
     report_data_point_model,
@@ -248,12 +248,13 @@ class TestDataPoint:
 
     def test_single_report_instance_data_points_fail(self, client):
         """Tests if single_report_instance_data_points throws proper error when non-existing report is called."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report_instance_data_points(
                 "124EBE17-8AEF-4A74-BBA7-68DF7569FAKE"
             )
         assert "404 Client Error: Not Found for url" in str(e.value)
 
+    @pytest.mark.xfail(reason="Castor Database Error", strict=True)
     def test_single_survey_instance_data_points_success(self, client):
         """Tests if single_survey_instance_data_points returns the data points in the proper model."""
         survey_data_points = client.single_survey_instance_data_points(
@@ -263,7 +264,7 @@ class TestDataPoint:
 
     def test_single_survey_instance_data_points_fail(self, client):
         """Tests if single_survey_instance_data_points throws proper error when non-existing survey is called."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_instance_data_points(
                 "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF88FAKE"
             )
@@ -278,7 +279,7 @@ class TestDataPoint:
 
     def test_single_survey_package_instance_data_points_fail(self, client):
         """Tests if querying a non-existent package instance throws an error"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_package_instance_data_points(
                 "23B4FD48-BA41-4C9B-BAEF-D5C3DD5FFAKE"
             )
@@ -298,7 +299,7 @@ class TestDataPoint:
 
     def test_all_study_data_points_record_fail(self, client):
         """Tests if returning data from a non-existent records throws an error"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_study_data_points_record("00FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -315,7 +316,7 @@ class TestDataPoint:
 
     def test_all_report_data_points_record_fail(self, client):
         """Tests if returning data from a non-existent records throws an error"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_report_data_points_record("00FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -332,7 +333,7 @@ class TestDataPoint:
 
     def test_all_survey_data_points_record_fail(self, client):
         """Tests if returning data from a non-existent records throws an error"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_survey_data_points_record("00FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -352,7 +353,7 @@ class TestDataPoint:
 
     def test_single_report_data_points_record_fail(self, client):
         """Tests returning data from a non-existent report for a specific record throws an error"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report_data_points_record(
                 "00FAKE", "0D73C569-AF56-4388-88F4-BC785D9463D5"
             )
@@ -373,7 +374,7 @@ class TestDataPoint:
 
     def test_single_survey_package_data_points_record_fail(self, client):
         """Tests returning data from a non existent survey package for a specific record throws an error"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_package_data_points_record(
                 "000001", "115DF660-A00A-4927-9E5F-A07D030D4FAKE"
             )
@@ -397,7 +398,7 @@ class TestDataPoint:
 
     def test_single_survey_data_points_record_fail(self, client):
         """Tests returning data from a non existent survey for a specific record throws an error"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_data_points_record(
                 "000001", "6530D4AB-4705-4864-92AE-B0EC6200FAKE"
             )
@@ -477,7 +478,7 @@ class TestDataPoint:
             for field in fields
         ]
 
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.update_study_data_record("00FAKE", common, data)
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -568,7 +569,7 @@ class TestDataPoint:
         ]
 
         # Update the report
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.update_report_data_record(
                 "00FAKE", "D9E60041-E674-4197-819B-2C4F16E05B04", common, data
             )
@@ -652,7 +653,7 @@ class TestDataPoint:
             for field in fields
         ]
         # Update the survey
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.update_survey_instance_data_record(
                 "00FAKE", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data
             )
@@ -737,7 +738,7 @@ class TestDataPoint:
         ]
 
         # Update the survey
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.update_survey_package_instance_data_record(
                 "00FAKE", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
             )

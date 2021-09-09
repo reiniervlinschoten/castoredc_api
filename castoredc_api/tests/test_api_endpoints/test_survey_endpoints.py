@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/survey
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api import CastorException
 from castoredc_api.tests.test_api_endpoints.data_models import (
@@ -295,7 +296,7 @@ class TestSurveyEndpoints:
 
     def test_single_survey_fail(self, client, all_surveys):
         """Test calling on a non-existent survey"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey("D70C1273-B5D8-45CD-BFE8-A0BA75C4FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -316,7 +317,7 @@ class TestSurveyEndpoints:
 
     def test_single_survey_package_fail(self, client, all_survey_packages):
         """Test calling on a non-existent survey package"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_package("71C01598-4682-4A4C-90E6-69C0BD38FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -348,7 +349,7 @@ class TestSurveyEndpoints:
         self, client, all_survey_package_instances
     ):
         """Test filtering on non-existent record"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_survey_package_instances(record="00FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -365,7 +366,7 @@ class TestSurveyEndpoints:
         self, client, all_survey_package_instances
     ):
         """Test querying a non-existent survey."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_package_instance(
                 "115DF660-A00A-4927-9E5F-A07D030DFAKE"
             )
@@ -389,7 +390,7 @@ class TestSurveyEndpoints:
         body = create_survey_package_instance_body("000001", fake=True)
         old_amount = len(client.all_survey_package_instances(record="000001"))
 
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.create_survey_package_instance(**body)
         assert "422 Client Error: Unprocessable Entity for url:" in str(e.value)
 
@@ -427,7 +428,7 @@ class TestSurveyEndpoints:
         target_status = not old_status
         fake_id = "23B4FD48-BA41-4C9B-BAEF-D5C3DD5FFAKE"
 
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.patch_survey_package_instance(fake_id, target_status)
         assert "404 Client Error: Not Found for url" in str(e.value)
 

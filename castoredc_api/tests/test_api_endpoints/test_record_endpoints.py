@@ -9,6 +9,8 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from httpx import HTTPStatusError
+
 from castoredc_api.tests.test_api_endpoints.data_models import record_model
 from castoredc_api import CastorException
 
@@ -137,7 +139,7 @@ class TestRecord:
 
     def test_single_record_failure(self, client):
         """Tests if single record returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_record("FAKE06")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
@@ -160,7 +162,7 @@ class TestRecord:
         len_records = len(client.all_records())
 
         record = create_record(fake=True)
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.create_record(**record)
         assert "422 Client Error: Unprocessable Entity for url:" in str(e.value)
 

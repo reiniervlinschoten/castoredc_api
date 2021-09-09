@@ -11,6 +11,7 @@ import math
 from itertools import chain
 import asyncio
 import httpx
+from httpx import HTTPStatusError
 from tqdm import tqdm
 
 
@@ -55,8 +56,7 @@ class CastorClient:
         return raw_data["results"]
 
     def single_country(self, country_id):
-        """Returns a dict with the given country based on country_id.
-        Raises CastorException if country not found."""
+        """Returns a dict with the given country based on country_id."""
         endpoint = "/country/{0}".format(country_id)
         return self.retrieve_general_data(endpoint=endpoint)
 
@@ -81,16 +81,14 @@ class CastorClient:
 
     # DATA-POINT-COLLECTION GET (INSTANCE)
     def single_report_instance_data_points(self, report_id):
-        """Returns a list of the data for given report_id.
-        Raises CastorException if report not found."""
+        """Returns a list of the data for given report_id."""
         url = "/data-point-collection/report-instance/{report_id}".format(
             report_id=report_id
         )
         return self.retrieve_data_points(url)
 
     def single_survey_instance_data_points(self, survey_instance_id):
-        """Returns a list of data from a single survey instance id.
-        Raises CastorException if survey not found."""
+        """Returns a list of data from a single survey instance id."""
         url = "/data-point-collection/survey-instance/{survey_instance_id}".format(
             survey_instance_id=survey_instance_id
         )
@@ -429,11 +427,11 @@ class CastorClient:
             return self.retrieve_all_data_by_endpoint(
                 endpoint="/report-instance", data_name="reportInstances", params=params
             )
-        except CastorException as e:
-            if str(e) == "404 There are no report instances.":
+        except HTTPStatusError as e:
+            if e.response.json()["detail"] == "There are no report instances.":
                 return []
             else:
-                raise e
+                raise e from e
 
     def single_report_instance(self, report_instance_id):
         """Returns a single dict of an report_instance.
@@ -780,15 +778,9 @@ class CastorClient:
     # RECORD PROGRESS
     def record_progress(self):
         """Returns progress of all records."""
-        url = self.study_url + "/record-progress/steps"
-        number_of_records = len(self.all_records())
-        # There are 1000 records per page
-        pages = math.ceil(number_of_records / 1000) + 1
-        response = self.retrieve_single_page(url=url, params=None)
-        first_response = [response["_embedded"]["records"]]
-        rest_response = self.retrieve_rest_of_pages(url=url, params=None, pages=pages)
-        rest_response = [response["_embedded"]["records"] for response in rest_response]
-        return [first_response + rest_response]
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/data-point-collection/study", data_name="records"
+        )
 
     def request_auth_token(self, client_id, client_secret):
         """Request an authentication token from Castor EDC for given client."""
@@ -888,40 +880,27 @@ class CastorClient:
     # Synchronous API Interaction
     def sync_get(self, url: str, params: dict) -> dict:
         """Synchronous querying of Castor API with a single get requests."""
-        try:
-            response = self.client.get(url=url, params=params)
-            response.raise_for_status()
-            content_type = response.headers.get("content-type")
-        except httpx.HTTPError as e:
-            raise CastorException(e) from e
-        else:
-            if "json" in content_type:
-                return response.json()
-            elif "csv" in content_type:
-                return self.format_csv_content(response)
+        response = self.client.get(url=url, params=params)
+        response.raise_for_status()
+        content_type = response.headers.get("content-type")
+        if "json" in content_type:
+            return response.json()
+        elif "csv" in content_type:
+            return self.format_csv_content(response)
 
     def sync_post(self, url, body):
         """Helper function to post body to url."""
-        try:
-            response = self.client.post(url=url, json=body)
-            response.raise_for_status()
-        except httpx.HTTPError as e:
-            raise CastorException(e) from e
-        else:
-            return response.json()
+        response = self.client.post(url=url, json=body)
+        response.raise_for_status()
+        return response.json()
 
     def sync_patch(self, url, body):
         """Helper function to patch body to url."""
-        try:
-            response = self.client.patch(url=url, json=body)
-            response.raise_for_status()
-        except httpx.HTTPError as e:
-            raise CastorException(e) from e
-        else:
-            return response.json()
+        response = self.client.patch(url=url, json=body)
+        response.raise_for_status()
+        return response.json()
 
     # Asynchronous API Interaction
-    # TODO: asynchonous exception handling
     async def async_get(self, url: str, params: list) -> list:
         """Queries the Castor EDC API on given url with parameters params.
         Queries the database once for each parameter dict in the params list.
@@ -948,10 +927,7 @@ class CastorClient:
 
     # noinspection PyMethodMayBeStatic
     def format_csv_content(self, response: httpx.Response) -> dict:
-        """Loads CSV content from a Response object.
-
-        :param response: the response object from the Castor EDC database.
-        """
+        """Loads CSV content from a Response object."""
         content_decoded = response.content.decode()
         content_csv = csv.DictReader(content_decoded.splitlines(), delimiter=";")
         content = [line for line in content_csv]

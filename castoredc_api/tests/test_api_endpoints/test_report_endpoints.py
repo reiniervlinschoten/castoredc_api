@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/report
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import report_model
 from castoredc_api import CastorException
@@ -71,6 +72,6 @@ class TestReport:
 
     def test_single_report_failure(self, client):
         """Tests if single report returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report("FAKEB401-6100-4CF5-A95F-3402B55EAC48")
         assert "404 Client Error: Not Found for url" in str(e.value)

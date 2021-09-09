@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/report-data-entry
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api import CastorException
 from castoredc_api.tests.test_api_endpoints.data_models import (
@@ -131,12 +132,13 @@ class TestSurveyDataEntry:
 
     def test_single_survey_instance_all_fields_record_fail(self, client):
         """Tests if failing to call a single survey instance throws an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_instance_all_fields_record(
                 "00FAKE", "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E"
             )
         assert "404 Client Error: Not Found for url" in str(e.value)
 
+    @pytest.mark.xfail(reason="Castor Database Error", strict=True)
     def test_single_survey_instance_single_field_record_success(self, client):
         """Tests if single survey field returns the proper data."""
         field = client.single_survey_instance_single_field_record(
@@ -148,7 +150,7 @@ class TestSurveyDataEntry:
 
     def test_single_survey_instance_single_field_record_fail_record(self, client):
         """Tests if calling a single survey field throws an error when failing"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_instance_single_field_record(
                 "00FAKE",
                 "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
@@ -188,7 +190,7 @@ class TestSurveyDataEntry:
         # Update the field
         change_reason = "Testing API"
 
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.update_survey_instance_single_field_record(
                 "110002",
                 "0FFD2C09-C5F2-4072-BDF1-736516C0D60A",

@@ -106,7 +106,7 @@ class TestImportSurvey:
                 email="python_wrapper@you-spam.com",
             )
 
-        assert str(e.value) == self.survey_error_during_upload
+        assert "404 Client Error: Not Found for url:" in str(e.value)
 
     survey_success = {
         "110001": [
@@ -166,5 +166,3 @@ class TestImportSurvey:
     survey_error = (
         "Non-viable data found in dataset to be imported. See output folder for details"
     )
-
-    survey_error_during_upload = "404 The record for this SurveyPackageInstance does not exist. caused at {'record_id': 'b', 'SF12_1': '4', 'SF12_2': '4', 'SF12_3': '5', 'SF12_12': '6', 'VAS': '88'}.\n See output folder for successful imports"

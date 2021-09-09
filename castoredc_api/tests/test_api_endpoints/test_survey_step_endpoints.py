@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/survey-step
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api import CastorException
 from castoredc_api.tests.test_api_endpoints.data_models import survey_step_model
@@ -82,7 +83,7 @@ class TestSurveyStep:
 
     def test_single_survey_single_step_fail(self, client, surveys_with_steps):
         """Tests whether single step fails correctly"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_survey_single_step(
                 "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E",
                 "C19211FE-1C53-43F9-BC85-460DF125FAKE",

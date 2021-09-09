@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/field-dependency
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import field_dep_model
 from castoredc_api import CastorException
@@ -69,6 +70,6 @@ class TestFieldDependency:
 
     def test_single_field_failure(self, client):
         """Tests whether a wrong id throws an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_field_dependency(2)
         assert "404 Client Error: Not Found for url" in str(e.value)

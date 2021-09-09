@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/phase
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import phase_model
 from castoredc_api import CastorException
@@ -65,6 +66,6 @@ class TestPhase:
 
     def test_single_phase_failure(self, client):
         """Tests if single phase returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_phase("FAKE95D-4F8D-4B4A-96A1-14D026D0328E")
         assert "404 Client Error: Not Found for url" in str(e.value)

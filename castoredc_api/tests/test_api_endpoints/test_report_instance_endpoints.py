@@ -9,6 +9,8 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from httpx import HTTPStatusError
+
 from castoredc_api.tests.test_api_endpoints.data_models import report_instance_model
 from castoredc_api import CastorException
 
@@ -97,7 +99,7 @@ class TestReportInstance:
 
     def test_single_report_instance_fail(self, client):
         """Tests if single report_instance returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report_instance("FAKEE5BD-E728-4575-B467-142EA83813DE")
         assert "400 Client Error: Bad Request for url:" in str(e.value)
 
@@ -115,7 +117,7 @@ class TestReportInstance:
 
     def test_all_report_instances_record_fail(self, client):
         """Tests if a proper error is thrown when the wrong record is filtered on."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_report_instances_record("FAKE01")
         assert "404 Client Error: Not Found for url:" in str(e.value)
 
@@ -134,7 +136,7 @@ class TestReportInstance:
 
     def test_single_report_instance_record_fail(self, client):
         """Tests if filtering on a non-existent report throws an error for a filtered record."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             # Query a report belonging to a different record.
             client.single_report_instance_record(
                 "000001", "61870790-F83E-4B1B-AF09-6F2CBA4632EA"
@@ -168,7 +170,7 @@ class TestReportInstance:
         report_instance = create_report_instance("000004", fake=True)
 
         # Create the record
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.create_report_instance_record(**report_instance)
         assert "400 Client Error: Bad Request for url:" in str(e.value)
 

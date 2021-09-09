@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/user
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api import CastorException
 from castoredc_api.tests.test_api_endpoints.data_models import user_model
@@ -42,6 +43,6 @@ class TestUser:
 
     def test_single_user_fail(self, client, all_users):
         """Tests if single_user fails correctly"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_user(all_users[0]["id"] + "FAKE")
         assert "403 Client Error: Forbidden for url" in str(e.value)

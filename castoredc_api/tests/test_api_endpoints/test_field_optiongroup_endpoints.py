@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/field-optiongroup
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import field_opt_model
 from castoredc_api import CastorException
@@ -93,6 +94,6 @@ class TestFieldOptionGroup:
 
     def test_single_field_opts_failure(self, client):
         """Tests if single field_opt returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_field_optiongroup("FAKEF1BC-1329-43B5-B494-DFBB87C21E99")
         assert "404 Client Error: Not Found for url" in str(e.value)

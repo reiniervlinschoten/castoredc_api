@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/institute
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import institute_model
 from castoredc_api import CastorException
@@ -69,6 +70,6 @@ class TestInstitute:
 
     def test_single_institute_failure(self, client):
         """Tests if single institute returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_institute("FAKE6A79-E02E-4545-9719-95B8DDED9108")
         assert "404 Client Error: Not Found for url" in str(e.value)

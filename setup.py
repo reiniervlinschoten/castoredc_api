@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="castoredc_api",
-    version="0.0.1dev",
+    version="0.0.2dev",
     description="Python wrapper for the Castor EDC API",
     author="Reinier van Linschoten",
     author_email="mail@reiniervl.com",
