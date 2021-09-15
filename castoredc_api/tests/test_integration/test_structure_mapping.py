@@ -55,19 +55,19 @@ class TestStudyMap:
         integration_study.update_links()
         assert (
             "89FF2394-0D41-4D4C-89FE-AA9AB287B31E"
-            in integration_study.form_links["Report"]
+            in list(integration_study.form_links["Report"].values())
         )
         assert (
             "C4ADC387-9BFD-4171-A861-6B973699A6ED"
-            in integration_study.form_links["Report"]
+            in list(integration_study.form_links["Report"].values())
         )
         assert (
             "770DB401-6100-4CF5-A95F-3402B55EAC48"
-            in integration_study.form_links["Report"]
+            in list(integration_study.form_links["Report"].values())
         )
         assert (
             "8D4F696E-DA2E-4A0E-ACD8-2F1B71718D6E"
-            in integration_study.form_links["Report"]
+            in list(integration_study.form_links["Report"].values())
         )
         assert (
             "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"

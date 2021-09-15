@@ -24,8 +24,8 @@ class TestCastorForm:
         form = CastorForm("Fake Survey", "FAKE-SURVEY-ID1", "Survey", "1")
         step = CastorStep("Survey Step 1a", "FAKE-SURVEY-STEP-ID1", "1")
         form.add_step(step)
-        assert len(form.steps) == 1
-        assert form.steps[0] == step
+        assert len(form.steps_on_id) == 1
+        assert form.steps_on_id["FAKE-SURVEY-STEP-ID1"] == step
         assert step.form == form
 
     def test_form_get_all_steps(self, forms_with_steps):
@@ -60,7 +60,7 @@ class TestCastorForm:
 
     def test_form_get_all_fields(self, complete_study):
         """Tests getting all fields from a form."""
-        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
+        form = complete_study.forms_on_id["FAKE-SURVEY-ID1"]
         fields = form.get_all_fields()
         assert len(fields) == 6
         for field in fields:
@@ -68,7 +68,7 @@ class TestCastorForm:
 
     def test_form_get_single_field(self, complete_study):
         """Tests getting a single field by id."""
-        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
+        form = complete_study.forms_on_id["FAKE-SURVEY-ID1"]
         field = form.get_single_field("FAKE-SURVEY-FIELD-ID3")
         assert type(field) is CastorField
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
@@ -76,7 +76,7 @@ class TestCastorForm:
 
     def test_form_get_single_field_name(self, complete_study):
         """Tests getting a single field by name."""
-        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
+        form = complete_study.forms_on_id["FAKE-SURVEY-ID1"]
         field = form.get_single_field("Survey Field 1a3")
         assert type(field) is CastorField
         assert field.field_id == "FAKE-SURVEY-FIELD-ID3"
@@ -84,6 +84,6 @@ class TestCastorForm:
 
     def test_form_get_single_field_fail(self, complete_study):
         """Tests failing to get a single field by id."""
-        form = complete_study.forms_id["FAKE-SURVEY-ID1"]
+        form = complete_study.forms_on_id["FAKE-SURVEY-ID1"]
         field = form.get_single_field("FAKE-SURVEY-FIELD-ID7")
         assert field is None

@@ -7,7 +7,6 @@ Link: https://data.castoredc.com/api
 https://orcid.org/0000-0003-3052-596X
 """
 import csv
-import math
 from itertools import chain
 import asyncio
 import httpx
@@ -25,6 +24,8 @@ class CastorClient:
         "accept": "*/*",  # "application/hal+json; text/csv",
         "Content-Type": "application/json; charset=utf-8",
     }
+
+    timeout = httpx.Timeout(60.0)
 
     def __init__(self, client_id, client_secret, url):
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
@@ -878,7 +879,8 @@ class CastorClient:
                 {"page": str(page), "page_size": "1000", **params}
                 for page in range(2, pages)
             ]
-        return asyncio.run(self.async_get(url=url, params=params))
+        responses = asyncio.run(self.async_get(url=url, params=params))
+        return [self.handle_response(response) for response in responses]
 
     def request_size(self, endpoint, base=False):
         """Helper function for tests to determine how many items there are per given endpoint"""
@@ -892,7 +894,7 @@ class CastorClient:
     # Synchronous API Interaction
     def sync_get(self, url: str, params: dict) -> dict:
         """Synchronous querying of Castor API with a single get requests."""
-        response = self.client.get(url=url, params=params)
+        response = self.client.get(url=url, params=params, timeout=self.timeout)
         response.raise_for_status()
         content_type = response.headers.get("content-type")
         if "json" in content_type:
@@ -921,20 +923,15 @@ class CastorClient:
         :param url: the urls for the request
         :param params: a list of dicts of the parameters to be send with the request
         """
-        async with httpx.AsyncClient(headers=self.headers) as client:
-            responses = await asyncio.gather(
-                *[
-                    self.async_handle_response(client=client, url=url, params=param)
-                    for param in params
-                ]
-            )
+        async with httpx.AsyncClient(headers=self.headers, timeout=self.timeout) as client:
+            tasks = [client.get(url=url, params=param) for param in params]
+            responses = [await response for response in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Async Downloading")]
             return responses
 
-    async def async_handle_response(
-        self, client: httpx.AsyncClient, url: str, params: dict
+    def handle_response(
+        self, response: httpx.Response
     ) -> dict:
-        """Asynchronous caller of get requests, reads response and handles errors."""
-        response = await client.get(url=url, params=params)
+        """Reads response and handles errors."""
         response.raise_for_status()
         content_type = response.headers.get("content-type")
         if "json" in content_type:
@@ -946,10 +943,5 @@ class CastorClient:
     def format_csv_content(self, response: httpx.Response) -> dict:
         """Loads CSV content from a Response object."""
         content_decoded = response.content.decode()
-        content_csv = csv.DictReader(content_decoded.splitlines(), delimiter=";")
-        content = [line for line in content_csv]
-        if len(content) == 0:
-            raise CastorException(
-                "No data found, database returned: {}".format(content_decoded)
-            )
-        return {"content": content}
+        content_csv = list(csv.DictReader(content_decoded.splitlines(), delimiter=";"))
+        return {"content": content_csv}

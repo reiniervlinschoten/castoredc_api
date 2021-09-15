@@ -25,14 +25,14 @@ class TestCastorStep:
             field_id="FAKE-REPORT-FIELD-ID7",
             field_name="Report Field 2a4",
             field_label="This is the fourth report field",
-            field_type="checkbox",
+            field_type="test",
             field_required="1",
             field_option_group="FAKE-OPTION-GROUP-ID5",
             field_order="1",
         )
         step.add_field(field)
-        assert len(step.fields) == 1
-        assert step.fields[0] == field
+        assert len(step.fields_on_id) == 1
+        assert step.fields_on_id["FAKE-REPORT-FIELD-ID7"] == field
         assert field.step == step
 
     def test_step_get_all_fields(self, steps_with_fields):

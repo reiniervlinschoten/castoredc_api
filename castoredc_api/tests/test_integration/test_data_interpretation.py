@@ -16,8 +16,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "his_smoke_dose"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == 5
 
@@ -26,8 +24,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "inc_ic"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "Yes"
 
@@ -36,8 +32,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "pat_race"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "Hispanic"
 
@@ -46,8 +40,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "ic_language"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "Dutch"
 
@@ -56,8 +48,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "his_family"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "(Cardio)myopathy|Diabetes Mellitus"
 
@@ -66,8 +56,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "ic_date"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "12-05-2020"
 
@@ -76,8 +64,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "pat_birth_year"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == 1998
 
@@ -86,8 +72,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "onset_stroke"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "11-05-2020 07:30:00"
 
@@ -96,8 +80,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "onset_trombectomy"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == time(9, 25)
 
@@ -106,8 +88,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "base_bmi"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == 24.9
 
@@ -116,8 +96,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "418B08AA-AED0-4BBC-895F-CD4358900E11", "VAS"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == 58
 
@@ -126,8 +104,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF", "ic_main_version"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "Version 2.5"
 
@@ -136,8 +112,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "67273722-1A79-46BC-9E31-B793EACEAD37", "AE_type"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert (
             dp.value
@@ -149,8 +123,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "randalloc"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == 2
 
@@ -159,8 +131,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "C2318B69-A4FB-480D-960D-BC5B4E1790F6", "comorbidities"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == "- - Uploaded file - -"
 
@@ -169,8 +139,6 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "fac_V_leiden"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert len(dp.value) == 2
         assert 55 in dp.value
@@ -181,7 +149,5 @@ class TestDataInterpretation:
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "B153A407-8D0A-4174-B632-B89AADE3646B", "fu_sbp"
         )
-        # Interpret answer
-        dp.interpret()
         # Test if answer is correct
         assert dp.value == -98

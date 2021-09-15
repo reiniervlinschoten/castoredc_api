@@ -13,5 +13,4 @@ def import_study():
         "data.castoredc.com",
     )
     study.map_structure()
-    study.load_optiongroups()
     return study

@@ -31,7 +31,6 @@ def import_data(
     """
     # Map the structure of your study locally
     study.map_structure()
-    study.load_optiongroups()
 
     # Prepare output directory
     pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
