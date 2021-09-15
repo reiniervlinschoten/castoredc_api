@@ -923,14 +923,21 @@ class CastorClient:
         :param url: the urls for the request
         :param params: a list of dicts of the parameters to be send with the request
         """
-        async with httpx.AsyncClient(headers=self.headers, timeout=self.timeout) as client:
+        async with httpx.AsyncClient(
+            headers=self.headers, timeout=self.timeout
+        ) as client:
             tasks = [client.get(url=url, params=param) for param in params]
-            responses = [await response for response in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Async Downloading")]
+            responses = [
+                await response
+                for response in tqdm(
+                    asyncio.as_completed(tasks),
+                    total=len(tasks),
+                    desc="Async Downloading",
+                )
+            ]
             return responses
 
-    def handle_response(
-        self, response: httpx.Response
-    ) -> dict:
+    def handle_response(self, response: httpx.Response) -> dict:
         """Reads response and handles errors."""
         response.raise_for_status()
         content_type = response.headers.get("content-type")

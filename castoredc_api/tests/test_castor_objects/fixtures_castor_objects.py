@@ -6,8 +6,13 @@ import castoredc_api.study.castor_objects.castor_field as castor_field
 import castoredc_api.study.castor_objects.castor_form as castor_form
 import castoredc_api.study.castor_objects.castor_step as castor_step
 import castoredc_api.study.castor_study as castor_study
-from castoredc_api.study.castor_objects import castor_data_point, castor_report_form_instance, \
-    castor_survey_form_instance, castor_study_form_instance, castor_form_instance
+from castoredc_api.study.castor_objects import (
+    castor_data_point,
+    castor_report_form_instance,
+    castor_survey_form_instance,
+    castor_study_form_instance,
+    castor_form_instance,
+)
 
 from castoredc_api.tests.test_castor_objects.helpers_castor_objects import (
     link_study_with_forms,
@@ -270,7 +275,10 @@ def data_points(
         "FAKE-STUDY-FIELD-ID1", "12", complete_study, "2021-01-15 13:39:47"
     )
     data_point12 = castor_data_point.CastorDataPoint(
-        "FAKE-STUDY-FIELD-ID2", "01-12-2031;12:53", complete_study, "2021-01-15 13:39:47"
+        "FAKE-STUDY-FIELD-ID2",
+        "01-12-2031;12:53",
+        complete_study,
+        "2021-01-15 13:39:47",
     )
 
     data_point13 = castor_data_point.CastorDataPoint(

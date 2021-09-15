@@ -29,7 +29,9 @@ class CastorRecord:
         """Returns all form instances of the record"""
         return list(self.form_instances_ids.values())
 
-    def get_single_form_instance_on_id(self, instance_id: str) -> Optional["CastorFormInstance"]:
+    def get_single_form_instance_on_id(
+        self, instance_id: str
+    ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id. Returns None if form_instance not found."""
         return self.form_instances_ids.get(instance_id)
 
@@ -49,7 +51,9 @@ class CastorRecord:
         self, field_id_or_name: str, form_instance: str
     ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
-        return self.get_single_form_instance_on_id(form_instance).get_single_data_point(field_id_or_name)
+        return self.get_single_form_instance_on_id(form_instance).get_single_data_point(
+            field_id_or_name
+        )
 
     # Standard Operators
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:

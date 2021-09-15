@@ -6,9 +6,15 @@ Testing class for the CastorRecord class.
 https://orcid.org/0000-0003-3052-596X
 """
 from castoredc_api.study.castor_objects.castor_record import CastorRecord
-from castoredc_api.study.castor_objects.castor_report_form_instance import CastorReportFormInstance
-from castoredc_api.study.castor_objects.castor_study_form_instance import CastorStudyFormInstance
-from castoredc_api.study.castor_objects.castor_survey_form_instance import CastorSurveyFormInstance
+from castoredc_api.study.castor_objects.castor_report_form_instance import (
+    CastorReportFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_study_form_instance import (
+    CastorStudyFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_survey_form_instance import (
+    CastorSurveyFormInstance,
+)
 
 
 class TestCastorRecord:
@@ -39,7 +45,11 @@ class TestCastorRecord:
         forms = record.get_all_form_instances()
         assert len(forms) == 4
         for form in forms:
-            assert type(form) in [CastorSurveyFormInstance, CastorReportFormInstance, CastorStudyFormInstance]
+            assert type(form) in [
+                CastorSurveyFormInstance,
+                CastorReportFormInstance,
+                CastorStudyFormInstance,
+            ]
 
     def test_form_get_single_form_instance(self, records_with_form_instances):
         """Tests getting a single form instance linked to a record"""

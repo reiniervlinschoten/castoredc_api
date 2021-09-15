@@ -30,7 +30,9 @@ class CastorDataPoint:
             )
         self.form_instance = None
         self.filled_in = (
-            None if filled_in == "" else datetime.strptime(filled_in, "%Y-%m-%d %H:%M:%S")
+            None
+            if filled_in == ""
+            else datetime.strptime(filled_in, "%Y-%m-%d %H:%M:%S")
         )
         # Is missing
         self.value = self.__interpret(study)
@@ -90,15 +92,25 @@ class CastorDataPoint:
             return np.nan
         elif "Missing" in self.raw_value:
             if "measurement failed" in self.raw_value:
-                return pd.Period(year=2995, month=1, day=1, freq="D").strftime("%d-%m-%Y")
+                return pd.Period(year=2995, month=1, day=1, freq="D").strftime(
+                    "%d-%m-%Y"
+                )
             elif "not applicable" in self.raw_value:
-                return pd.Period(year=2996, month=1, day=1, freq="D").strftime("%d-%m-%Y")
+                return pd.Period(year=2996, month=1, day=1, freq="D").strftime(
+                    "%d-%m-%Y"
+                )
             elif "not asked" in self.raw_value:
-                return pd.Period(year=2997, month=1, day=1, freq="D").strftime("%d-%m-%Y")
+                return pd.Period(year=2997, month=1, day=1, freq="D").strftime(
+                    "%d-%m-%Y"
+                )
             elif "asked but unknown" in self.raw_value:
-                return pd.Period(year=2998, month=1, day=1, freq="D").strftime("%d-%m-%Y")
+                return pd.Period(year=2998, month=1, day=1, freq="D").strftime(
+                    "%d-%m-%Y"
+                )
             elif "not done" in self.raw_value:
-                return pd.Period(year=2999, month=1, day=1, freq="D").strftime("%d-%m-%Y")
+                return pd.Period(year=2999, month=1, day=1, freq="D").strftime(
+                    "%d-%m-%Y"
+                )
 
         elif self.instance_of.field_type == "date":
             return pd.Period(
@@ -129,9 +141,7 @@ class CastorDataPoint:
             # Get the optiongroup for this data point
             optiongroup = self.instance_of.field_option_group
             # Retrieve the options
-            study_optiongroup = study.get_single_optiongroup(
-                optiongroup
-            )
+            study_optiongroup = study.get_single_optiongroup(optiongroup)
             if study_optiongroup is None:
                 raise CastorException(
                     "Optiongroup not found. Is id correct and are optiongroups loaded?"
@@ -196,9 +206,11 @@ class CastorDataPoint:
         if not isinstance(other, CastorDataPoint):
             return NotImplemented
         else:
-            return (self.field_id == other.field_id) and (
-                self.form_instance == other.form_instance
-            ) and (self.form_instance.record == other.form_instance.record)
+            return (
+                (self.field_id == other.field_id)
+                and (self.form_instance == other.form_instance)
+                and (self.form_instance.record == other.form_instance.record)
+            )
 
     def __repr__(self) -> str:
         return (

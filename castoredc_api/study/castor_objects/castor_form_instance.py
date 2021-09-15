@@ -15,7 +15,7 @@ class CastorFormInstance:
         instance_id: str,
         name_of_form: str,
         study: "CastorStudy",
-        instance_type: str
+        instance_type: str,
     ) -> None:
         """Creates a CastorFormInstance."""
         self.instance_id = instance_id

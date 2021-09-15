@@ -45,7 +45,9 @@ class CastorForm:
     def get_all_fields(self) -> List[CastorField]:
         """Returns a list of linked CastorFields."""
         return list(
-            itertools.chain.from_iterable([_step.get_all_fields() for _step in self.get_all_steps()])
+            itertools.chain.from_iterable(
+                [_step.get_all_fields() for _step in self.get_all_steps()]
+            )
         )
 
     def get_single_field(self, field_id_or_name: str) -> Optional[CastorField]:

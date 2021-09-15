@@ -8,9 +8,15 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 
 from castoredc_api.study.castor_objects.castor_data_point import CastorDataPoint
-from castoredc_api.study.castor_objects.castor_report_form_instance import CastorReportFormInstance
-from castoredc_api.study.castor_objects.castor_study_form_instance import CastorStudyFormInstance
-from castoredc_api.study.castor_objects.castor_survey_form_instance import CastorSurveyFormInstance
+from castoredc_api.study.castor_objects.castor_report_form_instance import (
+    CastorReportFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_study_form_instance import (
+    CastorStudyFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_survey_form_instance import (
+    CastorSurveyFormInstance,
+)
 
 
 class TestCastorFormInstance:

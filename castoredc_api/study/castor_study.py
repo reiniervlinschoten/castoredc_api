@@ -18,9 +18,15 @@ from castoredc_api.study.castor_objects.castor_form_instance import CastorFormIn
 from castoredc_api.study.castor_objects.castor_record import CastorRecord
 from castoredc_api.study.castor_objects.castor_step import CastorStep
 from castoredc_api.study.castor_objects.castor_form import CastorForm
-from castoredc_api.study.castor_objects.castor_study_form_instance import CastorStudyFormInstance
-from castoredc_api.study.castor_objects.castor_survey_form_instance import CastorSurveyFormInstance
-from castoredc_api.study.castor_objects.castor_report_form_instance import CastorReportFormInstance
+from castoredc_api.study.castor_objects.castor_study_form_instance import (
+    CastorStudyFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_survey_form_instance import (
+    CastorSurveyFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_report_form_instance import (
+    CastorReportFormInstance,
+)
 
 
 class CastorStudy:
@@ -28,7 +34,7 @@ class CastorStudy:
     Needs an authenticated api_client that is linked to the same study_id to call data."""
 
     def __init__(
-            self, client_id: str, client_secret: str, study_id: str, url: str, test=False
+        self, client_id: str, client_secret: str, study_id: str, url: str, test=False
     ) -> None:
         """Create a CastorStudy object."""
         self.study_id = study_id
@@ -138,9 +144,12 @@ class CastorStudy:
             for report_instance in report_instances + archived_report_instances
         }
 
-        self.form_links["Report"] = {instance_id: self.__all_report_instances[instance_id]["_embedded"]["report"]["id"]
-                                     for instance_id
-                                     in self.__all_report_instances}
+        self.form_links["Report"] = {
+            instance_id: self.__all_report_instances[instance_id]["_embedded"][
+                "report"
+            ]["id"]
+            for instance_id in self.__all_report_instances
+        }
 
     # OPTIONGROUPS
     def __load_optiongroups(self) -> None:
@@ -148,7 +157,9 @@ class CastorStudy:
         # Get the optiongroups
         print("Downloading Optiongroups", flush=True)
         optiongroups = self.client.all_field_optiongroups()
-        self.optiongroups = {optiongroup["id"]: optiongroup for optiongroup in optiongroups}
+        self.optiongroups = {
+            optiongroup["id"]: optiongroup for optiongroup in optiongroups
+        }
 
     # AUXILIARY DATA
     def __load_record_information(self) -> None:
@@ -168,22 +179,27 @@ class CastorStudy:
         print("Downloading Survey Information.", flush=True)
         survey_package_data = self.client.all_survey_package_instances()
         # Turn around the mapping to {survey_instance_id: survey_package}
-        survey_data = {survey["id"]: package
-                       for package
-                       in survey_package_data
-                       for survey
-                       in package["_embedded"]["survey_instances"]}
+        survey_data = {
+            survey["id"]: package
+            for package in survey_package_data
+            for survey in package["_embedded"]["survey_instances"]
+        }
         survey_form_instances = self.get_all_form_type_form_instances("Survey")
 
         for form_instance in tqdm(survey_form_instances, desc="Augmenting Survey Data"):
             # Get package information
             parent_package = survey_data.get(form_instance.instance_id)
-            form_instance.created_on = self.__get_date_or_none(parent_package["created_on"])
+            form_instance.created_on = self.__get_date_or_none(
+                parent_package["created_on"]
+            )
             form_instance.sent_on = self.__get_date_or_none(parent_package["sent_on"])
-            form_instance.progress = {survey["id"]: survey["progress"]
-                                      for survey
-                                      in parent_package["_embedded"]["survey_instances"]}.get(form_instance.instance_id)
-            form_instance.completed_on = self.__get_date_or_none(parent_package["finished_on"])
+            form_instance.progress = {
+                survey["id"]: survey["progress"]
+                for survey in parent_package["_embedded"]["survey_instances"]
+            }.get(form_instance.instance_id)
+            form_instance.completed_on = self.__get_date_or_none(
+                parent_package["finished_on"]
+            )
             form_instance.archived = parent_package["archived"]
             form_instance.survey_package_id = parent_package["id"]
 
@@ -191,8 +207,12 @@ class CastorStudy:
         """Adds auxiliary data to report forms."""
         report_instances = self.get_all_form_type_form_instances("Report")
         for form_instance in tqdm(report_instances, "Augmenting Report Data"):
-            report_information = self.__all_report_instances.get(form_instance.instance_id)
-            form_instance.created_on = datetime.strptime(report_information["created_on"], "%Y-%m-%d %H:%M:%S")
+            report_information = self.__all_report_instances.get(
+                form_instance.instance_id
+            )
+            form_instance.created_on = datetime.strptime(
+                report_information["created_on"], "%Y-%m-%d %H:%M:%S"
+            )
             form_instance.parent = (
                 "No parent"
                 if report_information["parent_id"] == ""
@@ -288,7 +308,7 @@ class CastorStudy:
         return dataframes
 
     def export_dataframe_to_csv(
-            self, dataframe: pd.DataFrame, name: str, now: str, date_format: str
+        self, dataframe: pd.DataFrame, name: str, now: str, date_format: str
     ) -> str:
         """Exports a single dataframe to csv and returns the destination path."""
         filename = re.sub(r"[^\w\-_\. ]", "_", name)
@@ -304,7 +324,7 @@ class CastorStudy:
         return str(path)
 
     def export_dataframe_to_feather(
-            self, dataframe: pd.DataFrame, name: str, now: str
+        self, dataframe: pd.DataFrame, name: str, now: str
     ) -> str:
         """Exports a single dataframe to feather and returns the destination path."""
         filename = re.sub(r"[^\w\-_\. ]", "_", name)
@@ -345,10 +365,14 @@ class CastorStudy:
         forms = self.get_all_forms()
         return [form for form in forms if form.form_type == form_type]
 
-    def get_all_form_type_form_instances(self, form_type: str) -> List[CastorFormInstance]:
+    def get_all_form_type_form_instances(
+        self, form_type: str
+    ) -> List[CastorFormInstance]:
         """Gets all CastorForms of form_type."""
         instances = self.get_all_form_instances()
-        return [instance for instance in instances if instance.instance_type == form_type]
+        return [
+            instance for instance in instances if instance.instance_type == form_type
+        ]
 
     def get_form_instances_by_form(self, form: CastorForm) -> List:
         """Gets all CastorFormInstances that are an instance of the given Form"""
@@ -438,18 +462,23 @@ class CastorStudy:
         """Returns all form instances"""
         form_instances = list(
             itertools.chain.from_iterable(
-                [list(self.records[_record].form_instances_ids.values()) for _record in self.records]
+                [
+                    list(self.records[_record].form_instances_ids.values())
+                    for _record in self.records
+                ]
             )
         )
         return form_instances
 
     def get_single_form_instance_on_id(
-            self,
-            record_id: str,
-            instance_id: str,
+        self,
+        record_id: str,
+        instance_id: str,
     ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
-        return self.get_single_record(record_id).get_single_form_instance_on_id(instance_id)
+        return self.get_single_record(record_id).get_single_form_instance_on_id(
+            instance_id
+        )
 
     def get_all_data_points(self) -> List["CastorDataPoint"]:
         """Returns all data_points of the study"""
@@ -464,14 +493,14 @@ class CastorStudy:
         return data_points
 
     def get_single_data_point(
-            self, record_id: str, form_instance_id: str, field_id_or_name: str
+        self, record_id: str, form_instance_id: str, field_id_or_name: str
     ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
         form_instance = self.get_single_form_instance_on_id(record_id, form_instance_id)
         return form_instance.get_single_data_point(field_id_or_name)
 
     def instance_of_form(
-            self, instance_id: str, instance_type: str
+        self, instance_id: str, instance_type: str
     ) -> Optional[CastorForm]:
         """Returns the form of which the given id is an instance.
         instance_id is id for type: Report, name for type: Survey, or id for type: Study"""
@@ -506,7 +535,9 @@ class CastorStudy:
                     instance_of_field = self.get_single_field(field["Field ID"])
                     instance_of_form = instance_of_field.step.form.form_id
                     form_instance_id = instance_of_form
-                    form_instance = record.get_single_form_instance_on_id(form_instance_id)
+                    form_instance = record.get_single_form_instance_on_id(
+                        form_instance_id
+                    )
                     if form_instance is None:
                         form_instance = CastorStudyFormInstance(
                             instance_id=form_instance_id,
@@ -538,7 +569,9 @@ class CastorStudy:
                         )
                         record.add_form_instance(form_instance)
                 else:
-                    raise CastorException(f"Form Type: {field['Form Type']} does not exist.")
+                    raise CastorException(
+                        f"Form Type: {field['Form Type']} does not exist."
+                    )
 
                 # Check if the field exists, if not, create it
                 # This should not be possible as there are no doubles, but checking just in case
@@ -614,7 +647,7 @@ class CastorStudy:
         return dataframes
 
     def __export_data(
-            self, forms: List["CastorForm"], extra_columns: List[str], form_type: str
+        self, forms: List["CastorForm"], extra_columns: List[str], form_type: str
     ) -> pd.DataFrame:
         """Exports given type of data and returns a dataframe."""
         # Get all study fields
@@ -650,7 +683,7 @@ class CastorStudy:
         return df
 
     def __format_categorical_fields(
-            self, dataframe: pd.DataFrame, fields: List[CastorField]
+        self, dataframe: pd.DataFrame, fields: List[CastorField]
     ) -> pd.DataFrame:
         """Sets categorical fields to use categorical dtype."""
         cat_fields = [
@@ -673,7 +706,7 @@ class CastorStudy:
         return dataframe
 
     def __format_year_and_date(
-            self, dataframe: pd.DataFrame, fields: List[CastorField]
+        self, dataframe: pd.DataFrame, fields: List[CastorField]
     ) -> pd.DataFrame:
         """Casts year fields to the correct format."""
         # Year fields to Ints
@@ -701,7 +734,7 @@ class CastorStudy:
 
     @staticmethod
     def __split_up_numberdate_data(
-            dataframe: pd.DataFrame, fields: List[CastorField], column_order: List[str]
+        dataframe: pd.DataFrame, fields: List[CastorField], column_order: List[str]
     ) -> (pd.DataFrame, List[str]):
         """Splits up the numberdate data in dummies and returns a new dataframe + column order."""
         # Select numberdate fields
@@ -731,10 +764,10 @@ class CastorStudy:
         return dataframe, column_order
 
     def __split_up_checkbox_data(
-            self,
-            dataframe: pd.DataFrame,
-            fields: List[CastorField],
-            column_order: List[str],
+        self,
+        dataframe: pd.DataFrame,
+        fields: List[CastorField],
+        column_order: List[str],
     ) -> (pd.DataFrame, List[str]):
         """Splits up the checkbox data in dummies and returns a new dataframe + column order."""
         # Select checkbox fields
@@ -748,7 +781,7 @@ class CastorStudy:
         return dataframe, column_order
 
     def __update_dummy_values(
-            self, checkbox_fields: List, dataframe: pd.DataFrame
+        self, checkbox_fields: List, dataframe: pd.DataFrame
     ) -> pd.DataFrame:
         """Updates dummy values in a dataframe for checkbox fields."""
         for checkbox in checkbox_fields:
@@ -804,7 +837,7 @@ class CastorStudy:
         return dataframe
 
     def __create_dummy_columns(
-            self, checkbox_fields: List, column_order: List, dataframe: pd.DataFrame
+        self, checkbox_fields: List, column_order: List, dataframe: pd.DataFrame
     ) -> (pd.DataFrame, List):
         """Creates dummy columns in the dataframe for all checkbox fields"""
         # Get all possible dummies
@@ -842,13 +875,13 @@ class CastorStudy:
             field
             for field in fields
             if field.field_type
-               not in (
-                   "remark",
-                   "repeated_measures",
-                   "add_report_button",
-                   "summary",
-                   "image",
-               )
+            not in (
+                "remark",
+                "repeated_measures",
+                "add_report_button",
+                "summary",
+                "image",
+            )
         ]
         return filtered_fields
 
@@ -896,7 +929,7 @@ class CastorStudy:
                 filtered_data_points, key=attrgetter("form_instance.instance_id")
             )
             for form_instance, data_points in itertools.groupby(
-                    sorted_data_points, lambda data_point: data_point.form_instance
+                sorted_data_points, lambda data_point: data_point.form_instance
             ):
                 # Survey data
                 record_form_data = {
@@ -938,7 +971,7 @@ class CastorStudy:
                 filtered_data_points, key=attrgetter("form_instance.instance_id")
             )
             for form_instance, data_points in itertools.groupby(
-                    sorted_data_points, lambda data_point: data_point.form_instance
+                sorted_data_points, lambda data_point: data_point.form_instance
             ):
                 # Report data
                 record_form_data = {
