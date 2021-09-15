@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/step
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import study_step_model
 from castoredc_api import CastorException
@@ -74,6 +75,6 @@ class TestStep:
         assert step == self.test_step
 
     def test_single_step_fail(self, all_steps, client):
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_step("F6BB55C9-FC35-4375-86D0-A4F5E239FAKE")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

@@ -3,6 +3,8 @@ import pandas as pd
 
 from datetime import datetime
 from typing import TYPE_CHECKING, Dict, Optional
+
+from httpx import HTTPStatusError
 from tqdm import tqdm
 
 from castoredc_api import CastorException
@@ -29,7 +31,6 @@ def import_data(
     """
     # Map the structure of your study locally
     study.map_structure()
-    study.load_optiongroups()
 
     # Prepare output directory
     pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
@@ -145,7 +146,7 @@ def upload_study(
                 + " caused at "
                 + str(row)
                 + ".\n See output folder for successful imports"
-            )
+            ) from e
 
     pd.DataFrame(imported).to_csv(
         pathlib.Path(
@@ -166,7 +167,7 @@ def upload_study_data(
             record_id=row["record_id"], common=common, body=body
         )
         imported.append(row)
-    except CastorException as e:
+    except HTTPStatusError as e:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -181,7 +182,7 @@ def upload_study_data(
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        )
+        ) from e
     return feedback_row
 
 
@@ -256,7 +257,7 @@ def upload_survey_data(
             body=body,
         )
         imported.append(row)
-    except CastorException as e:
+    except HTTPStatusError as e:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -271,7 +272,7 @@ def upload_survey_data(
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        )
+        ) from e
     return feedback_row
 
 
@@ -286,7 +287,7 @@ def create_survey_package_instance(
             email_address=email,
             auto_send=False,
         )
-    except CastorException as e:
+    except HTTPStatusError as e:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -301,7 +302,7 @@ def create_survey_package_instance(
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        )
+        ) from e
     return instance
 
 
@@ -393,7 +394,7 @@ def upload_report_data(
             body=body,
         )
         imported.append(row)
-    except CastorException as e:
+    except HTTPStatusError as e:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -408,7 +409,7 @@ def upload_report_data(
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        )
+        ) from e
     return feedback_row
 
 
@@ -435,7 +436,7 @@ def create_report_instances(
             record_id=record, body=body
         )
 
-    except CastorException as e:
+    except HTTPStatusError as e:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -450,5 +451,5 @@ def create_report_instances(
             + " caused at "
             + str(record)
             + ".\n See output folder for successful imports"
-        )
+        ) from e
     return [instance["id"] for instance in instances["success"]]

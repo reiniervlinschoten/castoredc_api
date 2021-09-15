@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/field
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import field_model
 from castoredc_api import CastorException
@@ -16,26 +17,26 @@ class TestField:
     model_keys = field_model.keys()
 
     test_field = {
-        "id": "0C895B4D-D362-4A54-9063-7D3CBAAC0F21",
-        "parent_id": "52109C76-EB23-4BCD-95EC-10AC5CD912BF",
-        "field_id": "0C895B4D-D362-4A54-9063-7D3CBAAC0F21",
-        "field_number": 4,
-        "field_label": "Height",
-        "field_variable_name": "pat_height",
-        "field_type": "numeric",
-        "field_required": 1,
+        "id": "07FAD531-6335-44FD-8C5B-A59FA396F12F",
+        "parent_id": "62062F44-0314-4B76-9527-914717786A42",
+        "field_id": "07FAD531-6335-44FD-8C5B-A59FA396F12F",
+        "field_number": 2,
+        "field_label": "Medication",
+        "field_variable_name": None,
+        "field_type": "repeated_measures",
+        "field_required": 0,
         "field_hidden": 0,
         "field_info": "",
-        "field_units": "m",
-        "field_min": 1.4,
+        "field_units": "",
+        "field_min": None,
         "field_min_label": "",
-        "field_max": 2.5,
+        "field_max": None,
         "field_max_label": "",
         "field_summary_template": "",
         "field_slider_step": None,
-        "report_id": "",
-        "field_length": 5,
-        "additional_config": "",
+        "report_id": "89FF2394-0D41-4D4C-89FE-AA9AB287B31E",
+        "field_length": None,
+        "additional_config": '{"showReportOfAllPhases":"0"}',
         "exclude_on_data_export": False,
         "option_group": None,
         "metadata_points": [],
@@ -44,7 +45,7 @@ class TestField:
         "dependency_children": [],
         "_links": {
             "self": {
-                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/0C895B4D-D362-4A54-9063-7D3CBAAC0F21"
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/07FAD531-6335-44FD-8C5B-A59FA396F12F"
             }
         },
     }
@@ -81,11 +82,11 @@ class TestField:
 
     def test_single_field_success(self, client):
         """Tests if single field returns the proper data."""
-        field = client.single_field("0C895B4D-D362-4A54-9063-7D3CBAAC0F21")
+        field = client.single_field("07FAD531-6335-44FD-8C5B-A59FA396F12F")
         assert field == self.test_field
 
     def test_single_field_failure(self, client):
         """Tests if single field returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_field("FAKE5B4D-D362-4A54-9063-7D3CBAAC0F21")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

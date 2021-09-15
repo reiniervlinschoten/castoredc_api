@@ -7,32 +7,15 @@ Link: https://data.castoredc.com/api
 https://orcid.org/0000-0003-3052-596X
 """
 import csv
-import functools
-import json
-import math
-import requests
+from itertools import chain
+import asyncio
+import httpx
+from httpx import HTTPStatusError
 from tqdm import tqdm
-
-
-class NotFoundException(Exception):
-    pass
 
 
 class CastorException(Exception):
     pass
-
-
-def castor_exception_handler(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        arguments = list(args)
-        client = arguments[0]
-        try:
-            return func(*args, **kwargs)
-        except CastorException as e:
-            raise
-
-    return wrapper
 
 
 class CastorClient:
@@ -42,6 +25,8 @@ class CastorClient:
         "Content-Type": "application/json; charset=utf-8",
     }
 
+    timeout = httpx.Timeout(60.0)
+
     def __init__(self, client_id, client_secret, url):
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
         client_id and client_secret. URL determines which server is connected to."""
@@ -49,17 +34,15 @@ class CastorClient:
         self.base_url = f"https://{url}/api"
         self.auth_url = f"https://{url}/oauth/token"
 
-        # Instantiate Requests sessions
-        self.session = requests.Session()
-        self.session.headers.update(self.headers)
-
         # Grab authentication token for given client
         token = self.request_auth_token(client_id, client_secret)
         self.headers["authorization"] = "Bearer " + token
-        self.session.headers.update(self.headers)
 
         # Instantiate global study variables
         self.study_url = None
+
+        # Instantiate client
+        self.client = httpx.Client(headers=self.headers)
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id and creates the field map."""
@@ -74,8 +57,7 @@ class CastorClient:
         return raw_data["results"]
 
     def single_country(self, country_id):
-        """Returns a dict with the given country based on country_id.
-        Raises CastorException if country not found."""
+        """Returns a dict with the given country based on country_id."""
         endpoint = "/country/{0}".format(country_id)
         return self.retrieve_general_data(endpoint=endpoint)
 
@@ -100,16 +82,14 @@ class CastorClient:
 
     # DATA-POINT-COLLECTION GET (INSTANCE)
     def single_report_instance_data_points(self, report_id):
-        """Returns a list of the data for given report_id.
-        Raises CastorException if report not found."""
+        """Returns a list of the data for given report_id."""
         url = "/data-point-collection/report-instance/{report_id}".format(
             report_id=report_id
         )
         return self.retrieve_data_points(url)
 
     def single_survey_instance_data_points(self, survey_instance_id):
-        """Returns a list of data from a single survey instance id.
-        Raises CastorException if survey not found."""
+        """Returns a list of data from a single survey instance id."""
         url = "/data-point-collection/survey-instance/{survey_instance_id}".format(
             survey_instance_id=survey_instance_id
         )
@@ -194,7 +174,7 @@ class CastorClient:
             record_id=record_id
         )
         post_data = {"common": common, "data": body}
-        return self.castor_post(url, post_data)
+        return self.sync_post(url, post_data)
 
     def update_report_data_record(self, record_id, report_id, common, body):
         """Creates/updates a report instance.
@@ -219,7 +199,7 @@ class CastorClient:
             )
         )
         post_data = {"common": common, "data": body}
-        return self.castor_post(url, post_data)
+        return self.sync_post(url, post_data)
 
     def update_survey_instance_data_record(self, record_id, survey_instance_id, body):
         """Creates/updates a survey instance.
@@ -238,7 +218,7 @@ class CastorClient:
             )
         )
         post_data = {"data": body}
-        return self.castor_post(url, post_data)
+        return self.sync_post(url, post_data)
 
     def update_survey_package_instance_data_record(
         self, record_id, survey_package_instance_id, body
@@ -257,23 +237,23 @@ class CastorClient:
             survey_package_instance_id=survey_package_instance_id,
         )
         post_data = {"data": body}
-        return self.castor_post(url, post_data)
+        return self.sync_post(url, post_data)
 
     # EXPORT
     def export_study_data(self):
         """Returns a list of dicts containing all data in the study (study, surveys, reports)."""
         url = self.study_url + "/export/data"
-        return self.castor_get(url=url, params=None, content_type="CSV")["content"]
+        return self.sync_get(url=url, params={})["content"]
 
     def export_study_structure(self):
         """Returns a list of dicts containing the structure of the study."""
         url = self.study_url + "/export/structure"
-        return self.castor_get(url=url, params=None, content_type="CSV")["content"]
+        return self.sync_get(url=url, params={})["content"]
 
     def export_option_groups(self):
         """Returns a list of dicts containing all option groups in the study."""
         url = self.study_url + "/export/optiongroups"
-        return self.castor_get(url=url, params=None, content_type="CSV")["content"]
+        return self.sync_get(url=url, params={})["content"]
 
     # FIELDS
     def all_fields(self):
@@ -425,7 +405,7 @@ class CastorClient:
             "email_address": email,
         }
         url = self.study_url + "/record"
-        return self.castor_post(url, body)
+        return self.sync_post(url, body)
 
     # REPORTS
     def all_reports(self):
@@ -448,11 +428,11 @@ class CastorClient:
             return self.retrieve_all_data_by_endpoint(
                 endpoint="/report-instance", data_name="reportInstances", params=params
             )
-        except CastorException as e:
-            if str(e) == "404 There are no report instances.":
+        except HTTPStatusError as e:
+            if e.response.json()["detail"] == "There are no report instances.":
                 return []
             else:
-                raise e
+                raise e from e
 
     def single_report_instance(self, report_instance_id):
         """Returns a single dict of an report_instance.
@@ -489,7 +469,7 @@ class CastorClient:
             "report_name_custom": report_name_custom,
             "parent_id": parent_id,
         }
-        return self.castor_post(url, body)
+        return self.sync_post(url, body)
 
     def create_multiple_report_instances_record(self, record_id, body):
         """Creates multiple report instances for a record.
@@ -502,7 +482,7 @@ class CastorClient:
         url = self.study_url + "/record/{0}/report-instance-collection".format(
             record_id
         )
-        return self.castor_post(url, data)
+        return self.sync_post(url, data)
 
     # REPORT-DATA-ENTRY
     def single_report_instance_all_fields_record(self, record_id, report_instance_id):
@@ -536,7 +516,6 @@ class CastorClient:
     ):
         """Updates a report field value. Either field_value or file needs to be None.
         Returns None if data creation failed."""
-        # TODO: Allow file uploading
         endpoint = "/record/{0}/data-point/report/{1}/{2}".format(
             record_id, report_ins_id, field_id
         )
@@ -554,13 +533,9 @@ class CastorClient:
             }
 
         elif file is not None:
-            body = {
-                "change_reason": change_reason,
-                "instance_id": report_ins_id,
-                "upload_file": file,
-            }
+            raise CastorException("File Uploading not implemented.")
 
-        return self.castor_post(url, body)
+        return self.sync_post(url, body)
 
     # REPORT-STEP
     def single_report_all_steps(self, report_id):
@@ -632,20 +607,27 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_single_study_field_record(
-        self, record_id, field_id, field_value, change_reason
+        self, record_id, field_id, change_reason, field_value=None, file=None
     ):
         """Update a data point for a record.
-        Returns None if target not found."""
-        # TODO: Allow file uploading
+        Returns None if target not found.
+        :param file:"""
         url = self.study_url + "/record/{record_id}/data-point/study/{field_id}".format(
             record_id=record_id, field_id=field_id
         )
-        body = {
-            "field_value": str(field_value),
-            "change_reason": change_reason,
-            # "upload_file": None,
-        }
-        return self.castor_post(url, body)
+        body = {}
+        if field_value is not None and file is not None:
+            raise CastorException("You cannot both upload a field value and a file.")
+
+        elif field_value is not None:
+            body = {
+                "field_value": str(field_value),
+                "change_reason": change_reason,
+            }
+
+        elif file is not None:
+            raise CastorException("File Uploading not implemented.")
+        return self.sync_post(url, body)
 
     # STATISTICS
     def statistics(self):
@@ -722,7 +704,7 @@ class CastorClient:
             "auto_send": auto_send,
             "auto_lock_on_finish": auto_lock_on_finish,
         }
-        return self.castor_post(url, body)
+        return self.sync_post(url, body)
 
     def patch_survey_package_instance(self, survey_package_instance_id, status):
         """Lock/unlock survey package."""
@@ -730,7 +712,7 @@ class CastorClient:
         body = {
             "locked": status,
         }
-        return self.castor_patch(url, body)
+        return self.sync_patch(url, body)
 
     # SURVEY-DATA-ENTRY
     def single_survey_instance_all_fields_record(self, record_id, survey_instance_id):
@@ -770,7 +752,7 @@ class CastorClient:
             "instance_id": survey_instance_id,
             # "upload_file": None,
         }
-        return self.castor_post(url, body)
+        return self.sync_post(url, body)
 
     # SURVEY-STEP
     def single_survey_all_steps(self, survey_id):
@@ -798,103 +780,11 @@ class CastorClient:
 
     # RECORD PROGRESS
     def record_progress(self):
-        variables = []
+        """Returns progress of all records."""
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/data-point-collection/study", data_name="records"
+        )
 
-        number_of_records = len(self.all_records())
-        # There are 25 records per page
-        pages = math.ceil(number_of_records / 25) + 1
-        url = self.study_url + "/record-progress/steps"
-        response = self.retrieve_single_page(url=url, params=None, page="1")
-        fields = response["_embedded"]["records"]
-        variables.extend(fields)
-
-        for i in range(2, pages):
-            response = self.retrieve_single_page(url=url, params=None, page=i)
-            fields = response["_embedded"]["records"]
-            variables.extend(fields)
-        return variables
-
-    # HELPER FUNCTIONS
-    # noinspection PyMethodMayBeStatic
-    def castor_get(self, url: str, params: dict or None, content_type: str) -> dict:
-        """Queries the Castor EDC API on given url with parameters params.
-        Returns a dict.
-
-        :param url: the url for the request
-        :param params: the parameters to be send with the request
-        :param content_type: the type of content expected to be returned
-        """
-        try:
-            response = self.session.get(url=url, params=params)
-        except requests.exceptions.RequestException as e:
-            raise CastorException(e)
-        else:
-            if content_type == "JSON":
-                return self.format_json_content(response)
-            elif content_type == "CSV":
-                return self.format_csv_content(response)
-
-    # noinspection PyMethodMayBeStatic
-    def format_json_content(self, response: requests.models.Response) -> dict:
-        """Loads JSON content from a Response object and checks it for errors.
-
-        :param response: the response object from the Castor EDC database.
-        """
-        content = json.loads(response.content)
-        # Check if the return object is an error
-        if "status" in content.keys() and "detail" in content.keys():
-            # If Castor server throws an error, raise an error
-            raise CastorException(str(content["status"]) + " " + content["detail"])
-        else:
-            return content
-
-    # noinspection PyMethodMayBeStatic
-    def format_csv_content(self, response: requests.models.Response) -> dict:
-        """Loads CSV content from a Response object.
-
-        :param response: the response object from the Castor EDC database.
-        """
-        content_decoded = response.content.decode()
-        content_csv = csv.DictReader(content_decoded.splitlines(), delimiter=";")
-        content = [line for line in content_csv]
-        if len(content) == 0:
-            raise CastorException(
-                "No data found, database returned: {}".format(content_decoded)
-            )
-        return {"content": content}
-
-    def castor_post(self, url, body):
-        """Helper function to post body to url."""
-        body = json.dumps(body).encode()
-        try:
-            response = self.session.post(url=url, data=body)
-        except requests.exceptions.RequestException as e:
-            raise CastorException(e)
-        else:
-            content = json.loads(response.content)
-            # Check if the return object is an error
-            if "status" in content.keys() and "detail" in content.keys():
-                # If Castor server throws an error, raise an error
-                raise CastorException(str(content["status"]) + " " + content["detail"])
-            else:
-                return content
-
-    def castor_patch(self, url, body):
-        """Helper function to patch body to url."""
-        body = json.dumps(body).encode()
-        try:
-            response = self.session.patch(url=url, data=body)
-        except requests.exceptions.RequestException as e:
-            raise CastorException(e)
-        else:
-            content = json.loads(response.content)
-            if "status" in content.keys():
-                # If Castor server throws an error, raise an error
-                raise CastorException(str(content["status"]) + " " + content["detail"])
-            else:
-                return content
-
-    @castor_exception_handler
     def request_auth_token(self, client_id, client_secret):
         """Request an authentication token from Castor EDC for given client."""
         auth_data = {
@@ -902,74 +792,163 @@ class CastorClient:
             "client_secret": client_secret,
             "grant_type": "client_credentials",
         }
-        response = self.castor_post(url=self.auth_url, body=auth_data)
-        token = response["access_token"]
-        return token
+        try:
+            response = httpx.post(url=self.auth_url, data=auth_data)
+            response.raise_for_status()
+        except httpx.HTTPError as e:
+            raise CastorException(e)
+        else:
+            content = response.json()
+            return content["access_token"]
 
-    @castor_exception_handler
     def retrieve_general_data(self, endpoint, embedded=False, data_id=""):
         url = self.base_url + endpoint
-        response = self.castor_get(url=url, params=None, content_type="JSON")
+        params = {}
+        response = self.sync_get(url=url, params=params)
         if embedded:
             data = response["_embedded"][data_id]
         else:
             data = response
-
         return data
 
-    @castor_exception_handler
     def retrieve_data_points(self, endpoint):
         """Retrieves data point with data_id.
         Returns None if data_id is not found at given endpoint."""
         url = self.study_url + endpoint
-        data = self.castor_get(url=url, params=None, content_type="JSON")
+        params = {}
+        data = self.sync_get(url=url, params=params)
         return data["_embedded"]["items"]
 
-    @castor_exception_handler
     def retrieve_data_by_id(self, endpoint, data_id, params=None):
         """Retrieves data point with data_id.
         Returns None if data_id is not found at given endpoint."""
         url = self.study_url + endpoint + "/{data_id}".format(data_id=data_id)
-        return self.castor_get(url=url, params=params, content_type="JSON")
+        if params is None:
+            params = {}
+        data = self.sync_get(url=url, params=params)
+        return data
 
     def retrieve_all_data_by_endpoint(self, endpoint, data_name, params=None):
         """Retrieves all data on endpoint.
         data_name is that which holds data within ['_embedded'] (ex: 'fields')
         params is a dict of extra information to be sent."""
         url = self.study_url + endpoint
+        if params is None:
+            params = {}
         return self.retrieve_multiple_pages(url=url, params=params, data_name=data_name)
 
-    @castor_exception_handler
+    # Functions to retrieve paginated data with async requests
     def retrieve_multiple_pages(self, url, params, data_name):
         """Helper function to gather all data when there are multiple pages.
         data_name is that which holds data within ['_embedded'] (ex: 'fields')
         """
-        variables = []
-        response = self.retrieve_single_page(url=url, params=params, page="1")
-        fields = response["_embedded"][data_name]
-        pages = response["page_count"] + 1
-        variables.extend(fields)
-        for i in tqdm(range(2, pages), "Downloading data"):
-            response = self.retrieve_single_page(url, params, i)
-            fields = response["_embedded"][data_name]
-            variables.extend(fields)
-        return variables
+        # Retrieve the first page to see the size
+        first_response = self.retrieve_single_page(url=url, params=params.copy())
+        pages = first_response["page_count"] + 1
+        rest_response = self.retrieve_rest_of_pages(url=url, params=params, pages=pages)
+        data = list(
+            chain.from_iterable(
+                [
+                    response["_embedded"][data_name]
+                    for response in [first_response] + rest_response
+                ]
+            )
+        )
+        return data
 
-    def retrieve_single_page(self, url, params, page):
+    def retrieve_single_page(self, url, params):
         """Helper function to query a single page and return the data from that page."""
         if params is None:
-            params = {"page": page, "page_size": 1000}
+            params = {"page": "1", "page_size": "1000"}
         else:
-            params["page"] = page
-            params["page_size"] = 1000
-        response = self.castor_get(url=url, params=params, content_type="JSON")
+            params["page"] = "1"
+            params["page_size"] = "1000"
+        response = self.sync_get(url=url, params=params)
         return response
 
-    @castor_exception_handler
+    def retrieve_rest_of_pages(self, url, params, pages):
+        """Helper function to gather all data when there are multiple pages.
+        data_name is that which holds data within ['_embedded'] (ex: 'fields')
+        """
+        if params is None:
+            params = [
+                {"page": str(page), "page_size": "1000"} for page in range(2, pages)
+            ]
+        else:
+            params = [
+                {"page": str(page), "page_size": "1000", **params}
+                for page in range(2, pages)
+            ]
+        responses = asyncio.run(self.async_get(url=url, params=params))
+        return [self.handle_response(response) for response in responses]
+
     def request_size(self, endpoint, base=False):
+        """Helper function for tests to determine how many items there are per given endpoint"""
         if not base:
             url = self.study_url + endpoint
         else:
             url = self.base_url + endpoint
-        response = self.castor_get(url=url, params=None, content_type="JSON")
+        response = self.sync_get(url=url, params={})
         return response["total_items"]
+
+    # Synchronous API Interaction
+    def sync_get(self, url: str, params: dict) -> dict:
+        """Synchronous querying of Castor API with a single get requests."""
+        response = self.client.get(url=url, params=params, timeout=self.timeout)
+        response.raise_for_status()
+        content_type = response.headers.get("content-type")
+        if "json" in content_type:
+            return response.json()
+        elif "csv" in content_type:
+            return self.format_csv_content(response)
+
+    def sync_post(self, url, body):
+        """Helper function to post body to url."""
+        response = self.client.post(url=url, json=body)
+        response.raise_for_status()
+        return response.json()
+
+    def sync_patch(self, url, body):
+        """Helper function to patch body to url."""
+        response = self.client.patch(url=url, json=body)
+        response.raise_for_status()
+        return response.json()
+
+    # Asynchronous API Interaction
+    async def async_get(self, url: str, params: list) -> list:
+        """Queries the Castor EDC API on given url with parameters params.
+        Queries the database once for each parameter dict in the params list.
+        Returns a list of responses.
+
+        :param url: the urls for the request
+        :param params: a list of dicts of the parameters to be send with the request
+        """
+        async with httpx.AsyncClient(
+            headers=self.headers, timeout=self.timeout
+        ) as client:
+            tasks = [client.get(url=url, params=param) for param in params]
+            responses = [
+                await response
+                for response in tqdm(
+                    asyncio.as_completed(tasks),
+                    total=len(tasks),
+                    desc="Async Downloading",
+                )
+            ]
+            return responses
+
+    def handle_response(self, response: httpx.Response) -> dict:
+        """Reads response and handles errors."""
+        response.raise_for_status()
+        content_type = response.headers.get("content-type")
+        if "json" in content_type:
+            return response.json()
+        elif "csv" in content_type:
+            return self.format_csv_content(response)
+
+    # noinspection PyMethodMayBeStatic
+    def format_csv_content(self, response: httpx.Response) -> dict:
+        """Loads CSV content from a Response object."""
+        content_decoded = response.content.decode()
+        content_csv = list(csv.DictReader(content_decoded.splitlines(), delimiter=";"))
+        return {"content": content_csv}

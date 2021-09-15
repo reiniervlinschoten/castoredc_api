@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/study
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api import CastorException
 from castoredc_api.tests.test_api_endpoints.data_models import study_model, user_model
@@ -67,7 +68,7 @@ class TestStudy:
     def test_all_studies_data(self, all_studies):
         """Tests the data of the studies returned by all_studies"""
         # Select a study
-        study = all_studies[7]
+        study = all_studies[2]
         # Check if the right data is returned.
         assert study == self.test_study
 
@@ -78,9 +79,9 @@ class TestStudy:
 
     def test_single_study_fail(self, all_studies, client):
         """Tests failing to return a study"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert str(e.value) == "403 You are not authorized to view this study."
+        assert "403 Client Error: Forbidden for url" in str(e.value)
 
     def test_all_users_success(self, all_studies, client):
         """Tests if the API returns all users belonging to a study"""
@@ -100,9 +101,9 @@ class TestStudy:
 
     def test_all_users_fail(self, all_studies, client):
         """Tests failing to return all users for a study"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_users_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert str(e.value) == "403 Forbidden"
+        assert "403 Client Error: Forbidden for url" in str(e.value)
 
     def test_single_user_success(self, all_studies, client):
         """Tests returning a single user"""
@@ -119,9 +120,9 @@ class TestStudy:
 
     def test_single_user_fail(self, all_studies, client):
         """Tests failing to return a single user"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_user_study(
                 "D234215B-D956-482D-BF17-71F2BB12A2FD",
                 "B23ABCC4-3A53-FB32-7B78-3960CC90FAKE",
             )
-        assert str(e.value) == "404 User not found"
+        assert "404 Client Error: Not Found for url" in str(e.value)

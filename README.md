@@ -114,7 +114,7 @@ from castoredc_api import CastorStudy
 from castoredc_api import import_data
 
 # Create a Study with your credentials
-study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID')
+study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID', 'data.castoredc.com')
 
 # Import labelled study data
 imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
@@ -139,7 +139,9 @@ imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", column_
 #### Data files
 See below for an examples.
 * Dates should be formatted as dd-mm-yyyy.
-*  Use semicolons for fields that allow multiple options (e.g. checkboxes)
+* Datetime should be formatted as dd-mm-yyyy;hh:mm
+* Use semicolons for fields that allow multiple options (e.g. checkboxes)
+* If any value for a column is translated, all values should have a translation mapped (see below)
 
 ##### Labels
 The mg/4 weeks and mg/8 weeks under units will be imported to the med_other_unit fields as they do not match any option of the optiongroup, see link files.
@@ -276,7 +278,7 @@ Only supports many-to-one matching.
 
 ## Prerequisites
 
-1. Python Version >= 3.6
+1. Python Version >= 3.8
 2. See [requirements.txt](requirements.txt)
 
 ## Contributing

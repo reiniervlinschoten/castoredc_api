@@ -5,21 +5,21 @@ class TestDataStructureMap:
         integration_study.map_data()
         # Report
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "110012", "D8DEFEE4-719C-49BB-BC0E-A7F04A874CFA"
             ).instance_of.form_id
             == "89FF2394-0D41-4D4C-89FE-AA9AB287B31E"
         )
         # Survey
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "110006", "33C96866-D519-4A43-826D-4D10EFAFC007"
             ).instance_of.form_id
             == "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
         )
         # Study
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "000007", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF"
             ).instance_of.form_id
             == "1046822E-8C8B-4D8B-B29C-183CAC8B28AF"

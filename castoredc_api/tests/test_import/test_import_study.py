@@ -92,7 +92,7 @@ class TestImportStudy:
                 target="Study",
             )
 
-        assert str(e.value) == self.study_error_during_upload
+        assert "404 Client Error: Not Found for url:" in str(e.value)
 
     def test_import_study_error_during_upload_failed_field(self, import_study):
         """Tests if uploading data with an error during the upload process fails properly"""
@@ -264,7 +264,5 @@ class TestImportStudy:
     study_error = (
         "Non-viable data found in dataset to be imported. See output folder for details"
     )
-
-    study_error_during_upload = "404 Record not found caused at {'record_id': 'b', 'base_bl_date': '17-03-2021', 'base_hb': '7.2', 'fac_V_leiden': '33;17-03-2021', 'onset_stroke': '17-03-2021;15:30', 'onset_trombectomy': '06:33', 'pat_birth_year': '1956', 'pat_sex': '0', 'pat_race': '2', 'his_family': '1;2'}.\n See output folder for successful imports"
 
     study_error_wrong_field = "{'med_name': ['BAD_REQUEST', 'Unsupported field type']} caused at {'record_id': '110001', 'base_bl_date': '16-03-2021', 'base_hb': '8.3', 'fac_V_leiden': '55;16-03-2021', 'onset_stroke': '16-03-2021;07:30', 'onset_trombectomy': '09:25', 'pat_birth_year': '1999', 'pat_sex': '0', 'pat_race': '1', 'his_family': '2;3;4', 'med_name': 'Infliximab'}.\n See output folder for successful imports"

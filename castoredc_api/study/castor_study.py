@@ -18,6 +18,15 @@ from castoredc_api.study.castor_objects.castor_form_instance import CastorFormIn
 from castoredc_api.study.castor_objects.castor_record import CastorRecord
 from castoredc_api.study.castor_objects.castor_step import CastorStep
 from castoredc_api.study.castor_objects.castor_form import CastorForm
+from castoredc_api.study.castor_objects.castor_study_form_instance import (
+    CastorStudyFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_survey_form_instance import (
+    CastorSurveyFormInstance,
+)
+from castoredc_api.study.castor_objects.castor_report_form_instance import (
+    CastorReportFormInstance,
+)
 
 
 class CastorStudy:
@@ -35,33 +44,37 @@ class CastorStudy:
             self.client.link_study(study_id)
 
         # List of all forms in the study - structure
-        self.forms_id = {}
-        self.forms_name = {}
+        self.forms_on_id = {}
+        self.forms_on_name = {}
+        # Dictionary to store the relationship between a form instance and its form ID
+        self.form_links = {}
+
         # List of all records in the study - data
         self.records = {}
 
-        # Dictionary to store the relationship between a form instance and its form ID
-        self.form_links = {}
         # List of dictionaries of optiongroups
-        self.optiongroups = []
+        self.optiongroups = {}
 
         # Container variables to save time querying the database
-        self.__all_report_instances = []
+        self.__all_report_instances = {}
 
     # STRUCTURE MAPPING
     def map_structure(self) -> None:
         """Returns a CastorStudy object with the corresponding variable tree depicting interrelations"""
         # Reset structure & data
-        self.forms_id = {}
-        self.records = {}
+        self.forms_on_id = {}
+        self.forms_on_name = {}
         self.form_links = {}
+        self.records = {}
+        self.optiongroups = {}
+        self.__all_report_instances = {}
 
         # Get the structure from the API
-        print("Downloading study structure.", flush=True)
+        print("Downloading Study Structure.", flush=True)
         data = self.client.export_study_structure()
 
         # Loop over all fields
-        for field in tqdm(data, desc="Mapping Fields"):
+        for field in tqdm(data, desc="Mapping Study Structure"):
             # Check if the form for the field exists, if not, create it
             form = self.get_single_form(field["Form Collection ID"])
             if form is None:
@@ -83,22 +96,21 @@ class CastorStudy:
                 )
                 form.add_step(step)
 
-            # Check if the field exists, if not, create it
-            # This should not be possible as there are no doubles, but checking just in case
-            new_field = step.get_single_field(field["Field ID"])
-            if new_field is None:
-                new_field = CastorField(
-                    field_id=field["Field ID"],
-                    field_name=field["Field Variable Name"],
-                    field_label=field["Field Label"],
-                    field_type=field["Field Type"],
-                    field_required=field["Field Required"],
-                    field_option_group=field["Field Option Group"],
-                    field_order=field["Field Order"],
-                )
-                step.add_field(new_field)
+            # Create the field
+            new_field = CastorField(
+                field_id=field["Field ID"],
+                field_name=field["Field Variable Name"],
+                field_label=field["Field Label"],
+                field_type=field["Field Type"],
+                field_required=field["Field Required"],
+                field_option_group=field["Field Option Group"],
+                field_order=field["Field Order"],
+            )
+            step.add_field(new_field)
 
+        # Map the field dependencies and optiongroups
         self.__map_field_dependencies()
+        self.__load_optiongroups()
 
     # DATA MAPPING
     def map_data(self) -> None:
@@ -106,7 +118,6 @@ class CastorStudy:
         self.map_structure()
         self.update_links()
         self.__link_data()
-        self.__interpret_values()
         self.__load_record_information()
         self.__load_survey_information()
         self.__load_report_information()
@@ -116,52 +127,44 @@ class CastorStudy:
         # Reset form links
         self.form_links = {}
 
-        form_links = {"Survey": {}, "Report": {}}
-
         # Get the name of the survey forms, as the export data can only be linked on name, not on id
-        print("Downloading survey instances.", flush=True)
+        print("Downloading Surveys.", flush=True)
         surveys = self.client.all_surveys()
-        # Link form id to form name
-        for survey in tqdm(surveys, desc="Mapping Survey Instances"):
-            form_links["Survey"][survey["name"]] = survey["id"]
-
-        # Get all report forms that need to be linked
-        report_forms = self.get_all_report_forms()
-        for form in report_forms:
-            form_links["Report"][form.form_id] = []
+        self.form_links["Survey"] = {survey["name"]: survey["id"] for survey in surveys}
 
         # Get all report instances that need to be linked
-        print("Downloading report instances.", flush=True)
+        print("Downloading Report Instances.", flush=True)
 
         # Save this data from the database to save time later
         report_instances = self.client.all_report_instances(archived=0)
         archived_report_instances = self.client.all_report_instances(archived=1)
+
         self.__all_report_instances = {
-            report["id"]: report
-            for report in report_instances + archived_report_instances
+            report_instance["id"]: report_instance
+            for report_instance in report_instances + archived_report_instances
         }
 
-        # Link instance to form on id
-        for instance_id in tqdm(
-            self.__all_report_instances, desc="Mapping Report Instances"
-        ):
-            form_links["Report"][instance_id] = self.__all_report_instances[
-                instance_id
-            ]["_embedded"]["report"]["id"]
-
-        self.form_links = form_links
+        self.form_links["Report"] = {
+            instance_id: self.__all_report_instances[instance_id]["_embedded"][
+                "report"
+            ]["id"]
+            for instance_id in self.__all_report_instances
+        }
 
     # OPTIONGROUPS
-    def load_optiongroups(self) -> None:
+    def __load_optiongroups(self) -> None:
         """Loads all optiongroups through the client"""
         # Get the optiongroups
-        print("Downloading optiongroups.", flush=True)
-        self.optiongroups = self.client.all_field_optiongroups()
+        print("Downloading Optiongroups", flush=True)
+        optiongroups = self.client.all_field_optiongroups()
+        self.optiongroups = {
+            optiongroup["id"]: optiongroup for optiongroup in optiongroups
+        }
 
     # AUXILIARY DATA
     def __load_record_information(self) -> None:
         """Adds auxiliary data to records."""
-        print("Downloading record information.", flush=True)
+        print("Downloading Record Information.", flush=True)
         record_data = self.client.all_records()
         for record_api in tqdm(record_data, desc="Augmenting Record Data"):
             record = self.get_single_record(record_api["id"])
@@ -173,57 +176,40 @@ class CastorStudy:
 
     def __load_survey_information(self) -> None:
         """Adds auxiliary data to survey forms."""
-        print("Downloading survey information.", flush=True)
+        print("Downloading Survey Information.", flush=True)
         survey_package_data = self.client.all_survey_package_instances()
-        survey_form_instances = [
-            instance
-            for instance in self.get_all_form_instances()
-            if instance.instance_of.form_type == "Survey"
-        ]
+        # Turn around the mapping to {survey_instance_id: survey_package}
+        survey_data = {
+            survey["id"]: package
+            for package in survey_package_data
+            for survey in package["_embedded"]["survey_instances"]
+        }
+        survey_form_instances = self.get_all_form_type_form_instances("Survey")
+
         for form_instance in tqdm(survey_form_instances, desc="Augmenting Survey Data"):
-            # TODO: ugly, refactor
-            # Now finds survey_instance_id somewhere far embedded in the data returned by the survey package instances
-            # and returns the overlying survey package instance
-            parent_package = next(
-                (
-                    package
-                    for package in survey_package_data
-                    if form_instance.instance_id
-                    in [
-                        survey["id"]
-                        for survey in package["_embedded"]["survey_instances"]
-                    ]
-                ),
-                None,
-            )
-            form_instance.created_on = datetime.strptime(
-                parent_package["created_on"]["date"], "%Y-%m-%d %H:%M:%S.%f"
+            # Get package information
+            parent_package = survey_data.get(form_instance.instance_id)
+            form_instance.created_on = self.__get_date_or_none(
+                parent_package["created_on"]
             )
             form_instance.sent_on = self.__get_date_or_none(parent_package["sent_on"])
-            form_instance.progress = next(
-                (
-                    survey
-                    for survey in parent_package["_embedded"]["survey_instances"]
-                    if survey["id"] == form_instance.instance_id
-                ),
-                None,
-            )["progress"]
+            form_instance.progress = {
+                survey["id"]: survey["progress"]
+                for survey in parent_package["_embedded"]["survey_instances"]
+            }.get(form_instance.instance_id)
             form_instance.completed_on = self.__get_date_or_none(
                 parent_package["finished_on"]
             )
             form_instance.archived = parent_package["archived"]
-            # TODO: decide if we want this in output, Castor doesn't
-            # form_instance.survey_package_id = parent_package["id"]
+            form_instance.survey_package_id = parent_package["id"]
 
     def __load_report_information(self) -> None:
         """Adds auxiliary data to report forms."""
-        report_instances = [
-            instance
-            for instance in self.get_all_form_instances()
-            if instance.instance_of in self.get_all_report_forms()
-        ]
+        report_instances = self.get_all_form_type_form_instances("Report")
         for form_instance in tqdm(report_instances, "Augmenting Report Data"):
-            report_information = self.__all_report_instances[form_instance.instance_id]
+            report_information = self.__all_report_instances.get(
+                form_instance.instance_id
+            )
             form_instance.created_on = datetime.strptime(
                 report_information["created_on"], "%Y-%m-%d %H:%M:%S"
             )
@@ -247,7 +233,7 @@ class CastorStudy:
     # FIELD DEPENDENCIES
     def __map_field_dependencies(self) -> None:
         """Retrieves all field_dependencies and links them to the right field."""
-        print("Downloading field dependencies.", flush=True)
+        print("Downloading Field Dependencies", flush=True)
         dependencies = self.client.all_field_dependencies()
         # Format to dict of {child_id: {"parent_field": parent_field, "parent_value": value}
         dependencies = {
@@ -257,15 +243,8 @@ class CastorStudy:
             }
             for dep in dependencies
         }
-        for child_id in tqdm(dependencies, desc="Mapping Dependencies"):
+        for child_id in dependencies:
             self.get_single_field(child_id).field_dependency = dependencies[child_id]
-
-    # DATA INTERPRETATION
-    def __interpret_values(self) -> None:
-        """Interprets all datapoints in the study in preparation of data export."""
-        self.load_optiongroups()
-        for field in tqdm(self.get_all_data_points(), desc="Interpreting Values"):
-            field.interpret()
 
     # DATA ANALYSIS
     def export_to_dataframe(self) -> dict:
@@ -332,7 +311,7 @@ class CastorStudy:
         self, dataframe: pd.DataFrame, name: str, now: str, date_format: str
     ) -> str:
         """Exports a single dataframe to csv and returns the destination path."""
-        filename = re.sub("[^\w\-_\. ]", "_", name)
+        filename = re.sub(r"[^\w\-_\. ]", "_", name)
         path = pathlib.Path(
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
@@ -348,12 +327,11 @@ class CastorStudy:
         self, dataframe: pd.DataFrame, name: str, now: str
     ) -> str:
         """Exports a single dataframe to feather and returns the destination path."""
-        # TODO: reset_index() necessary?
-        filename = re.sub("[^\w\-_\. ]", "_", name)
+        filename = re.sub(r"[^\w\-_\. ]", "_", name)
         path = pathlib.Path(
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
-        dataframe.reset_index().to_feather(
+        dataframe.to_feather(
             path,
             compression="uncompressed",
         )
@@ -362,20 +340,17 @@ class CastorStudy:
     # HELPERS
     def get_single_optiongroup(self, optiongroup_id: str) -> Optional[Dict]:
         """Get a single optiongroup based on id."""
-        return next(
-            (group for group in self.optiongroups if group["id"] == optiongroup_id),
-            None,
-        )
+        return self.optiongroups.get(optiongroup_id)
 
     def add_form(self, form: CastorForm) -> None:
         """Add a CastorForm to the study."""
-        self.forms_id[form.form_id] = form
-        self.forms_name[form.form_name] = form
+        self.forms_on_id[form.form_id] = form
+        self.forms_on_name[form.form_name] = form
         form.study = self
 
     def get_all_forms(self) -> List[CastorForm]:
         """Get all linked CastorForms."""
-        return list(self.forms_id.values())
+        return list(self.forms_on_id.values())
 
     def get_all_survey_forms(self) -> List[CastorForm]:
         """Gets all survey CastorForms."""
@@ -390,18 +365,27 @@ class CastorStudy:
         forms = self.get_all_forms()
         return [form for form in forms if form.form_type == form_type]
 
-    def get_form_instances_by_form(self, form: CastorForm) -> List[CastorFormInstance]:
+    def get_all_form_type_form_instances(
+        self, form_type: str
+    ) -> List[CastorFormInstance]:
+        """Gets all CastorForms of form_type."""
+        instances = self.get_all_form_instances()
+        return [
+            instance for instance in instances if instance.instance_type == form_type
+        ]
+
+    def get_form_instances_by_form(self, form: CastorForm) -> List:
         """Gets all CastorFormInstances that are an instance of the given Form"""
         instances = self.get_all_form_instances()
         return [instance for instance in instances if instance.instance_of == form]
 
     def get_single_form(self, form_id: str) -> Optional[CastorForm]:
         """Get a single CastorForm based on id."""
-        return self.forms_id.get(form_id)
+        return self.forms_on_id.get(form_id)
 
     def get_single_form_name(self, form_name: str) -> Optional[CastorForm]:
         """Get a single CastorForm based on id."""
-        return self.forms_name.get(form_name)
+        return self.forms_on_name.get(form_name)
 
     def add_record(self, record: CastorRecord) -> None:
         """Add a CastorRecord to the study."""
@@ -420,62 +404,56 @@ class CastorStudy:
         """Get all linked CastorSteps."""
         steps = list(
             itertools.chain.from_iterable(
-                [self.forms_id[_form].steps for _form in self.forms_id]
+                [self.forms_on_id[_form].get_all_steps() for _form in self.forms_on_id]
             )
         )
         return steps
 
     def get_single_step(self, step_id_or_name: str) -> Optional[CastorStep]:
         """Get a single CastorStep based on id or name."""
-        steps = self.get_all_steps()
-        return next(
-            (
-                step
-                for step in steps
-                if (
-                    step.step_id == step_id_or_name or step.step_name == step_id_or_name
-                )
-            ),
-            None,
-        )
+        for form in self.get_all_forms():
+            # Search for step in each form
+            step = form.get_single_step(step_id_or_name)
+            # If step found (id and name are both unique)
+            if step is not None:
+                return step
+        # If step not found
+        return None
 
     def get_all_fields(self) -> List[CastorField]:
         """Get all linked CastorFields."""
         fields = list(
             itertools.chain.from_iterable(
-                [self.forms_id[form].get_all_fields() for form in self.forms_id]
+                [self.forms_on_id[form].get_all_fields() for form in self.forms_on_id]
             )
         )
         return fields
 
     def get_single_field(self, field_id_or_name: str) -> Optional[CastorField]:
-        """Get a single CastorField based on id."""
-        fields = self.get_all_fields()
-        return next(
-            (
-                field
-                for field in fields
-                if (
-                    field.field_id == field_id_or_name
-                    or field.field_name == field_id_or_name
-                )
-            ),
-            None,
-        )
+        """Get a single CastorField based on id or name."""
+        for form in self.get_all_forms():
+            for step in form.get_all_steps():
+                # Search for field in each step in each form
+                field = step.get_single_field(field_id_or_name)
+                # If field found (id and name are both unique)
+                if field is not None:
+                    return field
+        # If field not found
+        return None
 
     def get_all_study_fields(self) -> List[CastorField]:
         """Gets all linked study CastorFields."""
-        return self.get_all_form_type_fields("Study")
+        return self.__get_all_form_type_fields("Study")
 
     def get_all_survey_fields(self) -> List[CastorField]:
         """Gets all linked survey CastorFields."""
-        return self.get_all_form_type_fields("Survey")
+        return self.__get_all_form_type_fields("Survey")
 
     def get_all_report_fields(self) -> List[CastorField]:
         """Gets all linked report CastorFields."""
-        return self.get_all_form_type_fields("Report")
+        return self.__get_all_form_type_fields("Report")
 
-    def get_all_form_type_fields(self, form_type: str) -> List[CastorField]:
+    def __get_all_form_type_fields(self, form_type: str) -> List[CastorField]:
         """Gets all linked CastorFields belonging to form of form_type."""
         fields = self.get_all_fields()
         return [field for field in fields if field.step.form.form_type == form_type]
@@ -484,26 +462,22 @@ class CastorStudy:
         """Returns all form instances"""
         form_instances = list(
             itertools.chain.from_iterable(
-                [self.records[_record].form_instances for _record in self.records]
+                [
+                    list(self.records[_record].form_instances_ids.values())
+                    for _record in self.records
+                ]
             )
         )
         return form_instances
 
-    def get_single_form_instance(
+    def get_single_form_instance_on_id(
         self,
         record_id: str,
         instance_id: str,
     ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
-        record = self.get_single_record(record_id)
-        all_form_instances = record.get_all_form_instances()
-        return next(
-            (
-                instance
-                for instance in all_form_instances
-                if instance.instance_id == instance_id
-            ),
-            None,
+        return self.get_single_record(record_id).get_single_form_instance_on_id(
+            instance_id
         )
 
     def get_all_data_points(self) -> List["CastorDataPoint"]:
@@ -522,7 +496,7 @@ class CastorStudy:
         self, record_id: str, form_instance_id: str, field_id_or_name: str
     ) -> Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
-        form_instance = self.get_single_form_instance(record_id, form_instance_id)
+        form_instance = self.get_single_form_instance_on_id(record_id, form_instance_id)
         return form_instance.get_single_data_point(field_id_or_name)
 
     def instance_of_form(
@@ -542,7 +516,7 @@ class CastorStudy:
     def __link_data(self) -> None:
         """Links the study data"""
         # Get the data from the API
-        print("Downloading study data.", flush=True)
+        print("Downloading Study Data.", flush=True)
         data = self.client.export_study_data()
 
         # Loop over all fields
@@ -561,28 +535,43 @@ class CastorStudy:
                     instance_of_field = self.get_single_field(field["Field ID"])
                     instance_of_form = instance_of_field.step.form.form_id
                     form_instance_id = instance_of_form
-                    form_instance = record.get_single_form_instance(form_instance_id)
+                    form_instance = record.get_single_form_instance_on_id(
+                        form_instance_id
+                    )
                     if form_instance is None:
-                        form_instance = CastorFormInstance(
+                        form_instance = CastorStudyFormInstance(
                             instance_id=form_instance_id,
-                            instance_type=field["Form Type"],
                             name_of_form=field["Form Instance Name"],
                             study=self,
                         )
                         record.add_form_instance(form_instance)
 
-                else:
-                    form_instance = record.get_single_form_instance(
+                elif field["Form Type"] == "Report":
+                    form_instance = record.get_single_form_instance_on_id(
                         field["Form Instance ID"]
                     )
                     if form_instance is None:
-                        form_instance = CastorFormInstance(
+                        form_instance = CastorReportFormInstance(
                             instance_id=field["Form Instance ID"],
-                            instance_type=field["Form Type"],
                             name_of_form=field["Form Instance Name"],
                             study=self,
                         )
                         record.add_form_instance(form_instance)
+                elif field["Form Type"] == "Survey":
+                    form_instance = record.get_single_form_instance_on_id(
+                        field["Form Instance ID"]
+                    )
+                    if form_instance is None:
+                        form_instance = CastorSurveyFormInstance(
+                            instance_id=field["Form Instance ID"],
+                            name_of_form=field["Form Instance Name"],
+                            study=self,
+                        )
+                        record.add_form_instance(form_instance)
+                else:
+                    raise CastorException(
+                        f"Form Type: {field['Form Type']} does not exist."
+                    )
 
                 # Check if the field exists, if not, create it
                 # This should not be possible as there are no doubles, but checking just in case
@@ -926,7 +915,6 @@ class CastorStudy:
         # Get all records
         records = self.get_all_records()
         data = []
-        # TODO: Add empty surveys, these are not found because they have no datapoints.
 
         for record in records:
             # Get all data points and select only relevant ones
@@ -969,7 +957,6 @@ class CastorStudy:
         # Get all records
         records = self.get_all_records()
         data = []
-        # TODO: Add empty reports, these are not found because they have no datapoints.
 
         for record in records:
             # Get all data points and select only relevant ones

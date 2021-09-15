@@ -111,8 +111,7 @@ class TestImportReport:
                 target="Report",
                 target_name="Medication",
             )
-
-        assert str(e.value) == self.report_error_during_upload
+        assert "404 Client Error: Not Found for url:" in str(e.value)
 
     report_success = {
         "110001": [
@@ -282,8 +281,4 @@ class TestImportReport:
 
     report_error = (
         "Non-viable data found in dataset to be imported. See output folder for details"
-    )
-
-    report_error_during_upload = (
-        "404 Record not found caused at b.\n See output folder for successful imports"
     )

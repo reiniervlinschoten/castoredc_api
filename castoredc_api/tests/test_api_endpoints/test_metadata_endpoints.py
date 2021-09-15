@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/metadata
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import metadata_model
 from castoredc_api import CastorException
@@ -68,6 +69,6 @@ class TestMetadata:
 
     def test_single_metadata_failure(self, client):
         """Tests if single metadata returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_metadata("FAKE5E29-02BB-4C90-AA02-5F27A300D99E")
-        assert str(e.value) == "404 Entity not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

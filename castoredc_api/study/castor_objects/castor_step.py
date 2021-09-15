@@ -1,4 +1,4 @@
-from typing import List, Any, Union
+from typing import List, Any, Union, Optional
 from castoredc_api.study.castor_objects.castor_field import CastorField
 
 
@@ -11,30 +11,26 @@ class CastorStep:
         self.step_id = step_id
         self.step_order = int(step_order)
         self.form = None
-        self.fields = []
+        self.fields_on_id = {}
+        self.fields_on_name = {}
 
     def add_field(self, field: CastorField) -> None:
         """Adds a CastorField to the step."""
-        self.fields.append(field)
+        self.fields_on_id[field.field_id] = field
+        self.fields_on_name[field.field_name] = field
         field.step = self
 
     def get_all_fields(self) -> List[CastorField]:
         """Returns all linked CastorFields."""
-        return self.fields
+        return list(self.fields_on_id.values())
 
-    def get_single_field(self, field_id_or_name: str) -> CastorField:
+    def get_single_field(self, field_id_or_name: str) -> Optional[CastorField]:
         """Returns a linked CastorField based on id or name."""
-        return next(
-            (
-                field
-                for field in self.fields
-                if (
-                    field.field_id == field_id_or_name
-                    or field.field_name == field_id_or_name
-                )
-            ),
-            None,
-        )
+        field = self.fields_on_id.get(field_id_or_name)
+        if field is None:
+            return self.fields_on_name.get(field_id_or_name)
+        else:
+            return field
 
     # Standard Operators
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:

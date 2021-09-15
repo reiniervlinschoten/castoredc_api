@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/query
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import query_model
 from castoredc_api import CastorException
@@ -96,6 +97,6 @@ class TestQuery:
 
     def test_single_query_failure(self, client):
         """Tests if single_query returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_query("FAKE9130-EBDA-446A-9E21-35FE590C4DE3")
-        assert str(e.value) == "404 Query not found."
+        assert "404 Client Error: Not Found for url" in str(e.value)

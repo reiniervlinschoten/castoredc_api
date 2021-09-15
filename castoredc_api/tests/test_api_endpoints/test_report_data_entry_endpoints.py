@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/report-data-entry
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import (
     report_data_point_extended_model,
@@ -25,13 +26,13 @@ class TestReportDataEntry:
         "field_id": "AFD46D4F-5C17-4B9B-BE19-8A5A702601C1",
         "report_instance_id": "2711B1EF-6118-4EBD-9858-47E4830C4EC5",
         "value": "1",
-        "updated_on": "2020-08-14 12:55:46",
+        "updated_on": "2020-08-14 14:55:46",
         "_embedded": {
             "record": {
                 "id": "000004",
                 "record_id": "000004",
                 "ccr_patient_id": "",
-                "last_opened_step": "1F1A5F3B-FD1A-45A6-9E0F-327F2EC68983",
+                "last_opened_step": "FFF23B2C-AEE6-4304-9CC4-9C7C431D5387",
                 "progress": 17,
                 "status": "open",
                 "archived": False,
@@ -162,11 +163,11 @@ class TestReportDataEntry:
 
     def test_single_report_instance_all_fields_record_fail(self, client):
         """Tests failing to return a single report instance"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report_instance_all_fields_record(
                 "00FAKE", "2711B1EF-6118-4EBD-9858-47E4830C4EC5"
             )
-        assert str(e.value) == "404 The record you requested data for does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_report_instance_single_field_record_success(self, client):
         """Tests returning a single field from a report instance"""
@@ -179,13 +180,13 @@ class TestReportDataEntry:
 
     def test_single_report_instance_single_field_record_fail(self, client):
         """Tests failing to return a single field from a report instance"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report_instance_single_field_record(
                 "000004",
                 "2711B1EF-6118-4EBD-9858-47E4830C4EC5",
                 "AFD46D4F-5C17-4B9B-BE19-8A5A7026FAKE",
             )
-        assert str(e.value) == "404 The field you are interacting with does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_update_report_instance_single_field_record_success(self, client):
         """Tests updating a single field from a report instance"""
@@ -230,7 +231,7 @@ class TestReportDataEntry:
         # Update the field
         change_reason = "Testing API"
 
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.update_report_instance_single_field_record(
                 "000002",
                 "34963D7D-D82A-43B3-B24F-5F184CFD440E",
@@ -238,7 +239,7 @@ class TestReportDataEntry:
                 change_reason,
                 post_value,
             )
-        assert str(e.value) == "404 The field you are interacting with does not exist."
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
         # Check if changing actually failed
         new_value = client.single_report_instance_single_field_record(

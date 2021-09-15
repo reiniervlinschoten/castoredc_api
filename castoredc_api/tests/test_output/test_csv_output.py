@@ -56,6 +56,9 @@ class TestCSVOutput:
             }
         ]
 
+    @pytest.mark.xfail(
+        reason="Misses Empty Surveys - Awaiting Castor Ticket", strict=True
+    )
     def test_qol_survey_export(self, output_data):
         """Tests if survey export is correct."""
         diff = compare(
@@ -79,9 +82,11 @@ class TestCSVOutput:
                 "changes": {"VAS": ["85.0", "85"]},
             }
         ]
-        pytest.xfail("Need to add empty surveys in export data")
         assert diff["added"] == []
 
+    @pytest.mark.xfail(
+        reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True
+    )
     def test_medication_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(
@@ -100,7 +105,6 @@ class TestCSVOutput:
         assert diff["columns_added"] == []
         assert diff["columns_removed"] == []
         assert diff["changed"] == []
-        pytest.xfail("Need to add empty reports in export data")
         assert diff["added"] == []
 
     def test_unscheduled_visit_report_export(self, output_data):
@@ -121,7 +125,6 @@ class TestCSVOutput:
         assert diff["columns_added"] == []
         assert diff["columns_removed"] == []
         assert diff["changed"] == []
-        pytest.xfail("Need to add empty reports in export data")
         assert diff["added"] == []
 
     def test_comorbidities_report_export(self, output_data):
@@ -142,9 +145,11 @@ class TestCSVOutput:
         assert diff["columns_added"] == []
         assert diff["columns_removed"] == []
         assert diff["changed"] == []
-        pytest.xfail("Need to add empty reports in export data")
         assert diff["added"] == []
 
+    @pytest.mark.xfail(
+        reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True
+    )
     def test_adverse_event_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(
@@ -163,5 +168,4 @@ class TestCSVOutput:
         assert diff["columns_added"] == []
         assert diff["columns_removed"] == []
         assert diff["changed"] == []
-        pytest.xfail("Need to add empty reports in export data")
         assert diff["added"] == []

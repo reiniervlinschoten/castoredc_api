@@ -9,6 +9,8 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 import random
 
+from httpx import HTTPStatusError
+
 from castoredc_api.tests.test_api_endpoints.data_models import report_instance_model
 from castoredc_api import CastorException
 
@@ -95,11 +97,11 @@ class TestReportInstance:
         )
         assert report_instance == self.test_report_instance
 
-    def test_single_report_instance_failure(self, client):
+    def test_single_report_instance_fail(self, client):
         """Tests if single report_instance returns an error."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_report_instance("FAKEE5BD-E728-4575-B467-142EA83813DE")
-        assert "The request you made was malformed" in str(e.value)
+        assert "400 Client Error: Bad Request for url:" in str(e.value)
 
     def test_all_report_instances_record_success(self, client):
         """Tests if the model that is returned if filtered on record is proper."""
@@ -115,9 +117,9 @@ class TestReportInstance:
 
     def test_all_report_instances_record_fail(self, client):
         """Tests if a proper error is thrown when the wrong record is filtered on."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_report_instances_record("FAKE01")
-        assert "The request you made was malformed" in str(e.value)
+        assert "404 Client Error: Not Found for url:" in str(e.value)
 
     def test_single_report_instance_record_success(self, client):
         """Tests if the model of a single report after filtering on record is right"""
@@ -134,12 +136,12 @@ class TestReportInstance:
 
     def test_single_report_instance_record_fail(self, client):
         """Tests if filtering on a non-existent report throws an error for a filtered record."""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             # Query a report belonging to a different record.
             client.single_report_instance_record(
                 "000001", "61870790-F83E-4B1B-AF09-6F2CBA4632EA"
             )
-        assert str(e.value) == "404 Report instance not found"
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_create_report_instance_record_success(self, client):
         """Tests creating a report for a record."""
@@ -168,9 +170,9 @@ class TestReportInstance:
         report_instance = create_report_instance("000004", fake=True)
 
         # Create the record
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.create_report_instance_record(**report_instance)
-        assert "The request you made was malformed" in str(e.value)
+        assert "400 Client Error: Bad Request for url:" in str(e.value)
 
         # Test that nothing changed
         record_reports = client.all_report_instances_record("000004")

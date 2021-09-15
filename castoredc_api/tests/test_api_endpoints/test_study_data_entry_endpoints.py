@@ -7,6 +7,7 @@ Link: https://data.castoredc.com/api#/report-data-entry
 https://orcid.org/0000-0003-3052-596X
 """
 import pytest
+from httpx import HTTPStatusError
 
 from castoredc_api import CastorException
 from castoredc_api.tests.test_api_endpoints.data_models import (
@@ -22,13 +23,13 @@ class TestStudyDataEntry:
         "field_variable_name": "ic_versions",
         "field_id": "28D1A17B-51C3-4BDC-A604-7B2F6D5D5924",
         "value": "1",
-        "updated_on": "2019-11-04 15:47:38",
+        "updated_on": "2019-11-04 16:47:38",
         "_embedded": {
             "record": {
                 "id": "000004",
                 "record_id": "000004",
                 "ccr_patient_id": "",
-                "last_opened_step": "1F1A5F3B-FD1A-45A6-9E0F-327F2EC68983",
+                "last_opened_step": "FFF23B2C-AEE6-4304-9CC4-9C7C431D5387",
                 "progress": 17,
                 "status": "open",
                 "archived": False,
@@ -125,9 +126,9 @@ class TestStudyDataEntry:
 
     def test_all_study_data_record_fail(self, client):
         """Test failing to return all study_data_points for a record"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.all_study_fields_record("00FAKE")
-        assert str(e.value) == "404 The record you requested data for does not exist"
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_study_data_point_record_success(self, client):
         """Tests returning a single study data point for a record"""
@@ -138,11 +139,11 @@ class TestStudyDataEntry:
 
     def test_single_study_data_point_record_fail(self, client):
         """Tests failing to return a single study data point for a record"""
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.single_study_field_record(
                 "000004", "28D1A17B-51C3-4BDC-A604-7B2F6D5DFAKE"
             )
-        assert str(e.value) == "500 The application has encountered an error"
+        assert "500 Server Error: Internal Server Error for url:" in str(e.value)
 
     def test_update_single_study_field_record_success(self, client):
         """Tests changing a single study field."""
@@ -153,7 +154,7 @@ class TestStudyDataEntry:
         # Update the field
         change_reason = "Testing API"
         client.update_single_study_field_record(
-            record, field, post_value, change_reason
+            record, field, change_reason, post_value
         )
 
         # Check if changing worked
@@ -170,11 +171,12 @@ class TestStudyDataEntry:
         # Update the field
         change_reason = "Testing API"
 
-        with pytest.raises(CastorException) as e:
+        with pytest.raises(HTTPStatusError) as e:
             client.update_single_study_field_record(
-                record, "FAKE" + field + "FAKE", post_value, change_reason
+                record, "FAKE" + field + "FAKE", change_reason, post_value
             )
-        assert str(e.value) == "500 Could not create data point(s)"
+
+        assert "500 Server Error: Internal Server Error for url:" in str(e.value)
 
         new_value = client.single_study_field_record(record, field)
         assert new_value["value"] == old_value["value"]

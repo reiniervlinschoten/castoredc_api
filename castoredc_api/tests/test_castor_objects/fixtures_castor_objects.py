@@ -6,8 +6,13 @@ import castoredc_api.study.castor_objects.castor_field as castor_field
 import castoredc_api.study.castor_objects.castor_form as castor_form
 import castoredc_api.study.castor_objects.castor_step as castor_step
 import castoredc_api.study.castor_study as castor_study
-import castoredc_api.study.castor_objects.castor_form_instance as castor_form_instance
-from castoredc_api.study.castor_objects import castor_data_point
+from castoredc_api.study.castor_objects import (
+    castor_data_point,
+    castor_report_form_instance,
+    castor_survey_form_instance,
+    castor_study_form_instance,
+    castor_form_instance,
+)
 
 from castoredc_api.tests.test_castor_objects.helpers_castor_objects import (
     link_study_with_forms,
@@ -28,16 +33,16 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-SURVEY-FIELD-ID1",
         field_name="Survey Field 1a1",
         field_label="This is the first survey field",
-        field_type="checkbox",
+        field_type="test",
         field_required="0",
-        field_option_group="FAKE-OPTION-GROUP-ID1",
+        field_option_group=None,
         field_order="1",
     )
     field2 = castor_field.CastorField(
         field_id="FAKE-SURVEY-FIELD-ID2",
         field_name="Survey Field 1a2",
         field_label="This is the second survey field",
-        field_type="string",
+        field_type="test",
         field_required="0",
         field_option_group=None,
         field_order="1",
@@ -46,7 +51,7 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-SURVEY-FIELD-ID3",
         field_name="Survey Field 1a3",
         field_label="This is the third survey field",
-        field_type="calculation",
+        field_type="test",
         field_required="0",
         field_option_group=None,
         field_order="1",
@@ -55,7 +60,7 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-SURVEY-FIELD-ID4",
         field_name="Survey Field 1b1",
         field_label="This is the first survey field",
-        field_type="string",
+        field_type="test",
         field_required="0",
         field_option_group=None,
         field_order="1",
@@ -64,7 +69,7 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-SURVEY-FIELD-ID5",
         field_name="Survey Field 1c1",
         field_label="This is the first survey field",
-        field_type="number",
+        field_type="test",
         field_required="0",
         field_option_group=None,
         field_order="1",
@@ -73,7 +78,7 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-SURVEY-FIELD-ID6",
         field_name="Survey Field 1c2",
         field_label="This is the second survey field",
-        field_type="number",
+        field_type="test",
         field_required="0",
         field_option_group=None,
         field_order="1",
@@ -82,34 +87,34 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-REPORT-FIELD-ID1",
         field_name="Report Field 1a1",
         field_label="This is the first report field",
-        field_type="radio",
+        field_type="test",
         field_required="1",
-        field_option_group="FAKE-OPTION-GROUP-ID2",
+        field_option_group=None,
         field_order="1",
     )
     field8 = castor_field.CastorField(
         field_id="FAKE-REPORT-FIELD-ID2",
         field_name="Report Field 1a2",
         field_label="This is the second report field",
-        field_type="checkbox",
+        field_type="test",
         field_required="1",
-        field_option_group="FAKE-OPTION-GROUP-ID3",
+        field_option_group=None,
         field_order="1",
     )
     field9 = castor_field.CastorField(
         field_id="FAKE-REPORT-FIELD-ID3",
         field_name="Report Field 1b1",
         field_label="This is the first report field",
-        field_type="checkbox",
+        field_type="test",
         field_required="1",
-        field_option_group="FAKE-OPTION-GROUP-ID4",
+        field_option_group=None,
         field_order="1",
     )
     field10 = castor_field.CastorField(
         field_id="FAKE-REPORT-FIELD-ID4",
         field_name="Report Field 2a1",
         field_label="This is the first report field",
-        field_type="number",
+        field_type="test",
         field_required="1",
         field_option_group=None,
         field_order="1",
@@ -118,7 +123,7 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-REPORT-FIELD-ID5",
         field_name="Report Field 2a2",
         field_label="This is the second report field",
-        field_type="calculation",
+        field_type="test",
         field_required="1",
         field_option_group=None,
         field_order="1",
@@ -136,16 +141,16 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-REPORT-FIELD-ID7",
         field_name="Report Field 2a4",
         field_label="This is the fourth report field",
-        field_type="checkbox",
+        field_type="test",
         field_required="1",
-        field_option_group="FAKE-OPTION-GROUP-ID5",
+        field_option_group=None,
         field_order="1",
     )
     field14 = castor_field.CastorField(
         field_id="FAKE-STUDY-FIELD-ID1",
         field_name="Study Field 1a1",
         field_label="This is the first study field",
-        field_type="calculation",
+        field_type="test",
         field_required="1",
         field_option_group=None,
         field_order="1",
@@ -154,7 +159,7 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-STUDY-FIELD-ID2",
         field_name="Study Field 1b1",
         field_label="This is the first study field",
-        field_type="datetime",
+        field_type="test",
         field_required="1",
         field_option_group=None,
         field_order="1",
@@ -163,7 +168,7 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-STUDY-FIELD-ID3",
         field_name="Study Field 1b2",
         field_label="This is the second study field",
-        field_type="number",
+        field_type="test",
         field_required="1",
         field_option_group=None,
         field_order="1",
@@ -172,9 +177,9 @@ def fields() -> List[castor_field.CastorField]:
         field_id="FAKE-STUDY-FIELD-ID4",
         field_name="Study Field 1c1",
         field_label="This is the first study field",
-        field_type="checkbox",
+        field_type="test",
         field_required="0",
-        field_option_group="FAKE-OPTION-GROUP-ID1",
+        field_option_group=None,
         field_order="1",
     )
     return [
@@ -231,35 +236,35 @@ def data_points(
 ) -> List[castor_data_point.CastorDataPoint]:
     """Creates CastorDataPoints for use in tests."""
     data_point1 = castor_data_point.CastorDataPoint(
-        "FAKE-SURVEY-FIELD-ID1", 2, complete_study, "2021-01-15 13:39:47"
+        "FAKE-SURVEY-FIELD-ID1", "2", complete_study, "2021-01-15 13:39:47"
     )
     data_point2 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID2", "test", complete_study, "2021-01-15 13:39:47"
     )
     data_point3 = castor_data_point.CastorDataPoint(
-        "FAKE-SURVEY-FIELD-ID3", 1, complete_study, "2021-01-15 13:39:47"
+        "FAKE-SURVEY-FIELD-ID3", "1", complete_study, "2021-01-15 13:39:47"
     )
 
     data_point4 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID4", "test", complete_study, "2021-01-15 13:39:47"
     )
     data_point5 = castor_data_point.CastorDataPoint(
-        "FAKE-SURVEY-FIELD-ID5", 2, complete_study, "2021-01-15 13:39:47"
+        "FAKE-SURVEY-FIELD-ID5", "2", complete_study, "2021-01-15 13:39:47"
     )
 
     data_point6 = castor_data_point.CastorDataPoint(
-        "FAKE-REPORT-FIELD-ID1", 13, complete_study, "2021-01-15 13:39:47"
+        "FAKE-REPORT-FIELD-ID1", "13", complete_study, "2021-01-15 13:39:47"
     )
     data_point7 = castor_data_point.CastorDataPoint(
-        "FAKE-REPORT-FIELD-ID2", -12, complete_study, "2021-01-15 13:39:47"
+        "FAKE-REPORT-FIELD-ID2", "-12", complete_study, "2021-01-15 13:39:47"
     )
 
     data_point8 = castor_data_point.CastorDataPoint(
-        "FAKE-REPORT-FIELD-ID3", 0, complete_study, "2021-01-15 13:39:47"
+        "FAKE-REPORT-FIELD-ID3", "0", complete_study, "2021-01-15 13:39:47"
     )
 
     data_point9 = castor_data_point.CastorDataPoint(
-        "FAKE-SURVEY-FIELD-ID6", 2, complete_study, "2021-01-15 13:39:47"
+        "FAKE-SURVEY-FIELD-ID6", "2", complete_study, "2021-01-15 13:39:47"
     )
 
     data_point10 = castor_data_point.CastorDataPoint(
@@ -267,24 +272,27 @@ def data_points(
     )
 
     data_point11 = castor_data_point.CastorDataPoint(
-        "FAKE-STUDY-FIELD-ID1", 12, complete_study, "2021-01-15 13:39:47"
+        "FAKE-STUDY-FIELD-ID1", "12", complete_study, "2021-01-15 13:39:47"
     )
     data_point12 = castor_data_point.CastorDataPoint(
-        "FAKE-STUDY-FIELD-ID2", 34, complete_study, "2021-01-15 13:39:47"
+        "FAKE-STUDY-FIELD-ID2",
+        "01-12-2031;12:53",
+        complete_study,
+        "2021-01-15 13:39:47",
     )
 
     data_point13 = castor_data_point.CastorDataPoint(
-        "FAKE-STUDY-FIELD-ID3", 2, complete_study, "2021-01-15 13:39:47"
+        "FAKE-STUDY-FIELD-ID3", "2", complete_study, "2021-01-15 13:39:47"
     )
     data_point14 = castor_data_point.CastorDataPoint(
         "FAKE-STUDY-FIELD-ID4", "test", complete_study, "2021-01-15 13:39:47"
     )
 
     data_point15 = castor_data_point.CastorDataPoint(
-        "FAKE-SURVEY-FIELD-ID3", 10, complete_study, "2021-01-15 13:39:47"
+        "FAKE-SURVEY-FIELD-ID3", "10", complete_study, "2021-01-15 13:39:47"
     )
     data_point16 = castor_data_point.CastorDataPoint(
-        "FAKE-SURVEY-FIELD-ID2", 13, complete_study, "2021-01-15 13:39:47"
+        "FAKE-SURVEY-FIELD-ID2", "13", complete_study, "2021-01-15 13:39:47"
     )
     data_point17 = castor_data_point.CastorDataPoint(
         "FAKE-SURVEY-FIELD-ID1", "test", complete_study, "2021-01-15 13:39:47"
@@ -316,36 +324,36 @@ def form_instances(
     complete_study: castor_study.CastorStudy,
 ) -> List[castor_form_instance.CastorFormInstance]:
     """Creates CastorFormInstances for use in tests."""
-    form_instance1 = castor_form_instance.CastorFormInstance(
-        "FAKE-SURVEY-INSTANCE-ID1", "Survey", "Fake Survey", complete_study
+    form_instance1 = castor_survey_form_instance.CastorSurveyFormInstance(
+        "FAKE-SURVEY-INSTANCE-ID1", "Fake Survey", complete_study
     )
-    form_instance2 = castor_form_instance.CastorFormInstance(
-        "FAKE-SURVEY-INSTANCE-ID2", "Survey", "Fake Survey", complete_study
+    form_instance2 = castor_survey_form_instance.CastorSurveyFormInstance(
+        "FAKE-SURVEY-INSTANCE-ID2", "Fake Survey", complete_study
     )
-    form_instance3 = castor_form_instance.CastorFormInstance(
-        "FAKE-REPORT-INSTANCE-ID1", "Report", "Report Name #91298", complete_study
+    form_instance3 = castor_report_form_instance.CastorReportFormInstance(
+        "FAKE-REPORT-INSTANCE-ID1", "Report Name #91298", complete_study
     )
-    form_instance4 = castor_form_instance.CastorFormInstance(
-        "FAKE-REPORT-INSTANCE-ID2", "Report", "Report Name #90212", complete_study
+    form_instance4 = castor_report_form_instance.CastorReportFormInstance(
+        "FAKE-REPORT-INSTANCE-ID2", "Report Name #90212", complete_study
     )
 
-    form_instance5 = castor_form_instance.CastorFormInstance(
-        "FAKE-SURVEY-INSTANCE-ID3", "Survey", "Fake Survey", complete_study
+    form_instance5 = castor_survey_form_instance.CastorSurveyFormInstance(
+        "FAKE-SURVEY-INSTANCE-ID3", "Fake Survey", complete_study
     )
-    form_instance6 = castor_form_instance.CastorFormInstance(
-        "FAKE-SURVEY-INSTANCE-ID4", "Survey", "Fake Survey", complete_study
+    form_instance6 = castor_survey_form_instance.CastorSurveyFormInstance(
+        "FAKE-SURVEY-INSTANCE-ID4", "Fake Survey", complete_study
     )
 
     # Data export does not return names of study form instance, but merely that field belongs to study
-    form_instance7 = castor_form_instance.CastorFormInstance(
-        "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study", "Baseline", complete_study
+    form_instance7 = castor_study_form_instance.CastorStudyFormInstance(
+        "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Baseline", complete_study
     )
-    form_instance8 = castor_form_instance.CastorFormInstance(
-        "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Study", "Baseline", complete_study
+    form_instance8 = castor_study_form_instance.CastorStudyFormInstance(
+        "FAKE-STUDYIDFAKE-STUDYIDFAKE-STUDYID", "Baseline", complete_study
     )
 
-    form_instance9 = castor_form_instance.CastorFormInstance(
-        "FAKE-SURVEY-INSTANCE-ID5", "Survey", "Fake Survey", complete_study
+    form_instance9 = castor_survey_form_instance.CastorSurveyFormInstance(
+        "FAKE-SURVEY-INSTANCE-ID5", "Fake Survey", complete_study
     )
     return [
         form_instance1,

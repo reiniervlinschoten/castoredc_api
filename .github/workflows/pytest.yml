@@ -3,8 +3,7 @@ name: pytest
 'on':
   push:
     branches:
-      - main
-      - github_actions
+      - '**'
     tags:
       - '**'
   pull_request:

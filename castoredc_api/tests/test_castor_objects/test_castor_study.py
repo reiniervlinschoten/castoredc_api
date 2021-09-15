@@ -53,11 +53,11 @@ class TestCastorStudy:
     def test_study_add_form(self):
         """Tests adding a form to a study."""
         study = CastorStudy("", "", "FAKE-ID", "", test=True)
-        assert len(study.forms_id) == 0
+        assert len(study.forms_on_id) == 0
         form = CastorForm("Survey", "FAKE-FORM-ID", "Fake Survey", "1")
         study.add_form(form)
-        assert len(study.forms_id) == 1
-        assert study.forms_id["FAKE-FORM-ID"] == form
+        assert len(study.forms_on_id) == 1
+        assert study.forms_on_id["FAKE-FORM-ID"] == form
         assert form.study == study
 
     def test_study_get_all_forms(self, study_with_forms):

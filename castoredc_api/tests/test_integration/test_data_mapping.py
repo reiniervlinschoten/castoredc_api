@@ -18,21 +18,21 @@ class TestDataMap:
         integration_study.map_data()
         # Report
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "110012", "D8DEFEE4-719C-49BB-BC0E-A7F04A874CFA"
             )
             is not None
         )
         # Survey
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "110006", "33C96866-D519-4A43-826D-4D10EFAFC007"
             )
             is not None
         )
         # Study
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "000007", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF"
             )
             is not None
@@ -72,21 +72,21 @@ class TestDataMap:
         integration_study.map_data()
         # Report
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "110012", "D8DEFEE4-719C-49BB-BC0E-A7F04A874CFA"
             ).record.record_id
             == "110012"
         )
         # Survey
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "110006", "33C96866-D519-4A43-826D-4D10EFAFC007"
             ).record.record_id
             == "110006"
         )
         # Study
         assert (
-            integration_study.get_single_form_instance(
+            integration_study.get_single_form_instance_on_id(
                 "110012", "1046822E-8C8B-4D8B-B29C-183CAC8B28AF"
             ).record.record_id
             == "110012"
