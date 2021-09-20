@@ -20,8 +20,9 @@ jobs:
       with:
         auto-update-conda: true
         python-version: '3.8'
-    - name: Setup Conda build
+    - name: Setup Conda build & channels
       run: |
+        conda config --add channels conda-forge
         conda install conda-build
     - name: Preparation - Install dependencies
       run: |
