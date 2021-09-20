@@ -9,15 +9,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Preparation - Setup Environment
     - uses: actions/checkout@v2
-    - uses: conda-incubator/setup-miniconda@v1
-      with:
-        miniconda-version: "latest"
-        activate-environment: publishconda
-    - name: Preparation - install python
-      uses: actions/setup-python@v1
+    - uses: actions/setup-python@v1
       with:
         python-version: '3.8'
+    - uses: conda-incubator/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+        python-version: '3.8'
+
     - name: Preparation - Install dependencies
       run: |
         python -m pip install --upgrade pip
