@@ -35,4 +35,5 @@ jobs:
       run: |
         grayskull pypi castoredc_api
         conda build castoredc_api
+        conda list
         anaconda -t CONDA_TOKEN upload --skip-existing ~/usr/share/miniconda/conda-bld/noarch/castoredc_api*.tar.bz2
