@@ -1,4 +1,4 @@
-name: publish
+name: publishconda
 
 on:
   push:
@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: conda-incubator/setup-miniconda@v1
+      with:
+        miniconda-version: "latest"
+        activate-environment: publishconda
     - name: Preparation - install python
       uses: actions/setup-python@v1
       with:
@@ -22,7 +26,6 @@ jobs:
       env:
         CONDA_TOKEN: ${{ secrets.CONDA_TOKEN }}
       run: |
-        $CONDA/bin/conda env update --file environment.yml --name base
         grayskull pypi castoredc_api
         conda-build castoredc_api
         conda convert --platform all ~/opt/anaconda3/conda-bld/osx-64/castoredc_api*.bz2 -o ~/opt/anaconda3/conda-bld/
