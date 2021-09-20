@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Preparation - Setup Environment
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+      uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v1
       with:
         python-version: '3.8'
-    - uses: conda-incubator/setup-miniconda@v1
+    - name: Setup Conda
+      uses: conda-incubator/setup-miniconda@v1
       with:
         auto-update-conda: true
         python-version: '3.8'
