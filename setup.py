@@ -9,6 +9,8 @@ setup(
     description="Python wrapper for the Castor EDC API",
     author="Reinier van Linschoten",
     author_email="mail@reiniervl.com",
+    maintaner="Reinier van Linschoten",
+    maintaner_email="mail@reiniervl.com",
     url="https://github.com/reiniervlinschoten/castoredc_api",
     packages=find_packages(include=("castoredc_api", "castoredc_api.*")),
     install_requires=[

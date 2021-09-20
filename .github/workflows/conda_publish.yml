@@ -34,5 +34,4 @@ jobs:
       run: |
         grayskull pypi castoredc_api
         conda build castoredc_api
-        conda convert --platform all ~/opt/anaconda3/conda-bld/osx-64/castoredc_api*.bz2 -o ~/opt/anaconda3/conda-bld/
         anaconda -t CONDA_TOKEN upload --skip-existing ~/opt/anaconda3/conda-bld/*/castorapi*.bz2

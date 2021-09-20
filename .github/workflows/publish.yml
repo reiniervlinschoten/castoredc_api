@@ -8,18 +8,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Preparation - Setup Python and Conda
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - name: Preparation - Setup Environment
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v1
       with:
         python-version: '3.8'
-    - uses: conda-incubator/setup-miniconda@v1
+
+    - name: Setup Conda
+      uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
         python-version: '3.8'
 
-    - name: Preparation - Install Dependencies
+    - name: Setup Conda build & channels
+      run: |
+        conda config --add channels conda-forge
+        conda install conda-build
+
+    - name: Preparation - Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel twine grayskull
@@ -45,6 +53,5 @@ jobs:
         CONDA_TOKEN: ${{ secrets.CONDA_TOKEN }}
       run: |
         grayskull pypi castoredc_api
-        conda-build castoredc_api
-        conda convert --platform all ~/opt/anaconda3/conda-bld/osx-64/castoredc_api*.bz2 -o ~/opt/anaconda3/conda-bld/
+        conda build castoredc_api
         anaconda -t CONDA_TOKEN upload --skip-existing ~/opt/anaconda3/conda-bld/*/castorapi*.bz2
