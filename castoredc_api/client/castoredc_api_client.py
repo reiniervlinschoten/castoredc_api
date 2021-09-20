@@ -45,7 +45,9 @@ class CastorClient:
         self.study_url = None
 
         # Instantiate client
-        self.client = httpx.Client(headers=self.headers, limits=self.limits, timeout=self.timeout)
+        self.client = httpx.Client(
+            headers=self.headers, limits=self.limits, timeout=self.timeout
+        )
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id and creates the field map."""
@@ -927,7 +929,10 @@ class CastorClient:
         :param params: a list of dicts of the parameters to be send with the request
         """
         # Split list to handle error when len(tasks) > max_connections
-        chunks = [params[x:x+self.max_connections] for x in range(0, len(params), self.max_connections)]
+        chunks = [
+            params[x : x + self.max_connections]
+            for x in range(0, len(params), self.max_connections)
+        ]
         responses = []
         for idx, chunk in enumerate(chunks):
             async with httpx.AsyncClient(

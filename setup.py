@@ -16,7 +16,7 @@ setup(
         "numpy>=1.21.1",
         "openpyxl>=3.0.7",
         "tqdm>=4.62.0",
-        "httpx~=0.19.0",
+        "httpx>=0.19.0",
     ],
     tests_require=["pytest"],
     license="MIT",
