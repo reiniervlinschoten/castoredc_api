@@ -24,6 +24,7 @@ jobs:
       run: |
         conda config --add channels conda-forge
         conda install conda-build
+        conda install conda-verify
         conda install anaconda-client
     - name: Preparation - Install dependencies
       run: |
@@ -35,4 +36,4 @@ jobs:
       run: |
         grayskull pypi castoredc_api
         conda build castoredc_api
-        anaconda -t $CONDA_TOKEN upload ~/usr/share/miniconda/conda-bld/noarch/castoredc_api*.tar.bz2
+        anaconda -t $CONDA_TOKEN upload /usr/share/miniconda/conda-bld/noarch/castoredc_api*.tar.bz2
