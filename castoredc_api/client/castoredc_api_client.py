@@ -25,7 +25,10 @@ class CastorClient:
         "Content-Type": "application/json; charset=utf-8",
     }
 
-    timeout = httpx.Timeout(60.0)
+    # Limits for server load
+    max_connections = 30
+    timeout = httpx.Timeout(10.0, read=60)
+    limits = httpx.Limits(max_connections=max_connections)
 
     def __init__(self, client_id, client_secret, url):
         """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
@@ -42,7 +45,9 @@ class CastorClient:
         self.study_url = None
 
         # Instantiate client
-        self.client = httpx.Client(headers=self.headers)
+        self.client = httpx.Client(
+            headers=self.headers, limits=self.limits, timeout=self.timeout
+        )
 
     def link_study(self, study_id):
         """Link a study to the CastorClient based on the study_id and creates the field map."""
@@ -894,7 +899,7 @@ class CastorClient:
     # Synchronous API Interaction
     def sync_get(self, url: str, params: dict) -> dict:
         """Synchronous querying of Castor API with a single get requests."""
-        response = self.client.get(url=url, params=params, timeout=self.timeout)
+        response = self.client.get(url=url, params=params)
         response.raise_for_status()
         content_type = response.headers.get("content-type")
         if "json" in content_type:
@@ -923,19 +928,27 @@ class CastorClient:
         :param url: the urls for the request
         :param params: a list of dicts of the parameters to be send with the request
         """
-        async with httpx.AsyncClient(
-            headers=self.headers, timeout=self.timeout
-        ) as client:
-            tasks = [client.get(url=url, params=param) for param in params]
-            responses = [
-                await response
-                for response in tqdm(
-                    asyncio.as_completed(tasks),
-                    total=len(tasks),
-                    desc="Async Downloading",
-                )
-            ]
-            return responses
+        # Split list to handle error when len(tasks) > max_connections
+        chunks = [
+            params[x : x + self.max_connections]
+            for x in range(0, len(params), self.max_connections)
+        ]
+        responses = []
+        for idx, chunk in enumerate(chunks):
+            async with httpx.AsyncClient(
+                headers=self.headers, timeout=self.timeout, limits=self.limits
+            ) as client:
+                tasks = [client.get(url=url, params=param) for param in chunk]
+                temp_responses = [
+                    await response
+                    for response in tqdm(
+                        asyncio.as_completed(tasks),
+                        total=len(tasks),
+                        desc=f"Async Downloading {idx + 1}/{len(chunks)}",
+                    )
+                ]
+                responses = responses + temp_responses
+        return responses
 
     def handle_response(self, response: httpx.Response) -> dict:
         """Reads response and handles errors."""

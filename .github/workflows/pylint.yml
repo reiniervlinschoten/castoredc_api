@@ -4,6 +4,7 @@ name: pylint
   push:
     branches:
       - '**'
+      - '!qol_changes'
     tags:
       - '**'
   pull_request:
