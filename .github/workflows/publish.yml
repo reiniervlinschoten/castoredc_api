@@ -50,6 +50,10 @@ jobs:
         conda install conda-verify
         conda install anaconda-client
 
+    - name: Wait for Pypi update
+      run: sleep 120s
+      shell: bash
+
     - name: Build and publish to conda (production)
       env:
         CONDA_TOKEN: ${{ secrets.CONDA_TOKEN }}
