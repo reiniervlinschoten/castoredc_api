@@ -1,7 +1,7 @@
 # CastorEDC API
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![pypi](https://img.shields.io/pypi/v/castoredc_api)](https://pypi.org/project/castoredc-api/)
-![conda](https://img.shields.io/conda/v/reiniervl/castoredc_api)
+[![conda](https://img.shields.io/conda/v/reiniervl/castoredc_api)](https://anaconda.org/reiniervl/castoredc_api)
 [![pylint](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml/badge.svg)](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml)
 [![pytest](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pytest.yml/badge.svg)](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pytest.yml)
 [![black](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/black.yml/badge.svg)](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/black.yml)
