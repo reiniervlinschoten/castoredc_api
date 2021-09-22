@@ -4,7 +4,6 @@ name: pytest
   push:
     branches:
       - '**'
-      - '!qol_changes'
     tags:
       - '**'
   pull_request:
