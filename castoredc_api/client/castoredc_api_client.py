@@ -130,12 +130,14 @@ class CastorClient:
         return self.retrieve_data_points(url)
 
     def single_survey_package_data_points_record(
-            self, record_id, survey_package_instance_id
+        self, record_id, survey_package_instance_id
     ):
         """Returns a list of data from a single survey package instance
         collected for given record record_id. Returns None if record not found"""
-        url = f"/record/{record_id}/data-point-collection/" \
-              f"survey-package-instance/{survey_package_instance_id}"
+        url = (
+            f"/record/{record_id}/data-point-collection/"
+            f"survey-package-instance/{survey_package_instance_id}"
+        )
         return self.retrieve_data_points(url)
 
     # DATA-POINT-COLLECTION POST (RECORD)
@@ -175,8 +177,8 @@ class CastorClient:
                 }]
         """
         url = (
-                self.study_url
-                + f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
+            self.study_url
+            + f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
         )
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
@@ -192,14 +194,14 @@ class CastorClient:
                 }]
         """
         url = (
-                self.study_url
-                + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
+            self.study_url
+            + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
         )
         post_data = {"data": body}
         return self.sync_post(url, post_data)
 
     def update_survey_package_instance_data_record(
-            self, record_id, survey_package_instance_id, body
+        self, record_id, survey_package_instance_id, body
     ):
         """Creates/updates a survey package instance.
         Returns None if record not found.
@@ -211,9 +213,8 @@ class CastorClient:
                 }]
         """
         url = (
-                self.study_url
-                + f"/record/{record_id}/data-point-collection/"
-                  f"survey-package-instance/{survey_package_instance_id}"
+            self.study_url + f"/record/{record_id}/data-point-collection/"
+            f"survey-package-instance/{survey_package_instance_id}"
         )
         post_data = {"data": body}
         return self.sync_post(url, post_data)
@@ -438,7 +439,7 @@ class CastorClient:
         )
 
     def create_report_instance_record(
-            self, record_id, report_id, report_name_custom, parent_id=None
+        self, record_id, report_id, report_name_custom, parent_id=None
     ):
         """Creates a report instance for a record.
         Returns None if creation failed."""
@@ -471,7 +472,7 @@ class CastorClient:
         )
 
     def single_report_instance_single_field_record(
-            self, record_id, report_instance_id, field_id
+        self, record_id, report_instance_id, field_id
     ):
         """Returns a data point for a report for a record.
         Returns None if report not found for given record or field not found
@@ -481,13 +482,13 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint=formatted_url, data_id=data_point)
 
     def update_report_instance_single_field_record(
-            self,
-            record_id,
-            report_ins_id,
-            field_id,
-            change_reason,
-            field_value=None,
-            file=None,
+        self,
+        record_id,
+        report_ins_id,
+        field_id,
+        change_reason,
+        field_value=None,
+        file=None,
     ):
         """Updates a report field value. Either field_value or file needs to be None.
         Returns None if data creation failed."""
@@ -580,7 +581,7 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_single_study_field_record(
-            self, record_id, field_id, change_reason, field_value=None, file=None
+        self, record_id, field_id, change_reason, field_value=None, file=None
     ):
         """Update a data point for a record.
         Returns None if target not found."""
@@ -653,15 +654,15 @@ class CastorClient:
         )
 
     def create_survey_package_instance(
-            self,
-            survey_package_id,
-            record_id,
-            email_address,
-            ccr_patient_id=None,
-            package_invitation_subject=None,
-            package_invitation=None,
-            auto_send=None,
-            auto_lock_on_finish=None,
+        self,
+        survey_package_id,
+        record_id,
+        email_address,
+        ccr_patient_id=None,
+        package_invitation_subject=None,
+        package_invitation=None,
+        auto_send=None,
+        auto_lock_on_finish=None,
     ):
         """Create a survey package.
         Arguments marked with None are non-obligatory."""
@@ -696,7 +697,7 @@ class CastorClient:
         )
 
     def single_survey_instance_single_field_record(
-            self, record_id, survey_instance_id, field_id
+        self, record_id, survey_instance_id, field_id
     ):
         """Retrieves a single field with data for the given survey.
         Returns None if record, survey or field not found."""
@@ -704,13 +705,13 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_survey_instance_single_field_record(
-            self, record_id, survey_instance_id, field_id, field_value, change_reason
+        self, record_id, survey_instance_id, field_id, field_value, change_reason
     ):
         """Update a field result for a survey (package) instance.
         Returns None if survey not found"""
         url = (
-                self.study_url
-                + f"/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}"
+            self.study_url
+            + f"/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}"
         )
         body = {
             "field_value": str(field_value),
@@ -884,13 +885,13 @@ class CastorClient:
         """
         # Split list to handle error when len(tasks) > max_connections
         chunks = [
-            params[x: x + self.max_connections]
+            params[x : x + self.max_connections]
             for x in range(0, len(params), self.max_connections)
         ]
         responses = []
         for idx, chunk in enumerate(chunks):
             async with httpx.AsyncClient(
-                    headers=self.headers, timeout=self.timeout, limits=self.limits
+                headers=self.headers, timeout=self.timeout, limits=self.limits
             ) as client:
                 tasks = [client.get(url=url, params=param) for param in chunk]
                 temp_responses = [

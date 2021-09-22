@@ -673,8 +673,12 @@ class CastorStudy:
         # Convert study data points to data frame
         dataframe = pd.DataFrame.from_records(data, columns=column_order)
         # Split up checkbox and numberdate fields (multiple values in one column)
-        dataframe, column_order = self.__split_up_checkbox_data(dataframe, fields, column_order)
-        dataframe, column_order = self.__split_up_numberdate_data(dataframe, fields, column_order)
+        dataframe, column_order = self.__split_up_checkbox_data(
+            dataframe, fields, column_order
+        )
+        dataframe, column_order = self.__split_up_numberdate_data(
+            dataframe, fields, column_order
+        )
         dataframe = self.__format_year_and_date(dataframe, fields)
         dataframe = self.__format_categorical_fields(dataframe, fields)
         # Order the dataframe
