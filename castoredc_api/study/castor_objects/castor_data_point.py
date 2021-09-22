@@ -1,5 +1,6 @@
+"""Module for representing a Castor datapoint in Python."""
 from datetime import datetime
-from typing import Union, Any, TYPE_CHECKING, List
+from typing import Union, Any, TYPE_CHECKING
 from castoredc_api import CastorException
 
 import numpy as np

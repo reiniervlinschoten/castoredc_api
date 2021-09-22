@@ -1,3 +1,4 @@
+"""Module for representing a CastorStudy in Python."""
 import itertools
 import pathlib
 import re
@@ -30,7 +31,8 @@ from castoredc_api.study.castor_objects.castor_report_form_instance import (
 
 
 class CastorStudy:
-    """Object representing a study in Castor. Functions as the head of a tree for all interrelations.
+    """Object representing a study in Castor.
+    Functions as the head of a tree for all interrelations.
     Needs an authenticated api_client that is linked to the same study_id to call data."""
 
     def __init__(
@@ -60,7 +62,7 @@ class CastorStudy:
 
     # STRUCTURE MAPPING
     def map_structure(self) -> None:
-        """Returns a CastorStudy object with the corresponding variable tree depicting interrelations"""
+        """Maps the structure for the study."""
         # Reset structure & data
         self.forms_on_id = {}
         self.forms_on_name = {}
@@ -114,7 +116,7 @@ class CastorStudy:
 
     # DATA MAPPING
     def map_data(self) -> None:
-        """Imports the data from the CastorClient database, maps the interrelations and links it to the study."""
+        """Maps the data for the study."""
         self.map_structure()
         self.update_links()
         self.__link_data()
@@ -258,7 +260,8 @@ class CastorStudy:
         return dataframes
 
     def export_to_csv(self) -> dict:
-        """Exports all data to csv files, returns string of time ran for testing purposes and file finding."""
+        """Exports all data to csv files.
+        Returns dict with file locations."""
         now = f"{datetime.now().strftime('%Y%m%d %H%M%S')}"
         date_format = "%d-%m-%Y %H:%M:%S"
         dataframes = self.export_to_dataframe()
@@ -284,7 +287,8 @@ class CastorStudy:
         return dataframes
 
     def export_to_feather(self) -> dict:
-        """Exports all data to feather files, returns dict of file locations for export into R."""
+        """Exports all data to feather files.
+        Returns dict of file locations for export into R."""
         now = f"{datetime.now().strftime('%Y%m%d %H%M%S')}"
         dataframes = self.export_to_dataframe()
 
@@ -316,10 +320,7 @@ class CastorStudy:
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
         dataframe.to_csv(
-            path_or_buf=path,
-            sep=";",
-            index=False,
-            date_format=date_format,
+            path_or_buf=path, sep=";", index=False, date_format=date_format,
         )
         return str(path)
 
@@ -332,8 +333,7 @@ class CastorStudy:
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
         dataframe.to_feather(
-            path,
-            compression="uncompressed",
+            path, compression="uncompressed",
         )
         return str(path)
 
@@ -471,9 +471,7 @@ class CastorStudy:
         return form_instances
 
     def get_single_form_instance_on_id(
-        self,
-        record_id: str,
-        instance_id: str,
+        self, record_id: str, instance_id: str,
     ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
         return self.get_single_record(record_id).get_single_form_instance_on_id(
@@ -505,12 +503,13 @@ class CastorStudy:
         """Returns the form of which the given id is an instance.
         instance_id is id for type: Report, name for type: Survey, or id for type: Study"""
         if instance_type == "Study":
-            return self.get_single_form(instance_id)
-        elif instance_type == "Report" or instance_type == "Survey":
+            form = self.get_single_form(instance_id)
+        elif instance_type in ("Report", "Survey"):
             form_id = self.form_links[instance_type][instance_id]
-            return self.get_single_form(form_id)
+            form = self.get_single_form(form_id)
         else:
-            raise CastorException("{} is not a form type.".format(instance_type))
+            raise CastorException(f"{instance_type} is not a form type.")
+        return form
 
     # PRIVATE HELPER FUNCTIONS
     def __link_data(self) -> None:
@@ -603,7 +602,7 @@ class CastorStudy:
         forms = self.get_all_form_type_forms("Survey")
         # For each survey form, create a distinct dataframe
         for form in forms:
-            df = self.__export_data(
+            dataframe = self.__export_data(
                 [form],
                 [
                     "record_id",
@@ -620,7 +619,7 @@ class CastorStudy:
                 "Survey",
             )
             # Add to return dict
-            dataframes[form.form_name] = df
+            dataframes[form.form_name] = dataframe
         return dataframes
 
     def __export_report_data(self):
@@ -630,7 +629,7 @@ class CastorStudy:
         forms = self.get_all_form_type_forms("Report")
         # For each survey form, create a distinct dataframe
         for form in forms:
-            df = self.__export_data(
+            dataframe = self.__export_data(
                 [form],
                 [
                     "record_id",
@@ -643,7 +642,7 @@ class CastorStudy:
                 "Report",
             )
             # Add to return dict
-            dataframes[form.form_name] = df
+            dataframes[form.form_name] = dataframe
         return dataframes
 
     def __export_data(
@@ -672,15 +671,15 @@ class CastorStudy:
         # Define columns from study + auxiliary record columns
         column_order = extra_columns + [field.field_name for field in sorted_fields]
         # Convert study data points to data frame
-        df = pd.DataFrame.from_records(data, columns=column_order)
+        dataframe = pd.DataFrame.from_records(data, columns=column_order)
         # Split up checkbox and numberdate fields (multiple values in one column)
-        df, column_order = self.__split_up_checkbox_data(df, fields, column_order)
-        df, column_order = self.__split_up_numberdate_data(df, fields, column_order)
-        df = self.__format_year_and_date(df, fields)
-        df = self.__format_categorical_fields(df, fields)
+        dataframe, column_order = self.__split_up_checkbox_data(dataframe, fields, column_order)
+        dataframe, column_order = self.__split_up_numberdate_data(dataframe, fields, column_order)
+        dataframe = self.__format_year_and_date(dataframe, fields)
+        dataframe = self.__format_categorical_fields(dataframe, fields)
         # Order the dataframe
-        df = df[column_order]
-        return df
+        dataframe = dataframe[column_order]
+        return dataframe
 
     def __format_categorical_fields(
         self, dataframe: pd.DataFrame, fields: List[CastorField]
@@ -705,32 +704,27 @@ class CastorStudy:
             dataframe[field.field_name] = dataframe[field.field_name].astype(cat_type)
         return dataframe
 
+    @staticmethod
     def __format_year_and_date(
-        self, dataframe: pd.DataFrame, fields: List[CastorField]
+        dataframe: pd.DataFrame, fields: List[CastorField]
     ) -> pd.DataFrame:
         """Casts year fields to the correct format."""
         # Year fields to Ints
         year_fields = [field for field in fields if field.field_type == "year"]
         for year in year_fields:
             dataframe[year.field_name] = dataframe[year.field_name].astype("Int64")
-
-        # # Date fields to string
-        # date_fields = [field for field in fields if field.field_type == "date"]
-        # for date in date_fields:
-        #     # Work-around, as Pandas can't handle large dates.
-        #     dataframe[date.field_name] = dataframe[date.field_name].astype(str).apply(self.__convert_dates)
-
         return dataframe
 
     @staticmethod
     def __convert_dates(date: str) -> str:
         """Converts dates in Castor notation (yyyy-mm-dd hh:mm:ss) to dd-mm-yyy."""
         if pd.isnull(date) or date in ["NaT", "NaN", "nan"]:
-            return np.nan
+            new_value = np.nan
         else:
-            return pd.Period(
+            new_value = pd.Period(
                 year=int(date[:4]), month=int(date[5:7]), day=int(date[8:10]), freq="D"
             ).strftime("%d-%m-%Y")
+        return new_value
 
     @staticmethod
     def __split_up_numberdate_data(
@@ -865,7 +859,7 @@ class CastorStudy:
 
     @staticmethod
     def __filtered_fields_forms(forms: List[CastorForm]) -> List["CastorField"]:
-        """Returns all fields belonging to certain form types and filters out non informational fields fields."""
+        """Returns all informational fields belonging to certain form types."""
         # Get the form fields
         fields = list(
             itertools.chain.from_iterable([form.get_all_fields() for form in forms])
@@ -886,7 +880,7 @@ class CastorStudy:
         return filtered_fields
 
     def __get_all_data_points_study(self, fields: List) -> List[dict]:
-        """Loop over all records and returns a list of dicts of all data points corresponding to fields."""
+        """Returns a list of dicts of all study data points."""
         # Get all records
         records = self.get_all_records()
         data = []
@@ -911,7 +905,7 @@ class CastorStudy:
         return data
 
     def __get_all_data_points_survey(self, fields: List) -> List[dict]:
-        """Loop over all records and returns a list of dicts of all data points corresponding to fields."""
+        """Returns a list of dicts of all survey data points."""
         # Get all records
         records = self.get_all_records()
         data = []
@@ -953,7 +947,7 @@ class CastorStudy:
         return data
 
     def __get_all_data_points_report(self, fields: List) -> List[dict]:
-        """Loop over all records and returns a list of dicts of all data points corresponding to fields."""
+        """Returns a list of dicts of all report data points."""
         # Get all records
         records = self.get_all_records()
         data = []

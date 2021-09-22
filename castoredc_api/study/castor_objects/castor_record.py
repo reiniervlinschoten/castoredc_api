@@ -1,5 +1,6 @@
+"""Module for representing a CastorRecord in Python."""
 import itertools
-from typing import Union, Any, TYPE_CHECKING, List, Optional, Dict
+from typing import Union, Any, TYPE_CHECKING, List, Optional
 
 if TYPE_CHECKING:
     from castoredc_api.study.castor_objects.castor_form_instance import (

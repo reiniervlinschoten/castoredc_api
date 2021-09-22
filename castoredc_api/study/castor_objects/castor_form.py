@@ -1,3 +1,4 @@
+"""Module for representing a CastorForm in Python."""
 import itertools
 from typing import List, Optional, Any, Union
 

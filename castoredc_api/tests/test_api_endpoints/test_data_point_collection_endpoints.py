@@ -381,8 +381,7 @@ class TestDataPoint:
         assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_survey_data_points_record_success(
-        self,
-        client,
+        self, client,
     ):
         """Tests returning data from a specific survey for a specific record is the right model"""
         survey_data = client.single_survey_data_points_record(
@@ -576,8 +575,7 @@ class TestDataPoint:
         assert "404 Client Error: Not Found for url:" in str(e.value)
 
     def test_create_survey_instance_data_points_success(
-        self,
-        client,
+        self, client,
     ):
         """Tests changing survey data"""
         fields = [
@@ -660,8 +658,7 @@ class TestDataPoint:
         assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_create_survey_package_instance_data_points_success(
-        self,
-        client,
+        self, client,
     ):
         """Tests changing survey package data"""
         fields = [

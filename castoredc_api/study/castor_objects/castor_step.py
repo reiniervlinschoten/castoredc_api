@@ -1,3 +1,4 @@
+"""Module for representing a CastorStep in Python."""
 from typing import List, Any, Union, Optional
 from castoredc_api.study.castor_objects.castor_field import CastorField
 

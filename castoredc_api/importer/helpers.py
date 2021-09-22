@@ -1,8 +1,8 @@
-import numpy as np
-import pandas as pd
-
+"""Helper functions for the import functionality"""
 from datetime import datetime
 from typing import Dict, TYPE_CHECKING, Optional, List
+import numpy as np
+import pandas as pd
 from castoredc_api import CastorException
 
 if TYPE_CHECKING:
@@ -90,34 +90,28 @@ def create_merge_translation(path: str) -> Dict:
 
 
 def castorize_column(
-    to_import: pd.Series,
-    new_name: list,
-    label_data: bool,
-    study: "CastorStudy",
-    variable_translation: Dict,
+        to_import: pd.Series,
+        new_name: list,
+        label_data: bool,
+        study: "CastorStudy",
+        variable_translation: Dict,
 ) -> Dict:
     """Translates the values in a column to Castorized values ready for import."""
     if new_name[0] == "record_id":
-        return {new_name[0]: to_import.tolist()}
-
+        return_value = {new_name[0]: to_import.tolist()}
     else:
         target_field = study.get_single_field(new_name[0])
         if target_field.field_type in ["checkbox", "dropdown", "radio"]:
             options = {
                 option["name"]: option["value"]
-                for option in study.get_single_optiongroup(
-                    target_field.field_option_group
-                )["options"]
+                for option in study.get_single_optiongroup(target_field.field_option_group)[
+                    "options"
+                ]
             }
             if len(new_name) == 1:
                 # There is no dependent 'other' field in the Castor database
-                return castorize_optiongroup_column(
-                    to_import,
-                    options,
-                    new_name[0],
-                    label_data,
-                    None,
-                    variable_translation,
+                new_column = castorize_optiongroup_column(
+                    to_import, options, new_name[0], label_data, None, variable_translation,
                 )
             elif len(new_name) == 2:
                 # Get the value for the parent that opens the dependent field
@@ -140,31 +134,35 @@ def castorize_column(
                     pd.Series(parent_import[new_name[0]]),
                     parent_value,
                 )
-                return {**parent_import, **dep_import}
+                new_column = {**parent_import, **dep_import}
+            else:
+                raise CastorException(f"More than one dependency given in {new_name}")
+            return_value = new_column
         elif target_field.field_type in ["numeric"]:
-            return {new_name[0]: castorize_num_column(to_import.tolist())}
+            return_value = {new_name[0]: castorize_num_column(to_import.tolist())}
         elif target_field.field_type in ["year"]:
-            return {new_name[0]: castorize_year_column(to_import.tolist())}
+            return_value = {new_name[0]: castorize_year_column(to_import.tolist())}
         elif target_field.field_type in ["slider"]:
-            return {new_name[0]: castorize_num_column(to_import.tolist())}
+            return_value = {new_name[0]: castorize_num_column(to_import.tolist())}
         elif target_field.field_type in ["string", "textarea"]:
-            return {new_name[0]: to_import.tolist()}
+            return_value = {new_name[0]: to_import.tolist()}
         elif target_field.field_type in ["date"]:
-            return {new_name[0]: castorize_date_column(to_import.tolist())}
+            return_value = {new_name[0]: castorize_date_column(to_import.tolist())}
         elif target_field.field_type in ["datetime"]:
-            return {new_name[0]: castorize_datetime_column(to_import.tolist())}
+            return_value = {new_name[0]: castorize_datetime_column(to_import.tolist())}
         elif target_field.field_type in ["time"]:
-            return {new_name[0]: castorize_time_column(to_import.tolist())}
+            return_value = {new_name[0]: castorize_time_column(to_import.tolist())}
         elif target_field.field_type in ["numberdate"]:
-            return {new_name[0]: castorize_numberdate_column(to_import.tolist())}
+            return_value = {new_name[0]: castorize_numberdate_column(to_import.tolist())}
         else:
             raise CastorException(
                 f"The field {target_field} is not importable with type {target_field.field_type}"
             )
+    return return_value
 
 
 def castorize_dep_column(
-    to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
+        to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
 ):
     """Takes a column and extracts the values that need to be imported in the dependent column."""
     # Get the (checkbox can have multiple inputs) index where the 'other' field is used
@@ -179,18 +177,18 @@ def castorize_dep_column(
 
 
 def castorize_optiongroup_column(
-    to_import: pd.Series,
-    options: Dict,
-    new_name: str,
-    label_data: bool,
-    parent_value: Optional[str],
-    variable_translation: Optional[Dict],
+        to_import: pd.Series,
+        options: Dict,
+        new_name: str,
+        label_data: bool,
+        parent_value: Optional[str],
+        variable_translation: Optional[Dict],
 ) -> Dict:
-    """Takes a column with optiongroup data, splits it, translates it into castor data and merges it back"""
+    """Splits a column with optiongroup data, translates it and merges it back"""
     other_name = to_import.name
     # Split the string into a list based on the ; seperator
     to_import = to_import.str.split(";")
-    # To each list or None element in the series, translate the value/label to the correct optiongroup value
+    # To each element in the series, translate the value/label to the correct optiongroup value
     to_import = to_import.apply(
         castorize_optiongroup_datapoint,
         args=(options, label_data, parent_value, variable_translation, other_name),
@@ -201,12 +199,12 @@ def castorize_optiongroup_column(
 
 
 def castorize_optiongroup_datapoint(
-    values: List,
-    options: Dict,
-    label_data: bool,
-    parent_value: Optional[str],
-    variable_translation: Optional[Dict],
-    other_name: str,
+        values: List,
+        options: Dict,
+        label_data: bool,
+        parent_value: Optional[str],
+        variable_translation: Optional[Dict],
+        other_name: str,
 ) -> Optional[List]:
     """Translates a list of values split by ; into Castor Values."""
     # If the datapoint was None or NaN, return an empty datapoint
@@ -217,12 +215,14 @@ def castorize_optiongroup_datapoint(
     else:
         new_values = []
         translate_dict = get_translation_dict(other_name, variable_translation)
-        # If labelled data was provided, translate this to optiongroup values (False or parent_value for failures)
+        # If labelled data was provided, translate this to optiongroup values
+        # False or parent_value for failures
         if label_data:
             new_values = translate_value_data(
                 new_values, options, parent_value, translate_dict, values
             )
-        # If value data was provided, check if this exists in the optiongroup (False or parent_value for failures)
+        # If value data was provided, check if this exists in the optiongroup
+        # False or parent_value for failures
         else:
             new_values = translate_label_data(
                 new_values, options, parent_value, translate_dict, values
@@ -231,24 +231,23 @@ def castorize_optiongroup_datapoint(
 
 
 def translate_label_data(
-    new_values: list,
-    options: dict,
-    parent_value: str,
-    translate_dict: Optional[Dict],
-    values: list,
+        new_values: list,
+        options: dict,
+        parent_value: str,
+        translate_dict: Optional[Dict],
+        values: list,
 ):
     """Translates label data if necessary and checks if it falls within the Castor optiongroup"""
-    translate = False if translate_dict is None else True
     for value in values:
         if pd.isnull(parent_value):
-            if translate:
+            if translate_dict:
                 value = translate_dict.get(str(value), "Error")
             if str(value) in options.values():
                 new_values.append(value)
             else:
                 new_values.append("Error")
         else:
-            if translate:
+            if translate_dict:
                 value = translate_dict.get(str(value), parent_value)
             if str(value) in options.values():
                 new_values.append(value)
@@ -258,11 +257,11 @@ def translate_label_data(
 
 
 def translate_value_data(
-    new_values: list,
-    options: dict,
-    parent_value: str,
-    translate_dict: Optional[Dict],
-    values: list,
+        new_values: list,
+        options: dict,
+        parent_value: str,
+        translate_dict: Optional[Dict],
+        values: list,
 ):
     """Translates value data if necessary and checks if it falls within the Castor optiongroup"""
     translate = False if translate_dict is None else True
@@ -285,8 +284,8 @@ def get_translation_dict(other_name: str, variable_translation: Dict) -> Optiona
         translate_dict = None
     else:
         try:
-            # Sometimes not all variables are translated, only set translate to true if this variable has a
-            # translation dict
+            # Sometimes not all variables are translated,
+            # Only set translate to true if this variable has a translation dict
             translate_dict = variable_translation[other_name]
         except KeyError:
             translate_dict = None
@@ -296,20 +295,22 @@ def get_translation_dict(other_name: str, variable_translation: Dict) -> Optiona
 def get_index(item: Optional[List], value: int):
     """Returns the index of the value in the list, else None."""
     if item is None:
-        return None
+        new_item = None
     else:
         try:
-            return item.index(value)
+            new_item = item.index(value)
         except ValueError:
             return None
+    return new_item
 
 
 def get_value_at_index(item: Optional[List], index: Optional[float]):
     """Returns the index of the value in the list, else None."""
     if item is None or pd.isnull(index):
-        return None
+        new_item = None
     else:
-        return item[int(index)]
+        new_item = item[int(index)]
+    return new_item
 
 
 def castorize_num_column(data: List):
@@ -433,9 +434,10 @@ def castorize_numberdate_column(data: List):
 def translate_merge(value: Optional[str], translation: dict) -> str:
     """Translates a value to the new column value."""
     if pd.isnull(value):
-        return np.nan
+        new_value = np.nan
     else:
-        return translation.get(str(value), "Error")
+        new_value = translation.get(str(value), "Error")
+    return new_value
 
 
 def merge_row(row: pd.Series) -> str:
@@ -465,14 +467,14 @@ def merge_columns(to_upload: pd.DataFrame, path_to_merge: str) -> pd.DataFrame:
 
 
 def create_upload(
-    path_to_upload: str,
-    path_to_col_link: str,
-    path_to_translation: Optional[str],
-    path_to_merge: Optional[str],
-    label_data: bool,
-    study: "CastorStudy",
+        path_to_upload: str,
+        path_to_col_link: str,
+        path_to_translation: Optional[str],
+        path_to_merge: Optional[str],
+        label_data: bool,
+        study: "CastorStudy",
 ) -> pd.DataFrame:
-    """Takes a path to an Excel file and returns a dataframe that is ready to be uploaded into Castor."""
+    """Returns a upload-ready dataframe from a path to an Excel file."""
     to_upload = read_excel(path_to_upload)
     # Merge columns into a single one
     if path_to_merge is not None:
@@ -498,7 +500,7 @@ def create_upload(
 
 
 def update_feedback(feedback_row, feedback_total, row, study):
-    """Updates a dict of the form record_id: List of List of Dicts of CastorFields with the new information."""
+    """Updates the feedback dict with the new information."""
     formatted_feedback_row = {
         "success": {
             study.get_single_field(field["field_id"]).field_name: field["field_value"]

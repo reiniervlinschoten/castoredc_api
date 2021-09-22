@@ -1,3 +1,4 @@
+"""Module for representing a CastorFormInstance in Python."""
 from typing import Union, Any, TYPE_CHECKING, List, Optional
 from castoredc_api import CastorException
 

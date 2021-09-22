@@ -1,8 +1,9 @@
-import pathlib
-import pandas as pd
-
+"""Module to import data to Castor EDC using the API"""
 from datetime import datetime
 from typing import TYPE_CHECKING, Dict, Optional
+
+import pathlib
+import pandas as pd
 
 from httpx import HTTPStatusError
 from tqdm import tqdm
@@ -25,10 +26,7 @@ def import_data(
     translation_path: Optional[str] = None,
     merge_path: Optional[str] = None,
 ) -> Dict:
-    """Takes a path to an xls(x) file, a path to an xls(x) file specifying the link between the external columns and
-    the Castor columns and imports the data into Castor using the given study and target form name or Study. Study needs to be authenticated.
-    Optionally one can define translation and merge files.
-    """
+    """Imports data from data_source_path to study with configuration options."""
     # Map the structure of your study locally
     study.map_structure()
 
@@ -69,7 +67,7 @@ def upload_data(
     target_name: Optional[str],
     email: Optional[str],
 ) -> Dict:
-    """Uploads each row from the castorized dataframe as a distinct form to the study linked to CastorClient."""
+    """Uploads each row from the castorized dataframe as a new form"""
     # Shared Data
     upload_datetime = datetime.now().strftime("%Y%m%d %H%M%S")
     common = {
@@ -78,7 +76,7 @@ def upload_data(
     }
 
     if target == "Study":
-        return upload_study(castorized_dataframe, common, upload_datetime, study)
+        upload = upload_study(castorized_dataframe, common, upload_datetime, study)
     elif target == "Survey":
         target_form = next(
             (
@@ -88,20 +86,17 @@ def upload_data(
             ),
             None,
         )
-        return upload_survey(castorized_dataframe, study, target_form["id"], email)
+        upload = upload_survey(castorized_dataframe, study, target_form["id"], email)
     elif target == "Report":
         target_form = study.get_single_form_name(target_name)
-        return upload_report(
-            castorized_dataframe,
-            common,
-            upload_datetime,
-            study,
-            target_form.form_id,
+        upload = upload_report(
+            castorized_dataframe, common, upload_datetime, study, target_form.form_id,
         )
     else:
         raise CastorException(
             f"{target} is not a valid target. Use Study/Report/Survey."
         )
+    return upload
 
 
 def upload_study(
@@ -111,7 +106,6 @@ def upload_study(
     study: "CastorStudy",
 ) -> Dict:
     """Uploads study data to the study."""
-    # Create the body for this report by using list comprehension and excluding the record_id and empty fields
     feedback_total = {}
     imported = []
 
@@ -124,6 +118,7 @@ def upload_study(
                 "confirmed_changes": True,
             }
             for field in row
+            # Skip record_id and empty fields
             if (field != "record_id" and row[field] is not None)
         ]
 
@@ -131,7 +126,7 @@ def upload_study(
         feedback_row = upload_study_data(body, study, common, imported, row)
         try:
             feedback_total = update_feedback(feedback_row, feedback_total, row, study)
-        except CastorException as e:
+        except CastorException as error:
             pd.DataFrame(imported).to_csv(
                 pathlib.Path(
                     pathlib.Path.cwd(),
@@ -142,11 +137,11 @@ def upload_study(
                 index=False,
             )
             raise CastorException(
-                str(e)
+                str(error)
                 + " caused at "
                 + str(row)
                 + ".\n See output folder for successful imports"
-            ) from e
+            ) from error
 
     pd.DataFrame(imported).to_csv(
         pathlib.Path(
@@ -167,7 +162,7 @@ def upload_study_data(
             record_id=row["record_id"], common=common, body=body
         )
         imported.append(row)
-    except HTTPStatusError as e:
+    except HTTPStatusError as error:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -178,11 +173,11 @@ def upload_study_data(
             index=False,
         )
         raise CastorException(
-            str(e)
+            str(error)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        ) from e
+        ) from error
     return feedback_row
 
 
@@ -193,7 +188,6 @@ def upload_survey(
     email: str,
 ) -> Dict:
     """Uploads survey data to the study."""
-    # Create the body for this report by using list comprehension and excluding the record_id and empty fields
     feedback_total = {}
     imported = []
 
@@ -210,6 +204,7 @@ def upload_survey(
                 "field_value": row[field],
             }
             for field in row
+            # Skip record_id and empty fields
             if (field != "record_id" and row[field] is not None)
         ]
 
@@ -217,7 +212,7 @@ def upload_survey(
         feedback_row = upload_survey_data(body, study, imported, instance, row)
         try:
             feedback_total = update_feedback(feedback_row, feedback_total, row, study)
-        except CastorException as e:
+        except CastorException as error:
             pd.DataFrame(imported).to_csv(
                 pathlib.Path(
                     pathlib.Path.cwd(),
@@ -228,11 +223,11 @@ def upload_survey(
                 index=False,
             )
             raise CastorException(
-                str(e)
+                str(error)
                 + " caused at "
                 + str(row)
                 + ".\n See output folder for successful imports"
-            )
+            ) from error
 
     # Save output
     pd.DataFrame(imported).to_csv(
@@ -257,7 +252,7 @@ def upload_survey_data(
             body=body,
         )
         imported.append(row)
-    except HTTPStatusError as e:
+    except HTTPStatusError as error:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -268,11 +263,11 @@ def upload_survey_data(
             index=False,
         )
         raise CastorException(
-            str(e)
+            str(error)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        ) from e
+        ) from error
     return feedback_row
 
 
@@ -348,7 +343,7 @@ def upload_report(
                 feedback_total = update_feedback(
                     feedback_row, feedback_total, row, study
                 )
-            except CastorException as e:
+            except CastorException as error:
                 pd.DataFrame(imported).to_csv(
                     pathlib.Path(
                         pathlib.Path.cwd(),
@@ -359,11 +354,11 @@ def upload_report(
                     index=False,
                 )
                 raise CastorException(
-                    str(e)
+                    str(error)
                     + " caused at "
                     + str(row)
                     + ".\n See output folder for successful imports"
-                )
+                ) from error
 
     # Save output
     pd.DataFrame(imported).to_csv(
@@ -388,13 +383,10 @@ def upload_report_data(
     """Tries to upload the survey data."""
     try:
         feedback_row = study.client.update_report_data_record(
-            record_id=row["record_id"],
-            report_id=instance,
-            common=common,
-            body=body,
+            record_id=row["record_id"], report_id=instance, common=common, body=body,
         )
         imported.append(row)
-    except HTTPStatusError as e:
+    except HTTPStatusError as error:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -405,11 +397,11 @@ def upload_report_data(
             index=False,
         )
         raise CastorException(
-            str(e)
+            str(error)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        ) from e
+        ) from error
     return feedback_row
 
 
@@ -436,7 +428,7 @@ def create_report_instances(
             record_id=record, body=body
         )
 
-    except HTTPStatusError as e:
+    except HTTPStatusError as error:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -447,9 +439,9 @@ def create_report_instances(
             index=False,
         )
         raise CastorException(
-            str(e)
+            str(error)
             + " caused at "
             + str(record)
             + ".\n See output folder for successful imports"
-        ) from e
+        ) from error
     return [instance["id"] for instance in instances["success"]]

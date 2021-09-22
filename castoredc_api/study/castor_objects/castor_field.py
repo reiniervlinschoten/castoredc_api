@@ -1,3 +1,4 @@
+"""Module for representing a CastorField in Python."""
 from typing import Optional, Union, Any
 
 
