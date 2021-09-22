@@ -320,7 +320,10 @@ class CastorStudy:
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
         dataframe.to_csv(
-            path_or_buf=path, sep=";", index=False, date_format=date_format,
+            path_or_buf=path,
+            sep=";",
+            index=False,
+            date_format=date_format,
         )
         return str(path)
 
@@ -333,7 +336,8 @@ class CastorStudy:
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
         dataframe.to_feather(
-            path, compression="uncompressed",
+            path,
+            compression="uncompressed",
         )
         return str(path)
 
@@ -471,7 +475,9 @@ class CastorStudy:
         return form_instances
 
     def get_single_form_instance_on_id(
-        self, record_id: str, instance_id: str,
+        self,
+        record_id: str,
+        instance_id: str,
     ) -> Optional["CastorFormInstance"]:
         """Returns a single form instance based on id."""
         return self.get_single_record(record_id).get_single_form_instance_on_id(

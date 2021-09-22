@@ -90,7 +90,11 @@ def upload_data(
     elif target == "Report":
         target_form = study.get_single_form_name(target_name)
         upload = upload_report(
-            castorized_dataframe, common, upload_datetime, study, target_form.form_id,
+            castorized_dataframe,
+            common,
+            upload_datetime,
+            study,
+            target_form.form_id,
         )
     else:
         raise CastorException(
@@ -383,7 +387,10 @@ def upload_report_data(
     """Tries to upload the survey data."""
     try:
         feedback_row = study.client.update_report_data_record(
-            record_id=row["record_id"], report_id=instance, common=common, body=body,
+            record_id=row["record_id"],
+            report_id=instance,
+            common=common,
+            body=body,
         )
         imported.append(row)
     except HTTPStatusError as error:

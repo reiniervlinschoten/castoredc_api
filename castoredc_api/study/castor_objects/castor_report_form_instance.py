@@ -10,7 +10,10 @@ class CastorReportFormInstance(CastorFormInstance):
     """Object representing a Castor report form instance."""
 
     def __init__(
-        self, instance_id: str, name_of_form: str, study: "CastorStudy",
+        self,
+        instance_id: str,
+        name_of_form: str,
+        study: "CastorStudy",
     ) -> None:
         """Creates a CastorFormInstance."""
         super().__init__(instance_id, name_of_form, study, "Report")

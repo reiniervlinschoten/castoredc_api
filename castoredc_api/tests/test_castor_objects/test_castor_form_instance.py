@@ -61,7 +61,9 @@ class TestCastorFormInstance:
         """Tests creation of a Survey form instance."""
         with pytest.raises(KeyError) as e:
             CastorSurveyFormInstance(
-                "FAKE-SURVEY-INSTANCE-ID60", "Maximum Fake Survey", complete_study,
+                "FAKE-SURVEY-INSTANCE-ID60",
+                "Maximum Fake Survey",
+                complete_study,
             )
         assert str(e.value) == "'Maximum Fake Survey'"
 
@@ -69,7 +71,9 @@ class TestCastorFormInstance:
         """Tests creation of a Report form instance."""
         with pytest.raises(KeyError) as e:
             CastorReportFormInstance(
-                "FAKE-REPORT-INSTANCE-ID3", "Report Name #90212", complete_study,
+                "FAKE-REPORT-INSTANCE-ID3",
+                "Report Name #90212",
+                complete_study,
             )
         assert str(e.value) == "'FAKE-REPORT-INSTANCE-ID3'"
 
