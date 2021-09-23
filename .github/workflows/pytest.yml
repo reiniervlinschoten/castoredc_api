@@ -4,8 +4,8 @@ name: pytest
   push:
     branches:
       - '**'
-    tags-ignore:
-      - 'documentation'
+    tags:
+      - '**'
   pull_request:
     branches:
       - '**'
