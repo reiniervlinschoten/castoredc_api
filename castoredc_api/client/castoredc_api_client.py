@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Main CastorClient object for communication with Castor EDC API.
-Link: https://data.castoredc.com/api
-
-@author: R.C.A. van Linschoten
-https://orcid.org/0000-0003-3052-596X
-"""
+"""Module for interacting with the Castor EDC API."""
 import csv
 from itertools import chain
 import asyncio
@@ -15,10 +8,17 @@ from tqdm import tqdm
 
 
 class CastorException(Exception):
-    pass
+    """Exception class for interacting with Castor database"""
 
 
 class CastorClient:
+    """Object to connect and interact with Castor EDC API"""
+
+    # pylint: disable=too-many-arguments
+    # Necessary number of arguments to interact with API
+    # pylint: disable=too-many-public-methods
+    # Necessary number of public methods to interact with API
+
     # INITIALIZATION
     headers = {
         "accept": "*/*",  # "application/hal+json; text/csv",
@@ -31,8 +31,9 @@ class CastorClient:
     limits = httpx.Limits(max_connections=max_connections)
 
     def __init__(self, client_id, client_secret, url):
-        """Create a CastorClient to communicate with a Castor database. Links the CastorClient to an account with
-        client_id and client_secret. URL determines which server is connected to."""
+        """Create a CastorClient to communicate with a Castor database.
+        Links the CastorClient to an account with client_id and client_secret.
+        URL determines which server is connected to."""
         # Instantiate URLs
         self.base_url = f"https://{url}/api"
         self.auth_url = f"https://{url}/oauth/token"
@@ -50,7 +51,7 @@ class CastorClient:
         )
 
     def link_study(self, study_id):
-        """Link a study to the CastorClient based on the study_id and creates the field map."""
+        """Link a study based on the study_id."""
         self.study_url = self.base_url + "/study/" + study_id
 
     # API ENDPOINTS
@@ -63,7 +64,7 @@ class CastorClient:
 
     def single_country(self, country_id):
         """Returns a dict with the given country based on country_id."""
-        endpoint = "/country/{0}".format(country_id)
+        endpoint = f"/country/{country_id}"
         return self.retrieve_general_data(endpoint=endpoint)
 
     # DATA-POINT-COLLECTION GET (STUDY)
@@ -88,65 +89,49 @@ class CastorClient:
     # DATA-POINT-COLLECTION GET (INSTANCE)
     def single_report_instance_data_points(self, report_id):
         """Returns a list of the data for given report_id."""
-        url = "/data-point-collection/report-instance/{report_id}".format(
-            report_id=report_id
-        )
+        url = f"/data-point-collection/report-instance/{report_id}"
         return self.retrieve_data_points(url)
 
     def single_survey_instance_data_points(self, survey_instance_id):
         """Returns a list of data from a single survey instance id."""
-        url = "/data-point-collection/survey-instance/{survey_instance_id}".format(
-            survey_instance_id=survey_instance_id
-        )
+        url = f"/data-point-collection/survey-instance/{survey_instance_id}"
         return self.retrieve_data_points(url)
 
     def single_survey_package_instance_data_points(self, survey_package_instance_id):
         """Returns a list of data from a single survey package instance.
         Returns None if package not found."""
-        url = "/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
-            survey_package_instance_id=survey_package_instance_id
-        )
+        url = f"/data-point-collection/survey-package-instance/{survey_package_instance_id}"
         return self.retrieve_data_points(url)
 
     # DATA-POINT-COLLECTION GET (RECORD)
     def all_study_data_points_record(self, record_id):
         """Returns a list of all study data collected for given record.
         Returns None if record not found."""
-        url = "/record/{record_id}/data-point-collection/study".format(
-            record_id=record_id
-        )
+        url = f"/record/{record_id}/data-point-collection/study"
         return self.retrieve_data_points(url)
 
     def all_report_data_points_record(self, record_id):
         """Returns a list of all report data collected for given record.
         Returns None if record not found."""
-        url = "/record/{record_id}/data-point-collection/report-instance".format(
-            record_id=record_id
-        )
+        url = f"/record/{record_id}/data-point-collection/report-instance"
         return self.retrieve_data_points(url)
 
     def single_report_data_points_record(self, record_id, report_id):
         """Returns a list of the data for given report_id for given.
         Returns None if record or report not found."""
-        url = "/record/{record_id}/data-point-collection/report-instance/{report_id}".format(
-            record_id=record_id, report_id=report_id
-        )
+        url = f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
         return self.retrieve_data_points(url)
 
     def all_survey_data_points_record(self, record_id):
         """Returns a list of all survey data collected for given record.
         Returns None if record not found."""
-        url = "/record/{record_id}/data-point-collection/survey-instance".format(
-            record_id=record_id
-        )
+        url = f"/record/{record_id}/data-point-collection/survey-instance"
         return self.retrieve_data_points(url)
 
     def single_survey_data_points_record(self, record_id, survey_instance_id):
         """Returns a list of data from a single survey instance
         collected for given record record_id. Returns None if record not found."""
-        url = "/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}".format(
-            record_id=record_id, survey_instance_id=survey_instance_id
-        )
+        url = f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
         return self.retrieve_data_points(url)
 
     def single_survey_package_data_points_record(
@@ -154,8 +139,9 @@ class CastorClient:
     ):
         """Returns a list of data from a single survey package instance
         collected for given record record_id. Returns None if record not found"""
-        url = "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
-            record_id=record_id, survey_package_instance_id=survey_package_instance_id
+        url = (
+            f"/record/{record_id}/data-point-collection/"
+            f"survey-package-instance/{survey_package_instance_id}"
         )
         return self.retrieve_data_points(url)
 
@@ -175,9 +161,7 @@ class CastorClient:
             "confirmed_changes": boolean
                 }]
         """
-        url = self.study_url + "/record/{record_id}/data-point-collection/study".format(
-            record_id=record_id
-        )
+        url = self.study_url + f"/record/{record_id}/data-point-collection/study"
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
 
@@ -199,9 +183,7 @@ class CastorClient:
         """
         url = (
             self.study_url
-            + "/record/{record_id}/data-point-collection/report-instance/{report_id}".format(
-                record_id=record_id, report_id=report_id
-            )
+            + f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
         )
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
@@ -218,9 +200,7 @@ class CastorClient:
         """
         url = (
             self.study_url
-            + "/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}".format(
-                record_id=record_id, survey_instance_id=survey_instance_id
-            )
+            + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
         )
         post_data = {"data": body}
         return self.sync_post(url, post_data)
@@ -237,9 +217,9 @@ class CastorClient:
             "field_value": "string",
                 }]
         """
-        url = self.study_url + "/record/{record_id}/data-point-collection/survey-package-instance/{survey_package_instance_id}".format(
-            record_id=record_id,
-            survey_package_instance_id=survey_package_instance_id,
+        url = (
+            self.study_url + f"/record/{record_id}/data-point-collection/"
+            f"survey-package-instance/{survey_package_instance_id}"
         )
         post_data = {"data": body}
         return self.sync_post(url, post_data)
@@ -433,11 +413,10 @@ class CastorClient:
             return self.retrieve_all_data_by_endpoint(
                 endpoint="/report-instance", data_name="reportInstances", params=params
             )
-        except HTTPStatusError as e:
-            if e.response.json()["detail"] == "There are no report instances.":
+        except HTTPStatusError as error:
+            if error.response.json()["detail"] == "There are no report instances.":
                 return []
-            else:
-                raise e from e
+            raise error from error
 
     def single_report_instance(self, report_instance_id):
         """Returns a single dict of an report_instance.
@@ -448,8 +427,9 @@ class CastorClient:
 
     def all_report_instances_record(self, record_id, archived=0):
         """Returns a list of dicts of all report_instances for record_id.
-        Set archived to 1 to also retrieve archived report instances. Returns None if record not found."""
-        formatted_endpoint = "/record/{0}/report-instance".format(record_id)
+        Set archived to 1 to also retrieve archived report instances.
+        Returns None if record not found."""
+        formatted_endpoint = f"/record/{record_id}/report-instance"
         params = {"archived": archived}
         return self.retrieve_all_data_by_endpoint(
             endpoint=formatted_endpoint, data_name="reportInstances", params=params
@@ -458,7 +438,7 @@ class CastorClient:
     def single_report_instance_record(self, record_id, report_instance_id):
         """Returns a dict containing the given report for record.
         Returns None if record or report not found."""
-        formatted_endpoint = "/record/{0}/report-instance".format(record_id)
+        formatted_endpoint = f"/record/{record_id}/report-instance"
         return self.retrieve_data_by_id(
             endpoint=formatted_endpoint, data_id=report_instance_id
         )
@@ -468,7 +448,7 @@ class CastorClient:
     ):
         """Creates a report instance for a record.
         Returns None if creation failed."""
-        url = self.study_url + "/record/{0}/report-instance".format(record_id)
+        url = self.study_url + f"/record/{record_id}/report-instance"
         body = {
             "report_id": report_id,
             "report_name_custom": report_name_custom,
@@ -484,18 +464,14 @@ class CastorClient:
         "parent_id": parent_id
         """
         data = {"data": body}
-        url = self.study_url + "/record/{0}/report-instance-collection".format(
-            record_id
-        )
+        url = self.study_url + f"/record/{record_id}/report-instance-collection"
         return self.sync_post(url, data)
 
     # REPORT-DATA-ENTRY
     def single_report_instance_all_fields_record(self, record_id, report_instance_id):
         """Returns a list of all data for a report for a record.
         Returns None if report not found for given id."""
-        formatted_url = "/record/{0}/data-point/report/{1}".format(
-            record_id, report_instance_id
-        )
+        formatted_url = f"/record/{record_id}/data-point/report/{report_instance_id}"
         return self.retrieve_all_data_by_endpoint(
             endpoint=formatted_url, data_name="ReportDataPoints"
         )
@@ -507,7 +483,7 @@ class CastorClient:
         Returns None if report not found for given record or field not found
         for given report."""
         data_point = "/".join([report_instance_id, field_id])
-        formatted_url = "/record/{0}/data-point/report".format(record_id)
+        formatted_url = f"/record/{record_id}/data-point/report"
         return self.retrieve_data_by_id(endpoint=formatted_url, data_id=data_point)
 
     def update_report_instance_single_field_record(
@@ -521,16 +497,14 @@ class CastorClient:
     ):
         """Updates a report field value. Either field_value or file needs to be None.
         Returns None if data creation failed."""
-        endpoint = "/record/{0}/data-point/report/{1}/{2}".format(
-            record_id, report_ins_id, field_id
-        )
+        endpoint = f"/record/{record_id}/data-point/report/{report_ins_id}/{field_id}"
         url = self.study_url + endpoint
         body = {}
 
         if field_value is not None and file is not None:
             raise CastorException("You cannot both upload a field value and a file.")
 
-        elif field_value is not None:
+        if field_value is not None:
             body = {
                 "field_value": str(field_value),
                 "change_reason": change_reason,
@@ -546,7 +520,7 @@ class CastorClient:
     def single_report_all_steps(self, report_id):
         """Returns a list of dicts of all steps of a single report.
         Returns None if report not found."""
-        endpoint = "/report/{0}/report-step".format(report_id)
+        endpoint = f"/report/{report_id}/report-step"
         return self.retrieve_all_data_by_endpoint(
             endpoint=endpoint, data_name="report_steps"
         )
@@ -554,7 +528,7 @@ class CastorClient:
     def single_report_single_step(self, report_id, report_step_id):
         """Returns a single dict of a step of a report.
         Returns None if report or step not found."""
-        endpoint = "/report/{0}/report-step".format(report_id)
+        endpoint = f"/report/{report_id}/report-step"
         return self.retrieve_data_by_id(endpoint=endpoint, data_id=report_step_id)
 
     # STEP
@@ -579,13 +553,13 @@ class CastorClient:
     def single_study(self, study_id):
         """Returns a dict of a single study.
         Returns None if study not found or not authorized to view study."""
-        endpoint = "/study/{0}".format(study_id)
+        endpoint = f"/study/{study_id}"
         return self.retrieve_general_data(endpoint)
 
     def all_users_study(self, study_id):
         """Returns a list of dicts of users that have access to this study.
         Returns None if study not found or not authorized to view study."""
-        endpoint = "/study/{0}/user".format(study_id)
+        endpoint = f"/study/{study_id}/user"
         all_users = self.retrieve_general_data(
             endpoint, embedded=True, data_id="studyUsers"
         )
@@ -595,36 +569,33 @@ class CastorClient:
         """Returns a user for given study.
         Returns None if study/user not found or not authorized to view study.
         """
-        endpoint = "/study/{0}/user/{1}".format(study_id, user_id)
+        endpoint = f"/study/{study_id}/user/{user_id}"
         return self.retrieve_general_data(endpoint)
 
     # STUDY-DATA-ENTRY
     def all_study_fields_record(self, record_id):
         """Returns a list of all study fields of a record.
         Returns None if record not found."""
-        endpoint = "/record/{record_id}/data-point/study".format(record_id=record_id)
+        endpoint = f"/record/{record_id}/data-point/study"
         return self.retrieve_all_data_by_endpoint(endpoint, data_name="StudyDataPoints")
 
     def single_study_field_record(self, record_id, field_id):
         """Returns the value for a single field for a record in the study.
         Returns None if record or field not found."""
-        endpoint = "/record/{record_id}/data-point/study".format(record_id=record_id)
+        endpoint = f"/record/{record_id}/data-point/study"
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_single_study_field_record(
         self, record_id, field_id, change_reason, field_value=None, file=None
     ):
         """Update a data point for a record.
-        Returns None if target not found.
-        :param file:"""
-        url = self.study_url + "/record/{record_id}/data-point/study/{field_id}".format(
-            record_id=record_id, field_id=field_id
-        )
+        Returns None if target not found."""
+        url = self.study_url + f"/record/{record_id}/data-point/study/{field_id}"
         body = {}
         if field_value is not None and file is not None:
             raise CastorException("You cannot both upload a field value and a file.")
 
-        elif field_value is not None:
+        if field_value is not None:
             body = {
                 "field_value": str(field_value),
                 "change_reason": change_reason,
@@ -636,6 +607,7 @@ class CastorClient:
 
     # STATISTICS
     def statistics(self):
+        """Returns statistics for the linked study"""
         endpoint = "statistics"
         return self.retrieve_data_by_id("", endpoint)
 
@@ -669,14 +641,15 @@ class CastorClient:
         endpoint = "/surveypackageinstance"
         dataname = "surveypackageinstance"
         if record is None:
-            return self.retrieve_all_data_by_endpoint(
+            data = self.retrieve_all_data_by_endpoint(
                 endpoint=endpoint, data_name=dataname
             )
         else:
             params = {"record_id": record}
-            return self.retrieve_all_data_by_endpoint(
+            data = self.retrieve_all_data_by_endpoint(
                 endpoint=endpoint, data_name=dataname, params=params
             )
+        return data
 
     def single_survey_package_instance(self, survey_package_instance_id):
         """Returns a single dict of a survey package in the study.
@@ -723,9 +696,7 @@ class CastorClient:
     def single_survey_instance_all_fields_record(self, record_id, survey_instance_id):
         """Retrieves a list of fields with data for a single survey.
         Returns None if record or survey not found."""
-        endpoint = "/record/{record_id}/data-point/survey/{survey_instance_id}".format(
-            record_id=record_id, survey_instance_id=survey_instance_id
-        )
+        endpoint = f"/record/{record_id}/data-point/survey/{survey_instance_id}"
         return self.retrieve_all_data_by_endpoint(
             endpoint, data_name="SurveyDataPoints"
         )
@@ -735,9 +706,7 @@ class CastorClient:
     ):
         """Retrieves a single field with data for the given survey.
         Returns None if record, survey or field not found."""
-        endpoint = "/record/{record_id}/data-point/survey/{survey_instance_id}".format(
-            record_id=record_id, survey_instance_id=survey_instance_id
-        )
+        endpoint = f"/record/{record_id}/data-point/survey/{survey_instance_id}"
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
     def update_survey_instance_single_field_record(
@@ -745,12 +714,10 @@ class CastorClient:
     ):
         """Update a field result for a survey (package) instance.
         Returns None if survey not found"""
-        url = self.study_url + "/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}".format(
-            record_id=record_id,
-            survey_instance_id=survey_instance_id,
-            field_id=field_id,
+        url = (
+            self.study_url
+            + f"/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}"
         )
-
         body = {
             "field_value": str(field_value),
             "change_reason": change_reason,
@@ -763,13 +730,13 @@ class CastorClient:
     def single_survey_all_steps(self, survey_id):
         """Retrieves a list of dicts of steps for a single survey.
         Returns None if survey not found."""
-        endpoint = "/survey/{survey_id}/survey-step".format(survey_id=survey_id)
+        endpoint = f"/survey/{survey_id}/survey-step"
         return self.retrieve_all_data_by_endpoint(endpoint, data_name="survey_steps")
 
     def single_survey_single_step(self, survey_id, survey_step_id):
         """Retrieves a dict of a single survey step.
         Returns None if survey or step not found."""
-        endpoint = "/survey/{survey_id}/survey-step".format(survey_id=survey_id)
+        endpoint = f"/survey/{survey_id}/survey-step"
         return self.retrieve_data_by_id(endpoint, data_id=survey_step_id)
 
     # USER
@@ -780,7 +747,7 @@ class CastorClient:
 
     def single_user(self, user_id):
         """Retrieves a single user by ID."""
-        endpoint = "/user/{user_id}".format(user_id=user_id)
+        endpoint = f"/user/{user_id}"
         return self.retrieve_general_data(endpoint)
 
     # RECORD PROGRESS
@@ -797,16 +764,14 @@ class CastorClient:
             "client_secret": client_secret,
             "grant_type": "client_credentials",
         }
-        try:
-            response = httpx.post(url=self.auth_url, data=auth_data)
-            response.raise_for_status()
-        except httpx.HTTPError as e:
-            raise CastorException(e)
-        else:
-            content = response.json()
-            return content["access_token"]
+        response = httpx.post(url=self.auth_url, data=auth_data)
+        response.raise_for_status()
+        content = response.json()
+        return content["access_token"]
 
     def retrieve_general_data(self, endpoint, embedded=False, data_id=""):
+        """Helper function for retrieving data from an endpoint.
+        Unpacks data if embedded in the response."""
         url = self.base_url + endpoint
         params = {}
         response = self.sync_get(url=url, params=params)
@@ -827,7 +792,7 @@ class CastorClient:
     def retrieve_data_by_id(self, endpoint, data_id, params=None):
         """Retrieves data point with data_id.
         Returns None if data_id is not found at given endpoint."""
-        url = self.study_url + endpoint + "/{data_id}".format(data_id=data_id)
+        url = self.study_url + endpoint + f"/{data_id}"
         if params is None:
             params = {}
         data = self.sync_get(url=url, params=params)
@@ -900,12 +865,7 @@ class CastorClient:
     def sync_get(self, url: str, params: dict) -> dict:
         """Synchronous querying of Castor API with a single get requests."""
         response = self.client.get(url=url, params=params)
-        response.raise_for_status()
-        content_type = response.headers.get("content-type")
-        if "json" in content_type:
-            return response.json()
-        elif "csv" in content_type:
-            return self.format_csv_content(response)
+        return self.handle_response(response)
 
     def sync_post(self, url, body):
         """Helper function to post body to url."""
@@ -950,18 +910,19 @@ class CastorClient:
                 responses = responses + temp_responses
         return responses
 
-    def handle_response(self, response: httpx.Response) -> dict:
+    @staticmethod
+    def handle_response(response: httpx.Response) -> dict:
         """Reads response and handles errors."""
         response.raise_for_status()
         content_type = response.headers.get("content-type")
         if "json" in content_type:
-            return response.json()
+            data = response.json()
         elif "csv" in content_type:
-            return self.format_csv_content(response)
-
-    # noinspection PyMethodMayBeStatic
-    def format_csv_content(self, response: httpx.Response) -> dict:
-        """Loads CSV content from a Response object."""
-        content_decoded = response.content.decode()
-        content_csv = list(csv.DictReader(content_decoded.splitlines(), delimiter=";"))
-        return {"content": content_csv}
+            content_decoded = response.content.decode()
+            content_csv = list(
+                csv.DictReader(content_decoded.splitlines(), delimiter=";")
+            )
+            data = {"content": content_csv}
+        else:
+            raise CastorException(f"{content_type} not supported")
+        return data

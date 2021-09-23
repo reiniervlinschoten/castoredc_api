@@ -1,3 +1,4 @@
+"""File to extract secrets and ids from environment for testing purposes"""
 import os
 
 client_id = os.environ["CLIENT_ID"]

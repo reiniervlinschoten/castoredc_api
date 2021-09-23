@@ -4,7 +4,6 @@ name: pylint
   push:
     branches:
       - '**'
-      - '!qol_changes'
     tags:
       - '**'
   pull_request:
@@ -27,4 +26,4 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Analysing the code with pylint
       run: |
-        pylint castoredc_api
+        pylint castoredc_api --rcfile=.github/workflows/.pylintrc

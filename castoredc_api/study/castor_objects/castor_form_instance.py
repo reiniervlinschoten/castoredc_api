@@ -1,14 +1,16 @@
-from typing import Union, Any, TYPE_CHECKING, List, Optional
+"""Module for representing a CastorFormInstance in Python."""
+import typing
 from castoredc_api import CastorException
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from castoredc_api.study.castor_objects.castor_data_point import CastorDataPoint
     from castoredc_api.study.castor_objects.castor_form import CastorForm
     from castoredc_api.study.castor_study import CastorStudy
 
 
 class CastorFormInstance:
-    """Object representing a Castor form instance. Examples are survey instance or report instance."""
+    """Object representing a Castor form instance.
+    Examples are survey instance or report instance."""
 
     def __init__(
         self,
@@ -38,36 +40,37 @@ class CastorFormInstance:
         self.data_points_on_name[data_point.instance_of.field_name] = data_point
         data_point.form_instance = self
 
-    def get_all_data_points(self) -> List["CastorDataPoint"]:
+    def get_all_data_points(self) -> typing.List["CastorDataPoint"]:
         """Returns all data_points of the form instance"""
         return list(self.data_points_on_id.values())
 
     def get_single_data_point(
         self, field_id_or_name: str
-    ) -> Optional["CastorDataPoint"]:
-        """Returns a single data_point based on id or name. Returns None if not found on id or name."""
+    ) -> typing.Optional["CastorDataPoint"]:
+        """Returns a single data_point based on id or name.
+        Returns None if not found on id or name."""
         data_point = self.data_points_on_id.get(field_id_or_name)
         if data_point is None:
             return self.data_points_on_name.get(field_id_or_name)
-        else:
-            return data_point
+        return data_point
 
     # Helpers
-    def find_form(self, study: "CastorStudy") -> Union["CastorForm", CastorException]:
+    def find_form(
+        self, study: "CastorStudy"
+    ) -> typing.Union["CastorForm", CastorException]:
         """Find which form is the originator of this instance."""
         # Reports and Study can be found on instance_id. Survey has its own version.
         return study.instance_of_form(self.instance_id, self.instance_type)
 
     # Standard Operators
-    def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
+    def __eq__(self, other: typing.Any) -> typing.Union[bool, type(NotImplemented)]:
         if not isinstance(other, CastorFormInstance):
             return NotImplemented
-        else:
-            return (
-                self.instance_id == other.instance_id
-                and self.instance_type == other.instance_type
-                and self.record == other.record
-            )
+        return (
+            self.instance_id == other.instance_id
+            and self.instance_type == other.instance_type
+            and self.record == other.record
+        )
 
     def __repr__(self) -> str:
         return self.record.record_id + " - " + self.instance_of.form_name

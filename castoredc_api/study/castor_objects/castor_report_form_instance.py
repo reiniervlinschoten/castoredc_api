@@ -1,7 +1,8 @@
-from typing import TYPE_CHECKING
+"""Module for representing a Report Instance in Python."""
+import typing
 from castoredc_api.study.castor_objects.castor_form_instance import CastorFormInstance
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from castoredc_api.study.castor_study import CastorStudy
 
 
