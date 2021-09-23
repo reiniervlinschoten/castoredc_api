@@ -1,8 +1,8 @@
 """Module for representing a CastorRecord in Python."""
 import itertools
-from typing import Union, Any, TYPE_CHECKING, List, Optional
+import typing
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from castoredc_api.study.castor_objects.castor_form_instance import (
         CastorFormInstance,
     )
@@ -26,23 +26,23 @@ class CastorRecord:
         self.form_instances_ids[form_instance.instance_id] = form_instance
         form_instance.record = self
 
-    def get_all_form_instances(self) -> List["CastorFormInstance"]:
+    def get_all_form_instances(self) -> typing.List["CastorFormInstance"]:
         """Returns all form instances of the record"""
         return list(self.form_instances_ids.values())
 
     def get_single_form_instance_on_id(
         self, instance_id: str
-    ) -> Optional["CastorFormInstance"]:
+    ) -> typing.Optional["CastorFormInstance"]:
         """Returns a single form instance based on id. Returns None if form_instance not found."""
         return self.form_instances_ids.get(instance_id)
 
-    def get_all_data_points(self) -> List["CastorDataPoint"]:
+    def get_all_data_points(self) -> typing.List["CastorDataPoint"]:
         """Returns all data_points of the record"""
         data_points = list(
             itertools.chain.from_iterable(
                 [
-                    self.form_instances_ids[instance_id].get_all_data_points()
-                    for instance_id in self.form_instances_ids
+                    value.get_all_data_points()
+                    for key, value in self.form_instances_ids.items()
                 ]
             )
         )
@@ -50,18 +50,17 @@ class CastorRecord:
 
     def get_single_data_point(
         self, field_id_or_name: str, form_instance: str
-    ) -> Optional["CastorDataPoint"]:
+    ) -> typing.Optional["CastorDataPoint"]:
         """Returns a single data_point based on id."""
         return self.get_single_form_instance_on_id(form_instance).get_single_data_point(
             field_id_or_name
         )
 
     # Standard Operators
-    def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
+    def __eq__(self, other: typing.Any) -> typing.Union[bool, type(NotImplemented)]:
         if not isinstance(other, CastorRecord):
             return NotImplemented
-        else:
-            return self.record_id == other.record_id
+        return self.record_id == other.record_id
 
     def __repr__(self) -> str:
         return self.record_id

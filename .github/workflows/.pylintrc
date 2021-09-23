@@ -17,14 +17,14 @@ extension-pkg-whitelist=
 fail-on=
 
 # Specify a score threshold to be exceeded before program exits with error.
-fail-under=10.0
+fail-under=10
 
 # Files or directories to be skipped. They should be base names, not paths.
-ignore=CVS
+ignore=CVS, tests
 
 # Add files or directories matching the regex patterns to the ignore-list. The
 # regex matches against paths.
-ignore-paths=tests
+ignore-paths=
 
 # Files or directories matching the regex patterns are skipped. The regex
 # matches against base names, not paths.
@@ -52,7 +52,7 @@ persistent=yes
 
 # Min Python version to use for version dependend checks. Will default to the
 # version used to run pylint.
-py-version=3.9
+py-version=3.8
 
 # When enabled, pylint would attempt to guess common misconfiguration and emit
 # user-friendly hints instead of false-positive error messages.
@@ -86,8 +86,9 @@ disable=raw-checker-failed,
         useless-suppression,
         deprecated-pragma,
         use-symbolic-message-instead,
-        too-many-arguments,
-        too-many-public-methods
+        too-many-arguments, # a lot of API interactions need more arguments
+        cyclic-import       # pylint does not see the TYPE_CHECKING flag
+
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -318,13 +319,13 @@ ignore-comments=yes
 ignore-docstrings=yes
 
 # Imports are removed from the similarity computation
-ignore-imports=no
+ignore-imports=yes
 
 # Signatures are removed from the similarity computation
 ignore-signatures=no
 
 # Minimum lines number of a similarity.
-min-similarity-lines=4
+min-similarity-lines=8
 
 
 [SPELLING]

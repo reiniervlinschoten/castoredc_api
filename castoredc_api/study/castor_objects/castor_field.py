@@ -5,6 +5,9 @@ from typing import Optional, Union, Any
 class CastorField:
     """Object representing a Castor Field. Functions as a node of a tree for all interrelations."""
 
+    # pylint: disable=too-many-instance-attributes
+    # Field has more attributes
+
     def __init__(
         self,
         field_name: str,
@@ -20,7 +23,7 @@ class CastorField:
         self.field_name = field_name
         self.field_label = field_label
         self.field_type = field_type
-        self.field_required = True if (field_required == "1") else False
+        self.field_required = bool(field_required == "1")
         self.field_option_group = field_option_group
         self.field_order = field_order
         self.step = None
@@ -30,8 +33,7 @@ class CastorField:
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
         if not isinstance(other, CastorField):
             return NotImplemented
-        else:
-            return self.field_id == other.field_id
+        return self.field_id == other.field_id
 
     def __repr__(self) -> str:
         return self.field_name

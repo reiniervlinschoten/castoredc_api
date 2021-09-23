@@ -14,6 +14,11 @@ class CastorException(Exception):
 class CastorClient:
     """Object to connect and interact with Castor EDC API"""
 
+    # pylint: disable=too-many-arguments
+    # Necessary number of arguments to interact with API
+    # pylint: disable=too-many-public-methods
+    # Necessary number of public methods to interact with API
+
     # INITIALIZATION
     headers = {
         "accept": "*/*",  # "application/hal+json; text/csv",

@@ -7,7 +7,8 @@ from castoredc_api.study.castor_objects.castor_step import CastorStep
 
 
 class CastorForm:
-    """Object representing a form in Castor. Functions as a branch of a tree for all interrelations."""
+    """Object representing a form in Castor.
+    Functions as a branch of a tree for all interrelations."""
 
     def __init__(
         self,
@@ -40,8 +41,7 @@ class CastorForm:
         step = self.steps_on_id.get(step_id_or_name)
         if step is None:
             return self.steps_on_name.get(step_id_or_name)
-        else:
-            return step
+        return step
 
     def get_all_fields(self) -> List[CastorField]:
         """Returns a list of linked CastorFields."""
@@ -66,8 +66,7 @@ class CastorForm:
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
         if not isinstance(other, CastorForm):
             return NotImplemented
-        else:
-            return self.form_id == other.form_id
+        return self.form_id == other.form_id
 
     def __repr__(self) -> str:
         return self.form_name

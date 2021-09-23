@@ -4,7 +4,8 @@ from castoredc_api.study.castor_objects.castor_field import CastorField
 
 
 class CastorStep:
-    """Object representing a step in Castor. Functions as a branch of a tree for all interrelations."""
+    """Object representing a step in Castor.
+    Functions as a branch of a tree for all interrelations."""
 
     def __init__(self, step_name: str, step_id: str, step_order: str) -> None:
         """Creates a CastorStep object."""
@@ -30,15 +31,13 @@ class CastorStep:
         field = self.fields_on_id.get(field_id_or_name)
         if field is None:
             return self.fields_on_name.get(field_id_or_name)
-        else:
-            return field
+        return field
 
     # Standard Operators
     def __eq__(self, other: Any) -> Union[bool, type(NotImplemented)]:
         if not isinstance(other, CastorStep):
             return NotImplemented
-        else:
-            return self.step_id == other.step_id
+        return self.step_id == other.step_id
 
     def __repr__(self) -> str:
         return self.step_name

@@ -1,7 +1,6 @@
 """Module to import data to Castor EDC using the API"""
 from datetime import datetime
-from typing import TYPE_CHECKING, Dict, Optional
-
+import typing
 import pathlib
 import pandas as pd
 
@@ -11,7 +10,7 @@ from tqdm import tqdm
 from castoredc_api import CastorException
 from castoredc_api.importer.helpers import create_upload, update_feedback
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
 
 
@@ -21,11 +20,11 @@ def import_data(
     study: "CastorStudy",
     label_data: bool,
     target: str,
-    target_name: Optional[str] = None,
-    email: Optional[str] = None,
-    translation_path: Optional[str] = None,
-    merge_path: Optional[str] = None,
-) -> Dict:
+    target_name: typing.Optional[str] = None,
+    email: typing.Optional[str] = None,
+    translation_path: typing.Optional[str] = None,
+    merge_path: typing.Optional[str] = None,
+) -> dict:
     """Imports data from data_source_path to study with configuration options."""
     # Map the structure of your study locally
     study.map_structure()
@@ -64,9 +63,9 @@ def upload_data(
     castorized_dataframe: pd.DataFrame,
     study: "CastorStudy",
     target: str,
-    target_name: Optional[str],
-    email: Optional[str],
-) -> Dict:
+    target_name: typing.Optional[str],
+    email: typing.Optional[str],
+) -> dict:
     """Uploads each row from the castorized dataframe as a new form"""
     # Shared Data
     upload_datetime = datetime.now().strftime("%Y%m%d %H%M%S")
@@ -105,10 +104,10 @@ def upload_data(
 
 def upload_study(
     castorized_dataframe: pd.DataFrame,
-    common: Dict,
+    common: dict,
     upload_datetime: str,
     study: "CastorStudy",
-) -> Dict:
+) -> dict:
     """Uploads study data to the study."""
     feedback_total = {}
     imported = []
@@ -159,8 +158,9 @@ def upload_study(
 
 
 def upload_study_data(
-    body: Dict, study: "CastorStudy", common: Dict, imported: list, row: "Dict"
+    body: dict, study: "CastorStudy", common: dict, imported: list, row: "dict"
 ):
+    """Uploads a single row of study data."""
     try:
         feedback_row = study.client.update_study_data_record(
             record_id=row["record_id"], common=common, body=body
@@ -190,7 +190,7 @@ def upload_survey(
     study: "CastorStudy",
     package_id: str,
     email: str,
-) -> Dict:
+) -> dict:
     """Uploads survey data to the study."""
     feedback_total = {}
     imported = []
@@ -246,8 +246,8 @@ def upload_survey(
 
 
 def upload_survey_data(
-    body: list, study: "CastorStudy", imported: list, instance: Dict, row: Dict
-) -> Dict:
+    body: list, study: "CastorStudy", imported: list, instance: dict, row: dict
+) -> dict:
     """Tries to upload the survey data."""
     try:
         feedback_row = study.client.update_survey_package_instance_data_record(
@@ -276,8 +276,8 @@ def upload_survey_data(
 
 
 def create_survey_package_instance(
-    study: "CastorStudy", imported: list, package_id: str, row: Dict, email: str
-) -> Dict:
+    study: "CastorStudy", imported: list, package_id: str, row: dict, email: str
+) -> dict:
     """Tries to create a new survey package instance of package and for record."""
     try:
         instance = study.client.create_survey_package_instance(
@@ -286,7 +286,7 @@ def create_survey_package_instance(
             email_address=email,
             auto_send=False,
         )
-    except HTTPStatusError as e:
+    except HTTPStatusError as error:
         pd.DataFrame(imported).to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -297,23 +297,22 @@ def create_survey_package_instance(
             index=False,
         )
         raise CastorException(
-            str(e)
+            str(error)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
-        ) from e
+        ) from error
     return instance
 
 
 def upload_report(
     castorized_dataframe: pd.DataFrame,
-    common: Dict,
+    common: dict,
     upload_datetime: str,
     study: "CastorStudy",
     package_id: str,
-) -> Dict:
+) -> dict:
     """Uploads report data to the study."""
-    # Create the body for this report by using list comprehension and excluding the record_id and empty fields
     feedback_total = {}
     imported = []
 
@@ -335,6 +334,7 @@ def upload_report(
                     "confirmed_changes": True,
                 }
                 for field in row
+                # Exclude empty fields and record_id
                 if (field != "record_id" and row[field] is not None)
             ]
 
@@ -380,10 +380,10 @@ def upload_report_data(
     body: list,
     study: "CastorStudy",
     imported: list,
-    instance: Dict,
-    row: Dict,
-    common: Dict,
-) -> Dict:
+    instance: dict,
+    row: dict,
+    common: dict,
+) -> dict:
     """Tries to upload the survey data."""
     try:
         feedback_row = study.client.update_report_data_record(
@@ -426,7 +426,8 @@ def create_report_instances(
             {
                 "report_id": package_id,
                 "parent_id": None,
-                "report_name_custom": f"{record} - api_upload_Report_{datetime.now().strftime('%Y%m%d %H%M%S.%f')}-{row}",
+                "report_name_custom": f"{record} - api_upload_Report_"
+                f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}-{row}",
             }
             for row in range(1, len(record_frame.index) + 1)
         ]

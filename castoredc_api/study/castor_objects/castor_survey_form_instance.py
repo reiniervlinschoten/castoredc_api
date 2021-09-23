@@ -1,10 +1,9 @@
 """Module for representing a Survey Instance in Python."""
-from typing import TYPE_CHECKING, Union
-
+import typing
 from castoredc_api import CastorException
 from castoredc_api.study.castor_objects.castor_form_instance import CastorFormInstance
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING:
     from castoredc_api.study.castor_study import CastorStudy
 
 
@@ -30,7 +29,9 @@ class CastorSurveyFormInstance(CastorFormInstance):
         self.survey_package_id = None
 
     # Helpers
-    def find_form(self, study: "CastorStudy") -> Union["CastorForm", CastorException]:
+    def find_form(
+        self, study: "CastorStudy"
+    ) -> typing.Union["CastorForm", CastorException]:
         """Find which form is the originator of this instance."""
         # Surveys can be found on name_of_form
         return study.instance_of_form(self.name_of_form, self.instance_type)
