@@ -52,7 +52,7 @@ jobs:
         conda install anaconda-client
 
     - name: Wait for Pypi update
-      run: sleep 120s
+      run: sleep 600s
       shell: bash
 
     - name: Build and publish to conda (production)
