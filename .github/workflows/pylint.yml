@@ -4,8 +4,8 @@ name: pylint
   push:
     branches:
       - '**'
-    tags:
-      - '**'
+    tags-ignore:
+      - 'documentation'
   pull_request:
     branches:
       - '**'

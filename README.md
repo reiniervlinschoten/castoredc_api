@@ -2,6 +2,7 @@
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![pypi](https://img.shields.io/pypi/v/castoredc_api)](https://pypi.org/project/castoredc-api/)
 [![conda](https://img.shields.io/conda/v/reiniervl/castoredc_api)](https://anaconda.org/reiniervl/castoredc_api)
+[![conda-forge](https://img.shields.io/conda/v/conda-forge/castoredc_api)](https://anaconda.org/conda-forge/castoredc_api)
 [![pylint](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml/badge.svg)](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml)
 [![pytest](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pytest.yml/badge.svg)](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pytest.yml)
 [![coverage](https://img.shields.io/codecov/c/github/reiniervlinschoten/castoredc_api)](https://app.codecov.io/gh/reiniervlinschoten/castoredc_api)

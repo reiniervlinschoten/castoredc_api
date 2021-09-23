@@ -4,8 +4,8 @@ name: black
   push:
     branches:
       - '**'
-    tags:
-      - '**'
+    tags-ignore:
+      - 'documentation'
   pull_request:
     branches:
       - '**'
