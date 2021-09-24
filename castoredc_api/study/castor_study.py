@@ -166,6 +166,7 @@ class CastorStudy:
             record.randomisation_datetime = self.__get_date_or_none(
                 record_api["randomized_on"]
             )
+            record.archived = record_api["archived"]
 
     def __load_survey_information(self) -> None:
         """Adds auxiliary data to survey forms."""
@@ -270,8 +271,10 @@ class CastorStudy:
             self.get_single_field(child_id).field_dependency = dependencies[child_id]
 
     # DATA ANALYSIS
-    def export_to_dataframe(self) -> dict:
-        """Exports all data from a study into a dict of dataframes for statistical analysis."""
+    def export_to_dataframe(self, archived=False) -> dict:
+        """Exports all data from a study into a dict of dataframes for statistical analysis.
+        :param archived:
+        """
         self.map_data()
         dataframes = {
             "Study": self.__export_study_data(),
@@ -280,12 +283,13 @@ class CastorStudy:
         }
         return dataframes
 
-    def export_to_csv(self) -> dict:
+    def export_to_csv(self, archived=False) -> dict:
         """Exports all data to csv files.
-        Returns dict with file locations."""
+        Returns dict with file locations.
+        :param archived: """
         now = f"{datetime.now().strftime('%Y%m%d %H%M%S')}"
         date_format = "%d-%m-%Y %H:%M:%S"
-        dataframes = self.export_to_dataframe()
+        dataframes = self.export_to_dataframe(archived)
         # Instantiate output folder
         pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
         # Export dataframes
@@ -302,11 +306,12 @@ class CastorStudy:
             )
         return dataframes
 
-    def export_to_feather(self) -> dict:
+    def export_to_feather(self, archived=False) -> dict:
         """Exports all data to feather files.
-        Returns dict of file locations for export into R."""
+        Returns dict of file locations for export into R.
+        :param archived: """
         now = f"{datetime.now().strftime('%Y%m%d %H%M%S')}"
-        dataframes = self.export_to_dataframe()
+        dataframes = self.export_to_dataframe(archived)
         # Instantiate output folder
         pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
         dataframes["Study"] = self.export_dataframe_to_feather(
