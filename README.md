@@ -26,7 +26,8 @@ See for more information below.
 ## Getting Started
 1. Install the package 
    * `pip install castoredc-api`
-   * `conda install -c reiniervl castoredc_api` (conda-forge coming soon)
+   * `conda install -c conda-forge castoredc_api`
+   * `conda install -c reiniervl castoredc_api`
 2. Import the client
 3. Instantiate the client with your client-ID and client-secret (don't share these!) and url to the server.
    * ID and secret: Account -> Settings -> Castor EDC API
@@ -140,7 +141,7 @@ imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", column_
 ```
 #### Specifying the data structure
 #### Data files
-See below for an examples.
+See below and example_files/ for an examples.
 * Dates should be formatted as dd-mm-yyyy.
 * Datetime should be formatted as dd-mm-yyyy;hh:mm
 * Use semicolons for fields that allow multiple options (e.g. checkboxes)
