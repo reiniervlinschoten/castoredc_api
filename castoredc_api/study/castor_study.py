@@ -173,44 +173,75 @@ class CastorStudy:
         survey_package_data = self.client.all_survey_package_instances()
         # Create mapping {survey_instance_id: survey_package}
         survey_data = {
-            survey["id"]: package
+            survey["id"]: {
+                "package": package,
+                "record": package["record_id"],
+                "progress": survey["progress"],
+            }
             for package in survey_package_data
             for survey in package["_embedded"]["survey_instances"]
         }
-        survey_form_instances = self.get_all_form_type_form_instances("Survey")
-        for form_instance in tqdm(survey_form_instances, desc="Augmenting Survey Data"):
-            # Get package information
-            parent_package = survey_data.get(form_instance.instance_id)
-            form_instance.created_on = self.__get_date_or_none(
-                parent_package["created_on"]
+        for survey_instance, values in tqdm(
+            survey_data.items(), desc="Augmenting Survey Data"
+        ):
+            # Test if instance in study
+            local_instance = self.get_single_form_instance_on_id(
+                instance_id=survey_instance, record_id=values["record"]
             )
-            form_instance.sent_on = self.__get_date_or_none(parent_package["sent_on"])
-            form_instance.progress = {
-                survey["id"]: survey["progress"]
-                for survey in parent_package["_embedded"]["survey_instances"]
-            }.get(form_instance.instance_id)
-            form_instance.completed_on = self.__get_date_or_none(
-                parent_package["finished_on"]
-            )
-            form_instance.archived = parent_package["archived"]
-            form_instance.survey_package_id = parent_package["id"]
+            if local_instance is None:
+                # Add the empty survey_instances to the study
+                pass
+                # local_instance = CastorSurveyFormInstance(
+                #     instance_id=survey_instance,
+                #     name_of_form="Not Found",  # TODO: name isn't exported
+                #     study=self,
+                # )
+                # self.get_single_record(values["record"]).add_form_instance(
+                #     local_instance
+                # )
+            else:
+                # TODO: Remove else when local_instance can be created in the loop
+                local_instance.created_on = self.__get_date_or_none(
+                    values["package"]["created_on"]
+                )
+                local_instance.sent_on = self.__get_date_or_none(
+                    values["package"]["sent_on"]
+                )
+                local_instance.progress = values["progress"]
+                local_instance.completed_on = self.__get_date_or_none(
+                    values["package"]["finished_on"]
+                )
+                local_instance.archived = values["package"]["archived"]
+                local_instance.survey_package_id = values["package"]["id"]
 
     def __load_report_information(self) -> None:
         """Adds auxiliary data to report forms."""
-        report_instances = self.get_all_form_type_form_instances("Report")
-        for form_instance in tqdm(report_instances, "Augmenting Report Data"):
-            report_information = self.__all_report_instances.get(
-                form_instance.instance_id
+        for instance_id, report_instance in tqdm(
+            self.__all_report_instances.items(), "Augmenting Report Data"
+        ):
+            # Test if instance in study
+            local_instance = self.get_single_form_instance_on_id(
+                instance_id=instance_id, record_id=report_instance["record_id"]
             )
-            form_instance.created_on = datetime.strptime(
-                report_information["created_on"], "%Y-%m-%d %H:%M:%S"
+            if local_instance is None:
+                local_instance = CastorReportFormInstance(
+                    instance_id=instance_id,
+                    name_of_form=report_instance["name"],
+                    study=self,
+                )
+                self.get_single_record(report_instance["record_id"]).add_form_instance(
+                    local_instance
+                )
+
+            local_instance.created_on = datetime.strptime(
+                report_instance["created_on"], "%Y-%m-%d %H:%M:%S"
             )
-            form_instance.parent = (
+            local_instance.parent = (
                 "No parent"
-                if report_information["parent_id"] == ""
-                else self.get_single_form(report_information["parent_id"]).form_name
+                if report_instance["parent_id"] == ""
+                else self.get_single_form(report_instance["parent_id"]).form_name
             )
-            form_instance.archived = report_information["archived"]
+            local_instance.archived = report_instance["archived"]
 
     @staticmethod
     def __get_date_or_none(dictionary: Optional[dict]) -> Optional[datetime]:
@@ -638,9 +669,9 @@ class CastorStudy:
         if form_type == "Study":
             data = self.__get_all_data_points_study(fields)
         elif form_type == "Survey":
-            data = self.__get_all_data_points_survey(fields)
+            data = self.__get_all_data_points_survey(forms[0])
         elif form_type == "Report":
-            data = self.__get_all_data_points_report(fields)
+            data = self.__get_all_data_points_report(forms[0])
         else:
             raise CastorException(
                 f"{form_type} is not a valid type. Use Study/Survey/Report."
@@ -878,84 +909,56 @@ class CastorStudy:
 
         return data
 
-    def __get_all_data_points_survey(self, fields: List) -> List[dict]:
+    def __get_all_data_points_survey(self, form: "CastorForm") -> List[dict]:
         """Returns a list of dicts of all survey data points."""
-        # Get all records
-        records = self.get_all_records()
         data = []
-
-        for record in records:
+        form_instances = self.get_form_instances_by_form(form)
+        for instance in form_instances:
             # Get all data points and select only relevant ones
-            data_points = record.get_all_data_points()
-            filtered_data_points = [
-                data_point
+            data_points = instance.get_all_data_points()
+            # Report data
+            record_form_data = {
+                data_point.instance_of.field_name: data_point.value
                 for data_point in data_points
-                if data_point.instance_of in fields
-            ]
-            # Sort data points by form_instance and then group by form instance
-            sorted_data_points = sorted(
-                filtered_data_points, key=attrgetter("form_instance.instance_id")
-            )
-            for form_instance, data_points in itertools.groupby(
-                sorted_data_points, lambda data_point: data_point.form_instance
-            ):
-                # Survey data
-                record_form_data = {
-                    data_point.instance_of.field_name: data_point.value
-                    for data_point in data_points
-                }
-                # Auxiliary data
-                record_form_data["record_id"] = record.record_id
-                record_form_data["institute"] = record.institute
-                record_form_data["survey_name"] = form_instance.name_of_form
-                record_form_data["survey_instance_id"] = form_instance.instance_id
-                record_form_data["created_on"] = form_instance.created_on
-                record_form_data["sent_on"] = form_instance.sent_on
-                record_form_data["progress"] = form_instance.progress
-                record_form_data["completed_on"] = form_instance.completed_on
-                record_form_data["package_id"] = form_instance.survey_package_id
-                record_form_data["archived"] = form_instance.archived
-                # Add to data
-                data.append(record_form_data)
+            }
+            # Auxiliary data
+            record_form_data["record_id"] = instance.record.record_id
+            record_form_data["institute"] = instance.record.institute
+            record_form_data["survey_name"] = instance.name_of_form
+            record_form_data["survey_instance_id"] = instance.instance_id
+            record_form_data["created_on"] = instance.created_on
+            record_form_data["sent_on"] = instance.sent_on
+            record_form_data["progress"] = instance.progress
+            record_form_data["completed_on"] = instance.completed_on
+            record_form_data["package_id"] = instance.survey_package_id
+            record_form_data["archived"] = instance.archived
+            # Add to data
+            data.append(record_form_data)
 
         return data
 
-    def __get_all_data_points_report(self, fields: List) -> List[dict]:
+    def __get_all_data_points_report(self, form: "CastorForm") -> List[dict]:
         """Returns a list of dicts of all report data points."""
-        # Get all records
-        records = self.get_all_records()
         data = []
-
-        for record in records:
+        form_instances = self.get_form_instances_by_form(form)
+        for instance in form_instances:
             # Get all data points and select only relevant ones
-            data_points = record.get_all_data_points()
-            filtered_data_points = [
-                data_point
+            data_points = instance.get_all_data_points()
+            # Report data
+            record_form_data = {
+                data_point.instance_of.field_name: data_point.value
                 for data_point in data_points
-                if data_point.instance_of in fields
-            ]
-            # Sort data points by form_instance and then group by form instance
-            sorted_data_points = sorted(
-                filtered_data_points, key=attrgetter("form_instance.instance_id")
-            )
-            for form_instance, data_points in itertools.groupby(
-                sorted_data_points, lambda data_point: data_point.form_instance
-            ):
-                # Report data
-                record_form_data = {
-                    data_point.instance_of.field_name: data_point.value
-                    for data_point in data_points
-                }
-                # Auxiliary data
-                record_form_data["record_id"] = record.record_id
-                record_form_data["institute"] = record.institute
-                record_form_data["created_on"] = form_instance.created_on
-                record_form_data["custom_name"] = form_instance.name_of_form
-                record_form_data["parent"] = form_instance.parent
-                record_form_data["archived"] = form_instance.archived
+            }
+            # Auxiliary data
+            record_form_data["record_id"] = instance.record.record_id
+            record_form_data["institute"] = instance.record.institute
+            record_form_data["created_on"] = instance.created_on
+            record_form_data["custom_name"] = instance.name_of_form
+            record_form_data["parent"] = instance.parent
+            record_form_data["archived"] = instance.archived
 
-                # Add to data
-                data.append(record_form_data)
+            # Add to data
+            data.append(record_form_data)
 
         return data
 
