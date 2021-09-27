@@ -7,6 +7,7 @@ from castoredc_api import CastorException
 
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
+    from castoredc_api.study.castor_objects import CastorField
 
 
 def read_excel(path: str) -> pd.DataFrame:
@@ -116,11 +117,17 @@ def castorize_column_helper(
             label_data, new_name, study, target_field, to_import, variable_translation
         )
     elif target_field.field_type in ["numeric"]:
-        return_value = {new_name[0]: castorize_num_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_num_column(to_import.tolist(), target_field)
+        }
     elif target_field.field_type in ["year"]:
-        return_value = {new_name[0]: castorize_year_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_year_column(to_import.tolist(), target_field)
+        }
     elif target_field.field_type in ["slider"]:
-        return_value = {new_name[0]: castorize_num_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_num_column(to_import.tolist(), target_field)
+        }
     elif target_field.field_type in ["string", "textarea"]:
         return_value = {new_name[0]: to_import.tolist()}
     elif target_field.field_type in ["date"]:
@@ -130,7 +137,9 @@ def castorize_column_helper(
     elif target_field.field_type in ["time"]:
         return_value = {new_name[0]: castorize_time_column(to_import.tolist())}
     elif target_field.field_type in ["numberdate"]:
-        return_value = {new_name[0]: castorize_numberdate_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_numberdate_column(to_import.tolist(), target_field)
+        }
     else:
         raise CastorException(
             f"The field {target_field} is not importable with type {target_field.field_type}"
@@ -265,11 +274,11 @@ def translate_label_data(
     for value in values:
         if pd.isnull(parent_value):
             if translate_dict:
-                value = translate_dict.get(str(value), "Error")
+                value = translate_dict.get(str(value), "Error: no translation provided")
             if str(value) in options.values():
                 new_values.append(value)
             else:
-                new_values.append("Error")
+                new_values.append("Error: non-existent option")
         else:
             if translate_dict:
                 value = translate_dict.get(str(value), parent_value)
@@ -291,8 +300,8 @@ def translate_value_data(
     for value in values:
         if pd.isnull(parent_value):
             if translate_dict:
-                value = translate_dict.get(str(value), "Error")
-            new_values.append(options.get(str(value), "Error"))
+                value = translate_dict.get(str(value), "Error: no translation provided")
+            new_values.append(options.get(str(value), "Error: non-existent option"))
         else:
             if translate_dict:
                 value = translate_dict.get(str(value), parent_value)
@@ -338,7 +347,7 @@ def get_value_at_index(item: typing.Optional[list], index: typing.Optional[float
     return new_item
 
 
-def castorize_num_column(data: list):
+def castorize_num_column(data: list, target_field: "CastorField"):
     """Castorizes a numeric column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -347,14 +356,18 @@ def castorize_num_column(data: list):
         else:
             try:
                 # Test if data point is convertible to float
-                float(datapoint)
-                new_list.append(datapoint)
+                numeric_datapoint = float(datapoint)
+                # Test if between bounds
+                if target_field.field_max > numeric_datapoint > target_field.field_min:
+                    new_list.append(datapoint)
+                else:
+                    new_list.append("Error: number out of bounds")
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: not a number")
     return new_list
 
 
-def castorize_year_column(data: list):
+def castorize_year_column(data: list, target_field: "CastorField"):
     """Castorizes a year column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -362,13 +375,12 @@ def castorize_year_column(data: list):
             new_list.append(None)
         else:
             try:
-                # Test if the data point is year-like. Sorry people from before 1900 and after 2100
-                if 1900 < int(datapoint) < 2100:
+                if target_field.field_max > int(datapoint) > target_field.field_min:
                     new_list.append(datapoint)
                 else:
-                    new_list.append("Error")
+                    new_list.append("Error: year out of bounds")
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: not a year")
     return new_list
 
 
@@ -384,7 +396,7 @@ def castorize_date_column(data: list):
                 parsed_date = datetime.strptime(datapoint, "%d-%m-%Y")
                 new_list.append(parsed_date.strftime("%d-%m-%Y"))
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: unprocessable date")
     return new_list
 
 
@@ -400,7 +412,7 @@ def castorize_datetime_column(data: list):
                 parsed_date = datetime.strptime(datapoint, "%d-%m-%Y;%H:%M")
                 new_list.append(parsed_date.strftime("%d-%m-%Y;%H:%M"))
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: unprocessable datetime")
     return new_list
 
 
@@ -416,11 +428,11 @@ def castorize_time_column(data: list):
                 parsed_date = datetime.strptime(datapoint, "%H:%M")
                 new_list.append(parsed_date.strftime("%H:%M"))
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: unprocessable time")
     return new_list
 
 
-def castorize_numberdate_column(data: list):
+def castorize_numberdate_column(data: list, target_field: "CastorField"):
     """Castorizes a numberdate column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -431,7 +443,7 @@ def castorize_numberdate_column(data: list):
             split = datapoint.split(";")
 
             if len(split) != 2:
-                new_list.append("Error")
+                new_list.append("Error: wrong number of arguments for field")
 
             else:
                 new_value = []
@@ -439,17 +451,25 @@ def castorize_numberdate_column(data: list):
                 # Try parsing the number
                 try:
                     # Test if data point is convertible to float
-                    float(split[0])
-                    new_value.append(split[0])
+                    numeric_datapoint = float(split[0])
+                    # Test if between bounds
+                    if (
+                        target_field.field_max
+                        > numeric_datapoint
+                        > target_field.field_min
+                    ):
+                        new_value.append(split[0])
+                    else:
+                        new_value.append("Error: number out of bounds")
                 except ValueError:
-                    new_value.append("Error")
+                    new_value.append("Error: not a number")
 
                 # Try parsing the date
                 try:
                     parsed_date = datetime.strptime(split[1], "%d-%m-%Y")
                     new_value.append(parsed_date.strftime("%d-%m-%Y"))
                 except ValueError:
-                    new_value.append("Error")
+                    new_value.append("Error: unprocessable date")
 
                 new_list.append(";".join(new_value))
 

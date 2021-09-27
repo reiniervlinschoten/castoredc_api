@@ -3,7 +3,7 @@ from castoredc_api.importer.helpers import read_excel, create_upload
 
 class TestCreateUpload:
     """Tests the helper functions for creation of the uploading dataframe."""
-
+    # TODO: fix tests, need to put proper errors in Excel comparison
     def test_create_upload_study_values_success(self, import_study):
         """Tests if creating the to_upload dataframe works for value data"""
         to_upload = create_upload(

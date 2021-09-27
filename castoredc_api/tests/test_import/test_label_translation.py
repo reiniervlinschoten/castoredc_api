@@ -492,11 +492,11 @@ class TestLabelTranslationFail:
         )
         assert import_column == {
             "his_family": [
-                "Error;Error;Error",
-                "Error",
-                "Error",
-                "Error;Error;Error",
-                "Error",
+                "Error: non-existent option;Error: non-existent option;Error: non-existent option",
+                "Error: non-existent option",
+                "Error: non-existent option",
+                "Error: non-existent option;Error: non-existent option;Error: non-existent option",
+                "Error: non-existent option",
             ]
         }
 
@@ -511,7 +511,7 @@ class TestLabelTranslationFail:
             variable_translation=None,
         )
         assert import_column == {
-            "base_bl_date": ["Error", "Error", "Error", "Error", "Error"]
+            "base_bl_date": ["Error: unprocessable date", "Error: unprocessable date", "Error: unprocessable date", "Error: unprocessable date", "Error: unprocessable date"]
         }
 
     def test_datetime_field_fail(self, study_label_data_error, import_study):
@@ -525,7 +525,7 @@ class TestLabelTranslationFail:
             variable_translation=None,
         )
         assert import_column == {
-            "onset_stroke": ["Error", "Error", "Error", "Error", "Error"]
+            "onset_stroke": ["Error: unprocessable datetime", "Error: unprocessable datetime", "Error: unprocessable datetime", "Error: unprocessable datetime", "Error: unprocessable datetime"]
         }
 
     def test_dropdown_field_fail(self, study_label_data_error, import_study):
@@ -539,7 +539,7 @@ class TestLabelTranslationFail:
             variable_translation=None,
         )
         assert import_column == {
-            "pat_race": ["Error", "Error", "Error", "Error;Error", "Error"]
+            "pat_race": ["Error: non-existent option", "Error: non-existent option", "Error: non-existent option", "Error: non-existent option;Error: non-existent option", "Error: non-existent option"]
         }
 
     def test_numberdate_field_fail(self, study_label_data_error, import_study):
@@ -554,10 +554,10 @@ class TestLabelTranslationFail:
         )
         assert import_column == {
             "fac_V_leiden": [
-                "Error",
-                "33;Error",
-                "Error;18-03-2022",
-                "28;Error",
+                "Error: wrong number of arguments for field",
+                "33;Error: unprocessable date",
+                "Error: not a number;18-03-2022",
+                "28;Error: unprocessable date",
                 "5;02-03-2023",
             ]
         }
@@ -573,7 +573,7 @@ class TestLabelTranslationFail:
             variable_translation=None,
         )
         assert import_column == {
-            "base_hb": ["Error", "Error", "Error", "Error", "Error"]
+            "base_hb": ["Error: not a number", "Error: not a number", "Error: not a number", "Error: not a number", "Error: not a number"]
         }
 
     def test_radio_field_fail(self, study_label_data_error, import_study):
@@ -587,7 +587,7 @@ class TestLabelTranslationFail:
             variable_translation=None,
         )
         assert import_column == {
-            "pat_sex": ["Error", "Error", "Error", "Error", "Error"]
+            "pat_sex": ["Error: non-existent option", "Error: non-existent option", "Error: non-existent option", "Error: non-existent option", "Error: non-existent option"]
         }
 
     def test_radio_field_with_dependency_fail(
@@ -617,7 +617,7 @@ class TestLabelTranslationFail:
             study=import_study,
             variable_translation=None,
         )
-        assert import_column == {"VAS": ["Error", "Error", "Error"]}
+        assert import_column == {"VAS": ["Error: not a number", "Error: not a number", "Error: not a number"]}
 
     def test_string_field_fail(self, medication_label_data_error, import_study):
         """Tests whether the proper error is returned when castorizing a string field."""
@@ -642,7 +642,7 @@ class TestLabelTranslationFail:
             variable_translation=None,
         )
         assert import_column == {
-            "onset_trombectomy": ["Error", "Error", "Error", "Error", "Error"]
+            "onset_trombectomy": ["Error: unprocessable time", "Error: unprocessable time", "Error: unprocessable time", "Error: unprocessable time", "Error: unprocessable time"]
         }
 
     def test_year_field_fail(self, study_label_data_error, import_study):
@@ -656,5 +656,5 @@ class TestLabelTranslationFail:
             variable_translation=None,
         )
         assert import_column == {
-            "pat_birth_year": ["Error", "Error", "Error", "Error", "Error"]
+            "pat_birth_year": ["Error: year out of bounds", "Error: year out of bounds", "Error: not a year", "Error: year out of bounds", "Error: not a year"]
         }

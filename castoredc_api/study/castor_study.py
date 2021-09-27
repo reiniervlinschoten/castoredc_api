@@ -1,5 +1,6 @@
 """Module for representing a CastorStudy in Python."""
 import itertools
+import math
 import pathlib
 import re
 from datetime import datetime
@@ -11,18 +12,14 @@ from tqdm import tqdm
 
 from castoredc_api import CastorClient, CastorException
 from castoredc_api.study.castor_objects.castor_data_point import CastorDataPoint
-from castoredc_api.study.castor_objects.castor_field import CastorField
-from castoredc_api.study.castor_objects.castor_form_instance import CastorFormInstance
-from castoredc_api.study.castor_objects.castor_record import CastorRecord
-from castoredc_api.study.castor_objects.castor_step import CastorStep
-from castoredc_api.study.castor_objects.castor_form import CastorForm
-from castoredc_api.study.castor_objects.castor_study_form_instance import (
+from castoredc_api.study.castor_objects import (
+    CastorField,
+    CastorFormInstance,
+    CastorRecord,
+    CastorStep,
+    CastorForm,
     CastorStudyFormInstance,
-)
-from castoredc_api.study.castor_objects.castor_survey_form_instance import (
     CastorSurveyFormInstance,
-)
-from castoredc_api.study.castor_objects.castor_report_form_instance import (
     CastorReportFormInstance,
 )
 
@@ -104,6 +101,9 @@ class CastorStudy:
                 field_order=field["Field Order"],
             )
             step.add_field(new_field)
+        # Augment field data
+        self.__load_field_information()
+
         # Map the field dependencies and optiongroups
         self.__map_field_dependencies()
         self.__load_optiongroups()
@@ -243,6 +243,19 @@ class CastorStudy:
                 else self.get_single_form(report_instance["parent_id"]).form_name
             )
             local_instance.archived = report_instance["archived"]
+
+    def __load_field_information(self):
+        """Adds auxillary information to fields."""
+        all_fields = self.client.all_fields()
+        for api_field in all_fields:
+            field = self.get_single_field(api_field["id"])
+            # Use -inf and inf for easy numeric comparison
+            field.field_min = (
+                -math.inf if api_field["field_min"] is None else api_field["field_min"]
+            )
+            field.field_max = (
+                math.inf if api_field["field_max"] is None else api_field["field_max"]
+            )
 
     @staticmethod
     def __get_date_or_none(dictionary: Optional[dict]) -> Optional[datetime]:
