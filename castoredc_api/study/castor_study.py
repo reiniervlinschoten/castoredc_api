@@ -1,8 +1,10 @@
 """Module for representing a CastorStudy in Python."""
 import itertools
 import math
+import os
 import pathlib
 import re
+from configparser import ConfigParser
 from datetime import datetime
 from operator import attrgetter
 from typing import List, Optional, Any, Union, Dict
@@ -40,6 +42,9 @@ class CastorStudy:
     ) -> None:
         """Create a CastorStudy object."""
         self.study_id = study_id
+        # Open configuration settings
+        self.configuration = ConfigParser(interpolation=None)
+        self.configuration.read(os.path.join(os.path.dirname(__file__), '../../config.ini'))
         # Create the client to interact with the study
         if test is False:
             self.client = CastorClient(client_id, client_secret, url)
