@@ -720,7 +720,7 @@ class CastorStudy:
         dataframe, column_order = self.__split_up_numberdate_data(
             dataframe, fields, column_order
         )
-        dataframe = self.__format_year_and_date(dataframe, fields)
+        dataframe = self.__format_year(dataframe, fields)
         dataframe = self.__format_categorical_fields(dataframe, fields)
         # Order the dataframe
         dataframe = dataframe[column_order]
@@ -750,7 +750,7 @@ class CastorStudy:
         return dataframe
 
     @staticmethod
-    def __format_year_and_date(
+    def __format_year(
         dataframe: pd.DataFrame, fields: List[CastorField]
     ) -> pd.DataFrame:
         """Casts year fields to the correct format."""

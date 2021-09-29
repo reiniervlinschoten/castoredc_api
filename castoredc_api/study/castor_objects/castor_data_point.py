@@ -49,11 +49,12 @@ class CastorDataPoint:
             interpreted_value = self.__interpret_optiongroup(study)
         elif self.instance_of.field_type in [
             "numeric",
-            "year",
             "slider",
             "randomization",
         ]:
             interpreted_value = self.__interpret_numeric()
+        elif self.instance_of.field_type in ["year"]:
+            interpreted_value = self.__interpret_year()
         elif self.instance_of.field_type in ["string", "textarea", "upload"]:
             interpreted_value = self.raw_value
         elif self.instance_of.field_type in ["calculation"]:
@@ -189,6 +190,25 @@ class CastorDataPoint:
                 new_value = -99
         else:
             new_value = float(self.raw_value)
+        return new_value
+
+    def __interpret_year(self):
+        """Interprets year data while handling user missings."""
+        if self.raw_value == "":
+            new_value = pd.NA
+        elif "Missing" in self.raw_value:
+            if "measurement failed" in self.raw_value:
+                new_value = -95
+            elif "not applicable" in self.raw_value:
+                new_value = -96
+            elif "not asked" in self.raw_value:
+                new_value = -97
+            elif "asked but unknown" in self.raw_value:
+                new_value = -98
+            elif "not done" in self.raw_value:
+                new_value = -99
+        else:
+            new_value = int(self.raw_value)
         return new_value
 
     def __interpret_numberdate(self):
