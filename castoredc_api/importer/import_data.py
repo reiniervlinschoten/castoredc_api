@@ -178,6 +178,7 @@ def upload_study_data(
         )
         raise CastorException(
             str(error)
+            + str(error.response)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
@@ -268,6 +269,7 @@ def upload_survey_data(
         )
         raise CastorException(
             str(error)
+            + str(error.response)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
@@ -298,6 +300,7 @@ def create_survey_package_instance(
         )
         raise CastorException(
             str(error)
+            + str(error.response)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
@@ -405,6 +408,7 @@ def upload_report_data(
         )
         raise CastorException(
             str(error)
+            + str(error.response)
             + " caused at "
             + str(row)
             + ".\n See output folder for successful imports"
@@ -448,6 +452,7 @@ def create_report_instances(
         )
         raise CastorException(
             str(error)
+            + str(error.response)
             + " caused at "
             + str(record)
             + ".\n See output folder for successful imports"
