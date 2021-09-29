@@ -158,7 +158,7 @@ def upload_study(
 
 
 def upload_study_data(
-    body: dict, study: "CastorStudy", common: dict, imported: list, row: "dict"
+    body: list, study: "CastorStudy", common: dict, imported: list, row: "dict"
 ):
     """Uploads a single row of study data."""
     try:
