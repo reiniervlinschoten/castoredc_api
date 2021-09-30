@@ -16,18 +16,21 @@ if typing.TYPE_CHECKING:
 # TODO: Config settings for import & installing with config file
 
 
-def import_data(
-    data_source_path: str,
-    column_link_path: str,
-    study: "CastorStudy",
-    label_data: bool,
-    target: str,
-    target_name: typing.Optional[str] = None,
-    email: typing.Optional[str] = None,
-    translation_path: typing.Optional[str] = None,
-    merge_path: typing.Optional[str] = None,
-) -> dict:
+def import_data(data_source_path: str, column_link_path: str, study: "CastorStudy", label_data: bool, target: str,
+                target_name: typing.Optional[str] = None, email: typing.Optional[str] = None,
+                translation_path: typing.Optional[str] = None, merge_path: typing.Optional[str] = None,
+                format_options=None) -> dict:
     """Imports data from data_source_path to study with configuration options."""
+    # Set configuration options
+    configuration = {
+        "date": "%d-%m-%Y",
+        "datetime": "%d-%m-%Y %H:%M",
+        "datetime_seconds": "%d-%m-%Y %H:%M:%S",
+        "time": "%H:%M",
+    }
+    if format_options:
+        configuration.update(format_options)
+
     # Map the structure of your study locally
     study.map_structure()
 

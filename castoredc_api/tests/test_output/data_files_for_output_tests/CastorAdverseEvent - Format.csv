@@ -1,0 +1,3 @@
+"record_id";institute;"created_on";"custom_name";"parent";archived;AE_type;AE_startdate;AE_stopdate;AE_severity;AE_relation;AE_action;AE_outcome;AE_expected;AE_SAE
+110001;Franciscus Gasthuis & Vlietland;"June 22 2021 09:58:13 AM";"Adverse event - 22-06-2021 09:58:12";"No parent";False;;;;;;;;;;
+110001;Franciscus Gasthuis & Vlietland;"June 22 2021 09:55:13 AM";"Adverse event - 22-06-2021 09:55:12";"Follow-up Visit";False;"A bug in the API";June 23 2021;June 24 2021;Life-threatening;"Definitely related";"Medical intervention";Resolved;Yes;Yes;

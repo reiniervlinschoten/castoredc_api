@@ -12,11 +12,8 @@ class TestImportMerge:
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_merge.xlsx",
             column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Study",
-            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
-        )
+            study=import_study, label_data=True, target="Study",
+            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx")
 
         assert imported_data == self.study_success
 
@@ -25,11 +22,8 @@ class TestImportMerge:
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings_merge.xlsx",
             column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Study",
-            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
-        )
+            study=import_study, label_data=True, target="Study",
+            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx")
 
         assert imported_data == self.study_missing
 
@@ -39,11 +33,8 @@ class TestImportMerge:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors_merge.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
-                study=import_study,
-                label_data=True,
-                target="Study",
-                merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
-            )
+                study=import_study, label_data=True, target="Study",
+                merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx")
 
         assert str(e.value) == self.study_error
 

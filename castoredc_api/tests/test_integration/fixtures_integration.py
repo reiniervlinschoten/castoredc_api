@@ -26,6 +26,6 @@ def integration_study_format():
             "date": "%B %e %Y",
             "datetime": "%B %e %Y %I:%M %p",
             "time": "%I:%M %p",
-        },
+        }
     )
     return study

@@ -11,13 +11,9 @@ class TestImportSurvey:
         """Tests if uploading value data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_values.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            study=import_study,
-            label_data=False,
-            target="Survey",
-            target_name="My first survey package",
-            email="python_wrapper@you-spam.com",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx", study=import_study,
+            label_data=False, target="Survey", target_name="My first survey package",
+            email="python_wrapper@you-spam.com")
 
         assert imported_data == self.survey_success
 
@@ -25,13 +21,9 @@ class TestImportSurvey:
         """Tests if uploading label data is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_labels.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Survey",
-            target_name="My first survey package",
-            email="python_wrapper@you-spam.com",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx", study=import_study,
+            label_data=True, target="Survey", target_name="My first survey package",
+            email="python_wrapper@you-spam.com")
 
         assert imported_data == self.survey_success
 
@@ -39,13 +31,9 @@ class TestImportSurvey:
         """Tests if uploading value data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_values_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            study=import_study,
-            label_data=False,
-            target="Survey",
-            target_name="My first survey package",
-            email="python_wrapper@you-spam.com",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx", study=import_study,
+            label_data=False, target="Survey", target_name="My first survey package",
+            email="python_wrapper@you-spam.com")
 
         assert imported_data == self.survey_missing
 
@@ -53,13 +41,9 @@ class TestImportSurvey:
         """Tests if uploading label data with missings is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_labels_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Survey",
-            target_name="My first survey package",
-            email="python_wrapper@you-spam.com",
-        )
+            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx", study=import_study,
+            label_data=True, target="Survey", target_name="My first survey package",
+            email="python_wrapper@you-spam.com")
 
         assert imported_data == self.survey_missing
 
@@ -69,12 +53,8 @@ class TestImportSurvey:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_values_errors.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-                study=import_study,
-                label_data=False,
-                target="Survey",
-                target_name="My first survey package",
-                email="python_wrapper@you-spam.com",
-            )
+                study=import_study, label_data=False, target="Survey", target_name="My first survey package",
+                email="python_wrapper@you-spam.com")
 
         assert str(e.value) == self.survey_error
 
@@ -84,12 +64,8 @@ class TestImportSurvey:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_labels_errors.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-                study=import_study,
-                label_data=True,
-                target="Survey",
-                target_name="My first survey package",
-                email="python_wrapper@you-spam.com",
-            )
+                study=import_study, label_data=True, target="Survey", target_name="My first survey package",
+                email="python_wrapper@you-spam.com")
 
         assert str(e.value) == self.survey_error
 
@@ -99,12 +75,8 @@ class TestImportSurvey:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_values_errors_upload.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file.xlsx",
-                study=import_study,
-                label_data=False,
-                target="Survey",
-                target_name="My first survey package",
-                email="python_wrapper@you-spam.com",
-            )
+                study=import_study, label_data=False, target="Survey", target_name="My first survey package",
+                email="python_wrapper@you-spam.com")
 
         assert "404 Client Error: Not Found for url:" in str(e.value)
 

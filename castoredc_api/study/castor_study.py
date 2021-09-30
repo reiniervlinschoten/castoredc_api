@@ -1,10 +1,8 @@
 """Module for representing a CastorStudy in Python."""
 import itertools
 import math
-import os
 import pathlib
 import re
-from configparser import ConfigParser
 from datetime import datetime
 from operator import attrgetter
 from typing import List, Optional, Any, Union, Dict
@@ -52,6 +50,7 @@ class CastorStudy:
         self.configuration = {
             "date": "%d-%m-%Y",
             "datetime": "%d-%m-%Y %H:%M",
+            "datetime_seconds": "%d-%m-%Y %H:%M:%S",
             "time": "%H:%M",
         }
         if format_options:
@@ -252,7 +251,7 @@ class CastorStudy:
 
             local_instance.created_on = datetime.strptime(
                 report_instance["created_on"], "%Y-%m-%d %H:%M:%S"
-            )
+            ).strftime(self.configuration["datetime_seconds"])
             local_instance.parent = (
                 "No parent"
                 if report_instance["parent_id"] == ""
@@ -273,13 +272,12 @@ class CastorStudy:
                 math.inf if api_field["field_max"] is None else api_field["field_max"]
             )
 
-    @staticmethod
-    def __get_date_or_none(dictionary: Optional[dict]) -> Optional[datetime]:
+    def __get_date_or_none(self, dictionary: Optional[dict]) -> Optional[datetime]:
         """Returns the date or None when no date found."""
         date = (
             None
             if dictionary is None
-            else datetime.strptime(dictionary["date"], "%Y-%m-%d %H:%M:%S.%f")
+            else datetime.strptime(dictionary["date"], "%Y-%m-%d %H:%M:%S.%f").strftime(self.configuration["datetime_seconds"])
         )
         return date
 
@@ -314,21 +312,20 @@ class CastorStudy:
         """Exports all data to csv files.
         Returns dict with file locations."""
         now = f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')[:-3]}"
-        date_format = "%d-%m-%Y %H:%M:%S"
         dataframes = self.export_to_dataframe(archived)
         # Instantiate output folder
         pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
         # Export dataframes
         dataframes["Study"] = self.export_dataframe_to_csv(
-            dataframes["Study"], "Study", now, date_format
+            dataframes["Study"], "Study", now
         )
         for survey in dataframes["Surveys"]:
             dataframes["Surveys"][survey] = self.export_dataframe_to_csv(
-                dataframes["Surveys"][survey], survey, now, date_format
+                dataframes["Surveys"][survey], survey, now
             )
         for report in dataframes["Reports"]:
             dataframes["Reports"][report] = self.export_dataframe_to_csv(
-                dataframes["Reports"][report], report, now, date_format
+                dataframes["Reports"][report], report, now
             )
         return dataframes
 
@@ -353,7 +350,7 @@ class CastorStudy:
         return dataframes
 
     def export_dataframe_to_csv(
-        self, dataframe: pd.DataFrame, name: str, now: str, date_format: str
+        self, dataframe: pd.DataFrame, name: str, now: str
     ) -> str:
         """Exports a single dataframe to csv and returns the destination path."""
         filename = re.sub(r"[^\w\-_\. ]", "_", name)
@@ -364,7 +361,6 @@ class CastorStudy:
             path_or_buf=path,
             sep=";",
             index=False,
-            date_format=date_format,
         )
         return str(path)
 

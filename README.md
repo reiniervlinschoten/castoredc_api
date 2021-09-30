@@ -98,7 +98,7 @@ Datetime fields are returned as strings (dd-mm-yyyy hh-mm)
 Numeric fields are all returned as floats.
 
 This can be changed by supplying the argument format_options when intialising the CastorStudy.  
-Allowed options are date, datetime and time.  
+Allowed options are date, datetime, datetime_seconds and time.  
 See https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior for formatting options.
 
 ```python
@@ -109,7 +109,9 @@ study = CastorStudy('MYCLIENTID',
                     'MYCLIENTSECRET', 
                     'MYSTUDYID', 
                     'data.castoredc.com', 
-                    format_options={"date": "%m-%d-%Y", "datetime": "%m-%d-%Y;%H:%M"})
+                    format_options={"date": "%m-%d-%Y", 
+                                    "datetime": "%m-%d-%Y;%H:%M", 
+                                    "datetime_seconds": "%m-%d-%Y;%H:%M:%S")
 ```
 
 #### Missing Data
