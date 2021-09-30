@@ -95,20 +95,21 @@ def castorize_column(
     new_name: list,
     label_data: bool,
     study: "CastorStudy",
-    variable_translation: dict,
+    variable_translation: typing.Optional[typing.Dict],
+    format_options: dict,
 ) -> dict:
     """Translates the values in a column to Castorized values ready for import."""
     if new_name[0] == "record_id":
         return_value = {new_name[0]: to_import.tolist()}
     else:
         return_value = castorize_column_helper(
-            label_data, new_name, study, to_import, variable_translation
+            label_data, new_name, study, to_import, variable_translation, format_options
         )
     return return_value
 
 
 def castorize_column_helper(
-    label_data, new_name, study, to_import, variable_translation
+    label_data, new_name, study, to_import, variable_translation, format_options
 ):
     """Helper function for selecting the correct way to castorize a column."""
     target_field = study.get_single_field(new_name[0])
@@ -131,14 +132,28 @@ def castorize_column_helper(
     elif target_field.field_type in ["string", "textarea"]:
         return_value = {new_name[0]: to_import.tolist()}
     elif target_field.field_type in ["date"]:
-        return_value = {new_name[0]: castorize_date_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_date_column(
+                to_import.tolist(), format_options["date"]
+            )
+        }
     elif target_field.field_type in ["datetime"]:
-        return_value = {new_name[0]: castorize_datetime_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_datetime_column(
+                to_import.tolist(), format_options["datetime"]
+            )
+        }
     elif target_field.field_type in ["time"]:
-        return_value = {new_name[0]: castorize_time_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_time_column(
+                to_import.tolist(), format_options["time"]
+            )
+        }
     elif target_field.field_type in ["numberdate"]:
         return_value = {
-            new_name[0]: castorize_numberdate_column(to_import.tolist(), target_field)
+            new_name[0]: castorize_numberdate_column(
+                to_import.tolist(), target_field, format_options["date"]
+            )
         }
     else:
         raise CastorException(
@@ -384,7 +399,7 @@ def castorize_year_column(data: list, target_field: "CastorField"):
     return new_list
 
 
-def castorize_date_column(data: list):
+def castorize_date_column(data: list, date_format: str):
     """Castorizes a date column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -393,14 +408,14 @@ def castorize_date_column(data: list):
         else:
             try:
                 # Try parsing the date
-                parsed_date = datetime.strptime(datapoint, "%d-%m-%Y")
+                parsed_date = datetime.strptime(datapoint, date_format)
                 new_list.append(parsed_date.strftime("%d-%m-%Y"))
             except ValueError:
                 new_list.append("Error: unprocessable date")
     return new_list
 
 
-def castorize_datetime_column(data: list):
+def castorize_datetime_column(data: list, datetime_format):
     """Castorizes a datetime column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -409,14 +424,14 @@ def castorize_datetime_column(data: list):
         else:
             try:
                 # Try parsing the date
-                parsed_date = datetime.strptime(datapoint, "%d-%m-%Y;%H:%M")
+                parsed_date = datetime.strptime(datapoint, datetime_format)
                 new_list.append(parsed_date.strftime("%d-%m-%Y;%H:%M"))
             except ValueError:
                 new_list.append("Error: unprocessable datetime")
     return new_list
 
 
-def castorize_time_column(data: list):
+def castorize_time_column(data: list, time_format: str):
     """Castorizes a time column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -425,14 +440,16 @@ def castorize_time_column(data: list):
         else:
             try:
                 # Try parsing the date
-                parsed_date = datetime.strptime(datapoint, "%H:%M")
+                parsed_date = datetime.strptime(datapoint, time_format)
                 new_list.append(parsed_date.strftime("%H:%M"))
             except ValueError:
                 new_list.append("Error: unprocessable time")
     return new_list
 
 
-def castorize_numberdate_column(data: list, target_field: "CastorField"):
+def castorize_numberdate_column(
+    data: list, target_field: "CastorField", date_format: str
+):
     """Castorizes a numberdate column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -466,7 +483,7 @@ def castorize_numberdate_column(data: list, target_field: "CastorField"):
 
                 # Try parsing the date
                 try:
-                    parsed_date = datetime.strptime(split[1], "%d-%m-%Y")
+                    parsed_date = datetime.strptime(split[1], date_format)
                     new_value.append(parsed_date.strftime("%d-%m-%Y"))
                 except ValueError:
                     new_value.append("Error: unprocessable date")
@@ -518,6 +535,7 @@ def create_upload(
     path_to_merge: typing.Optional[str],
     label_data: bool,
     study: "CastorStudy",
+    format_options: dict,
 ) -> pd.DataFrame:
     """Returns a upload-ready dataframe from a path to an Excel file."""
     to_upload = read_excel(path_to_upload)
@@ -539,6 +557,7 @@ def create_upload(
             label_data=label_data,
             study=study,
             variable_translation=variable_translation,
+            format_options=format_options,
         )
         new_data = {**new_data, **new_column}
     return pd.DataFrame.from_dict(new_data)

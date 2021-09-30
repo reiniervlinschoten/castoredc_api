@@ -13,19 +13,24 @@ from castoredc_api.importer.helpers import create_upload, update_feedback
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
 
-# TODO: Config settings for import & installing with config file
 
-
-def import_data(data_source_path: str, column_link_path: str, study: "CastorStudy", label_data: bool, target: str,
-                target_name: typing.Optional[str] = None, email: typing.Optional[str] = None,
-                translation_path: typing.Optional[str] = None, merge_path: typing.Optional[str] = None,
-                format_options=None) -> dict:
+def import_data(
+    data_source_path: str,
+    column_link_path: str,
+    study: "CastorStudy",
+    label_data: bool,
+    target: str,
+    target_name: typing.Optional[str] = None,
+    email: typing.Optional[str] = None,
+    translation_path: typing.Optional[str] = None,
+    merge_path: typing.Optional[str] = None,
+    format_options=None,
+) -> dict:
     """Imports data from data_source_path to study with configuration options."""
     # Set configuration options
     configuration = {
         "date": "%d-%m-%Y",
-        "datetime": "%d-%m-%Y %H:%M",
-        "datetime_seconds": "%d-%m-%Y %H:%M:%S",
+        "datetime": "%d-%m-%Y;%H:%M",
         "time": "%H:%M",
     }
     if format_options:
@@ -45,6 +50,7 @@ def import_data(data_source_path: str, column_link_path: str, study: "CastorStud
         path_to_merge=merge_path,
         label_data=label_data,
         study=study,
+        format_options=configuration,
     )
     # Tests if Error is anywhere in the dataframe
     if "Error" in castorized_dataframe.to_string():

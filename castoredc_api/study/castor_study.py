@@ -277,7 +277,9 @@ class CastorStudy:
         date = (
             None
             if dictionary is None
-            else datetime.strptime(dictionary["date"], "%Y-%m-%d %H:%M:%S.%f").strftime(self.configuration["datetime_seconds"])
+            else datetime.strptime(dictionary["date"], "%Y-%m-%d %H:%M:%S.%f").strftime(
+                self.configuration["datetime_seconds"]
+            )
         )
         return date
 

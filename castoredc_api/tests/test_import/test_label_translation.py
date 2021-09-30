@@ -36,6 +36,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -50,6 +55,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"his_family": ["2;3;4", "1;2", "0", "5;7", "8"]}
 
@@ -62,6 +72,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "base_bl_date": [
@@ -82,6 +97,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "onset_stroke": [
@@ -102,6 +122,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"pat_race": ["1", "2", "3", "4", "5"]}
 
@@ -114,6 +139,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -134,6 +164,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"base_hb": ["8.3", "7.2", "9.1", "3.2", "10.3"]}
 
@@ -146,6 +181,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"pat_sex": ["0", "0", "1", "1", "0"]}
 
@@ -160,6 +200,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "med_units": ["3", "7", "7", "2", "2"],
@@ -175,6 +220,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"VAS": ["25", "88", "13"]}
 
@@ -187,6 +237,11 @@ class TestLabelTranslation:
             label_data=False,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "med_name": [
@@ -207,6 +262,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "onset_trombectomy": ["09:25", "06:33", "12:24", "23:23", "08:14"]
@@ -221,6 +281,11 @@ class TestLabelTranslation:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "pat_birth_year": ["1999", "1956", "1945", "1933", "1921"]
@@ -260,6 +325,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -274,6 +344,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"his_family": [None, None, "0", "5;7", "8"]}
 
@@ -286,6 +361,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "base_bl_date": [
@@ -306,6 +386,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "onset_stroke": [
@@ -326,6 +411,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"pat_race": ["1", "2", None, "4", "5"]}
 
@@ -338,6 +428,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -358,6 +453,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"base_hb": ["8.3", None, "9.1", "3.2", "10.3"]}
 
@@ -370,6 +470,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"pat_sex": ["0", "0", None, "1", "0"]}
 
@@ -384,6 +489,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "med_units": ["3", None, "7", "2", None],
@@ -399,6 +509,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"VAS": ["25", None, "13"]}
 
@@ -411,6 +526,11 @@ class TestLabelTranslationMissing:
             label_data=False,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "med_name": ["Azathioprine", None, None, "Thioguanine", "Tofacitinib"]
@@ -425,6 +545,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "onset_trombectomy": ["09:25", "06:33", "12:24", None, "08:14"]
@@ -439,6 +564,11 @@ class TestLabelTranslationMissing:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"pat_birth_year": ["1999", None, None, None, "1921"]}
 
@@ -476,6 +606,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         # Record checking fails at the import stage
         assert import_column == {"record_id": ["a", "b", "c", "d", "e"]}
@@ -489,6 +624,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "his_family": [
@@ -509,6 +649,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "base_bl_date": [
@@ -529,6 +674,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "onset_stroke": [
@@ -549,6 +699,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "pat_race": [
@@ -569,6 +724,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -589,6 +749,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "base_hb": [
@@ -609,6 +774,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "pat_sex": [
@@ -631,6 +801,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "med_units": ["7", "7", "7", "7", "7"],
@@ -646,6 +821,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "VAS": ["Error: not a number", "Error: not a number", "Error: not a number"]
@@ -660,6 +840,11 @@ class TestLabelTranslationFail:
             label_data=False,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {"med_name": ["cant", "be", "wrong", "cuz", "text"]}
 
@@ -672,6 +857,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "onset_trombectomy": [
@@ -692,6 +882,11 @@ class TestLabelTranslationFail:
             label_data=True,
             study=import_study,
             variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         assert import_column == {
             "pat_birth_year": [

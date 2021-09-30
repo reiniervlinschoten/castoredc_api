@@ -109,15 +109,18 @@ study = CastorStudy('MYCLIENTID',
                     'MYCLIENTSECRET', 
                     'MYSTUDYID', 
                     'data.castoredc.com', 
-                    format_options={"date": "%m-%d-%Y", 
-                                    "datetime": "%m-%d-%Y;%H:%M", 
-                                    "datetime_seconds": "%m-%d-%Y;%H:%M:%S")
+                    format_options={
+                      "date": "%B %e %Y",
+                      "datetime": "%B %e %Y %I:%M %p",
+                      "datetime_seconds": "%B %e %Y %I:%M:%S %p",
+                      "time": "%I:%M %p",
+                    })
 ```
 
 #### Missing Data
 Missing data is mostly handled through pandas (NaN).
 
-User-defined missing data is mostly handled through its definitions in Castor.  
+User-defined missing data is handled through its definitions in Castor.  
 For numeric and text-like variables, these values are -95, -96, -97, -98 and -99.  
 For datetime data, missing data values are with the years 2995, 2996, 2997, 2998, and 2999.  
 
@@ -125,36 +128,47 @@ For datetime data, missing data values are with the years 2995, 2996, 2997, 2998
 1. Instantiate the CastorStudy with your credentials, study ID and server url.
 2. Format your data in the right format (see below)
 3. Create a link file to link external and Castor variables (see below)
-4. (Optional) Create a variable translation file to translate optiongroup values and labels to Castor optiongroups (see below).
-5. Import your data with the import_data function.
+4. (Optional) Create a variable translation file to translate values and labels to Castor optiongroups (see below).
+5. (Optional) Create a merge file to merge multiple columns into one CastorField (see below).
+6. (Optional) Set date, datetime and time formatting to translate local format into Castor format (see below).
+7. Import your data with the import_data function.
    * If label_data is set to true, it translates the string values to their integer values of the optiongroup in Castor.
    * If set to false, it takes the integer values as is.
 
+#### Simple Example
 ```python
 from castoredc_api import CastorStudy
 from castoredc_api import import_data
 
 # Create a Study with your credentials
-study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID', 'data.castoredc.com')
+study = CastorStudy('MYCLIENTID', 
+                    'MYCLIENTSECRET', 
+                    'MYSTUDYID', 
+                    'data.castoredc.com')
 
 # Import labelled study data
 imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
-                            column_link_path="PATH/TO/YOUR/LINK/FILE", study=study, label_data=True, target="Study")
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", 
+                            study=study, 
+                            label_data=True, 
+                            target="Study")
 
 # Import non-labelled report data
-imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", column_link_path="PATH/TO/YOUR/LINK/FILE",
-                            study=study, label_data=False, target="Report", target_name="Medication")
+imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", 
+                            column_link_path="PATH/TO/YOUR/LINK/FILE",
+                            study=study, 
+                            label_data=False, 
+                            target="Report", 
+                            target_name="Medication")
 
 # Import labelled survey data
 imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/SURVEY/DATA",
-                            column_link_path="PATH/TO/YOUR/LINK/FILE", study=study, label_data=True, target="Survey",
-                            target_name="My first survey package", email="python_wrapper@you-spam.com")
-
-# Import labelled report data that needs to be translated
-imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", column_link_path="PATH/TO/YOUR/LINK/FILE",
-                            study=study, label_data=False, target="Report", target_name="Medication",
-                            translation_path="PATH/TO/YOUR/TRANSLATION/FILE")
-
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", 
+                            study=study, 
+                            label_data=True, 
+                            target="Survey",
+                            target_name="My first survey package", 
+                            email="python_wrapper@you-spam.com")
 ```
 #### Specifying the data structure
 #### Data files
@@ -243,6 +257,25 @@ Two situations can occur when a value is encountered for which no translation is
 | family disease history | thromboembolism        | Thrombosis                          |
 | family disease history | tumor                  | Malignancy                          |
 
+```python
+from castoredc_api import CastorStudy
+from castoredc_api import import_data
+
+# Create a Study with your credentials
+study = CastorStudy('MYCLIENTID', 
+                    'MYCLIENTSECRET', 
+                    'MYSTUDYID', 
+                    'data.castoredc.com')
+
+# Import study data with a translation file
+imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", 
+                            study=study, 
+                            label_data=True, 
+                            target="Study",
+                            translation_path="PATH/TO/YOUR/TRANSLATION/FILE")
+```
+
 ##### Merge files
 Merge files link the multiple columns from the external database to a single checkbox field in Castor.  
 For each column from the external database specified under other_variable the value under other_value is mapped to the castor_value for the castor_variable.  
@@ -297,6 +330,59 @@ Only supports many-to-one matching.
 | patient race               | pat\_race          |
 | **his\_family**            | **his\_family**    |
 
+```python
+from castoredc_api import CastorStudy
+from castoredc_api import import_data
+
+# Create a Study with your credentials
+study = CastorStudy('MYCLIENTID', 
+                    'MYCLIENTSECRET', 
+                    'MYSTUDYID', 
+                    'data.castoredc.com')
+
+# Import study data with a merge file
+imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", 
+                            study=study, 
+                            label_data=True, 
+                            target="Study",
+                            merge_path="PATH/TO/YOUR/MERGE/FILE")
+```
+
+#### Data Formatting
+Standard date formatting settings are the following.
+Date(time) and time fields should follow these formats in the Excel sheet to be uploaded.
+- Date = dd-mm-yyyy  
+- Datetime = dd-mm-yyyy;hh-mm
+- Time = hh:mm  
+- Decimal separator = . 
+
+These can be changed by supplying the argument format_options when calling create upload.  
+Allowed options are date, datetime, and time. Decimal separator cannot be changed.  
+See https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior for formatting options.
+
+```python
+from castoredc_api import CastorStudy
+from castoredc_api import import_data
+
+# Create a Study with your credentials
+study = CastorStudy('MYCLIENTID', 
+                    'MYCLIENTSECRET', 
+                    'MYSTUDYID', 
+                    'data.castoredc.com')
+
+# Import labelled study data with changed formats
+imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", 
+                            study=study, 
+                            label_data=True, 
+                            target="Study",
+                            format_options={
+                               "date": "%B %d %Y",
+                               "datetime": "%B %d %Y %I:%M %p",
+                               "time": "%I:%M %p",
+                            })
+```
 ## Prerequisites
 
 1. Python Version >= 3.8

@@ -13,7 +13,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_date.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -23,7 +26,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_datetime.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -33,7 +39,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_number.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -43,7 +52,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_numberdate_date.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -53,7 +65,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_numberdate_number.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -63,7 +78,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_optiongroup.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -73,7 +91,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_time.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 
@@ -83,7 +104,10 @@ class TestImportValidationErrors:
             import_data(
                 data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_error_year.xlsx",
                 column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study, label_data=False, target="Study")
+                study=import_study,
+                label_data=False,
+                target="Study",
+            )
 
         assert str(e.value) == self.study_error
 

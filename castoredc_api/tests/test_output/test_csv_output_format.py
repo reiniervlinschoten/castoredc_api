@@ -20,7 +20,7 @@ class TestCSVOutputFormat:
                 "datetime": "%B %e %Y %I:%M %p",
                 "datetime_seconds": "%B %e %Y %I:%M:%S %p",
                 "time": "%I:%M %p",
-            }
+            },
         )
         output_data_format = study.export_to_csv()
         return output_data_format
@@ -33,7 +33,9 @@ class TestCSVOutputFormat:
                 key="record_id",
             ),
             load_csv(
-                open("tests/test_output/data_files_for_output_tests/CastorStudy - Format.csv"),
+                open(
+                    "tests/test_output/data_files_for_output_tests/CastorStudy - Format.csv"
+                ),
                 key="record_id",
             ),
         )
