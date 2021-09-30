@@ -43,7 +43,9 @@ For all implemented functions, see: https://data.castoredc.com/api#/
 from castoredc_api import CastorClient
 
 # Create a client with your credentials
-c = CastorClient('MYCLIENTID', 'MYCLIENTSECRET', 'data.castoredc.com')
+c = CastorClient('MYCLIENTID', 
+                 'MYCLIENTSECRET', 
+                 'data.castoredc.com')
 
 # Link the client to your study in the Castor EDC database
 c.link_study('MYSTUDYID')
@@ -67,7 +69,10 @@ c.create_survey_package_instance(survey_package_id="FAKESURVEY-PACKAGE-ID",
 from castoredc_api import CastorStudy
 
 # Instantiate Study
-study = CastorStudy('MYCLIENTID', 'MYCLIENTSECRET', 'MYSTUDYID', 'data.castoredc.com')
+study = CastorStudy('MYCLIENTID', 
+                    'MYCLIENTSECRET', 
+                    'MYSTUDYID', 
+                    'data.castoredc.com')
 
 # Export your study to pandas dataframes or CSV files
 study.export_to_dataframe()
@@ -88,15 +93,24 @@ study.get_single_record('000011').get_all_data_points()
 ```
 
 #### Data Formatting
-##### Pandas
 Date fields are returned as strings (dd-mm-yyyy)  
-Datetime fields are returned as datetime64[ns]  
+Datetime fields are returned as strings (dd-mm-yyyy hh-mm)  
 Numeric fields are all returned as floats.
 
-##### CSV
-Date fields are returned as strings (dd-mm-yyyy)  
-Datetime fields are returned as strings (dd-mm-yyyy hh:mm:ss)  
-Numeric fields are all returned as floats.
+This can be changed by supplying the argument format_options when intialising the CastorStudy.  
+Allowed options are date, datetime and time.  
+See https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior for formatting options.
+
+```python
+from castoredc_api import CastorStudy
+
+# Instantiate Study with different formatting settings
+study = CastorStudy('MYCLIENTID', 
+                    'MYCLIENTSECRET', 
+                    'MYSTUDYID', 
+                    'data.castoredc.com', 
+                    format_options={"date": "%m-%d-%Y", "datetime": "%m-%d-%Y;%H:%M"})
+```
 
 #### Missing Data
 Missing data is mostly handled through pandas (NaN).

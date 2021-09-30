@@ -13,6 +13,8 @@ from castoredc_api.importer.helpers import create_upload, update_feedback
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
 
+# TODO: Config settings for import & installing with config file
+
 
 def import_data(
     data_source_path: str,

@@ -38,13 +38,24 @@ class CastorStudy:
     # pylint: disable=too-many-arguments
     # Necessary number of arguments to setup study
     def __init__(
-        self, client_id: str, client_secret: str, study_id: str, url: str, test=False
+        self,
+        client_id: str,
+        client_secret: str,
+        study_id: str,
+        url: str,
+        test=False,
+        format_options=None,
     ) -> None:
         """Create a CastorStudy object."""
         self.study_id = study_id
-        # Open configuration settings
-        self.configuration = ConfigParser(interpolation=None)
-        self.configuration.read(os.path.join(os.path.dirname(__file__), '../../config.ini'))
+        # Set configuration settings
+        self.configuration = {
+            "date": "%d-%m-%Y",
+            "datetime": "%d-%m-%Y %H:%M",
+            "time": "%H:%M",
+        }
+        if format_options:
+            self.configuration.update(format_options)
         # Create the client to interact with the study
         if test is False:
             self.client = CastorClient(client_id, client_secret, url)

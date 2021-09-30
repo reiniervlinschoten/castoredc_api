@@ -55,16 +55,23 @@ class CastorDataPoint:
             interpreted_value = self.__interpret_numeric()
         elif self.instance_of.field_type in ["year"]:
             interpreted_value = self.__interpret_year()
-        elif self.instance_of.field_type in ["string", "textarea", "upload", "calculation"]:
+        elif self.instance_of.field_type in [
+            "string",
+            "textarea",
+            "upload",
+            "calculation",
+        ]:
             interpreted_value = self.raw_value
         elif self.instance_of.field_type in ["datetime"]:
-            interpreted_value = self.__interpret_datetime(study.configuration["EXPORT"]["datetime"])
+            interpreted_value = self.__interpret_datetime(
+                study.configuration["datetime"]
+            )
         elif self.instance_of.field_type in ["date"]:
-            interpreted_value = self.__interpret_date(study.configuration["EXPORT"]["date"])
+            interpreted_value = self.__interpret_date(study.configuration["date"])
         elif self.instance_of.field_type in ["time"]:
-            interpreted_value = self.__interpret_time(study.configuration["EXPORT"]["time"])
+            interpreted_value = self.__interpret_time(study.configuration["time"])
         elif self.instance_of.field_type in ["numberdate"]:
-            interpreted_value = self.__interpret_numberdate(study.configuration["EXPORT"]["date"])
+            interpreted_value = self.__interpret_numberdate(study.configuration["date"])
         else:
             interpreted_value = "Error"
         return interpreted_value
@@ -87,7 +94,9 @@ class CastorDataPoint:
             else:
                 new_value = "Missing value not recognized"
         else:
-            new_value = datetime.strptime(self.raw_value, "%H:%M").time().strftime(time_format)
+            new_value = (
+                datetime.strptime(self.raw_value, "%H:%M").time().strftime(time_format)
+            )
         return new_value
 
     def __interpret_datetime(self, datetime_format: str):
@@ -250,27 +259,45 @@ class CastorDataPoint:
         """Interprets numberdate data while handling user missings."""
         if "Missing" in self.raw_value:
             if "measurement failed" in self.raw_value:
-                new_value = [-95, pd.Period(year=2995, month=1, day=1, freq="D").strftime(
-                    date_format
-                )]
+                new_value = [
+                    -95,
+                    pd.Period(year=2995, month=1, day=1, freq="D").strftime(
+                        date_format
+                    ),
+                ]
             elif "not applicable" in self.raw_value:
-                new_value = [-96, pd.Period(year=2996, month=1, day=1, freq="D").strftime(
-                    date_format
-                )]
+                new_value = [
+                    -96,
+                    pd.Period(year=2996, month=1, day=1, freq="D").strftime(
+                        date_format
+                    ),
+                ]
             elif "not asked" in self.raw_value:
-                new_value = [-97, pd.Period(year=2997, month=1, day=1, freq="D").strftime(
-                    date_format
-                )]
+                new_value = [
+                    -97,
+                    pd.Period(year=2997, month=1, day=1, freq="D").strftime(
+                        date_format
+                    ),
+                ]
             elif "asked but unknown" in self.raw_value:
-                new_value = [-98, pd.Period(year=2998, month=1, day=1, freq="D").strftime(
-                    date_format
-                )]
+                new_value = [
+                    -98,
+                    pd.Period(year=2998, month=1, day=1, freq="D").strftime(
+                        date_format
+                    ),
+                ]
             elif "not done" in self.raw_value:
-                new_value = [-99, pd.Period(year=2999, month=1, day=1, freq="D").strftime(
-                    date_format
-                )]
+                new_value = [
+                    -99,
+                    pd.Period(year=2999, month=1, day=1, freq="D").strftime(
+                        date_format
+                    ),
+                ]
             else:
-                new_value = ["Missing value not recognized", "Missing value not recognized"]
+                new_value = [
+                    "Missing value not recognized",
+                    "Missing value not recognized",
+                ]
         else:
             # Get number and date from the string
             number, date = self.raw_value.split(";")
@@ -279,9 +306,12 @@ class CastorDataPoint:
                 number = np.nan
             if date == "":
                 date = np.nan
-            new_value = [float(number), pd.Period(
-                datetime.strptime(date, "%d-%m-%Y"), freq="D"
-            ).strftime(date_format)]
+            new_value = [
+                float(number),
+                pd.Period(datetime.strptime(date, "%d-%m-%Y"), freq="D").strftime(
+                    date_format
+                ),
+            ]
         return new_value
 
     # Standard Operators
