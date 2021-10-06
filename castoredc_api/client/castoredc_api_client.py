@@ -312,6 +312,18 @@ class CastorClient:
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/institute", data_id=institute_id)
 
+    def create_institute(self, name, abbreviation, code, country_id):
+        """Creates a institute for the study.
+        Returns None if creation failed."""
+        url = self.study_url + "/institute"
+        body = {
+            "name": name,
+            "abbreviation": abbreviation,
+            "code": code,
+            "country_id": country_id,
+        }
+        return self.sync_post(url, body)
+
     # METADATA
     def all_metadata(self):
         """Returns a list of dicts of all metadata."""
@@ -359,6 +371,18 @@ class CastorClient:
         """Returns a single dict of an query.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/query", data_id=query_id)
+
+    # RANDOMIZATION
+    def single_randomization(self, record_id):
+        """Gets randomisation details for a single record."""
+        return self.retrieve_data_by_id(
+            endpoint="/record", data_id=f"{record_id}/randomization"
+        )
+
+    def create_randomization(self, record_id):
+        """Randomizes a single record."""
+        url = self.study_url + f"/record/{record_id}/randomization"
+        return self.sync_post(url=url, body={})
 
     # RECORDS
     def all_records(self, institute_id=None, archived=None):

@@ -947,6 +947,17 @@ query_model = {
     ],
 }
 
+randomization_model = {
+    "randomized_id": [str, type(None)],
+    "randomization_group": [str, type(None)],
+    "randomization_group_name": [str, type(None)],
+    "randomized_on": [dict, type(None)],
+    "_links": [
+        dict,
+    ],
+}
+
+
 record_model = {
     "id": [
         str,
