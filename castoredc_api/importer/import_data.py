@@ -1,4 +1,5 @@
 """Module to import data to Castor EDC using the API"""
+import sys
 from datetime import datetime
 import typing
 import pathlib
@@ -123,7 +124,9 @@ def upload_study(
     feedback_total = {}
     imported = []
 
-    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
+    for row in tqdm(
+        castorized_dataframe.to_dict("records"), "Uploading Data", file=sys.stdout
+    ):
         body = [
             {
                 "field_id": study.get_single_field(field).field_id,
@@ -207,7 +210,9 @@ def upload_survey(
     feedback_total = {}
     imported = []
 
-    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
+    for row in tqdm(
+        castorized_dataframe.to_dict("records"), "Uploading Data", file=sys.stdout
+    ):
         instance = create_survey_package_instance(
             study, imported, package_id, row, email
         )
@@ -331,7 +336,7 @@ def upload_report(
     imported = []
 
     for record_id, record_frame in tqdm(
-        castorized_dataframe.groupby("record_id"), "Uploading Data"
+        castorized_dataframe.groupby("record_id"), "Uploading Data", file=sys.stdout
     ):
         instances = create_report_instances(
             study, imported, package_id, record_id, record_frame

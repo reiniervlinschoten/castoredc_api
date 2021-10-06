@@ -1,5 +1,6 @@
 """Module for interacting with the Castor EDC API."""
 import csv
+import sys
 from itertools import chain
 import asyncio
 import httpx
@@ -945,6 +946,7 @@ class CastorClient:
                         asyncio.as_completed(tasks),
                         total=len(tasks),
                         desc=f"Async Downloading {idx + 1}/{len(chunks)}",
+                        file=sys.stdout,
                     )
                 ]
                 responses = responses + temp_responses

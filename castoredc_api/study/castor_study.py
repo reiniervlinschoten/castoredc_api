@@ -3,6 +3,7 @@ import itertools
 import math
 import pathlib
 import re
+import sys
 from datetime import datetime
 from operator import attrgetter
 from typing import List, Optional, Any, Union, Dict
@@ -85,7 +86,7 @@ class CastorStudy:
         print("Downloading Study Structure.", flush=True)
         data = self.client.export_study_structure()
         # Loop over all fields
-        for field in tqdm(data, desc="Mapping Study Structure"):
+        for field in tqdm(data, desc="Mapping Study Structure", file=sys.stdout):
             # Check if the form for the field exists, if not, create it
             form = self.get_single_form(field["Form Collection ID"])
             if form is None:
@@ -174,7 +175,9 @@ class CastorStudy:
         """Adds auxiliary data to records."""
         print("Downloading Record Information.", flush=True)
         record_data = self.client.all_records()
-        for record_api in tqdm(record_data, desc="Augmenting Record Data"):
+        for record_api in tqdm(
+            record_data, desc="Augmenting Record Data", file=sys.stdout
+        ):
             record = self.get_single_record(record_api["id"])
             record.institute = record_api["_embedded"]["institute"]["name"]
             record.randomisation_group = record_api["randomization_group_name"]
@@ -198,7 +201,7 @@ class CastorStudy:
             for survey in package["_embedded"]["survey_instances"]
         }
         for survey_instance, values in tqdm(
-            survey_data.items(), desc="Augmenting Survey Data"
+            survey_data.items(), desc="Augmenting Survey Data", file=sys.stdout
         ):
             # Test if instance in study
             local_instance = self.get_single_form_instance_on_id(
@@ -233,7 +236,9 @@ class CastorStudy:
     def __load_report_information(self) -> None:
         """Adds auxiliary data to report forms."""
         for instance_id, report_instance in tqdm(
-            self.__all_report_instances.items(), "Augmenting Report Data"
+            self.__all_report_instances.items(),
+            "Augmenting Report Data",
+            file=sys.stdout,
         ):
             # Test if instance in study
             local_instance = self.get_single_form_instance_on_id(
@@ -561,7 +566,7 @@ class CastorStudy:
         data = self.client.export_study_data()
 
         # Loop over all fields
-        for field in tqdm(data, desc="Mapping Data"):
+        for field in tqdm(data, desc="Mapping Data", file=sys.stdout):
             # Check if the record for the field exists, if not, create it
             record = self.get_single_record(field["Record ID"])
             if record is None:
