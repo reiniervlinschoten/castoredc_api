@@ -335,7 +335,7 @@ class TestSurveyEndpoints:
         self, client, all_survey_package_instances
     ):
         """Test structure retuned by all_survey_package_instances after filtering on record"""
-        instances = client.all_survey_package_instances(record="000002")
+        instances = client.all_survey_package_instances(record_id="000002")
 
         for instance in instances:
             assert instance["record_id"] == "000002"
@@ -345,12 +345,42 @@ class TestSurveyEndpoints:
                 assert key in self.i_model_keys
                 assert type(instance[key]) in survey_package_instance_model[key]
 
+    def test_survey_package_instance_filtered_success(
+        self, client, all_survey_package_instances
+    ):
+        """Test data returned by all_survey_package_instances after filtering on finish date"""
+        instances = client.all_survey_package_instances(
+            record_id="000001", finished_on="2020-08-14"
+        )
+        assert len(instances) == 1
+        assert instances[0] == self.test_survey_instance
+
+    def test_survey_package_instance_filtered_fail_double_record_id(
+        self, client, all_survey_package_instances
+    ):
+        """Test all_survey_package_instances filtering errors correctly"""
+        with pytest.raises(CastorException) as e:
+            client.all_survey_package_instances(
+                record_id="000001", ccr_patient_id="000001"
+            )
+        assert "Cannot supply both record_id and ccr_patient_id" in str(e.value)
+
+    def test_survey_package_instance_filtered_fail_wrong_date_format(
+        self, client, all_survey_package_instances
+    ):
+        """Test all_survey_package_instances filtering errors correctly"""
+        with pytest.raises(HTTPStatusError) as e:
+            client.all_survey_package_instances(
+                record_id="000001", finished_on="14-08-2020"
+            )
+        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
+
     def test_all_survey_package_instance_record_fail(
         self, client, all_survey_package_instances
     ):
         """Test filtering on non-existent record"""
         with pytest.raises(HTTPStatusError) as e:
-            client.all_survey_package_instances(record="00FAKE")
+            client.all_survey_package_instances(record_id="00FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_survey_package_instance_success(
@@ -375,12 +405,12 @@ class TestSurveyEndpoints:
     # POST
     def test_create_survey_package_instance_success(self, client):
         """Tests creating a new survey package instance"""
-        old_amount = len(client.all_survey_package_instances(record="000001"))
+        old_amount = len(client.all_survey_package_instances(record_id="000001"))
         body = create_survey_package_instance_body("000001", fake=False)
 
         feedback = client.create_survey_package_instance(**body)
 
-        new_amount = len(client.all_survey_package_instances(record="000001"))
+        new_amount = len(client.all_survey_package_instances(record_id="000001"))
 
         assert feedback["record_id"] == "000001"
         assert new_amount == old_amount + 1
@@ -388,13 +418,13 @@ class TestSurveyEndpoints:
     def test_create_survey_package_instance_fail(self, client):
         """Tests failing to create a new survey package instance by wrong survey_instance_id"""
         body = create_survey_package_instance_body("000001", fake=True)
-        old_amount = len(client.all_survey_package_instances(record="000001"))
+        old_amount = len(client.all_survey_package_instances(record_id="000001"))
 
         with pytest.raises(HTTPStatusError) as e:
             client.create_survey_package_instance(**body)
         assert "422 Client Error: Unprocessable Entity for url:" in str(e.value)
 
-        new_amount = len(client.all_survey_package_instances(record="000001"))
+        new_amount = len(client.all_survey_package_instances(record_id="000001"))
         assert new_amount == old_amount
 
     def test_patch_survey_package_instance_success(

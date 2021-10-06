@@ -660,19 +660,35 @@ class CastorClient:
             endpoint="/surveypackage", data_id=survey_package_id
         )
 
-    def all_survey_package_instances(self, record=None):
-        """Returns a list of dicts of all available survey packages."""
+    def all_survey_package_instances(
+        self,
+        record_id=None,
+        ccr_patient_id=None,
+        finished_on=None,
+        finished_on_gt=None,
+        finished_on_gte=None,
+        finished_on_lt=None,
+        finished_on_lte=None,
+    ):
+        """Returns a list of dicts of all available survey packages. Filterable."""
         endpoint = "/surveypackageinstance"
         dataname = "surveypackageinstance"
-        if record is None:
-            data = self.retrieve_all_data_by_endpoint(
-                endpoint=endpoint, data_name=dataname
-            )
-        else:
-            params = {"record_id": record}
-            data = self.retrieve_all_data_by_endpoint(
-                endpoint=endpoint, data_name=dataname, params=params
-            )
+        if record_id and ccr_patient_id:
+            raise CastorException("Cannot supply both record_id and ccr_patient_id")
+        params = {
+            "record_id": record_id,
+            "ccr_patient_id": ccr_patient_id,
+            "finished_on": finished_on,
+            "finished_on[gt]": finished_on_gt,
+            "finished_on[gte]": finished_on_gte,
+            "finished_on[lt]": finished_on_lt,
+            "finished_on[lte]": finished_on_lte,
+        }
+        # Drop empty params
+        params = {key: value for key, value in params.items() if value is not None}
+        data = self.retrieve_all_data_by_endpoint(
+            endpoint=endpoint, data_name=dataname, params=params
+        )
         return data
 
     def single_survey_package_instance(self, survey_package_instance_id):
