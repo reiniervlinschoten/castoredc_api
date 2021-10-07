@@ -24,7 +24,6 @@ class TestRecordProgress:
         progress_report = client.record_progress()
         return progress_report
 
-    @pytest.mark.xfail(reason="Castor API Error - Should be paged", strict=True)
     def test_record_progress(self, progress_report, client):
         """Tests if all progress reports are properly retrieved."""
         # Tests if progress reports are retrieved for all non-archived recodrs

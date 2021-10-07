@@ -795,7 +795,7 @@ class CastorClient:
     def record_progress(self):
         """Returns progress of all records."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/data-point-collection/study", data_name="records"
+            endpoint="/record-progress/steps", data_name="records"
         )
 
     def request_auth_token(self, client_id, client_secret):
@@ -857,6 +857,8 @@ class CastorClient:
         first_response = self.retrieve_single_page(url=url, params=params.copy())
         pages = first_response["page_count"] + 1
         rest_response = self.retrieve_rest_of_pages(url=url, params=params, pages=pages)
+        print(first_response)
+        print(rest_response)
         data = list(
             chain.from_iterable(
                 [
