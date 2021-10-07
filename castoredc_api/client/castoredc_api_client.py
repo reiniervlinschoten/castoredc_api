@@ -857,8 +857,6 @@ class CastorClient:
         first_response = self.retrieve_single_page(url=url, params=params.copy())
         pages = first_response["page_count"] + 1
         rest_response = self.retrieve_rest_of_pages(url=url, params=params, pages=pages)
-        print(first_response)
-        print(rest_response)
         data = list(
             chain.from_iterable(
                 [
@@ -892,8 +890,20 @@ class CastorClient:
                 {"page": str(page), "page_size": "1000", **params}
                 for page in range(2, pages)
             ]
-        responses = asyncio.run(self.async_get(url=url, params=params))
-        return [self.handle_response(response) for response in responses]
+        try:
+            # Test if there is a running event loop
+            # If there is, we can't use async code
+            # Solution for IPython consoles (Jupiter Notebooks, Spyder3)
+            asyncio.get_running_loop()
+            responses = [
+                self.sync_get(url, param) for param in tqdm(params, file=sys.stdout)
+            ]
+        except RuntimeError:
+            # No running eventloop, free to use async code
+            responses = asyncio.run(self.async_get(url=url, params=params))
+            responses = [self.handle_response(response) for response in responses]
+
+        return responses
 
     def request_size(self, endpoint, base=False):
         """Helper function for tests to determine how many items there are per given endpoint"""
