@@ -65,7 +65,9 @@ c.create_survey_package_instance(survey_package_id="FAKESURVEY-PACKAGE-ID",
 1. Instantiate the CastorStudy with your credentials, study ID and server url.
 2. Use the Study functions to start working with your database
 
-For exporting data: Data blinding is not supported yet by the API, so the requesting user is not allowed to have any roles within the study. 
+For exporting data: The endpoint that extracts data for the study can't be used if the authenticated user has a role within the study.  
+See: https://data.castoredc.com/api#/export/get_study__study_id__export_data
+
 
 ```python
 from castoredc_api import CastorStudy
