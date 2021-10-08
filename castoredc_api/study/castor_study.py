@@ -379,7 +379,7 @@ class CastorStudy:
         path = pathlib.Path(
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
         )
-        dataframe.to_feather(
+        dataframe.reset_index(drop=True).to_feather(
             path,
             compression="uncompressed",
         )
