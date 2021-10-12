@@ -87,8 +87,8 @@ class TestInstitute:
                 "country_id": 169,
             }
             client.create_institute(**body)
-        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
-        assert "Duplicate" in e.value.response.json()["detail"]
+        assert "400 Client Error: Bad Request for url" in str(e.value)
+        assert "Institute already exists" in e.value.response.json()["detail"]
 
     # TODO: created body need to wait until release
     def test_create_institute_failure(self, client):

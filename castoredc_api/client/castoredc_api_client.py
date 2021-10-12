@@ -317,12 +317,12 @@ class CastorClient:
         """Creates a institute for the study.
         Returns None if creation failed."""
         url = self.study_url + "/institute"
-        body = {
+        body = [{
             "name": name,
             "abbreviation": abbreviation,
             "code": code,
             "country_id": country_id,
-        }
+        }]
         return self.sync_post(url, body)
 
     # METADATA
