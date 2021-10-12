@@ -195,7 +195,7 @@ class CastorStudy:
             survey["id"]: {
                 "package": package,
                 "record": package["record_id"],
-                "progress": survey["progress"],
+                "survey": survey,
             }
             for package in survey_package_data
             for survey in package["_embedded"]["survey_instances"]
@@ -208,30 +208,28 @@ class CastorStudy:
                 instance_id=survey_instance, record_id=values["record"]
             )
             if local_instance is None:
+                # If instance doesn't exist yet (empty survey instances)
                 # Add the empty survey_instances to the study
-                pass
-                # local_instance = CastorSurveyFormInstance(
-                #     instance_id=survey_instance,
-                #     name_of_form="Not Found",  # TODO: name isn't exported
-                #     study=self,
-                # )
-                # self.get_single_record(values["record"]).add_form_instance(
-                #     local_instance
-                # )
-            else:
-                # TODO: Remove else when local_instance can be created in the loop
-                local_instance.created_on = self.__get_date_or_none(
-                    values["package"]["created_on"]
+                local_instance = CastorSurveyFormInstance(
+                    instance_id=survey_instance,
+                    name_of_form=values["survey"]["_embedded"]["survey"]["name"],
+                    study=self,
                 )
-                local_instance.sent_on = self.__get_date_or_none(
-                    values["package"]["sent_on"]
+                self.get_single_record(values["record"]).add_form_instance(
+                    local_instance
                 )
-                local_instance.progress = values["progress"]
-                local_instance.completed_on = self.__get_date_or_none(
-                    values["package"]["finished_on"]
-                )
-                local_instance.archived = values["package"]["archived"]
-                local_instance.survey_package_id = values["package"]["id"]
+            local_instance.created_on = self.__get_date_or_none(
+                values["package"]["created_on"]
+            )
+            local_instance.sent_on = self.__get_date_or_none(
+                values["package"]["sent_on"]
+            )
+            local_instance.progress = values["survey"]["progress"]
+            local_instance.completed_on = self.__get_date_or_none(
+                values["package"]["finished_on"]
+            )
+            local_instance.archived = values["package"]["archived"]
+            local_instance.survey_package_id = values["package"]["id"]
 
     def __load_report_information(self) -> None:
         """Adds auxiliary data to report forms."""

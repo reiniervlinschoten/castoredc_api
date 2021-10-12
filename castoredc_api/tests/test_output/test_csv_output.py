@@ -81,9 +81,6 @@ class TestCSVOutput:
             }
         ]
 
-    @pytest.mark.xfail(
-        reason="Misses Empty Surveys - Awaiting Castor Ticket", strict=True
-    )
     def test_qol_survey_export(self, output_data):
         """Tests if survey export is correct.
         Does test for missing surveys."""
