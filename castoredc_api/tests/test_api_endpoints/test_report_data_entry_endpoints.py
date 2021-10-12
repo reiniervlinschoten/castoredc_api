@@ -33,6 +33,7 @@ class TestReportDataEntry:
                 "record_id": "000004",
                 "ccr_patient_id": "",
                 "last_opened_step": "FFF23B2C-AEE6-4304-9CC4-9C7C431D5387",
+                "locked": False,
                 "progress": 17,
                 "status": "open",
                 "archived": False,

@@ -241,6 +241,37 @@ user_model = {
     ],
 }
 
+user_study_model = {
+    "id": [
+        str,
+    ],
+    "user_id": [
+        str,
+    ],
+    "entity_id": [
+        str,
+    ],
+    "full_name": [
+        str,
+    ],
+    "name_first": [str, type(None)],
+    "name_middle": [str, type(None)],
+    "name_last": [str, type(None)],
+    "email_address": [
+        str,
+    ],
+    "institute": [str, type(None)],
+    "department": [str, type(None)],
+    "manage_permissions": [dict],
+    "institute_permissions": [list],
+    "last_login": [
+        str,
+    ],
+    "_links": [
+        dict,
+    ],
+}
+
 study_model = {
     "crf_id": [
         str,
@@ -455,6 +486,7 @@ package_model = {
     "id": [
         str,
     ],
+    "allow_open_survey_link": [bool],
     "survey_package_id": [
         str,
     ],
@@ -546,6 +578,8 @@ survey_package_instance_model = {
     "finished_on": [dict, type(None)],
     "available_from": [dict],
     "expire_on": [str, type(None)],
+    "all_fields_filled_on": [str, type(None)],
+    "started_on": [str, type(None)],
     "locked": [
         bool,
     ],
@@ -670,7 +704,7 @@ survey_step_model = {
 
 field_dep_model = {
     "id": [
-        str,
+        int,
     ],
     "operator": [
         str,
@@ -982,6 +1016,7 @@ record_model = {
     "status": [
         str,
     ],
+    "locked": [bool],
     "archived": [
         bool,
     ],

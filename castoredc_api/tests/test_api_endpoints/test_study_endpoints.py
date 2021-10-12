@@ -9,13 +9,12 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 from httpx import HTTPStatusError
 
-from castoredc_api import CastorException
-from castoredc_api.tests.test_api_endpoints.data_models import study_model, user_model
+from castoredc_api.tests.test_api_endpoints.data_models import study_model, user_study_model
 
 
 class TestStudy:
     s_model_keys = study_model.keys()
-    u_model_keys = user_model.keys()
+    u_model_keys = user_study_model.keys()
 
     test_study = {
         "crf_id": "D234215B-D956-482D-BF17-71F2BB12A2FD",
@@ -97,7 +96,7 @@ class TestStudy:
             assert len(user_keys) == len(self.u_model_keys)
             for key in user_keys:
                 assert key in self.u_model_keys
-                assert type(user[key]) in user_model[key]
+                assert type(user[key]) in user_study_model[key]
 
     def test_all_users_fail(self, all_studies, client):
         """Tests failing to return all users for a study"""
@@ -116,7 +115,7 @@ class TestStudy:
         assert len(user_keys) == len(self.u_model_keys)
         for key in user_keys:
             assert key in self.u_model_keys
-            assert type(user[key]) in user_model[key]
+            assert type(user[key]) in user_study_model[key]
 
     def test_single_user_fail(self, all_studies, client):
         """Tests failing to return a single user"""

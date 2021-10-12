@@ -65,6 +65,7 @@ class TestSurveyEndpoints:
         "allow_step_navigation": True,
         "show_step_navigator": True,
         "finish_url": "",
+        "allow_open_survey_link": False,
         "auto_lock_on_finish": False,
         "intro_text": "```\n\n\n```\n#### To be able to send surveys, you have to create a survey package that will contain the survey(s) you want to send.\n```\n\n\n```\nHere you can add intro text. This is similar to the intro text in a survey itself, but since a survey package can contain multiple surveys, this is a 'general' introduction that appears in the very beginning.",
         "outro_text": "```\n\n\n```\n#### You can now create your own survey! \n```\n\n\n```\n#### Here is a giphy: \n```\n\n\n```\n![alt text](https://media.giphy.com/media/BUXk0VHa2Weis/giphy.gif).",
@@ -98,168 +99,7 @@ class TestSurveyEndpoints:
         },
     }
 
-    test_survey_instance = {
-        "id": "115DF660-A00A-4927-9E5F-A07D030D4A09",
-        "survey_package_instance_id": "115DF660-A00A-4927-9E5F-A07D030D4A09",
-        "record_id": "000001",
-        "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
-        "institute_name": "Test Institute",
-        "survey_package_name": "My first survey package",
-        "survey_package_id": "71C01598-4682-4A4C-90E6-69C0BD38EA47",
-        "survey_url_string": "DUQKNQNN",
-        "progress": 100,
-        "invitation_subject": "Please fill in this survey for Example Study",
-        "invitation_content": 'Dear participant,\n\nYou are participating in the study "Example Study" and we would like to ask you to fill in a survey.\n\nPlease click the link below to complete our survey.\n\n{url}\n\n{logo}',
-        "created_on": {
-            "date": "2019-10-14 09:42:27.000000",
-            "timezone_type": 3,
-            "timezone": "Europe/Amsterdam",
-        },
-        "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-        "available_from": {
-            "date": "2019-10-14 09:42:27.000000",
-            "timezone_type": 3,
-            "timezone": "Europe/Amsterdam",
-        },
-        "expire_on": None,
-        "sent_on": None,
-        "first_opened_on": None,
-        "finished_on": {
-            "date": "2020-08-14 16:27:12.000000",
-            "timezone_type": 3,
-            "timezone": "Europe/Amsterdam",
-        },
-        "locked": False,
-        "archived": False,
-        "auto_lock_on_finish": False,
-        "auto_send": False,
-        "_embedded": {
-            "record": {
-                "id": "000001",
-                "record_id": "000001",
-                "ccr_patient_id": "",
-                "last_opened_step": "FFF23B2C-AEE6-4304-9CC4-9C7C431D5387",
-                "progress": 28,
-                "status": "open",
-                "archived": False,
-                "archived_reason": None,
-                "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-                "created_on": {
-                    "date": "2019-10-07 16:16:02.000000",
-                    "timezone_type": 3,
-                    "timezone": "Europe/Amsterdam",
-                },
-                "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-                "updated_on": {
-                    "date": "2020-11-27 14:37:55.000000",
-                    "timezone_type": 3,
-                    "timezone": "Europe/Amsterdam",
-                },
-                "randomized_id": None,
-                "randomized_on": None,
-                "randomization_group": None,
-                "randomization_group_name": None,
-                "_embedded": {
-                    "institute": {
-                        "id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
-                        "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
-                        "name": "Test Institute",
-                        "abbreviation": "TES",
-                        "code": "TES",
-                        "order": 0,
-                        "deleted": False,
-                        "country_id": 169,
-                        "_links": {
-                            "self": {
-                                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5"
-                            }
-                        },
-                    }
-                },
-                "_links": {
-                    "self": {
-                        "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/000001"
-                    }
-                },
-            },
-            "institute": {
-                "id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
-                "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
-                "name": "Test Institute",
-                "abbreviation": "TES",
-                "code": "TES",
-                "order": 0,
-                "deleted": False,
-                "country_id": 169,
-                "_links": {
-                    "self": {
-                        "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5"
-                    }
-                },
-            },
-            "survey_package": {
-                "id": "71C01598-4682-4A4C-90E6-69C0BD38EA47",
-                "survey_package_id": "71C01598-4682-4A4C-90E6-69C0BD38EA47",
-                "name": "My first survey package",
-                "description": "",
-                "sender_name": "Castor EDC",
-                "auto_send": False,
-                "allow_step_navigation": True,
-                "show_step_navigator": True,
-                "finish_url": "",
-                "auto_lock_on_finish": False,
-                "intro_text": "```\n\n\n```\n#### To be able to send surveys, you have to create a survey package that will contain the survey(s) you want to send.\n```\n\n\n```\nHere you can add intro text. This is similar to the intro text in a survey itself, but since a survey package can contain multiple surveys, this is a 'general' introduction that appears in the very beginning.",
-                "outro_text": "```\n\n\n```\n#### You can now create your own survey! \n```\n\n\n```\n#### Here is a giphy: \n```\n\n\n```\n![alt text](https://media.giphy.com/media/BUXk0VHa2Weis/giphy.gif).",
-                "default_invitation": 'Dear participant,\n\nYou are participating in the study "Example Study" and we would like to ask you to fill in a survey.\n\nPlease click the link below to complete our survey.\n\n{url}\n\n{logo}',
-                "default_invitation_subject": "Please fill in this survey for Example Study",
-                "sender_email": "no-reply@castoredc.com",
-                "is_mobile": False,
-                "expire_after_hours": None,
-                "_embedded": {
-                    "surveys": [
-                        {
-                            "id": "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E",
-                            "survey_id": "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E",
-                            "name": "QOL Survey",
-                            "description": "",
-                            "intro_text": "##### This is the survey intro text. Here you can add some information for the participant that they will see before they start filling in the survey.\n```\n\n\n```\n##### Check the help text in the survey form editor to see how you can format this text or add images and links.\n```\n\n\n```\n### For example, you can use hashtags to make the text bigger or add headings.",
-                            "outro_text": "",
-                            "survey_steps": [],
-                            "_links": {
-                                "self": {
-                                    "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey/D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
-                                }
-                            },
-                        }
-                    ]
-                },
-                "_links": {
-                    "self": {
-                        "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/surveypackage/71C01598-4682-4A4C-90E6-69C0BD38EA47"
-                    }
-                },
-            },
-            "survey_instances": [
-                {
-                    "id": "6530D4AB-4705-4864-92AE-B0EC6200E8E5",
-                    "progress": 100,
-                    "progress_total_fields": 5,
-                    "progress_total_fields_not_empty": 5,
-                    "_links": {
-                        "self": {
-                            "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey/6530D4AB-4705-4864-92AE-B0EC6200E8E5"
-                        }
-                    },
-                }
-            ],
-            "survey_reminders": [],
-        },
-        "_links": {
-            "self": {
-                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/surveypackageinstance/115DF660-A00A-4927-9E5F-A07D030D4A09"
-            }
-        },
-    }
+    test_survey_package_instance = {'id': '115DF660-A00A-4927-9E5F-A07D030D4A09', 'survey_package_instance_id': '115DF660-A00A-4927-9E5F-A07D030D4A09', 'record_id': '000001', 'institute_id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'institute_name': 'Test Institute', 'survey_package_name': 'My first survey package', 'survey_package_id': '71C01598-4682-4A4C-90E6-69C0BD38EA47', 'survey_url_string': 'DUQKNQNN', 'progress': 100, 'invitation_subject': 'Please fill in this survey for Example Study', 'invitation_content': 'Dear participant,\n\nYou are participating in the study "Example Study" and we would like to ask you to fill in a survey.\n\nPlease click the link below to complete our survey.\n\n{url}\n\n{logo}', 'created_on': {'date': '2019-10-14 09:42:27.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'}, 'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'available_from': {'date': '2019-10-14 09:42:27.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'}, 'expire_on': None, 'sent_on': None, 'first_opened_on': None, 'started_on': None, 'all_fields_filled_on': None, 'finished_on': {'date': '2020-08-14 16:27:12.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'}, 'locked': False, 'archived': False, 'auto_lock_on_finish': False, 'auto_send': False, '_embedded': {'record': {'id': '000001', 'record_id': '000001', 'ccr_patient_id': '', 'last_opened_step': 'FFF23B2C-AEE6-4304-9CC4-9C7C431D5387', 'progress': 28, 'locked': False, 'status': 'open', 'archived': False, 'archived_reason': None, 'created_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'created_on': {'date': '2019-10-07 16:16:02.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'}, 'updated_by': 'B23ABCC4-3A53-FB32-7B78-3960CC907F25', 'updated_on': {'date': '2020-11-27 14:37:55.000000', 'timezone_type': 3, 'timezone': 'Europe/Amsterdam'}, 'randomized_id': None, 'randomization_group': None, 'randomization_group_name': None, 'randomized_on': None, '_embedded': {'institute': {'id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'institute_id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'name': 'Test Institute', 'abbreviation': 'TES', 'code': 'TES', 'order': 0, 'deleted': False, 'country_id': 169, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5'}}}}, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/000001'}}}, 'institute': {'id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'institute_id': '1CFF5802-0B07-471F-B97E-B5166332F2C5', 'name': 'Test Institute', 'abbreviation': 'TES', 'code': 'TES', 'order': 0, 'deleted': False, 'country_id': 169, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5'}}}, 'survey_package': {'id': '71C01598-4682-4A4C-90E6-69C0BD38EA47', 'survey_package_id': '71C01598-4682-4A4C-90E6-69C0BD38EA47', 'name': 'My first survey package', 'description': '', 'sender_name': 'Castor EDC', 'auto_send': False, 'allow_step_navigation': True, 'show_step_navigator': True, 'finish_url': '', 'auto_lock_on_finish': False, 'intro_text': "```\n\n\n```\n#### To be able to send surveys, you have to create a survey package that will contain the survey(s) you want to send.\n```\n\n\n```\nHere you can add intro text. This is similar to the intro text in a survey itself, but since a survey package can contain multiple surveys, this is a 'general' introduction that appears in the very beginning.", 'outro_text': '```\n\n\n```\n#### You can now create your own survey! \n```\n\n\n```\n#### Here is a giphy: \n```\n\n\n```\n![alt text](https://media.giphy.com/media/BUXk0VHa2Weis/giphy.gif).', 'default_invitation': 'Dear participant,\n\nYou are participating in the study "Example Study" and we would like to ask you to fill in a survey.\n\nPlease click the link below to complete our survey.\n\n{url}\n\n{logo}', 'default_invitation_subject': 'Please fill in this survey for Example Study', 'sender_email': 'no-reply@castoredc.com', 'is_mobile': False, 'expire_after_hours': None, 'allow_open_survey_link': False, '_embedded': {'surveys': [{'id': 'D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E', 'survey_id': 'D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E', 'name': 'QOL Survey', 'description': '', 'intro_text': '##### This is the survey intro text. Here you can add some information for the participant that they will see before they start filling in the survey.\n```\n\n\n```\n##### Check the help text in the survey form editor to see how you can format this text or add images and links.\n```\n\n\n```\n### For example, you can use hashtags to make the text bigger or add headings.', 'outro_text': '', 'survey_steps': [], '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey/D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E'}}}]}, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/surveypackage/71C01598-4682-4A4C-90E6-69C0BD38EA47'}}}, 'survey_instances': [{'id': '6530D4AB-4705-4864-92AE-B0EC6200E8E5', 'progress': 100, 'progress_total_fields': 5, 'progress_total_fields_not_empty': 5, '_embedded': {'survey': {'id': 'D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E', 'survey_id': 'D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E', 'name': 'QOL Survey', 'description': '', 'intro_text': '##### This is the survey intro text. Here you can add some information for the participant that they will see before they start filling in the survey.\n```\n\n\n```\n##### Check the help text in the survey form editor to see how you can format this text or add images and links.\n```\n\n\n```\n### For example, you can use hashtags to make the text bigger or add headings.', 'outro_text': '', 'survey_steps': [], '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey/D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E'}}}}, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey/6530D4AB-4705-4864-92AE-B0EC6200E8E5'}}}], 'survey_reminders': []}, '_links': {'self': {'href': 'https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/surveypackageinstance/115DF660-A00A-4927-9E5F-A07D030D4A09'}}}
 
     @pytest.fixture
     def all_surveys(self, client):
@@ -353,7 +193,7 @@ class TestSurveyEndpoints:
             record_id="000001", finished_on="2020-08-14"
         )
         assert len(instances) == 1
-        assert instances[0] == self.test_survey_instance
+        assert instances[0] == self.test_survey_package_instance
 
     def test_survey_package_instance_filtered_fail_double_record_id(
         self, client, all_survey_package_instances
@@ -390,7 +230,7 @@ class TestSurveyEndpoints:
         instance = client.single_survey_package_instance(
             "115DF660-A00A-4927-9E5F-A07D030D4A09"
         )
-        assert instance == self.test_survey_instance
+        assert instance == self.test_survey_package_instance
 
     def test_single_survey_package_instance_fail(
         self, client, all_survey_package_instances
