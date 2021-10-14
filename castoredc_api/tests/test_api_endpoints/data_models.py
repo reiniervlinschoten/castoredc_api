@@ -6,6 +6,15 @@ Contains the definition of all data models according to the Castor EDC API.
 https://orcid.org/0000-0003-3052-596X
 """
 
+audit_trail_model = {
+    "datetime": [dict],
+    "event_type": [str],
+    "user_id": [str],
+    "user_name": [str],
+    "user_email": [str],
+    "event_details": [dict, list],
+}
+
 country_model = {
     "id": [
         str,
@@ -49,6 +58,13 @@ single_country_model = {
     "_links": [
         dict,
     ],
+}
+
+device_token_model = {
+    "device_token": [str],
+    "record_id": [str],
+    "created_on": [dict],
+    "updated_on": [dict],
 }
 
 export_data_model = {
@@ -151,6 +167,13 @@ export_option_group_model = {
     "Option Value": [
         str,
     ],
+}
+
+role_model = {
+    "name": [str],
+    "description": [str],
+    "permissions": [dict],
+    "_links": [dict],
 }
 
 study_data_point_model = {
@@ -578,8 +601,8 @@ survey_package_instance_model = {
     "finished_on": [dict, type(None)],
     "available_from": [dict],
     "expire_on": [str, type(None)],
-    "all_fields_filled_on": [str, type(None)],
-    "started_on": [str, type(None)],
+    "all_fields_filled_on": [dict, type(None)],
+    "started_on": [dict, type(None)],
     "locked": [
         bool,
     ],

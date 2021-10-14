@@ -76,7 +76,6 @@ class TestInstitute:
             client.single_institute("FAKE6A79-E02E-4545-9719-95B8DDED9108")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    # TODO: created body need to wait until release
     def test_create_institute_success(self, client):
         """Tests if creating an institute works."""
         with pytest.raises(HTTPStatusError) as e:
@@ -90,7 +89,6 @@ class TestInstitute:
         assert "400 Client Error: Bad Request for url" in str(e.value)
         assert "Institute already exists" in e.value.response.json()["detail"]
 
-    # TODO: created body need to wait until release
     def test_create_institute_failure(self, client):
         """Tests if creating an institute fails properly."""
         with pytest.raises(HTTPStatusError) as e:

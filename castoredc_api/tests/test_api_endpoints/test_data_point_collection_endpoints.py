@@ -6,7 +6,10 @@ Link: https://data.castoredc.com/api#/data-point-collection
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
+from datetime import datetime
+
 import pytest
+import pytz
 from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import (
@@ -743,3 +746,82 @@ class TestDataPoint:
                 "00FAKE", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data
             )
         assert "404 Client Error: Not Found for url" in str(e.value)
+
+    def test_create_survey_package_instance_all_fields_filled_on_success(
+        self,
+        client,
+    ):
+        """Tests changing survey package data"""
+        fields = [
+            "FC4FAA2D-08FD-41F7-B482-444B2B6D3116",
+            "ED12B07E-EDA8-4D64-8268-BE751BD5DB36",
+            "5D3843C7-8341-45DD-A769-8A5D24E6CDA5",
+            "6C87B052-1289-4AB2-8D4F-D15AF4DDF950",
+            "A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2",
+        ]
+
+        now = datetime.now(pytz.utc)
+        now_string = now.strftime("%Y-%m-%d %H:%M:%S")
+
+        # Instantiate fake data
+        data = [
+            {
+                "field_id": field,
+                "instance_id": "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22",
+                "field_value": allowed_value(client, field),
+            }
+            for field in fields
+        ]
+
+        # Update the survey
+        feedback = client.update_survey_package_instance_data_record(
+            "000020", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data, filled_on=now_string
+        )
+
+        assert feedback["total_processed"] == 5
+        assert feedback["total_failed"] == 0
+
+        package = client.single_survey_package_instance(
+            "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22"
+        )
+        new_started_on = package["all_fields_filled_on"]["date"]
+        assert (
+            now.astimezone(pytz.timezone("Europe/Amsterdam")).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
+            in new_started_on
+        )
+
+    def test_create_survey_package_instance_all_fields_filled_on_failure(
+        self,
+        client,
+    ):
+        """Tests changing survey package data"""
+        fields = [
+            "FC4FAA2D-08FD-41F7-B482-444B2B6D3116",
+            "ED12B07E-EDA8-4D64-8268-BE751BD5DB36",
+            "5D3843C7-8341-45DD-A769-8A5D24E6CDA5",
+            "6C87B052-1289-4AB2-8D4F-D15AF4DDF950",
+            "A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2",
+        ]
+
+        now_string = "14-10-2021 12:43:05"
+
+        # Instantiate fake data
+        data = [
+            {
+                "field_id": field,
+                "instance_id": "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22",
+                "field_value": allowed_value(client, field),
+            }
+            for field in fields
+        ]
+
+        with pytest.raises(HTTPStatusError) as e:
+            client.update_survey_package_instance_data_record(
+                "000020",
+                "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22",
+                data,
+                filled_on=now_string,
+            )
+        assert "400 Client Error: Bad Request for url" in str(e.value)
