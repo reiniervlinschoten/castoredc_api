@@ -1029,7 +1029,7 @@ class CastorClient:
                 self.sync_get(url, param) for param in tqdm(params, file=sys.stdout)
             ]
         except RuntimeError:
-            # No running eventloop, free to use async code
+            # No running event loop, free to use async code
             responses = asyncio.run(self.async_get(url=url, params=params))
             responses = [self.handle_response(response) for response in responses]
 
