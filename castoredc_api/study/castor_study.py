@@ -375,7 +375,7 @@ class CastorStudy:
         """Exports a single dataframe to feather and returns the destination path."""
         filename = re.sub(r"[^\w\-_\. ]", "_", name)
         path = pathlib.Path(
-            pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.csv"
+            pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.feather"
         )
         dataframe.reset_index(drop=True).to_feather(
             path,
