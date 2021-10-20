@@ -376,9 +376,15 @@ class CastorStudy:
     ) -> str:
         """Exports a single dataframe to feather and returns the destination path."""
         filename = re.sub(r"[^\w\-_\. ]", "_", name)
+
         path = pathlib.Path(
             pathlib.Path.cwd(), "output", f"{now} {self.study_id} {filename}.feather"
         )
+        if dataframe.empty:
+            # If dataframe is empty, set all dtypes to object
+            # See also https://github.com/reiniervlinschoten/castoredc_api/issues/44
+            dataframe = dataframe.astype("object")
+
         dataframe.reset_index(drop=True).to_feather(
             path,
             compression="uncompressed",
