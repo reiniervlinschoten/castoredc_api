@@ -761,13 +761,19 @@ class CastorStudy:
         for field in cat_fields:
             # Get options + missings
             options = self.get_single_optiongroup(field.field_option_group)["options"]
-            option_names = [option["name"] for option in options] + [
-                "measurement failed",
-                "not applicable",
-                "not asked",
-                "asked but unknown",
-                "not done",
-            ]
+            # Remove duplicates
+            option_names = list(
+                set(
+                    [option["name"] for option in options]
+                    + [
+                        "measurement failed",
+                        "not applicable",
+                        "not asked",
+                        "asked but unknown",
+                        "not done",
+                    ]
+                )
+            )
 
             # Set columns to categorical
             cat_type = pd.CategoricalDtype(categories=option_names, ordered=False)
