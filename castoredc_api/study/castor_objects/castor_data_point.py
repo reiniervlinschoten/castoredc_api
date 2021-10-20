@@ -208,7 +208,12 @@ class CastorDataPoint:
         if value_list == [""]:
             new_values = [""]
         else:
-            new_values = [link[value] for value in value_list]
+            try:
+                new_values = [link[value] for value in value_list]
+            except KeyError as error:
+                raise CastorException(
+                    f"Value without label in {self.raw_value} for datapoint: {self.field_id}"
+                ) from error
         # Return a string, for multiple answers separate them with |
         new_value = "|".join(new_values)
         return new_value

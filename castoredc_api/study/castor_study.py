@@ -258,6 +258,7 @@ class CastorStudy:
             local_instance.parent = (
                 "No parent"
                 if report_instance["parent_id"] == ""
+                or report_instance["parent_id"] is None
                 else self.get_single_form(report_instance["parent_id"]).form_name
             )
             local_instance.archived = report_instance["archived"]
