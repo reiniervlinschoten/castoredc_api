@@ -136,7 +136,7 @@ class TestDataInterpretationFormatting:
             "110014", "C2318B69-A4FB-480D-960D-BC5B4E1790F6", "comorbidities"
         )
         # Test if answer is correct
-        assert dp.value == "- - Uploaded file - -"
+        assert dp.value == "-- Uploaded File: testfile.txt --"
 
     def test_data_interpret_number_and_date(
         self, integration_study_format_optiongroups
