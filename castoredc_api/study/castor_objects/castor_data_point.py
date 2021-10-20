@@ -212,7 +212,8 @@ class CastorDataPoint:
                 new_values = [link[value] for value in value_list]
             except KeyError as error:
                 raise CastorException(
-                    f"Value without label in {self.raw_value} for datapoint: {self.field_id}"
+                    f"Value without label in {self.raw_value} "
+                    f"for a datapoint of field: {self.field_id} ({self.instance_of.field_name}"
                 ) from error
         # Return a string, for multiple answers separate them with |
         new_value = "|".join(new_values)
