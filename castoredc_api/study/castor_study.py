@@ -342,6 +342,7 @@ class CastorStudy:
         dataframes = self.export_to_dataframe(archived)
         # Instantiate output folder
         pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
+        print("Writing data to feather files...", flush=True)
         dataframes["Study"] = self.export_dataframe_to_feather(
             dataframes["Study"], "Study", now
         )
