@@ -4,7 +4,7 @@ from castoredc_api import CastorException
 from castoredc_api.importer.import_data import import_data
 
 
-class TestImportValidationErrors:
+class TestImportValidationErrorsAsync:
     """Tests uploading data to Castor."""
 
     def test_import_date_error(self, import_study):
@@ -16,6 +16,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -29,6 +30,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -42,6 +44,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -55,6 +58,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -68,6 +72,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -81,6 +86,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -94,6 +100,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -107,6 +114,7 @@ class TestImportValidationErrors:
                 study=import_study,
                 label_data=False,
                 target="Study",
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error

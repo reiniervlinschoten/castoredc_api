@@ -4,7 +4,7 @@ from castoredc_api import CastorException
 from castoredc_api.importer.import_data import import_data
 
 
-class TestImportStudyFormat:
+class TestImportStudyFormatAsync:
     """Tests uploading data to Castor."""
 
     def test_import_study_value_success_format(self, import_study):
@@ -20,6 +20,7 @@ class TestImportStudyFormat:
                 "datetime": "%B %d %Y %I:%M %p",
                 "time": "%I:%M %p",
             },
+            use_async=True,
         )
 
         assert imported_data == self.study_success
@@ -37,6 +38,7 @@ class TestImportStudyFormat:
                 "datetime": "%B %d %Y %I:%M %p",
                 "time": "%I:%M %p",
             },
+            use_async=True,
         )
 
         assert imported_data == self.study_missing
@@ -55,6 +57,7 @@ class TestImportStudyFormat:
                     "datetime": "%B %d %Y %I:%M %p",
                     "time": "%I:%M %p",
                 },
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error
@@ -73,6 +76,7 @@ class TestImportStudyFormat:
                     "datetime": "%B %d %Y %I:%M %p",
                     "time": "%I:%M %p",
                 },
+                use_async=True,
             )
 
         assert str(e.value) == self.study_error

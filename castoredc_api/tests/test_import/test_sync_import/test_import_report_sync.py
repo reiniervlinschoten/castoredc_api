@@ -4,7 +4,7 @@ from castoredc_api import CastorException
 from castoredc_api.importer.import_data import import_data
 
 
-class TestImportReport:
+class TestImportReportSync:
     """Tests uploading data to Castor."""
 
     def test_import_report_value_success(self, import_study):

@@ -4,108 +4,48 @@ from castoredc_api import CastorException
 from castoredc_api.importer.import_data import import_data
 
 
-class TestImportStudy:
-    """Tests uploading data to Castor."""
+class TestImportMergeSync:
+    """Tests uploading data to Castor while translating external data points."""
 
-    def test_import_study_value_success(self, import_study):
-        """Tests if uploading value data is successful"""
+    def test_import_study_label_merge_success(self, import_study):
+        """Tests if uploading label data is successful when merging external optiongroups"""
         imported_data = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            study=import_study,
-            label_data=False,
-            target="Study",
-        )
-
-        assert imported_data == self.study_success
-
-    def test_import_study_label_success(self, import_study):
-        """Tests if uploading label data is successful"""
-        imported_data = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_merge.xlsx",
+            column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
             study=import_study,
             label_data=True,
             target="Study",
+            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
         )
 
         assert imported_data == self.study_success
 
-    def test_import_study_value_missing(self, import_study):
-        """Tests if uploading value data with missings is successful"""
-        imported_data = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-            study=import_study,
-            label_data=False,
-            target="Study",
-        )
-
-        assert imported_data == self.study_missing
-
-    def test_import_study_label_missing(self, import_study):
+    def test_import_study_label_merge_missing(self, import_study):
         """Tests if uploading label data with missings is successful"""
         imported_data = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_missings_merge.xlsx",
+            column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
             study=import_study,
             label_data=True,
             target="Study",
+            merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
         )
 
         assert imported_data == self.study_missing
 
-    def test_import_study_value_error(self, import_study):
-        """Tests if uploading value data with errors is successful"""
-        with pytest.raises(CastorException) as e:
-            import_data(
-                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_errors.xlsx",
-                column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study,
-                label_data=False,
-                target="Study",
-            )
-
-        assert str(e.value) == self.study_error
-
-    def test_import_study_label_error(self, import_study):
+    def test_import_study_label_merge_error(self, import_study):
         """Tests if uploading label data with errors is successful"""
         with pytest.raises(CastorException) as e:
             import_data(
-                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors.xlsx",
-                column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
+                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_errors_merge.xlsx",
+                column_link_path="tests/test_import/link_files_for_import_tests/study_merge_link_file.xlsx",
                 study=import_study,
                 label_data=True,
                 target="Study",
+                merge_path="tests/test_import/translate_files_for_import_tests/study_label_merge_file.xlsx",
             )
 
         assert str(e.value) == self.study_error
-
-    def test_import_study_error_during_upload(self, import_study):
-        """Tests if uploading data with an error during the upload process fails properly"""
-        with pytest.raises(CastorException) as e:
-            import_data(
-                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_values_errors_upload.xlsx",
-                column_link_path="tests/test_import/link_files_for_import_tests/study_link_file.xlsx",
-                study=import_study,
-                label_data=False,
-                target="Study",
-            )
-
-        assert str(e.value) == self.study_error
-
-    def test_import_study_error_during_upload_failed_field(self, import_study):
-        """Tests if uploading data with an error during the upload process fails properly"""
-        with pytest.raises(CastorException) as e:
-            import_data(
-                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_nonexistent_field.xlsx",
-                column_link_path="tests/test_import/link_files_for_import_tests/study_link_file_nonexistent_field.xlsx",
-                study=import_study,
-                label_data=True,
-                target="Study",
-            )
-
-        assert str(e.value) == self.study_error_wrong_field
 
     study_success = {
         "110001": [
@@ -264,5 +204,3 @@ class TestImportStudy:
     study_error = (
         "Non-viable data found in dataset to be imported. See output folder for details"
     )
-
-    study_error_wrong_field = "{'med_name': ['BAD_REQUEST', 'Unsupported field type']} caused at {'record_id': '110001', 'base_bl_date': '16-03-2021', 'base_hb': '8.3', 'fac_V_leiden': '55;16-03-2021', 'onset_stroke': '16-03-2021;07:30', 'onset_trombectomy': '09:25', 'pat_birth_year': '1999', 'pat_sex': '0', 'pat_race': '1', 'his_family': '2;3;4', 'med_name': 'Infliximab', 'success': {'base_bl_date': '16-03-2021', 'base_hb': '8.3', 'fac_V_leiden': '55;16-03-2021', 'onset_stroke': '16-03-2021;07:30', 'onset_trombectomy': '09:25', 'pat_birth_year': '1999', 'pat_sex': '0', 'pat_race': '1', 'his_family': '2;3;4'}, 'failed': {'med_name': ['BAD_REQUEST', 'Unsupported field type']}}.\n See output folder for successful imports"
