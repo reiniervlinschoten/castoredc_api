@@ -1,4 +1,5 @@
 """Helper functions for the import functionality"""
+import pathlib
 from datetime import datetime
 import typing
 import numpy as np
@@ -91,12 +92,12 @@ def create_merge_translation(path: str) -> dict:
 
 
 def castorize_column(
-    to_import: pd.Series,
-    new_name: list,
-    label_data: bool,
-    study: "CastorStudy",
-    variable_translation: typing.Optional[typing.Dict],
-    format_options: dict,
+        to_import: pd.Series,
+        new_name: list,
+        label_data: bool,
+        study: "CastorStudy",
+        variable_translation: typing.Optional[typing.Dict],
+        format_options: dict,
 ) -> dict:
     """Translates the values in a column to Castorized values ready for import."""
     if new_name[0] == "record_id":
@@ -117,7 +118,7 @@ def castorize_column(
 
 
 def castorize_column_helper(
-    label_data, new_name, study, to_import, variable_translation, format_options
+        label_data, new_name, study, to_import, variable_translation, format_options
 ):
     """Helper function for selecting the correct way to castorize a column."""
     target_field = study.get_single_field(new_name[0])
@@ -171,7 +172,7 @@ def castorize_column_helper(
 
 
 def castorize_optiongroup_column_helper(
-    label_data, new_name, study, target_field, to_import, variable_translation
+        label_data, new_name, study, target_field, to_import, variable_translation
 ):
     """Helper function to select the right function to castorize an optiongroup column"""
     options = {
@@ -218,7 +219,7 @@ def castorize_optiongroup_column_helper(
 
 
 def castorize_dep_column(
-    to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
+        to_import: pd.Series, new_name: str, parent_import: pd.Series, parent_value: str
 ):
     """Takes a column and extracts the values that need to be imported in the dependent column."""
     # Get the (checkbox can have multiple inputs) index where the 'other' field is used
@@ -233,12 +234,12 @@ def castorize_dep_column(
 
 
 def castorize_optiongroup_column(
-    to_import: pd.Series,
-    options: dict,
-    new_name: str,
-    label_data: bool,
-    parent_value: typing.Optional[str],
-    variable_translation: typing.Optional[dict],
+        to_import: pd.Series,
+        options: dict,
+        new_name: str,
+        label_data: bool,
+        parent_value: typing.Optional[str],
+        variable_translation: typing.Optional[dict],
 ) -> dict:
     """Splits a column with optiongroup data, translates it and merges it back"""
     other_name = to_import.name
@@ -255,12 +256,12 @@ def castorize_optiongroup_column(
 
 
 def castorize_optiongroup_datapoint(
-    values: list,
-    options: dict,
-    label_data: bool,
-    parent_value: typing.Optional[str],
-    variable_translation: typing.Optional[dict],
-    other_name: str,
+        values: list,
+        options: dict,
+        label_data: bool,
+        parent_value: typing.Optional[str],
+        variable_translation: typing.Optional[dict],
+        other_name: str,
 ) -> typing.Optional[list]:
     """Translates a list of values split by ; into Castor Values."""
     # If the datapoint was None or NaN, return an empty datapoint
@@ -287,11 +288,11 @@ def castorize_optiongroup_datapoint(
 
 
 def translate_label_data(
-    new_values: list,
-    options: dict,
-    parent_value: str,
-    translate_dict: typing.Optional[dict],
-    values: list,
+        new_values: list,
+        options: dict,
+        parent_value: str,
+        translate_dict: typing.Optional[dict],
+        values: list,
 ):
     """Translates label data if necessary and checks if it falls within the Castor optiongroup"""
     for value in values:
@@ -313,11 +314,11 @@ def translate_label_data(
 
 
 def translate_value_data(
-    new_values: list,
-    options: dict,
-    parent_value: str,
-    translate_dict: typing.Optional[dict],
-    values: list,
+        new_values: list,
+        options: dict,
+        parent_value: str,
+        translate_dict: typing.Optional[dict],
+        values: list,
 ):
     """Translates value data if necessary and checks if it falls within the Castor optiongroup"""
     for value in values:
@@ -333,7 +334,7 @@ def translate_value_data(
 
 
 def get_translation_dict(
-    other_name: str, variable_translation: dict
+        other_name: str, variable_translation: dict
 ) -> typing.Optional[dict]:
     """Returns the translation dict or None if no translation necessary."""
     # Translate if variable_translation exists
@@ -456,7 +457,7 @@ def castorize_time_column(data: list, time_format: str):
 
 
 def castorize_numberdate_column(
-    data: list, target_field: "CastorField", date_format: str
+        data: list, target_field: "CastorField", date_format: str
 ):
     """Castorizes a numberdate column and replaces errors with 'Error'."""
     new_list = []
@@ -479,9 +480,9 @@ def castorize_numberdate_column(
                     numeric_datapoint = float(split[0])
                     # Test if between bounds
                     if (
-                        target_field.field_max
-                        > numeric_datapoint
-                        > target_field.field_min
+                            target_field.field_max
+                            > numeric_datapoint
+                            > target_field.field_min
                     ):
                         new_value.append(split[0])
                     else:
@@ -537,13 +538,13 @@ def merge_columns(to_upload: pd.DataFrame, path_to_merge: str) -> pd.DataFrame:
 
 
 def create_upload(
-    path_to_upload: str,
-    path_to_col_link: str,
-    path_to_translation: typing.Optional[str],
-    path_to_merge: typing.Optional[str],
-    label_data: bool,
-    study: "CastorStudy",
-    format_options: dict,
+        path_to_upload: str,
+        path_to_col_link: str,
+        path_to_translation: typing.Optional[str],
+        path_to_merge: typing.Optional[str],
+        label_data: bool,
+        study: "CastorStudy",
+        format_options: dict,
 ) -> pd.DataFrame:
     """Returns a upload-ready dataframe from a path to an Excel file."""
     to_upload = read_excel(path_to_upload)
@@ -571,7 +572,7 @@ def create_upload(
     return pd.DataFrame.from_dict(new_data)
 
 
-def update_feedback(feedback_row, feedback_total, row, study):
+def format_feedback(feedback_row, study):
     """Updates the feedback dict with the new information."""
     formatted_feedback_row = {
         "success": {
@@ -586,13 +587,103 @@ def update_feedback(feedback_row, feedback_total, row, study):
             for field in feedback_row["failed"]
         },
     }
+    return formatted_feedback_row
 
-    if row["record_id"] not in feedback_total:
-        feedback_total[row["record_id"]] = [formatted_feedback_row]
-    else:
-        feedback_total[row["record_id"]].append(formatted_feedback_row)
 
-    if len(formatted_feedback_row["failed"]) > 0:
-        raise CastorException(formatted_feedback_row["failed"])
+def handle_httpstatuserror(error, imported, row):
+    """Handles a HTTPStatus Error by outputting imported data and raising an error."""
+    # Error in querying the database/http connection
+    row["error"] = error.response
+    # Add error row to the dataset
+    imported.append(row)
+    # Output data for error checking
+    pd.DataFrame(imported).to_csv(
+        pathlib.Path(
+            pathlib.Path.cwd(),
+            "output",
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+            + "error_during_upload.csv",
+        ),
+        index=False,
+    )
+    raise CastorException(
+        str(error)
+        + str(error.response)
+        + " caused at "
+        + str(row)
+        + ".\n See output folder for successful imports"
+    ) from error
 
+
+def handle_failed_upload(formatted_feedback_row, imported, row):
+    """Handles a failed upload by outputting imported data and raising an error."""
+    pd.DataFrame(imported).to_csv(
+        pathlib.Path(
+            pathlib.Path.cwd(),
+            "output",
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+            + "error_during_upload.csv",
+        ),
+        index=False,
+    )
+    raise CastorException(
+        str(formatted_feedback_row["failed"])
+        + " caused at "
+        + str(row)
+        + ".\n See output folder for successful imports"
+    )
+
+
+def create_feedback(imported):
+    "Creates feedback from the (un)successful imports"
+    feedback_total = {}
+    for row in imported:
+        if row["record_id"] not in feedback_total:
+            feedback_total[row["record_id"]] = [{"success": row["success"], "failed": row["failed"]}]
+        else:
+            feedback_total[row["record_id"]].append({"success": row["success"], "failed": row["failed"]})
     return feedback_total
+
+
+def handle_response(response, imported, row, study):
+    """Handles a response from uploading a single row of data."""
+    # Format feedback
+    formatted_response = format_feedback(response, study)
+    # Add successes and failures
+    row["success"] = formatted_response["success"]
+    row["failed"] = formatted_response["failed"]
+    # Add to the dataset
+    imported.append(row)
+    if len(formatted_response["failed"]) > 0:
+        handle_failed_upload(formatted_response, imported, row)
+    return imported
+
+def create_survey_body(instance, row, study):
+    """Formats a row into a body for use with the API"""
+    body = [
+        {
+            "field_id": study.get_single_field(field).field_id,
+            "instance_id": instance["id"],
+            "field_value": row[field],
+        }
+        for field in row
+        # Skip record_id and empty fields
+        if (field != "record_id" and row[field] is not None)
+    ]
+    return body
+
+def create_report_body(instance, row, study, upload_datetime):
+    """Formats a row into a body for use with the API"""
+    body = [
+        {
+            "field_id": study.get_single_field(field).field_id,
+            "instance_id": instance["id"],
+            "field_value": row[field],
+            "change_reason": f"api_upload_Report_{upload_datetime}",
+            "confirmed_changes": True,
+        }
+        for field in row
+        # Exclude empty fields and record_id
+        if (field != "record_id" and row[field] is not None)
+    ]
+    return body

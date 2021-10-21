@@ -139,6 +139,21 @@ For datetime data, missing data values are with the years 2995, 2996, 2997, 2998
    * If label_data is set to true, it translates the string values to their integer values of the optiongroup in Castor.
    * If set to false, it takes the integer values as is.
 
+Data is validated against the Castor database, meaning that:
+* Existence of records and fields is checked
+* Numeric values are compared against allowed values (min & max)
+* Date(time) and time formats are compared against the specified format
+
+#### Synchronous Upload
+The synchronous upload option uploads each row one by one.
+When an Error is encountered or the upload finishes successfully, the program outputs the upload log to the output folder and stops.
+ 
+#### Asynchronous Upload
+The asynchronous upload option uploads each row one by one.
+The program does not stop if uploading a row encounters an error.
+When the upload finishes, the program outputs the upload log to the output folder and stops.
+Error messages are stored in the output folder for debugging.
+
 #### Simple Example
 ```python
 from castoredc_api import CastorStudy
@@ -156,6 +171,14 @@ imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
                             study=study, 
                             label_data=True, 
                             target="Study")
+
+# Import labelled study data (asynchronous)
+imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
+                            column_link_path="PATH/TO/YOUR/LINK/FILE", 
+                            study=study, 
+                            label_data=True, 
+                            target="Study",
+                            use_async=True)
 
 # Import non-labelled report data
 imported_data = import_data(data_source_path="PATH/TO/YOUR/REPORT/DATA", 
