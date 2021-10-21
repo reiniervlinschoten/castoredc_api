@@ -111,7 +111,7 @@ class TestImportReport:
                 target="Report",
                 target_name="Medication",
             )
-        assert "404 Client Error: Not Found for url:" in str(e.value)
+        assert str(e.value) == self.report_error
 
     report_success = {
         "110001": [

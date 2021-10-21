@@ -613,7 +613,15 @@ class TestValueTranslationFail:
             },
         )
         # Record checking fails at the import stage
-        assert import_column == {"record_id": ["a", "b", "c", "d", "e"]}
+        assert import_column == {
+            "record_id": [
+                "Error: record does not exist in study",
+                "Error: record does not exist in study",
+                "Error: record does not exist in study",
+                "Error: record does not exist in study",
+                "Error: record does not exist in study",
+            ]
+        }
 
     def test_checkbox_field_fail(self, study_value_data_error, import_study):
         """Tests whether the proper error is returned when castorizing a checkbox field."""

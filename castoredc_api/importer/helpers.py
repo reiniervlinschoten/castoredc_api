@@ -100,7 +100,15 @@ def castorize_column(
 ) -> dict:
     """Translates the values in a column to Castorized values ready for import."""
     if new_name[0] == "record_id":
-        return_value = {new_name[0]: to_import.tolist()}
+        records_study = [record["id"] for record in study.client.all_records()]
+        # Check if record exists
+        record_column = [
+            record
+            if record in records_study
+            else "Error: record does not exist in study"
+            for record in to_import.tolist()
+        ]
+        return_value = {new_name[0]: record_column}
     else:
         return_value = castorize_column_helper(
             label_data, new_name, study, to_import, variable_translation, format_options

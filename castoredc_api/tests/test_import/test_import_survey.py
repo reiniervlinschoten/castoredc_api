@@ -106,7 +106,7 @@ class TestImportSurvey:
                 email="python_wrapper@you-spam.com",
             )
 
-        assert "404 Client Error: Not Found for url:" in str(e.value)
+        assert str(e.value) == self.survey_error
 
     survey_success = {
         "110001": [

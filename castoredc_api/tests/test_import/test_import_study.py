@@ -92,7 +92,7 @@ class TestImportStudy:
                 target="Study",
             )
 
-        assert "404 Client Error: Not Found for url:" in str(e.value)
+        assert str(e.value) == self.study_error
 
     def test_import_study_error_during_upload_failed_field(self, import_study):
         """Tests if uploading data with an error during the upload process fails properly"""

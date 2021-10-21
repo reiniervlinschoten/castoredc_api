@@ -75,7 +75,7 @@ class TestImportStudyFormat:
                 },
             )
 
-        assert "404 Client Error: Not Found for url:" in str(e.value)
+        assert str(e.value) == self.study_error
 
     study_success = {
         "110001": [
