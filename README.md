@@ -155,14 +155,15 @@ When the upload finishes, the program outputs the upload log to the output folde
 Error messages are stored in the output folder for debugging.
 
 #### Simple Example
+
 ```python
 from castoredc_api import CastorStudy
 from castoredc_api import import_data
 
 # Create a Study with your credentials
-study = CastorStudy('MYCLIENTID', 
-                    'MYCLIENTSECRET', 
-                    'MYSTUDYID', 
+study = CastorStudy('MYCLIENTID',
+                    'MYCLIENTSECRET',
+                    'MYSTUDYID',
                     'data.castoredc.com')
 
 # Import labelled study data
@@ -289,9 +290,9 @@ from castoredc_api import CastorStudy
 from castoredc_api import import_data
 
 # Create a Study with your credentials
-study = CastorStudy('MYCLIENTID', 
-                    'MYCLIENTSECRET', 
-                    'MYSTUDYID', 
+study = CastorStudy('MYCLIENTID',
+                    'MYCLIENTSECRET',
+                    'MYSTUDYID',
                     'data.castoredc.com')
 
 # Import study data with a translation file
@@ -362,9 +363,9 @@ from castoredc_api import CastorStudy
 from castoredc_api import import_data
 
 # Create a Study with your credentials
-study = CastorStudy('MYCLIENTID', 
-                    'MYCLIENTSECRET', 
-                    'MYSTUDYID', 
+study = CastorStudy('MYCLIENTID',
+                    'MYCLIENTSECRET',
+                    'MYSTUDYID',
                     'data.castoredc.com')
 
 # Import study data with a merge file
@@ -393,9 +394,9 @@ from castoredc_api import CastorStudy
 from castoredc_api import import_data
 
 # Create a Study with your credentials
-study = CastorStudy('MYCLIENTID', 
-                    'MYCLIENTSECRET', 
-                    'MYSTUDYID', 
+study = CastorStudy('MYCLIENTID',
+                    'MYCLIENTSECRET',
+                    'MYSTUDYID',
                     'data.castoredc.com')
 
 # Import labelled study data with changed formats
