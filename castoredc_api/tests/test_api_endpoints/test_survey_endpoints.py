@@ -144,7 +144,7 @@ class TestSurveyEndpoints:
                 "id": "000001",
                 "record_id": "000001",
                 "ccr_patient_id": "",
-                "last_opened_step": "FFF23B2C-AEE6-4304-9CC4-9C7C431D5387",
+                "last_opened_step": "1F1A5F3B-FD1A-45A6-9E0F-327F2EC68983",
                 "progress": 28,
                 "locked": False,
                 "status": "open",
@@ -158,7 +158,7 @@ class TestSurveyEndpoints:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2020-11-27 14:37:55.000000",
+                    "date": "2021-10-20 16:25:16.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },
