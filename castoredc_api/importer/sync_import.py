@@ -190,9 +190,9 @@ def create_survey_package_instance(
             email_address=email,
             auto_send=False,
         )
-        return instance
     except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
+        return handle_httpstatuserror(error, imported, row)
+    return instance
 
 
 def upload_report(
@@ -259,7 +259,8 @@ def create_report_instance(
         instance = study.client.create_report_instance_record(
             record_id=record,
             report_id=package_id,
-            report_name_custom=f"{record}-api_upload_Report_{datetime.now().strftime('%Y%m%d %H%M%S.%f')}",
+            report_name_custom=f"{record}-api_upload_Report_"
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}",
         )
     except HTTPStatusError as error:
         handle_httpstatuserror(error, imported, row)

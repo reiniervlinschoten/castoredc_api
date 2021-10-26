@@ -66,8 +66,9 @@ def import_data(
         )
     # Upload the data
     if use_async:
-        return upload_data_async(
+        upload = upload_data_async(
             castorized_dataframe, study, target, target_name, email
         )
     else:
-        return upload_data(castorized_dataframe, study, target, target_name, email)
+        upload = upload_data(castorized_dataframe, study, target, target_name, email)
+    return upload
