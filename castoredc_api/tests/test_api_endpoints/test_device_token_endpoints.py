@@ -12,8 +12,8 @@ from httpx import HTTPStatusError
 from castoredc_api.tests.test_api_endpoints.test_record_endpoints import create_record
 
 
+@pytest.mark.xfail(reason="Not possible to connect under right scope (record), see issue #42", strict=True)
 class TestDeviceToken:
-    # TODO AUTH SCOPE
     def test_single_token_success(self, client):
         """Tests if single token returns the proper data."""
         token = client.single_token("000024")
