@@ -1,6 +1,8 @@
 """Module for interacting with the Castor EDC API."""
+import copy
 import csv
 import sys
+import typing
 from itertools import chain
 import asyncio
 from typing import Optional, List
@@ -8,6 +10,9 @@ from typing import Optional, List
 import httpx
 from httpx import HTTPStatusError
 from tqdm import tqdm
+
+if typing.TYPE_CHECKING:
+    from castoredc_api import CastorStudy
 
 
 class CastorException(Exception):
@@ -1099,6 +1104,74 @@ class CastorClient:
                 ]
                 responses = responses + temp_responses
         return responses
+
+    # Asynchronous API Interaction
+    async def async_update_study_data(self, data: list, study: "CastorStudy") -> list:
+        """Updates the Castor EDC database with given datapoints.
+        :param data: the data for the request
+        is a list of dicts of the form
+        {"common: {
+            "change_reason": "string",
+            "confirmed_changes": boolean
+                }
+        "body": [{
+            "field_id": "string",
+            "field_value": "string",
+            "change_reason": "string",
+            "confirmed_changes": boolean
+                }, {..}],
+        "row": data_row}
+        """
+        # Split list to handle error when len(tasks) > max_connections
+        chunks = [
+            data[x : x + self.max_connections]
+            for x in range(0, len(data), self.max_connections)
+        ]
+        responses = []
+        for idx, chunk in enumerate(chunks):
+            async with httpx.AsyncClient(
+                headers=self.headers, timeout=self.timeout, limits=self.limits
+            ) as client:
+                tasks = [
+                    self.__async_upload_study_data(item, client, study)
+                    for item in chunk
+                ]
+
+                temp_responses = [
+                    await response
+                    for response in tqdm(
+                        asyncio.as_completed(tasks),
+                        total=len(tasks),
+                        desc=f"Async Uploading {idx + 1}/{len(chunks)}",
+                        file=sys.stdout,
+                    )
+                ]
+                responses = responses + temp_responses
+        return responses
+
+    async def __async_upload_study_data(self, item, client, study):
+        """Coroutine to upload a single row of study data and handle the response."""
+        feedback = copy.deepcopy(item["row"])
+        url = (
+            self.study_url
+            + f"/record/{item['row']['record_id']}/data-point-collection/study"
+        )
+        json = {"common": item["common"], "data": item["body"]}
+        response = await client.post(url=url, json=json)
+        try:
+            response.raise_for_status()
+            from castoredc_api.importer.helpers import format_feedback
+
+            formatted_response = format_feedback(response.json(), study)
+            feedback["error"] = None
+            feedback["success"] = formatted_response["success"]
+            feedback["failed"] = formatted_response["failed"]
+        except HTTPStatusError as error:
+            print(error.response.json())
+            feedback["error"] = error.response.json()
+            feedback["success"] = None
+            feedback["failed"] = None
+        return feedback
 
     @staticmethod
     def handle_response(response: httpx.Response) -> dict:

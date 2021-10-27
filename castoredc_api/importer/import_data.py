@@ -1,8 +1,10 @@
 """Module to import data to Castor EDC using the API"""
+import asyncio
 from datetime import datetime
 import typing
 import pathlib
 from castoredc_api import CastorException
+from castoredc_api.importer.async_import import upload_data_async
 from castoredc_api.importer.helpers import create_upload
 from castoredc_api.importer.sync_import import upload_data
 

@@ -4,7 +4,7 @@ from datetime import datetime
 import typing
 import numpy as np
 import pandas as pd
-from castoredc_api import CastorException
+from castoredc_api.client.castoredc_api_client import CastorException
 
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
