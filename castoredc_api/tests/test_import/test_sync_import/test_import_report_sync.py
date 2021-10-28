@@ -113,6 +113,20 @@ class TestImportReportSync:
             )
         assert str(e.value) == self.report_error
 
+    def test_import_survey_error_during_upload_failed_field(self, import_study):
+        """Tests if uploading data with an error during the upload process fails properly"""
+        with pytest.raises(CastorException) as e:
+            import_data(
+            data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_labels_nonexistent_field.xlsx",
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file_nonexistent_field.xlsx",
+            study=import_study,
+            label_data=True,
+            target="Report",
+            target_name="Medication",
+        )
+
+        assert str(e.value) == self.report_error_wrong_field
+
     report_success = {
         "110001": [
             {
@@ -282,3 +296,5 @@ class TestImportReportSync:
     report_error = (
         "Non-viable data found in dataset to be imported. See output folder for details"
     )
+
+    report_error_wrong_field = "{'med_name': ['BAD_REQUEST', 'Unsupported field type']} caused at {'record_id': '110001', 'base_bl_date': '16-03-2021', 'base_hb': '8.3', 'fac_V_leiden': '55;16-03-2021', 'onset_stroke': '16-03-2021;07:30', 'onset_trombectomy': '09:25', 'pat_birth_year': '1999', 'pat_sex': '0', 'pat_race': '1', 'his_family': '2;3;4', 'med_name': 'Infliximab', 'success': {'base_bl_date': '16-03-2021', 'base_hb': '8.3', 'fac_V_leiden': '55;16-03-2021', 'onset_stroke': '16-03-2021;07:30', 'onset_trombectomy': '09:25', 'pat_birth_year': '1999', 'pat_sex': '0', 'pat_race': '1', 'his_family': '2;3;4'}, 'failed': {'med_name': ['BAD_REQUEST', 'Unsupported field type']}}.\n See output folder for successful imports"
