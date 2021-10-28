@@ -21,7 +21,7 @@ Supported export formats are
 * R (using Feather)
 
 ### Import
-Import currently only supports .xlsx files with limited configuration.  
+Import currently only supports .xlsx files with some configuration.  
 See for more information below.
 
 ## Getting Started
@@ -145,13 +145,14 @@ Data is validated against the Castor database, meaning that:
 * Date(time) and time formats are compared against the specified format
 
 #### Synchronous Upload
-The synchronous upload option uploads each row one by one.
+The synchronous upload option uploads each row one by one.  
 When an Error is encountered or the upload finishes successfully, the program outputs the upload log to the output folder and stops.
  
 #### Asynchronous Upload
-The asynchronous upload option uploads each row one by one.
-The program does not stop if uploading a row encounters an error.
-When the upload finishes, the program outputs the upload log to the output folder and stops.
+The asynchronous upload option uploads each row one by one.  
+This is about 15-30 times faster than synchronous upload.  
+The program does not stop if uploading a row encounters an error.  
+When the upload finishes, the program outputs the upload log to the output folder and stops.  
 Error messages are stored in the output folder for debugging.
 
 #### Simple Example
