@@ -47,7 +47,9 @@ class TestImportReportAsync:
             use_async=True,
         )
 
-        assert imported_data == self.report_success_bulk
+        for record in imported_data:
+            for item in imported_data[record]:
+                assert item in self.report_success_bulk[record]
 
     def test_import_report_value_missing(self, import_study):
         """Tests if uploading value data with missings is successful"""
@@ -121,10 +123,10 @@ class TestImportReportAsync:
             )
         assert str(e.value) == self.report_error
 
-    def test_import_survey_error_during_upload_failed_field(self, import_study):
+    def test_import_report_error_during_upload_failed_field(self, import_study):
         """Tests if uploading data with an error during the upload process fails properly"""
         imported = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_labels_nonexistent_field.xlsx",
+            data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_nonexistent_field.xlsx",
             column_link_path="tests/test_import/link_files_for_import_tests/report_link_file_nonexistent_field.xlsx",
             study=import_study,
             label_data=True,
@@ -315,7 +317,7 @@ class TestImportReportAsync:
                     "med_dose": "0.05",
                     "med_units": "3",
                 },
-                "failed": {},
+                "failed": {"pat_sex": ["BAD_REQUEST", "Unsupported field type"]},
             }
         ],
         "110002": [
@@ -328,7 +330,7 @@ class TestImportReportAsync:
                     "med_units": "7",
                     "med_other_unit": "mg/4 weeks",
                 },
-                "failed": {},
+                "failed": {"pat_sex": ["BAD_REQUEST", "Unsupported field type"]},
             }
         ],
         "110003": [
@@ -341,7 +343,7 @@ class TestImportReportAsync:
                     "med_units": "7",
                     "med_other_unit": "mg/8 weeks",
                 },
-                "failed": {},
+                "failed": {"pat_sex": ["BAD_REQUEST", "Unsupported field type"]},
             }
         ],
         "110004": [
@@ -353,7 +355,7 @@ class TestImportReportAsync:
                     "med_dose": "15",
                     "med_units": "2",
                 },
-                "failed": {},
+                "failed": {"pat_sex": ["BAD_REQUEST", "Unsupported field type"]},
             }
         ],
         "110005": [
@@ -365,7 +367,7 @@ class TestImportReportAsync:
                     "med_dose": "10",
                     "med_units": "2",
                 },
-                "failed": {},
+                "failed": {"pat_sex": ["BAD_REQUEST", "Unsupported field type"]},
             }
         ],
     }

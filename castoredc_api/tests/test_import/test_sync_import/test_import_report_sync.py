@@ -113,17 +113,17 @@ class TestImportReportSync:
             )
         assert str(e.value) == self.report_error
 
-    def test_import_survey_error_during_upload_failed_field(self, import_study):
+    def test_import_report_error_during_upload_failed_field(self, import_study):
         """Tests if uploading data with an error during the upload process fails properly"""
         with pytest.raises(CastorException) as e:
             import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_labels_nonexistent_field.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file_nonexistent_field.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Report",
-            target_name="Medication",
-        )
+                data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_nonexistent_field.xlsx",
+                column_link_path="tests/test_import/link_files_for_import_tests/report_link_file_nonexistent_field.xlsx",
+                study=import_study,
+                label_data=True,
+                target="Report",
+                target_name="Medication",
+            )
 
         assert str(e.value) == self.report_error_wrong_field
 

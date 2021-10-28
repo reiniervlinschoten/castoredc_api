@@ -1,25 +1,18 @@
 """Module to import data (synchronous) to Castor EDC using the API"""
 
 import pathlib
-import sys
 import typing
 import asyncio
 from datetime import datetime
 import pandas as pd
-from httpx import HTTPStatusError
-from tqdm import tqdm
 
 from castoredc_api import CastorException
 from castoredc_api.importer.async_helpers import (
     async_update_survey_data,
     async_update_study_data,
+    async_update_report_data,
 )
-from castoredc_api.importer.helpers import (
-    handle_httpstatuserror,
-    create_feedback,
-    handle_response,
-    create_report_body,
-)
+from castoredc_api.importer.helpers import create_feedback
 
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
@@ -135,90 +128,36 @@ def upload_survey_async(
     return feedback
 
 
-def upload_survey_data(
-    body: list, study: "CastorStudy", imported: list, instance: dict, row: dict
-) -> dict:
-    """Tries to upload the survey data."""
-    try:
-        # Upload single row
-        response = study.client.update_survey_package_instance_data_record(
-            record_id=row["record_id"],
-            survey_package_instance_id=instance["id"],
-            body=body,
-        )
-        imported = handle_response(response, imported, row, study)
-    except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
-    return imported
-
-
-def upload_report(
+def upload_report_async(
     castorized_dataframe: pd.DataFrame,
     common: dict,
     upload_datetime: str,
     study: "CastorStudy",
-    package_id: str,
+    report_id: str,
 ) -> dict:
-    """Uploads report data to the study."""
-    imported = []
-    for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data", file=sys.stdout
-    ):
-        # Create a report instance
-        instance = create_report_instance(study, imported, package_id, row)
-        # Create the report body
-        body = create_report_body(instance, row, study, upload_datetime)
-
-        # Upload the data
-        imported = upload_report_data(body, study, imported, instance, row, common)
-        # Save output
-        pd.DataFrame(imported).to_csv(
-            pathlib.Path(
-                pathlib.Path.cwd(),
-                "output",
-                f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
-                + "successful_upload.csv",
-            ),
-            index=False,
+    """Uploads report data to the study asynchronously."""
+    data = []
+    for count, row in enumerate(castorized_dataframe.to_dict("records")):
+        data.append(
+            {
+                "row": row,
+                "report_id": report_id,
+                "upload_datetime": upload_datetime,
+                "report_name": f"{upload_datetime} - {count}",
+                "common": common,
+            }
         )
+    imported = asyncio.run(async_update_report_data(data, study))
+
+    # Save output
+    pd.DataFrame(imported).to_csv(
+        pathlib.Path(
+            pathlib.Path.cwd(),
+            "output",
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}" + "successful_upload.csv",
+        ),
+        index=False,
+    )
+
     feedback = create_feedback(imported)
     return feedback
-
-
-def upload_report_data(
-    body: list,
-    study: "CastorStudy",
-    imported: list,
-    instance: dict,
-    row: dict,
-    common: dict,
-) -> dict:
-    """Tries to upload the survey data."""
-    try:
-        response = study.client.update_report_data_record(
-            record_id=row["record_id"],
-            report_id=instance["id"],
-            common=common,
-            body=body,
-        )
-        imported = handle_response(response, imported, row, study)
-    except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
-    return imported
-
-
-def create_report_instance(
-    study: "CastorStudy", imported: list, package_id: str, row: dict
-) -> list:
-    """Creates a new report instance for record."""
-    try:
-        record = row["record_id"]
-        instance = study.client.create_report_instance_record(
-            record_id=record,
-            report_id=package_id,
-            report_name_custom=f"{record}-api_upload_Report_"
-            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}",
-        )
-    except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
-    return instance
