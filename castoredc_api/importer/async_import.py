@@ -10,13 +10,14 @@ from httpx import HTTPStatusError
 from tqdm import tqdm
 
 from castoredc_api import CastorException
+from castoredc_api.importer.async_helpers import (
+    async_update_survey_data,
+    async_update_study_data,
+)
 from castoredc_api.importer.helpers import (
-    format_feedback,
     handle_httpstatuserror,
-    handle_failed_upload,
     create_feedback,
     handle_response,
-    create_survey_body,
     create_report_body,
 )
 
@@ -81,7 +82,7 @@ def upload_study_async(
     data = []
 
     # Prepare data for async post
-    for row in tqdm(castorized_dataframe.to_dict("records")):
+    for row in castorized_dataframe.to_dict("records"):
         body = [
             {
                 "field_id": study.get_single_field(field).field_id,
@@ -95,7 +96,7 @@ def upload_study_async(
         ]
         data.append({"body": body, "common": common, "row": row})
 
-    imported = asyncio.run(study.client.async_update_study_data(data, study))
+    imported = asyncio.run(async_update_study_data(data, study))
     feedback = create_feedback(imported)
     # Output log of upload
     pd.DataFrame(imported).to_csv(
@@ -109,25 +110,17 @@ def upload_study_async(
     return feedback
 
 
-def upload_survey(
+def upload_survey_async(
     castorized_dataframe: pd.DataFrame,
     study: "CastorStudy",
     package_id: str,
     email: str,
 ) -> dict:
     """Uploads survey data to the study."""
-    imported = []
-
-    for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data", file=sys.stdout
-    ):
-        instance = create_survey_package_instance(
-            study, imported, package_id, row, email
-        )
-        # Create body to send
-        body = create_survey_body(instance, row, study)
-        # Upload the data
-        imported = upload_survey_data(body, study, imported, instance, row)
+    data = []
+    for row in castorized_dataframe.to_dict("records"):
+        data.append({"row": row, "package_id": package_id, "email": email})
+    imported = asyncio.run(async_update_survey_data(data, study))
 
     # Save output
     pd.DataFrame(imported).to_csv(
@@ -157,22 +150,6 @@ def upload_survey_data(
     except HTTPStatusError as error:
         handle_httpstatuserror(error, imported, row)
     return imported
-
-
-def create_survey_package_instance(
-    study: "CastorStudy", imported: list, package_id: str, row: dict, email: str
-) -> dict:
-    """Tries to create a new survey package instance of package and for record."""
-    try:
-        instance = study.client.create_survey_package_instance(
-            survey_package_id=package_id,
-            record_id=row["record_id"],
-            email_address=email,
-            auto_send=False,
-        )
-    except HTTPStatusError as error:
-        return handle_httpstatuserror(error, imported, row)
-    return instance
 
 
 def upload_report(

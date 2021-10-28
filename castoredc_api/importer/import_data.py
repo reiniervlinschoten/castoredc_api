@@ -1,5 +1,4 @@
 """Module to import data to Castor EDC using the API"""
-import asyncio
 from datetime import datetime
 import typing
 import pathlib
