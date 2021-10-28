@@ -1,3 +1,4 @@
+"""Helper functions for uploading data asynchronously"""
 import asyncio
 import copy
 import sys
@@ -7,7 +8,11 @@ import httpx
 from httpx import HTTPStatusError
 from tqdm import tqdm
 
-from castoredc_api.importer.helpers import create_survey_body, create_report_body
+from castoredc_api.importer.helpers import (
+    create_survey_body,
+    create_report_body,
+    format_feedback,
+)
 
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
@@ -21,6 +26,7 @@ async def async_update_study_data(data: list, study: "CastorStudy") -> list:
         for x in range(0, len(data), study.client.max_connections)
     ]
     responses = []
+    # Create a new client for each chunk because of problem when tasks > max_connections
     for idx, chunk in enumerate(chunks):
         async with httpx.AsyncClient(
             headers=study.client.headers,
@@ -29,6 +35,7 @@ async def async_update_study_data(data: list, study: "CastorStudy") -> list:
         ) as client:
             tasks = [async_upload_study_data(item, client, study) for item in chunk]
 
+            # Show progress bar while running tasks
             temp_responses = [
                 await response
                 for response in tqdm(
@@ -44,6 +51,7 @@ async def async_update_study_data(data: list, study: "CastorStudy") -> list:
 
 async def async_upload_study_data(item, client, study):
     """Coroutine to upload a single row of study data and handle the response."""
+    # Copy row because we don't want to overwrite dict
     feedback = copy.deepcopy(item["row"])
     url = (
         study.client.study_url
@@ -62,6 +70,7 @@ async def async_update_survey_data(data: list, study: "CastorStudy") -> list:
         for x in range(0, len(data), study.client.max_connections)
     ]
     responses = []
+    # Create a new client for each chunk because of problem when tasks > max_connections
     for idx, chunk in enumerate(chunks):
         async with httpx.AsyncClient(
             headers=study.client.headers,
@@ -70,6 +79,7 @@ async def async_update_survey_data(data: list, study: "CastorStudy") -> list:
         ) as client:
             tasks = [async_upload_survey_data(item, client, study) for item in chunk]
 
+            # Show progress bar when handling responses
             temp_responses = [
                 await response
                 for response in tqdm(
@@ -84,7 +94,8 @@ async def async_update_survey_data(data: list, study: "CastorStudy") -> list:
 
 
 async def async_upload_survey_data(item, client, study):
-    """Coroutine to upload a single row of survey package data to a new survey and handle the response."""
+    """Coroutine to upload a single row of survey data to a new survey and handle the response."""
+    # Copy so we don't overwrite dict
     feedback = copy.deepcopy(item["row"])
     try:
         instance = await async_create_survey_package_instance(
@@ -141,6 +152,7 @@ async def async_update_report_data(data: list, study: "CastorStudy") -> list:
         for x in range(0, len(data), study.client.max_connections)
     ]
     responses = []
+    # Create a new client for each chunk because of problem when tasks > max_connections
     for idx, chunk in enumerate(chunks):
         async with httpx.AsyncClient(
             headers=study.client.headers,
@@ -149,6 +161,7 @@ async def async_update_report_data(data: list, study: "CastorStudy") -> list:
         ) as client:
             tasks = [async_upload_report_data(item, client, study) for item in chunk]
 
+            # Show progress bar while handling responses
             temp_responses = [
                 await response
                 for response in tqdm(
@@ -164,6 +177,7 @@ async def async_update_report_data(data: list, study: "CastorStudy") -> list:
 
 async def async_upload_report_data(item, client, study):
     """Coroutine to upload a single row of report data to a new report and handle the response."""
+    # Copy because we don't want to overwrite dict
     feedback = copy.deepcopy(item["row"])
     try:
         instance = await async_create_report_instance(
@@ -210,8 +224,6 @@ async def async_upload_data(client, feedback, json, study, url):
     response = await client.post(url=url, json=json)
     try:
         response.raise_for_status()
-        from castoredc_api.importer.helpers import format_feedback
-
         formatted_response = format_feedback(response.json(), study)
         feedback["error"] = None
         feedback["success"] = formatted_response["success"]

@@ -2,10 +2,21 @@
 from datetime import datetime
 import typing
 import pathlib
+
+import pandas as pd
+
 from castoredc_api import CastorException
-from castoredc_api.importer.async_import import upload_data_async
+from castoredc_api.importer.async_import import (
+    upload_survey_async,
+    upload_report_async,
+    upload_study_async,
+)
 from castoredc_api.importer.helpers import create_upload
-from castoredc_api.importer.sync_import import upload_data
+from castoredc_api.importer.sync_import import (
+    upload_survey,
+    upload_study,
+    upload_report,
+)
 
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
@@ -66,10 +77,72 @@ def import_data(
             "Non-viable data found in dataset to be imported. See output folder for details"
         )
     # Upload the data
-    if use_async:
-        upload = upload_data_async(
-            castorized_dataframe, study, target, target_name, email
+    upload = upload_data(
+        castorized_dataframe, study, target, target_name, email, use_async
+    )
+    return upload
+
+
+def upload_data(
+    castorized_dataframe: pd.DataFrame,
+    study: "CastorStudy",
+    target: str,
+    target_name: typing.Optional[str],
+    email: typing.Optional[str],
+    use_async: bool = False,
+) -> dict:
+    """Uploads each row from the castorized dataframe as a new form"""
+    # Shared Data
+    upload_datetime = datetime.now().strftime("%Y%m%d %H%M%S")
+    common = {
+        "change_reason": f"api_upload_{target}_{upload_datetime}",
+        "confirmed_changes": True,
+    }
+
+    if target == "Study":
+        if use_async:
+            upload = upload_study_async(
+                castorized_dataframe, common, upload_datetime, study
+            )
+        else:
+            upload = upload_study(castorized_dataframe, common, upload_datetime, study)
+    elif target == "Survey":
+        target_form = next(
+            (
+                form
+                for form in study.client.all_survey_packages()
+                if form["name"] == target_name
+            ),
+            None,
         )
+        if use_async:
+            upload = upload_survey_async(
+                castorized_dataframe, study, target_form["id"], email
+            )
+        else:
+            upload = upload_survey(
+                castorized_dataframe, study, target_form["id"], email
+            )
+    elif target == "Report":
+        target_form = study.get_single_form_name(target_name)
+        if use_async:
+            upload = upload_report_async(
+                castorized_dataframe,
+                common,
+                upload_datetime,
+                study,
+                target_form.form_id,
+            )
+        else:
+            upload = upload_report(
+                castorized_dataframe,
+                common,
+                upload_datetime,
+                study,
+                target_form.form_id,
+            )
     else:
-        upload = upload_data(castorized_dataframe, study, target, target_name, email)
+        raise CastorException(
+            f"{target} is not a valid target. Use Study/Report/Survey."
+        )
     return upload

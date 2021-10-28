@@ -6,7 +6,6 @@ import asyncio
 from datetime import datetime
 import pandas as pd
 
-from castoredc_api import CastorException
 from castoredc_api.importer.async_helpers import (
     async_update_survey_data,
     async_update_study_data,
@@ -18,60 +17,13 @@ if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
 
 
-def upload_data_async(
-    castorized_dataframe: pd.DataFrame,
-    study: "CastorStudy",
-    target: str,
-    target_name: typing.Optional[str],
-    email: typing.Optional[str],
-) -> dict:
-    """Uploads each row from the castorized dataframe as a new form"""
-    # Shared Data
-    upload_datetime = datetime.now().strftime("%Y%m%d %H%M%S")
-    common = {
-        "change_reason": f"api_upload_{target}_{upload_datetime}",
-        "confirmed_changes": True,
-    }
-
-    if target == "Study":
-        upload = upload_study_async(
-            castorized_dataframe, common, upload_datetime, study
-        )
-    elif target == "Survey":
-        target_form = next(
-            (
-                form
-                for form in study.client.all_survey_packages()
-                if form["name"] == target_name
-            ),
-            None,
-        )
-        upload = upload_survey_async(
-            castorized_dataframe, study, target_form["id"], email
-        )
-    elif target == "Report":
-        target_form = study.get_single_form_name(target_name)
-        upload = upload_report_async(
-            castorized_dataframe,
-            common,
-            upload_datetime,
-            study,
-            target_form.form_id,
-        )
-    else:
-        raise CastorException(
-            f"{target} is not a valid target. Use Study/Report/Survey."
-        )
-    return upload
-
-
 def upload_study_async(
     castorized_dataframe: pd.DataFrame,
     common: dict,
     upload_datetime: str,
     study: "CastorStudy",
 ) -> dict:
-    """Uploads study data to the study."""
+    """Uploads study data to the study asynchronously."""
     data = []
 
     # Prepare data for async post
@@ -89,7 +41,9 @@ def upload_study_async(
         ]
         data.append({"body": body, "common": common, "row": row})
 
+    # Upload data
     imported = asyncio.run(async_update_study_data(data, study))
+    # Create feedback for user
     feedback = create_feedback(imported)
     # Output log of upload
     pd.DataFrame(imported).to_csv(
@@ -111,8 +65,10 @@ def upload_survey_async(
 ) -> dict:
     """Uploads survey data to the study."""
     data = []
+    # Prepare data for each row
     for row in castorized_dataframe.to_dict("records"):
         data.append({"row": row, "package_id": package_id, "email": email})
+    # Upload data
     imported = asyncio.run(async_update_survey_data(data, study))
 
     # Save output
@@ -124,6 +80,7 @@ def upload_survey_async(
         ),
         index=False,
     )
+    # Create feedback for the user
     feedback = create_feedback(imported)
     return feedback
 
@@ -137,6 +94,7 @@ def upload_report_async(
 ) -> dict:
     """Uploads report data to the study asynchronously."""
     data = []
+    # Prepare data for upload, can't have identical names
     for count, row in enumerate(castorized_dataframe.to_dict("records")):
         data.append(
             {
@@ -147,6 +105,7 @@ def upload_report_async(
                 "common": common,
             }
         )
+    # Upload data for the user
     imported = asyncio.run(async_update_report_data(data, study))
 
     # Save output
@@ -158,6 +117,6 @@ def upload_report_async(
         ),
         index=False,
     )
-
+    # Create feedback for the user
     feedback = create_feedback(imported)
     return feedback

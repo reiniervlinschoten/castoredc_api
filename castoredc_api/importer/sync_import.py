@@ -8,7 +8,6 @@ import pandas as pd
 from httpx import HTTPStatusError
 from tqdm import tqdm
 
-from castoredc_api import CastorException
 from castoredc_api.importer.helpers import (
     format_feedback,
     handle_httpstatuserror,
@@ -21,49 +20,6 @@ from castoredc_api.importer.helpers import (
 
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
-
-
-def upload_data(
-    castorized_dataframe: pd.DataFrame,
-    study: "CastorStudy",
-    target: str,
-    target_name: typing.Optional[str],
-    email: typing.Optional[str],
-) -> dict:
-    """Uploads each row from the castorized dataframe as a new form"""
-    # Shared Data
-    upload_datetime = datetime.now().strftime("%Y%m%d %H%M%S")
-    common = {
-        "change_reason": f"api_upload_{target}_{upload_datetime}",
-        "confirmed_changes": True,
-    }
-
-    if target == "Study":
-        upload = upload_study(castorized_dataframe, common, upload_datetime, study)
-    elif target == "Survey":
-        target_form = next(
-            (
-                form
-                for form in study.client.all_survey_packages()
-                if form["name"] == target_name
-            ),
-            None,
-        )
-        upload = upload_survey(castorized_dataframe, study, target_form["id"], email)
-    elif target == "Report":
-        target_form = study.get_single_form_name(target_name)
-        upload = upload_report(
-            castorized_dataframe,
-            common,
-            upload_datetime,
-            study,
-            target_form.form_id,
-        )
-    else:
-        raise CastorException(
-            f"{target} is not a valid target. Use Study/Report/Survey."
-        )
-    return upload
 
 
 def upload_study(

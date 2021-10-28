@@ -1,8 +1,6 @@
 """Module for interacting with the Castor EDC API."""
-import copy
 import csv
 import sys
-import typing
 from itertools import chain
 import asyncio
 from typing import Optional, List
@@ -10,9 +8,6 @@ from typing import Optional, List
 import httpx
 from httpx import HTTPStatusError
 from tqdm import tqdm
-
-if typing.TYPE_CHECKING:
-    from castoredc_api import CastorStudy
 
 
 class CastorException(Exception):

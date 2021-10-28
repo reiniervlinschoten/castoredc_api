@@ -36,7 +36,7 @@ class TestImportReportAsync:
         assert imported_data == self.report_success
 
     def test_import_report_bulk_success(self, import_study):
-        """Tests if uploading label data is successful"""
+        """Tests if uploading label data in bulk is successful"""
         imported_data = import_data(
             data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_bulk.xlsx",
             column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
@@ -50,6 +50,20 @@ class TestImportReportAsync:
         for record in imported_data:
             for item in imported_data[record]:
                 assert item in self.report_success_bulk[record]
+
+    def test_import_report_more_than_connections_success(self, import_study):
+        """Tests if uploading label data is successful when uploading more than max_connections"""
+        imported_data = import_data(
+            data_source_path="tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_bulk_large.xlsx",
+            column_link_path="tests/test_import/link_files_for_import_tests/report_link_file.xlsx",
+            study=import_study,
+            label_data=True,
+            target="Report",
+            target_name="Medication",
+            use_async=True,
+        )
+
+        assert imported_data == self.report_more_than_connections
 
     def test_import_report_value_missing(self, import_study):
         """Tests if uploading value data with missings is successful"""
@@ -370,4 +384,20 @@ class TestImportReportAsync:
                 "failed": {"pat_sex": ["BAD_REQUEST", "Unsupported field type"]},
             }
         ],
+    }
+
+    report_more_than_connections = {
+        "110006": [
+            {
+                "success": {
+                    "med_name": "Azathioprine",
+                    "med_start": "05-12-2019",
+                    "med_stop": "05-12-2020",
+                    "med_dose": "0.05",
+                    "med_units": "3",
+                },
+                "failed": {},
+            }
+            for i in range(39)
+        ]
     }
