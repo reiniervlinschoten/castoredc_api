@@ -9,6 +9,7 @@ name: pylint
   pull_request:
     branches:
       - '**'
+    types: [opened]
 
 jobs:
   build:

@@ -9,6 +9,7 @@ name: pytest
   pull_request:
     branches:
       - '**'
+    types: [opened]
 
 jobs:
   build:
