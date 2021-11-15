@@ -18,9 +18,9 @@ class TestAuditTrail:
 
     def test_audit_trail_fail(self, client):
         """Test audit trail fails correctly"""
-        with pytest.raises(HTTPStatusError) as e:
+        with pytest.raises(ValueError) as e:
             client.audit_trail(date_from="12-10-2021", date_to="12-10-2021")
-        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
+        assert "does not match format" in str(e.value)
 
     def test_audit_trail_user(self, client):
         """Test audit trail functionality while filtering on user"""

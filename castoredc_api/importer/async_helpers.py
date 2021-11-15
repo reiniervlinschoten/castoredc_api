@@ -1,12 +1,10 @@
 """Helper functions for uploading data asynchronously"""
 import asyncio
 import copy
-import sys
 import typing
 from json import JSONDecodeError
 
 import httpx
-from httpx import HTTPStatusError
 from tqdm import tqdm
 
 from castoredc_api.importer.helpers import (
@@ -64,8 +62,8 @@ async def async_upload_study_data(item, client, study):
         feedback["error"] = error.response.json()
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
-    except JSONDecodeError as error:
-        feedback["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
+    except JSONDecodeError:
+        feedback["error"] = "JSONDecodeError while handling Error."
     return feedback
 
 
@@ -124,8 +122,8 @@ async def async_upload_survey_data(item, client, study):
         feedback["error"] = error.response.json()
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
-    except JSONDecodeError as error:
-        feedback["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
+    except JSONDecodeError:
+        feedback["error"] = "JSONDecodeError while handling Error."
     return feedback
 
 
@@ -208,8 +206,8 @@ async def async_upload_report_data(item, client, study):
         feedback["error"] = error.response.json()
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
-    except JSONDecodeError as error:
-        feedback["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
+    except JSONDecodeError:
+        feedback["error"] = "JSONDecodeError while handling Error."
     return feedback
 
 

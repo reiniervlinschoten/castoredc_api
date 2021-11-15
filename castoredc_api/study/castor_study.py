@@ -175,9 +175,7 @@ class CastorStudy:
         """Adds auxiliary data to records."""
         print("Downloading Record Information.", flush=True, file=sys.stderr)
         record_data = self.client.all_records()
-        for record_api in tqdm(
-            record_data, desc="Augmenting Record Data"
-        ):
+        for record_api in tqdm(record_data, desc="Augmenting Record Data"):
             record = self.get_single_record(record_api["id"])
             record.institute = record_api["_embedded"]["institute"]["name"]
             record.randomisation_group = record_api["randomization_group_name"]

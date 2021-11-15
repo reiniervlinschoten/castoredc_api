@@ -817,11 +817,11 @@ class TestDataPoint:
             for field in fields
         ]
 
-        with pytest.raises(HTTPStatusError) as e:
+        with pytest.raises(ValueError) as e:
             client.update_survey_package_instance_data_record(
                 "000020",
                 "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22",
                 data,
                 filled_on=now_string,
             )
-        assert "400 Client Error: Bad Request for url" in str(e.value)
+        assert "does not match format" in str(e.value)

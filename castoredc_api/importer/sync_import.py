@@ -1,7 +1,6 @@
 """Module to import data (synchronous) to Castor EDC using the API"""
 
 import pathlib
-import sys
 import typing
 from datetime import datetime
 from json import JSONDecodeError
@@ -33,9 +32,7 @@ def upload_study(
     """Uploads study data to the study."""
     imported = []
 
-    for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data"
-    ):
+    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
         body = [
             {
                 "field_id": study.get_single_field(field).field_id,
@@ -96,9 +93,7 @@ def upload_survey(
     """Uploads survey data to the study."""
     imported = []
 
-    for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data"
-    ):
+    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
         instance = create_survey_package_instance(
             study, imported, package_id, row, email
         )
@@ -162,9 +157,7 @@ def upload_report(
 ) -> dict:
     """Uploads report data to the study."""
     imported = []
-    for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data"
-    ):
+    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
         # Create a report instance
         instance = create_report_instance(study, imported, package_id, row)
         # Create the report body

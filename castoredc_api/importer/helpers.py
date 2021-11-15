@@ -595,11 +595,11 @@ def format_feedback(feedback_row, study):
 
 def handle_http_error(error, imported, row):
     """Handles HTTP Errors by outputting imported data and raising an error."""
-    if type(error) is httpx.HTTPStatusError:
+    if isinstance(error, httpx.HTTPStatusError):
         row["error"] = error.response.json()
-    elif type(error) is httpx.RequestError:
+    elif isinstance(error, httpx.RequestError):
         row["error"] = f"Request Error for {error.request.url}."
-    elif type(error) is JSONDecodeError:
+    elif isinstance(error, JSONDecodeError):
         row["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
     # Add error row to the dataset
     imported.append(row)

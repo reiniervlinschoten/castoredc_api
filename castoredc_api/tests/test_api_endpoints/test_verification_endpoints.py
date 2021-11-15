@@ -30,9 +30,9 @@ class TestVerification:
 
     def test_verification_filter_fail(self, client):
         """Tests verification functionality fails correctly"""
-        with pytest.raises(HTTPStatusError) as e:
+        with pytest.raises(ValueError) as e:
             client.verifications(date_from="12-10-2021", date_to="12-10-2021")
-        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
+        assert "does not match format" in str(e.value)
 
     verification_data = [
         {

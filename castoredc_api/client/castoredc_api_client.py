@@ -1,9 +1,9 @@
 """Module for interacting with the Castor EDC API."""
 import csv
-import sys
+from datetime import datetime
 from itertools import chain
 import asyncio
-from typing import Optional, List
+from typing import Optional, List, Union
 
 import httpx
 from httpx import HTTPStatusError
@@ -61,15 +61,23 @@ class CastorClient:
     # AUDIT TRAIL
     def audit_trail(
         self,
-        date_from: str,
-        date_to: str,
+        date_from: Union[str, datetime],
+        date_to: Union[str, datetime],
         user_id: Optional[str] = None,
         event_types: Optional[List] = None,
     ):
         """Returns a dict of the audit trail.
-        date_from and date_to need to be formatted as yyyy-mm-dd."""
+        date_from and date_to need to be a datetime object or strings formatted as yyyy-mm-dd."""
         url = self.study_url + "/audit-trail"
-        params = {"date_from": date_from, "date_to": date_to}
+        # Format and validate dates
+        if isinstance(date_from, str):
+            date_from = datetime.strptime(date_from, "%Y-%m-%d")
+        if isinstance(date_to, str):
+            date_to = datetime.strptime(date_to, "%Y-%m-%d")
+        params = {
+            "date_from": date_from.strftime("%Y-%m-%d"),
+            "date_to": date_to.strftime("%Y-%m-%d"),
+        }
         if user_id:
             params["user_id"] = user_id
         if event_types:
@@ -232,7 +240,7 @@ class CastorClient:
         """Creates/updates a survey package instance.
         Returns None if record not found.
         Datetime is UTC time.
-        Datetime should be in the format: "yyyy-mm-dd hh:mm:ss
+        Filled_on should be datetime or a string in the format: "yyyy-mm-dd hh:mm:ss
         Post Data Models:
         Body: [{
             "field_id": "string",
@@ -245,8 +253,11 @@ class CastorClient:
             f"survey-package-instance/{survey_package_instance_id}"
         )
         post_data = {"data": body}
+        # Validate and format datetime
         if filled_on:
-            post_data["all_fields_filled_on"] = filled_on
+            if isinstance(filled_on, str):
+                filled_on = datetime.strptime(filled_on, "%Y-%m-%d %H:%M:%S")
+            post_data["all_fields_filled_on"] = filled_on.strftime("%Y-%m-%d %H:%M:%S")
         return self.sync_post(url, post_data)
 
     # EXPORT
@@ -821,16 +832,21 @@ class CastorClient:
         return self.sync_patch(url, body)
 
     def update_start_time_survey_package_instance(
-        self, record_id: str, survey_package_instance_id: str, datetime: str
+        self,
+        record_id: str,
+        survey_package_instance_id: str,
+        date_time: Union[str, datetime],
     ):
         """Updates start time of survey package. Datetime is UTC time.
-        Datetime should be in the format: "yyyy-mm-dd hh:mm:ss"""
+        Datetime should be datetime or string in the format: "yyyy-mm-dd hh:mm:ss"""
         url = (
             self.study_url
             + f"/record/{record_id}/surveypackageinstance/{survey_package_instance_id}"
         )
+        if isinstance(date_time, str):
+            date_time = datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
         body = {
-            "started_on": datetime,
+            "started_on": date_time.strftime("%Y-%m-%d %H:%M:%S"),
         }
         return self.sync_patch(url, body)
 
@@ -903,19 +919,23 @@ class CastorClient:
     def verifications(
         self,
         record_id: Optional[str] = None,
-        date_from: Optional[str] = None,
-        date_to: Optional[str] = None,
+        date_from: Union[str, datetime, None] = None,
+        date_to: Union[str, datetime, None] = None,
         verification_types: Optional[List] = None,
         entity_types: Optional[List] = None,
     ):
-        """Returns a dict of the audit trail.
-        date_from and date_to need to be formatted as yyyy-mm-dd."""
+        """Returns a dict of the verifications.
+        date_from and date_to need to datetime or string formatted as yyyy-mm-dd."""
+        if isinstance(date_from, str):
+            date_from = datetime.strptime(date_from, "%Y-%m-%d")
+        if isinstance(date_to, str):
+            date_to = datetime.strptime(date_to, "%Y-%m-%d")
         params = {
             key: value
             for key, value in {
                 "record_id": record_id,
-                "date_from": date_from,
-                "date_to": date_to,
+                "date_from": date_from.strftime("%Y-%m-%d") if date_from else None,
+                "date_to": date_to.strftime("%Y-%m-%d") if date_to else None,
             }.items()
             if value
         }
@@ -1025,9 +1045,7 @@ class CastorClient:
             # If there is, we can't use async code
             # Solution for IPython consoles (Jupiter Notebooks, Spyder3)
             asyncio.get_running_loop()
-            responses = [
-                self.sync_get(url, param) for param in tqdm(params)
-            ]
+            responses = [self.sync_get(url, param) for param in tqdm(params)]
         except RuntimeError:
             # No running event loop, free to use async code
             responses = asyncio.run(self.async_get(url=url, params=params))
