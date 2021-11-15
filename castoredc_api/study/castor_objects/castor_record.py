@@ -20,6 +20,7 @@ class CastorRecord:
         self.randomisation_datetime = None
         self.study = None
         self.form_instances_ids = {}
+        self.archived = None
 
     def add_form_instance(self, form_instance: "CastorFormInstance") -> None:
         """Adds a field to the record."""

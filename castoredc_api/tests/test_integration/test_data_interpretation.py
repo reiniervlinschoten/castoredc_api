@@ -67,21 +67,21 @@ class TestDataInterpretation:
         # Test if answer is correct
         assert dp.value == 1998
 
-    def test_data_interpret_time(self, integration_study_optiongroups):
+    def test_data_interpret_date_time(self, integration_study_optiongroups):
         # Get data point with type date time
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "onset_stroke"
         )
         # Test if answer is correct
-        assert dp.value == "11-05-2020 07:30:00"
+        assert dp.value == "11-05-2020 07:30"
 
-    def test_data_interpret_date_time(self, integration_study_optiongroups):
-        # Get data point with type date time
+    def test_data_interpret__time(self, integration_study_optiongroups):
+        # Get data point with type time
         dp = integration_study_optiongroups.get_single_data_point(
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "onset_trombectomy"
         )
         # Test if answer is correct
-        assert dp.value == time(9, 25)
+        assert dp.value == "09:25"
 
     def test_data_interpret_calc(self, integration_study_optiongroups):
         # Get data point with type calc
@@ -89,7 +89,7 @@ class TestDataInterpretation:
             "110014", "A6CDB606-D094-4969-A984-7CA6E8B45883", "base_bmi"
         )
         # Test if answer is correct
-        assert dp.value == 24.9
+        assert dp.value == "24.9"
 
     def test_data_interpret_slider(self, integration_study_optiongroups):
         # Get data point with type slider
@@ -132,7 +132,7 @@ class TestDataInterpretation:
             "110014", "C2318B69-A4FB-480D-960D-BC5B4E1790F6", "comorbidities"
         )
         # Test if answer is correct
-        assert dp.value == "- - Uploaded file - -"
+        assert dp.value == "-- Uploaded File: testfile.txt --"
 
     def test_data_interpret_number_and_date(self, integration_study_optiongroups):
         # Get data point with type number and date

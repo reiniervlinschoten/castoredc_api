@@ -80,6 +80,8 @@ ENV/
 env.bak/
 venv.bak/
 venvapi/
+venvapinew/
+venvapiempty/
 
 # Spyder project settings
 .spyderproject
@@ -179,3 +181,4 @@ logs/
 output/
 run_tests.py
 profile_datamap.py
+profile_import.py

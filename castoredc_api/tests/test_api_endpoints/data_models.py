@@ -6,6 +6,15 @@ Contains the definition of all data models according to the Castor EDC API.
 https://orcid.org/0000-0003-3052-596X
 """
 
+audit_trail_model = {
+    "datetime": [dict],
+    "event_type": [str],
+    "user_id": [str],
+    "user_name": [str],
+    "user_email": [str],
+    "event_details": [dict, list],
+}
+
 country_model = {
     "id": [
         str,
@@ -49,6 +58,13 @@ single_country_model = {
     "_links": [
         dict,
     ],
+}
+
+device_token_model = {
+    "device_token": [str],
+    "record_id": [str],
+    "created_on": [dict],
+    "updated_on": [dict],
 }
 
 export_data_model = {
@@ -153,6 +169,13 @@ export_option_group_model = {
     ],
 }
 
+role_model = {
+    "name": [str],
+    "description": [str],
+    "permissions": [dict],
+    "_links": [dict],
+}
+
 study_data_point_model = {
     "field_id": [
         str,
@@ -233,6 +256,37 @@ user_model = {
     ],
     "institute": [str, type(None)],
     "department": [str, type(None)],
+    "last_login": [
+        str,
+    ],
+    "_links": [
+        dict,
+    ],
+}
+
+user_study_model = {
+    "id": [
+        str,
+    ],
+    "user_id": [
+        str,
+    ],
+    "entity_id": [
+        str,
+    ],
+    "full_name": [
+        str,
+    ],
+    "name_first": [str, type(None)],
+    "name_middle": [str, type(None)],
+    "name_last": [str, type(None)],
+    "email_address": [
+        str,
+    ],
+    "institute": [str, type(None)],
+    "department": [str, type(None)],
+    "manage_permissions": [dict],
+    "institute_permissions": [list],
     "last_login": [
         str,
     ],
@@ -455,6 +509,7 @@ package_model = {
     "id": [
         str,
     ],
+    "allow_open_survey_link": [bool],
     "survey_package_id": [
         str,
     ],
@@ -546,6 +601,8 @@ survey_package_instance_model = {
     "finished_on": [dict, type(None)],
     "available_from": [dict],
     "expire_on": [str, type(None)],
+    "all_fields_filled_on": [dict, type(None)],
+    "started_on": [dict, type(None)],
     "locked": [
         bool,
     ],
@@ -670,7 +727,7 @@ survey_step_model = {
 
 field_dep_model = {
     "id": [
-        str,
+        int,
     ],
     "operator": [
         str,
@@ -780,6 +837,7 @@ field_model = {
     "_links": [
         dict,
     ],
+    "field_image": [str, None],
 }
 
 field_opt_model = {
@@ -947,6 +1005,17 @@ query_model = {
     ],
 }
 
+randomization_model = {
+    "randomized_id": [str, type(None)],
+    "randomization_group": [str, type(None)],
+    "randomization_group_name": [str, type(None)],
+    "randomized_on": [dict, type(None)],
+    "_links": [
+        dict,
+    ],
+}
+
+
 record_model = {
     "id": [
         str,
@@ -971,6 +1040,7 @@ record_model = {
     "status": [
         str,
     ],
+    "locked": [bool],
     "archived": [
         bool,
     ],

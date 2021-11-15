@@ -13,6 +13,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final.xlsx"
@@ -28,6 +33,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final.xlsx"
@@ -43,6 +53,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_missings.xlsx"
@@ -58,6 +73,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_missings.xlsx"
@@ -73,6 +93,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_errors.xlsx"
@@ -88,6 +113,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_errors.xlsx"
@@ -103,6 +133,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final.xlsx"
@@ -118,6 +153,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final.xlsx"
@@ -133,6 +173,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_missings.xlsx"
@@ -148,6 +193,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_missings.xlsx"
@@ -163,6 +213,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_errors.xlsx"
@@ -178,6 +233,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_errors.xlsx"
@@ -193,6 +253,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final.xlsx"
@@ -208,6 +273,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final.xlsx"
@@ -223,6 +293,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_missings.xlsx"
@@ -238,6 +313,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_missings.xlsx"
@@ -253,6 +333,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=False,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_errors.xlsx"
@@ -268,6 +353,11 @@ class TestCreateUpload:
             path_to_merge=None,
             label_data=True,
             study=import_study,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_errors.xlsx"

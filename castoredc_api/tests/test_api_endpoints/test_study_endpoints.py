@@ -9,13 +9,15 @@ https://orcid.org/0000-0003-3052-596X
 import pytest
 from httpx import HTTPStatusError
 
-from castoredc_api import CastorException
-from castoredc_api.tests.test_api_endpoints.data_models import study_model, user_model
+from castoredc_api.tests.test_api_endpoints.data_models import (
+    study_model,
+    user_study_model,
+)
 
 
 class TestStudy:
     s_model_keys = study_model.keys()
-    u_model_keys = user_model.keys()
+    u_model_keys = user_study_model.keys()
 
     test_study = {
         "crf_id": "D234215B-D956-482D-BF17-71F2BB12A2FD",
@@ -72,18 +74,18 @@ class TestStudy:
         # Check if the right data is returned.
         assert study == self.test_study
 
-    def test_single_study_success(self, all_studies, client):
+    def test_single_study_success(self, client):
         """Tests returning a single study"""
         study = client.single_study("D234215B-D956-482D-BF17-71F2BB12A2FD")
         assert study == self.test_study
 
-    def test_single_study_fail(self, all_studies, client):
+    def test_single_study_fail(self, client):
         """Tests failing to return a study"""
         with pytest.raises(HTTPStatusError) as e:
             client.single_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
         assert "403 Client Error: Forbidden for url" in str(e.value)
 
-    def test_all_users_success(self, all_studies, client):
+    def test_all_users_success(self, client):
         """Tests if the API returns all users belonging to a study"""
         total_users = client.request_size(
             "/study/D234215B-D956-482D-BF17-71F2BB12A2FD/user", base=True
@@ -97,15 +99,15 @@ class TestStudy:
             assert len(user_keys) == len(self.u_model_keys)
             for key in user_keys:
                 assert key in self.u_model_keys
-                assert type(user[key]) in user_model[key]
+                assert type(user[key]) in user_study_model[key]
 
-    def test_all_users_fail(self, all_studies, client):
+    def test_all_users_fail(self, client):
         """Tests failing to return all users for a study"""
         with pytest.raises(HTTPStatusError) as e:
             client.all_users_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
         assert "403 Client Error: Forbidden for url" in str(e.value)
 
-    def test_single_user_success(self, all_studies, client):
+    def test_single_user_success(self, client):
         """Tests returning a single user"""
         user = client.single_user_study(
             "D234215B-D956-482D-BF17-71F2BB12A2FD",
@@ -116,7 +118,7 @@ class TestStudy:
         assert len(user_keys) == len(self.u_model_keys)
         for key in user_keys:
             assert key in self.u_model_keys
-            assert type(user[key]) in user_model[key]
+            assert type(user[key]) in user_study_model[key]
 
     def test_single_user_fail(self, all_studies, client):
         """Tests failing to return a single user"""
@@ -126,3 +128,31 @@ class TestStudy:
                 "B23ABCC4-3A53-FB32-7B78-3960CC90FAKE",
             )
         assert "404 Client Error: Not Found for url" in str(e.value)
+
+    def test_invite_user_success(self, client):
+        """Tests inviting a user to the study"""
+        body = {
+            "institute_id": "47846A79-E02E-4545-9719-95B8DDED9108",
+            "email": "castoredcapi.github@gmail.com",
+            "message": "Testing API",
+        }
+        with pytest.raises(HTTPStatusError) as e:
+            client.invite_user_study("D234215B-D956-482D-BF17-71F2BB12A2FD", **body)
+        assert "400 Client Error: Bad Request for url" in str(e.value)
+        # User already exists
+        assert (
+            "Could not send an email to the added user."
+            in e.value.response.json()["detail"]
+        )
+
+    def test_invite_user_fail(self, client):
+        """Tests failing to invite a user"""
+        body = {
+            "institute_id": "FAKE6A79-E02E-4545-9719-95B8DDED9108",
+            "email": "castoredcapi.github@gmail.com",
+            "message": "Testing API",
+        }
+        with pytest.raises(HTTPStatusError) as e:
+            client.invite_user_study("D234215B-D956-482D-BF17-71F2BB12A2FD", **body)
+        assert "400 Client Error: Bad Request for url" in str(e.value)
+        assert "BAD_REQUEST" in e.value.response.json()["detail"]

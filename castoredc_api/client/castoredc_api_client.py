@@ -1,7 +1,10 @@
 """Module for interacting with the Castor EDC API."""
 import csv
+from datetime import datetime
 from itertools import chain
 import asyncio
+from typing import Optional, List, Union
+
 import httpx
 from httpx import HTTPStatusError
 from tqdm import tqdm
@@ -55,6 +58,32 @@ class CastorClient:
         self.study_url = self.base_url + "/study/" + study_id
 
     # API ENDPOINTS
+    # AUDIT TRAIL
+    def audit_trail(
+        self,
+        date_from: Union[str, datetime],
+        date_to: Union[str, datetime],
+        user_id: Optional[str] = None,
+        event_types: Optional[List] = None,
+    ):
+        """Returns a dict of the audit trail.
+        date_from and date_to need to be a datetime object or strings formatted as yyyy-mm-dd."""
+        url = self.study_url + "/audit-trail"
+        # Format and validate dates
+        if isinstance(date_from, str):
+            date_from = datetime.strptime(date_from, "%Y-%m-%d")
+        if isinstance(date_to, str):
+            date_to = datetime.strptime(date_to, "%Y-%m-%d")
+        params = {
+            "date_from": date_from.strftime("%Y-%m-%d"),
+            "date_to": date_to.strftime("%Y-%m-%d"),
+        }
+        if user_id:
+            params["user_id"] = user_id
+        if event_types:
+            params["event_types"] = ",".join(event_types)
+        return self.sync_get(url, params)["items"]
+
     # COUNTRY
     def all_countries(self):
         """Returns a list of dicts of all available countries."""
@@ -206,10 +235,12 @@ class CastorClient:
         return self.sync_post(url, post_data)
 
     def update_survey_package_instance_data_record(
-        self, record_id, survey_package_instance_id, body
+        self, record_id, survey_package_instance_id, body, filled_on=None
     ):
         """Creates/updates a survey package instance.
         Returns None if record not found.
+        Datetime is UTC time.
+        Filled_on should be datetime or a string in the format: "yyyy-mm-dd hh:mm:ss
         Post Data Models:
         Body: [{
             "field_id": "string",
@@ -222,6 +253,11 @@ class CastorClient:
             f"survey-package-instance/{survey_package_instance_id}"
         )
         post_data = {"data": body}
+        # Validate and format datetime
+        if filled_on:
+            if isinstance(filled_on, str):
+                filled_on = datetime.strptime(filled_on, "%Y-%m-%d %H:%M:%S")
+            post_data["all_fields_filled_on"] = filled_on.strftime("%Y-%m-%d %H:%M:%S")
         return self.sync_post(url, post_data)
 
     # EXPORT
@@ -312,6 +348,20 @@ class CastorClient:
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/institute", data_id=institute_id)
 
+    def create_institute(self, name, abbreviation, code, country_id):
+        """Creates a institute for the study.
+        Returns None if creation failed."""
+        url = self.study_url + "/institute"
+        body = [
+            {
+                "name": name,
+                "abbreviation": abbreviation,
+                "code": code,
+                "country_id": country_id,
+            }
+        ]
+        return self.sync_post(url, body)
+
     # METADATA
     def all_metadata(self):
         """Returns a list of dicts of all metadata."""
@@ -359,6 +409,39 @@ class CastorClient:
         """Returns a single dict of an query.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/query", data_id=query_id)
+
+    # RANDOMIZATION
+    def single_randomization(self, record_id):
+        """Gets randomisation details for a single record."""
+        return self.retrieve_data_by_id(
+            endpoint="/record", data_id=f"{record_id}/randomization"
+        )
+
+    def create_randomization(self, record_id):
+        """Randomizes a single record."""
+        url = self.study_url + f"/record/{record_id}/randomization"
+        return self.sync_post(url=url, body={})
+
+    # RECORD-DEVICE-TOKEN
+    def single_token(self, record_id):
+        """Gets the device token for a single record."""
+        url = self.study_url + f"/record/{record_id}/device-token"
+        return self.sync_get(url, params={})
+
+    def create_token(self, record_id, token):
+        """Creates a token for a record."""
+        url = self.study_url + f"/record/{record_id}/device-token"
+        return self.sync_post(url=url, body={"device_token": token})
+
+    def update_token(self, record_id, token):
+        """Updates a token for a record."""
+        url = self.study_url + f"/record/{record_id}/device-token"
+        return self.sync_patch(url=url, body={"device_token": token})
+
+    def delete_token(self, record_id):
+        """Deletes the token for a record."""
+        url = self.study_url + f"/record/{record_id}/device-token"
+        return self.sync_delete(url, params={})
 
     # RECORDS
     def all_records(self, institute_id=None, archived=None):
@@ -531,6 +614,40 @@ class CastorClient:
         endpoint = f"/report/{report_id}/report-step"
         return self.retrieve_data_by_id(endpoint=endpoint, data_id=report_step_id)
 
+    # ROLE
+    def all_roles(self):
+        """Returns a list of dicts of all study roles."""
+        return self.sync_get(url=self.study_url + "/role", params={})["_embedded"][
+            "roles"
+        ]
+
+    def single_role(self, role_id):
+        """Returns a single dict of a role in the study.
+        Returns None if id not found.."""
+        return self.retrieve_data_by_id(endpoint="/role", data_id=role_id)
+
+    def create_role(self, name, description, permissions):
+        """Creates a new role for the study.
+        Permissions should be in the form of: {
+                "add": bool,
+                "view": bool,
+                "edit": bool,
+                "delete": bool,
+                "lock": bool,
+                "query": bool,
+                "export": bool,
+                "randomization_read": bool,
+                "sign": bool,
+                "email_addresses": bool,
+                "randomization_write": bool,
+                "sdv": bool,
+                "survey_send": bool,
+                "survey_view": bool
+        }"""
+        body = {"name": name, "description": description, "permissions": permissions}
+        url = self.study_url + "/role"
+        return self.sync_post(url=url, body=body)
+
     # STEP
     def all_steps(self):
         """Returns a list of dicts of all study steps."""
@@ -571,6 +688,12 @@ class CastorClient:
         """
         endpoint = f"/study/{study_id}/user/{user_id}"
         return self.retrieve_general_data(endpoint)
+
+    def invite_user_study(self, study_id, institute_id, email, message):
+        """Invites user with email to the study linked to institute_id."""
+        url = self.base_url + f"/study/{study_id}/user"
+        body = {"institute_id": institute_id, "email": email, "message": message}
+        return self.sync_post(url, body)
 
     # STUDY-DATA-ENTRY
     def all_study_fields_record(self, record_id):
@@ -636,19 +759,35 @@ class CastorClient:
             endpoint="/surveypackage", data_id=survey_package_id
         )
 
-    def all_survey_package_instances(self, record=None):
-        """Returns a list of dicts of all available survey packages."""
+    def all_survey_package_instances(
+        self,
+        record_id=None,
+        ccr_patient_id=None,
+        finished_on=None,
+        finished_on_gt=None,
+        finished_on_gte=None,
+        finished_on_lt=None,
+        finished_on_lte=None,
+    ):
+        """Returns a list of dicts of all available survey packages. Filterable."""
         endpoint = "/surveypackageinstance"
         dataname = "surveypackageinstance"
-        if record is None:
-            data = self.retrieve_all_data_by_endpoint(
-                endpoint=endpoint, data_name=dataname
-            )
-        else:
-            params = {"record_id": record}
-            data = self.retrieve_all_data_by_endpoint(
-                endpoint=endpoint, data_name=dataname, params=params
-            )
+        if record_id and ccr_patient_id:
+            raise CastorException("Cannot supply both record_id and ccr_patient_id")
+        params = {
+            "record_id": record_id,
+            "ccr_patient_id": ccr_patient_id,
+            "finished_on": finished_on,
+            "finished_on[gt]": finished_on_gt,
+            "finished_on[gte]": finished_on_gte,
+            "finished_on[lt]": finished_on_lt,
+            "finished_on[lte]": finished_on_lte,
+        }
+        # Drop empty params
+        params = {key: value for key, value in params.items() if value is not None}
+        data = self.retrieve_all_data_by_endpoint(
+            endpoint=endpoint, data_name=dataname, params=params
+        )
         return data
 
     def single_survey_package_instance(self, survey_package_instance_id):
@@ -684,11 +823,30 @@ class CastorClient:
         }
         return self.sync_post(url, body)
 
-    def patch_survey_package_instance(self, survey_package_instance_id, status):
+    def lock_unlock_survey_package_instance(self, survey_package_instance_id, status):
         """Lock/unlock survey package."""
-        url = self.study_url + "/surveypackageinstance/" + survey_package_instance_id
+        url = self.study_url + f"/surveypackageinstance/{survey_package_instance_id}"
         body = {
             "locked": status,
+        }
+        return self.sync_patch(url, body)
+
+    def update_start_time_survey_package_instance(
+        self,
+        record_id: str,
+        survey_package_instance_id: str,
+        date_time: Union[str, datetime],
+    ):
+        """Updates start time of survey package. Datetime is UTC time.
+        Datetime should be datetime or string in the format: "yyyy-mm-dd hh:mm:ss"""
+        url = (
+            self.study_url
+            + f"/record/{record_id}/surveypackageinstance/{survey_package_instance_id}"
+        )
+        if isinstance(date_time, str):
+            date_time = datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
+        body = {
+            "started_on": date_time.strftime("%Y-%m-%d %H:%M:%S"),
         }
         return self.sync_patch(url, body)
 
@@ -754,9 +912,42 @@ class CastorClient:
     def record_progress(self):
         """Returns progress of all records."""
         return self.retrieve_all_data_by_endpoint(
-            endpoint="/data-point-collection/study", data_name="records"
+            endpoint="/record-progress/steps", data_name="records"
         )
 
+    # VERIFICATIONS
+    def verifications(
+        self,
+        record_id: Optional[str] = None,
+        date_from: Union[str, datetime, None] = None,
+        date_to: Union[str, datetime, None] = None,
+        verification_types: Optional[List] = None,
+        entity_types: Optional[List] = None,
+    ):
+        """Returns a dict of the verifications.
+        date_from and date_to need to datetime or string formatted as yyyy-mm-dd."""
+        if isinstance(date_from, str):
+            date_from = datetime.strptime(date_from, "%Y-%m-%d")
+        if isinstance(date_to, str):
+            date_to = datetime.strptime(date_to, "%Y-%m-%d")
+        params = {
+            key: value
+            for key, value in {
+                "record_id": record_id,
+                "date_from": date_from.strftime("%Y-%m-%d") if date_from else None,
+                "date_to": date_to.strftime("%Y-%m-%d") if date_to else None,
+            }.items()
+            if value
+        }
+        if verification_types:
+            params["verification_type"] = ",".join(verification_types)
+        if entity_types:
+            params["entity_type"] = ",".join(entity_types)
+        return self.retrieve_all_data_by_endpoint(
+            endpoint="/verification", data_name="verifications", params=params
+        )
+
+    # HELPER FUNCTIONS
     def request_auth_token(self, client_id, client_secret):
         """Request an authentication token from Castor EDC for given client."""
         auth_data = {
@@ -849,8 +1040,18 @@ class CastorClient:
                 {"page": str(page), "page_size": "1000", **params}
                 for page in range(2, pages)
             ]
-        responses = asyncio.run(self.async_get(url=url, params=params))
-        return [self.handle_response(response) for response in responses]
+        try:
+            # Test if there is a running event loop
+            # If there is, we can't use async code
+            # Solution for IPython consoles (Jupiter Notebooks, Spyder3)
+            asyncio.get_running_loop()
+            responses = [self.sync_get(url, param) for param in tqdm(params)]
+        except RuntimeError:
+            # No running event loop, free to use async code
+            responses = asyncio.run(self.async_get(url=url, params=params))
+            responses = [self.handle_response(response) for response in responses]
+
+        return responses
 
     def request_size(self, endpoint, base=False):
         """Helper function for tests to determine how many items there are per given endpoint"""
@@ -876,6 +1077,12 @@ class CastorClient:
     def sync_patch(self, url, body):
         """Helper function to patch body to url."""
         response = self.client.patch(url=url, json=body)
+        response.raise_for_status()
+        return response.json()
+
+    def sync_delete(self, url, params: dict):
+        """Helper function to send delete to url."""
+        response = self.client.delete(url=url, params=params)
         response.raise_for_status()
         return response.json()
 

@@ -37,6 +37,7 @@ class TestSurveyDataEntry:
                 "progress": 7,
                 "status": "open",
                 "archived": False,
+                "locked": False,
                 "archived_reason": None,
                 "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "created_on": {

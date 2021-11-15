@@ -38,6 +38,7 @@ class TestRecord:
         "last_opened_step": "FFF23B2C-AEE6-4304-9CC4-9C7C431D5387",
         "progress": 10,
         "status": "open",
+        "locked": False,
         "archived": False,
         "archived_reason": None,
         "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",

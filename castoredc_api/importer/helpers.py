@@ -1,12 +1,17 @@
 """Helper functions for the import functionality"""
+import pathlib
 from datetime import datetime
 import typing
+from json import JSONDecodeError
+
+import httpx
 import numpy as np
 import pandas as pd
-from castoredc_api import CastorException
+from castoredc_api.client.castoredc_api_client import CastorException
 
 if typing.TYPE_CHECKING:
     from castoredc_api import CastorStudy
+    from castoredc_api.study.castor_objects import CastorField
 
 
 def read_excel(path: str) -> pd.DataFrame:
@@ -94,20 +99,29 @@ def castorize_column(
     new_name: list,
     label_data: bool,
     study: "CastorStudy",
-    variable_translation: dict,
+    variable_translation: typing.Optional[typing.Dict],
+    format_options: dict,
 ) -> dict:
     """Translates the values in a column to Castorized values ready for import."""
     if new_name[0] == "record_id":
-        return_value = {new_name[0]: to_import.tolist()}
+        records_study = [record["id"] for record in study.client.all_records()]
+        # Check if record exists
+        record_column = [
+            record
+            if record in records_study
+            else "Error: record does not exist in study"
+            for record in to_import.tolist()
+        ]
+        return_value = {new_name[0]: record_column}
     else:
         return_value = castorize_column_helper(
-            label_data, new_name, study, to_import, variable_translation
+            label_data, new_name, study, to_import, variable_translation, format_options
         )
     return return_value
 
 
 def castorize_column_helper(
-    label_data, new_name, study, to_import, variable_translation
+    label_data, new_name, study, to_import, variable_translation, format_options
 ):
     """Helper function for selecting the correct way to castorize a column."""
     target_field = study.get_single_field(new_name[0])
@@ -116,21 +130,43 @@ def castorize_column_helper(
             label_data, new_name, study, target_field, to_import, variable_translation
         )
     elif target_field.field_type in ["numeric"]:
-        return_value = {new_name[0]: castorize_num_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_num_column(to_import.tolist(), target_field)
+        }
     elif target_field.field_type in ["year"]:
-        return_value = {new_name[0]: castorize_year_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_year_column(to_import.tolist(), target_field)
+        }
     elif target_field.field_type in ["slider"]:
-        return_value = {new_name[0]: castorize_num_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_num_column(to_import.tolist(), target_field)
+        }
     elif target_field.field_type in ["string", "textarea"]:
         return_value = {new_name[0]: to_import.tolist()}
     elif target_field.field_type in ["date"]:
-        return_value = {new_name[0]: castorize_date_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_date_column(
+                to_import.tolist(), format_options["date"]
+            )
+        }
     elif target_field.field_type in ["datetime"]:
-        return_value = {new_name[0]: castorize_datetime_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_datetime_column(
+                to_import.tolist(), format_options["datetime"]
+            )
+        }
     elif target_field.field_type in ["time"]:
-        return_value = {new_name[0]: castorize_time_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_time_column(
+                to_import.tolist(), format_options["time"]
+            )
+        }
     elif target_field.field_type in ["numberdate"]:
-        return_value = {new_name[0]: castorize_numberdate_column(to_import.tolist())}
+        return_value = {
+            new_name[0]: castorize_numberdate_column(
+                to_import.tolist(), target_field, format_options["date"]
+            )
+        }
     else:
         raise CastorException(
             f"The field {target_field} is not importable with type {target_field.field_type}"
@@ -265,11 +301,11 @@ def translate_label_data(
     for value in values:
         if pd.isnull(parent_value):
             if translate_dict:
-                value = translate_dict.get(str(value), "Error")
+                value = translate_dict.get(str(value), "Error: no translation provided")
             if str(value) in options.values():
                 new_values.append(value)
             else:
-                new_values.append("Error")
+                new_values.append("Error: non-existent option")
         else:
             if translate_dict:
                 value = translate_dict.get(str(value), parent_value)
@@ -291,8 +327,8 @@ def translate_value_data(
     for value in values:
         if pd.isnull(parent_value):
             if translate_dict:
-                value = translate_dict.get(str(value), "Error")
-            new_values.append(options.get(str(value), "Error"))
+                value = translate_dict.get(str(value), "Error: no translation provided")
+            new_values.append(options.get(str(value), "Error: non-existent option"))
         else:
             if translate_dict:
                 value = translate_dict.get(str(value), parent_value)
@@ -338,7 +374,7 @@ def get_value_at_index(item: typing.Optional[list], index: typing.Optional[float
     return new_item
 
 
-def castorize_num_column(data: list):
+def castorize_num_column(data: list, target_field: "CastorField"):
     """Castorizes a numeric column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -347,14 +383,18 @@ def castorize_num_column(data: list):
         else:
             try:
                 # Test if data point is convertible to float
-                float(datapoint)
-                new_list.append(datapoint)
+                numeric_datapoint = float(datapoint)
+                # Test if between bounds
+                if target_field.field_max > numeric_datapoint > target_field.field_min:
+                    new_list.append(datapoint)
+                else:
+                    new_list.append("Error: number out of bounds")
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: not a number")
     return new_list
 
 
-def castorize_year_column(data: list):
+def castorize_year_column(data: list, target_field: "CastorField"):
     """Castorizes a year column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -362,17 +402,16 @@ def castorize_year_column(data: list):
             new_list.append(None)
         else:
             try:
-                # Test if the data point is year-like. Sorry people from before 1900 and after 2100
-                if 1900 < int(datapoint) < 2100:
+                if target_field.field_max > int(datapoint) > target_field.field_min:
                     new_list.append(datapoint)
                 else:
-                    new_list.append("Error")
+                    new_list.append("Error: year out of bounds")
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: not a year")
     return new_list
 
 
-def castorize_date_column(data: list):
+def castorize_date_column(data: list, date_format: str):
     """Castorizes a date column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -381,14 +420,14 @@ def castorize_date_column(data: list):
         else:
             try:
                 # Try parsing the date
-                parsed_date = datetime.strptime(datapoint, "%d-%m-%Y")
+                parsed_date = datetime.strptime(datapoint, date_format)
                 new_list.append(parsed_date.strftime("%d-%m-%Y"))
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: unprocessable date")
     return new_list
 
 
-def castorize_datetime_column(data: list):
+def castorize_datetime_column(data: list, datetime_format):
     """Castorizes a datetime column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -397,14 +436,14 @@ def castorize_datetime_column(data: list):
         else:
             try:
                 # Try parsing the date
-                parsed_date = datetime.strptime(datapoint, "%d-%m-%Y;%H:%M")
+                parsed_date = datetime.strptime(datapoint, datetime_format)
                 new_list.append(parsed_date.strftime("%d-%m-%Y;%H:%M"))
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: unprocessable datetime")
     return new_list
 
 
-def castorize_time_column(data: list):
+def castorize_time_column(data: list, time_format: str):
     """Castorizes a time column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -413,14 +452,16 @@ def castorize_time_column(data: list):
         else:
             try:
                 # Try parsing the date
-                parsed_date = datetime.strptime(datapoint, "%H:%M")
+                parsed_date = datetime.strptime(datapoint, time_format)
                 new_list.append(parsed_date.strftime("%H:%M"))
             except ValueError:
-                new_list.append("Error")
+                new_list.append("Error: unprocessable time")
     return new_list
 
 
-def castorize_numberdate_column(data: list):
+def castorize_numberdate_column(
+    data: list, target_field: "CastorField", date_format: str
+):
     """Castorizes a numberdate column and replaces errors with 'Error'."""
     new_list = []
     for datapoint in data:
@@ -431,7 +472,7 @@ def castorize_numberdate_column(data: list):
             split = datapoint.split(";")
 
             if len(split) != 2:
-                new_list.append("Error")
+                new_list.append("Error: wrong number of arguments for field")
 
             else:
                 new_value = []
@@ -439,17 +480,25 @@ def castorize_numberdate_column(data: list):
                 # Try parsing the number
                 try:
                     # Test if data point is convertible to float
-                    float(split[0])
-                    new_value.append(split[0])
+                    numeric_datapoint = float(split[0])
+                    # Test if between bounds
+                    if (
+                        target_field.field_max
+                        > numeric_datapoint
+                        > target_field.field_min
+                    ):
+                        new_value.append(split[0])
+                    else:
+                        new_value.append("Error: number out of bounds")
                 except ValueError:
-                    new_value.append("Error")
+                    new_value.append("Error: not a number")
 
                 # Try parsing the date
                 try:
-                    parsed_date = datetime.strptime(split[1], "%d-%m-%Y")
+                    parsed_date = datetime.strptime(split[1], date_format)
                     new_value.append(parsed_date.strftime("%d-%m-%Y"))
                 except ValueError:
-                    new_value.append("Error")
+                    new_value.append("Error: unprocessable date")
 
                 new_list.append(";".join(new_value))
 
@@ -498,6 +547,7 @@ def create_upload(
     path_to_merge: typing.Optional[str],
     label_data: bool,
     study: "CastorStudy",
+    format_options: dict,
 ) -> pd.DataFrame:
     """Returns a upload-ready dataframe from a path to an Excel file."""
     to_upload = read_excel(path_to_upload)
@@ -519,12 +569,13 @@ def create_upload(
             label_data=label_data,
             study=study,
             variable_translation=variable_translation,
+            format_options=format_options,
         )
         new_data = {**new_data, **new_column}
     return pd.DataFrame.from_dict(new_data)
 
 
-def update_feedback(feedback_row, feedback_total, row, study):
+def format_feedback(feedback_row, study):
     """Updates the feedback dict with the new information."""
     formatted_feedback_row = {
         "success": {
@@ -539,13 +590,113 @@ def update_feedback(feedback_row, feedback_total, row, study):
             for field in feedback_row["failed"]
         },
     }
+    return formatted_feedback_row
 
-    if row["record_id"] not in feedback_total:
-        feedback_total[row["record_id"]] = [formatted_feedback_row]
-    else:
-        feedback_total[row["record_id"]].append(formatted_feedback_row)
 
-    if len(formatted_feedback_row["failed"]) > 0:
-        raise CastorException(formatted_feedback_row["failed"])
+def handle_http_error(error, imported, row):
+    """Handles HTTP Errors by outputting imported data and raising an error."""
+    if isinstance(error, httpx.HTTPStatusError):
+        row["error"] = error.response.json()
+    elif isinstance(error, httpx.RequestError):
+        row["error"] = f"Request Error for {error.request.url}."
+    elif isinstance(error, JSONDecodeError):
+        row["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
+    # Add error row to the dataset
+    imported.append(row)
+    # Output data for error checking
+    pd.DataFrame(imported).to_csv(
+        pathlib.Path(
+            pathlib.Path.cwd(),
+            "output",
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+            + "error_during_upload.csv",
+        ),
+        index=False,
+    )
+    raise CastorException(
+        str(error)
+        + str(error.response)
+        + " caused at "
+        + str(row)
+        + ".\n See output folder for successful imports"
+    ) from error
 
+
+def handle_failed_upload(formatted_feedback_row, imported, row):
+    """Handles a failed upload by outputting imported data and raising an error."""
+    pd.DataFrame(imported).to_csv(
+        pathlib.Path(
+            pathlib.Path.cwd(),
+            "output",
+            f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+            + "error_during_upload.csv",
+        ),
+        index=False,
+    )
+    raise CastorException(
+        str(formatted_feedback_row["failed"])
+        + " caused at "
+        + str(row)
+        + ".\n See output folder for successful imports"
+    )
+
+
+def create_feedback(imported):
+    "Creates feedback from the (un)successful imports"
+    feedback_total = {}
+    for row in imported:
+        if row["record_id"] not in feedback_total:
+            feedback_total[row["record_id"]] = [
+                {"success": row["success"], "failed": row["failed"]}
+            ]
+        else:
+            feedback_total[row["record_id"]].append(
+                {"success": row["success"], "failed": row["failed"]}
+            )
     return feedback_total
+
+
+def handle_response(response, imported, row, study):
+    """Handles a response from uploading a single row of data."""
+    # Format feedback
+    formatted_response = format_feedback(response, study)
+    # Add successes and failures
+    row["success"] = formatted_response["success"]
+    row["failed"] = formatted_response["failed"]
+    # Add to the dataset
+    imported.append(row)
+    if len(formatted_response["failed"]) > 0:
+        handle_failed_upload(formatted_response, imported, row)
+    return imported
+
+
+def create_survey_body(instance, row, study):
+    """Formats a row into a body for use with the API"""
+    body = [
+        {
+            "field_id": study.get_single_field(field).field_id,
+            "instance_id": instance["id"],
+            "field_value": row[field],
+        }
+        for field in row
+        # Skip record_id and empty fields
+        if (field != "record_id" and row[field] is not None)
+    ]
+    return body
+
+
+def create_report_body(instance, row, study, upload_datetime):
+    """Formats a row into a body for use with the API"""
+    body = [
+        {
+            "field_id": study.get_single_field(field).field_id,
+            "instance_id": instance["id"],
+            "field_value": row[field],
+            "change_reason": f"api_upload_Report_{upload_datetime}",
+            "confirmed_changes": True,
+        }
+        for field in row
+        # Exclude empty fields and record_id
+        if (field != "record_id" and row[field] is not None)
+    ]
+    return body

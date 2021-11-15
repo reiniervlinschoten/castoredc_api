@@ -8,7 +8,7 @@ from castoredc_api.study.castor_study import CastorStudy
 class TestCSVOutput:
     """Tests whether the correct data is outputted."""
 
-    @pytest.fixture(scope="session")
+    @pytest.fixture(scope="class")
     def output_data(self):
         study = CastorStudy(
             auth_data.client_id,
@@ -56,11 +56,34 @@ class TestCSVOutput:
             }
         ]
 
-    @pytest.mark.xfail(
-        reason="Misses Empty Surveys - Awaiting Castor Ticket", strict=True
-    )
+    def test_qol_survey_export_without_missing_surveys(self, output_data):
+        """Tests if survey export is correct.
+        Does not check for empty surveys"""
+        diff = compare(
+            load_csv(
+                open(output_data["Surveys"]["QOL Survey"]),
+                key="survey_instance_id",
+            ),
+            load_csv(
+                open(
+                    "tests/test_output/data_files_for_output_tests/CastorQOLSurvey.csv"
+                ),
+                key="survey_instance_id",
+            ),
+        )
+        assert diff["removed"] == []
+        assert diff["columns_added"] == []
+        assert diff["columns_removed"] == []
+        assert diff["changed"] == [
+            {
+                "key": "4FF130AD-274C-4C8F-A4A0-A7816A5A88E9",
+                "changes": {"VAS": ["85.0", "85"]},
+            }
+        ]
+
     def test_qol_survey_export(self, output_data):
-        """Tests if survey export is correct."""
+        """Tests if survey export is correct.
+        Does test for missing surveys."""
         diff = compare(
             load_csv(
                 open(output_data["Surveys"]["QOL Survey"]),
@@ -84,9 +107,6 @@ class TestCSVOutput:
         ]
         assert diff["added"] == []
 
-    @pytest.mark.xfail(
-        reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True
-    )
     def test_medication_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(
@@ -147,9 +167,6 @@ class TestCSVOutput:
         assert diff["changed"] == []
         assert diff["added"] == []
 
-    @pytest.mark.xfail(
-        reason="Misses Empty Reports - Awaiting Castor Ticket", strict=True
-    )
     def test_adverse_event_report_export(self, output_data):
         """Tests if report export is correct."""
         diff = compare(

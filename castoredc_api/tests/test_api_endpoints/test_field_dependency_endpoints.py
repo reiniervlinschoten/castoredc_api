@@ -17,7 +17,7 @@ class TestFieldDependency:
     model_keys = field_dep_model.keys()
 
     test_field_dep = {
-        "id": "9",
+        "id": 9,
         "operator": "==",
         "value": "1",
         "parent_id": "BA93857C-1EBB-4DFF-92F3-EEE92D944686",
