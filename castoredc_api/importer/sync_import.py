@@ -4,13 +4,15 @@ import pathlib
 import sys
 import typing
 from datetime import datetime
+from json import JSONDecodeError
+
 import pandas as pd
-from httpx import HTTPStatusError
+from httpx import HTTPStatusError, RequestError
 from tqdm import tqdm
 
 from castoredc_api.importer.helpers import (
     format_feedback,
-    handle_httpstatuserror,
+    handle_http_error,
     handle_failed_upload,
     create_feedback,
     handle_response,
@@ -80,8 +82,8 @@ def upload_study_data(
         imported.append(row)
         if len(formatted_feedback_row["failed"]) > 0:
             handle_failed_upload(formatted_feedback_row, imported, row)
-    except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
+    except (HTTPStatusError, RequestError, JSONDecodeError) as error:
+        handle_http_error(error, imported, row)
     return imported
 
 
@@ -130,8 +132,8 @@ def upload_survey_data(
             body=body,
         )
         imported = handle_response(response, imported, row, study)
-    except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
+    except (HTTPStatusError, RequestError, JSONDecodeError) as error:
+        handle_http_error(error, imported, row)
     return imported
 
 
@@ -146,8 +148,8 @@ def create_survey_package_instance(
             email_address=email,
             auto_send=False,
         )
-    except HTTPStatusError as error:
-        return handle_httpstatuserror(error, imported, row)
+    except (HTTPStatusError, RequestError, JSONDecodeError) as error:
+        handle_http_error(error, imported, row)
     return instance
 
 
@@ -201,8 +203,8 @@ def upload_report_data(
             body=body,
         )
         imported = handle_response(response, imported, row, study)
-    except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
+    except (HTTPStatusError, RequestError, JSONDecodeError) as error:
+        handle_http_error(error, imported, row)
     return imported
 
 
@@ -218,6 +220,6 @@ def create_report_instance(
             report_name_custom=f"{record}-api_upload_Report_"
             f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}",
         )
-    except HTTPStatusError as error:
-        handle_httpstatuserror(error, imported, row)
+    except (HTTPStatusError, RequestError, JSONDecodeError) as error:
+        handle_http_error(error, imported, row)
     return instance

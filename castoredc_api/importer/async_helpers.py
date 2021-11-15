@@ -3,6 +3,7 @@ import asyncio
 import copy
 import sys
 import typing
+from json import JSONDecodeError
 
 import httpx
 from httpx import HTTPStatusError
@@ -51,14 +52,21 @@ async def async_update_study_data(data: list, study: "CastorStudy") -> list:
 
 async def async_upload_study_data(item, client, study):
     """Coroutine to upload a single row of study data and handle the response."""
-    # Copy row because we don't want to overwrite dict
     feedback = copy.deepcopy(item["row"])
-    url = (
-        study.client.study_url
-        + f"/record/{item['row']['record_id']}/data-point-collection/study"
-    )
-    json = {"common": item["common"], "data": item["body"]}
-    feedback = await async_upload_data(client, feedback, json, study, url)
+    try:
+        # Copy row because we don't want to overwrite dict
+        url = (
+            study.client.study_url
+            + f"/record/{item['row']['record_id']}/data-point-collection/study"
+        )
+        json = {"common": item["common"], "data": item["body"]}
+        feedback = await async_upload_data(client, feedback, json, study, url)
+    except httpx.HTTPStatusError as error:
+        feedback["error"] = error.response.json()
+    except httpx.RequestError as error:
+        feedback["error"] = f"Request Error for {error.request.url}."
+    except JSONDecodeError as error:
+        feedback["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
     return feedback
 
 
@@ -116,6 +124,10 @@ async def async_upload_survey_data(item, client, study):
         feedback = await async_upload_data(client, feedback, json, study, url)
     except httpx.HTTPStatusError as error:
         feedback["error"] = error.response.json()
+    except httpx.RequestError as error:
+        feedback["error"] = f"Request Error for {error.request.url}."
+    except JSONDecodeError as error:
+        feedback["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
     return feedback
 
 
@@ -197,6 +209,10 @@ async def async_upload_report_data(item, client, study):
         feedback = await async_upload_data(client, feedback, json, study, url)
     except httpx.HTTPStatusError as error:
         feedback["error"] = error.response.json()
+    except httpx.RequestError as error:
+        feedback["error"] = f"Request Error for {error.request.url}."
+    except JSONDecodeError as error:
+        feedback["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
     return feedback
 
 
@@ -222,14 +238,8 @@ async def async_create_report_instance(
 async def async_upload_data(client, feedback, json, study, url):
     """Sends body to url and awaits response"""
     response = await client.post(url=url, json=json)
-    try:
-        response.raise_for_status()
-        formatted_response = format_feedback(response.json(), study)
-        feedback["error"] = None
-        feedback["success"] = formatted_response["success"]
-        feedback["failed"] = formatted_response["failed"]
-    except HTTPStatusError as error:
-        feedback["error"] = error.response.json()
-        feedback["success"] = None
-        feedback["failed"] = None
+    response.raise_for_status()
+    formatted_response = format_feedback(response.json(), study)
+    feedback["success"] = formatted_response["success"]
+    feedback["failed"] = formatted_response["failed"]
     return feedback

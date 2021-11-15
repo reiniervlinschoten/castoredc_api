@@ -2,6 +2,9 @@
 import pathlib
 from datetime import datetime
 import typing
+from json import JSONDecodeError
+
+import httpx
 import numpy as np
 import pandas as pd
 from castoredc_api.client.castoredc_api_client import CastorException
@@ -590,10 +593,14 @@ def format_feedback(feedback_row, study):
     return formatted_feedback_row
 
 
-def handle_httpstatuserror(error, imported, row):
-    """Handles a HTTPStatus Error by outputting imported data and raising an error."""
-    # Error in querying the database/http connection
-    row["error"] = error.response.json()
+def handle_http_error(error, imported, row):
+    """Handles HTTP Errors by outputting imported data and raising an error."""
+    if type(error) is httpx.HTTPStatusError:
+        row["error"] = error.response.json()
+    elif type(error) is httpx.RequestError:
+        row["error"] = f"Request Error for {error.request.url}."
+    elif type(error) is JSONDecodeError:
+        row["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
     # Add error row to the dataset
     imported.append(row)
     # Output data for error checking
