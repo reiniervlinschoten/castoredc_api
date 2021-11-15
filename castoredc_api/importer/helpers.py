@@ -593,7 +593,7 @@ def format_feedback(feedback_row, study):
 def handle_httpstatuserror(error, imported, row):
     """Handles a HTTPStatus Error by outputting imported data and raising an error."""
     # Error in querying the database/http connection
-    row["error"] = error.response
+    row["error"] = error.response.json()
     # Add error row to the dataset
     imported.append(row)
     # Output data for error checking
