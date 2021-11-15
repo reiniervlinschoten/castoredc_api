@@ -43,7 +43,6 @@ async def async_update_study_data(data: list, study: "CastorStudy") -> list:
                     asyncio.as_completed(tasks),
                     total=len(tasks),
                     desc=f"Async Uploading {idx + 1}/{len(chunks)}",
-                    file=sys.stdout,
                 )
             ]
             responses = responses + temp_responses
@@ -94,7 +93,6 @@ async def async_update_survey_data(data: list, study: "CastorStudy") -> list:
                     asyncio.as_completed(tasks),
                     total=len(tasks),
                     desc=f"Async Uploading {idx + 1}/{len(chunks)}",
-                    file=sys.stdout,
                 )
             ]
             responses = responses + temp_responses
@@ -180,7 +178,6 @@ async def async_update_report_data(data: list, study: "CastorStudy") -> list:
                     asyncio.as_completed(tasks),
                     total=len(tasks),
                     desc=f"Async Uploading {idx + 1}/{len(chunks)}",
-                    file=sys.stdout,
                 )
             ]
             responses = responses + temp_responses

@@ -83,10 +83,10 @@ class CastorStudy:
         self.optiongroups = {}
         self.__all_report_instances = {}
         # Get the structure from the API
-        print("Downloading Study Structure.", flush=True)
+        print("Downloading Study Structure.", flush=True, file=sys.stderr)
         data = self.client.export_study_structure()
         # Loop over all fields
-        for field in tqdm(data, desc="Mapping Study Structure", file=sys.stdout):
+        for field in tqdm(data, desc="Mapping Study Structure"):
             # Check if the form for the field exists, if not, create it
             form = self.get_single_form(field["Form Collection ID"])
             if form is None:
@@ -139,11 +139,11 @@ class CastorStudy:
         # Reset form links
         self.form_links = {}
         # Get the name of the survey forms, as the export data can only be linked on name, not on id
-        print("Downloading Surveys.", flush=True)
+        print("Downloading Surveys.", flush=True, file=sys.stderr)
         surveys = self.client.all_surveys()
         self.form_links["Survey"] = {survey["name"]: survey["id"] for survey in surveys}
         # Get all report instances that need to be linked
-        print("Downloading Report Instances.", flush=True)
+        print("Downloading Report Instances.", flush=True, file=sys.stderr)
         # Save this data from the database to save time later
         report_instances = self.client.all_report_instances(archived=0)
         archived_report_instances = self.client.all_report_instances(archived=1)
@@ -164,7 +164,7 @@ class CastorStudy:
     def __load_optiongroups(self) -> None:
         """Loads all optiongroups through the client"""
         # Get the optiongroups
-        print("Downloading Optiongroups", flush=True)
+        print("Downloading Optiongroups", flush=True, file=sys.stderr)
         optiongroups = self.client.all_field_optiongroups()
         self.optiongroups = {
             optiongroup["id"]: optiongroup for optiongroup in optiongroups
@@ -173,10 +173,10 @@ class CastorStudy:
     # AUXILIARY DATA
     def __load_record_information(self) -> None:
         """Adds auxiliary data to records."""
-        print("Downloading Record Information.", flush=True)
+        print("Downloading Record Information.", flush=True, file=sys.stderr)
         record_data = self.client.all_records()
         for record_api in tqdm(
-            record_data, desc="Augmenting Record Data", file=sys.stdout
+            record_data, desc="Augmenting Record Data"
         ):
             record = self.get_single_record(record_api["id"])
             record.institute = record_api["_embedded"]["institute"]["name"]
@@ -188,7 +188,7 @@ class CastorStudy:
 
     def __load_survey_information(self) -> None:
         """Adds auxiliary data to survey forms."""
-        print("Downloading Survey Information.", flush=True)
+        print("Downloading Survey Information.", flush=True, file=sys.stderr)
         survey_package_data = self.client.all_survey_package_instances()
         # Create mapping {survey_instance_id: survey_package}
         survey_data = {
@@ -201,7 +201,7 @@ class CastorStudy:
             for survey in package["_embedded"]["survey_instances"]
         }
         for survey_instance, values in tqdm(
-            survey_data.items(), desc="Augmenting Survey Data", file=sys.stdout
+            survey_data.items(), desc="Augmenting Survey Data"
         ):
             # Test if instance in study
             local_instance = self.get_single_form_instance_on_id(
@@ -236,7 +236,6 @@ class CastorStudy:
         for instance_id, report_instance in tqdm(
             self.__all_report_instances.items(),
             "Augmenting Report Data",
-            file=sys.stdout,
         ):
             # Test if instance in study
             local_instance = self.get_single_form_instance_on_id(
@@ -290,7 +289,7 @@ class CastorStudy:
     # FIELD DEPENDENCIES
     def __map_field_dependencies(self) -> None:
         """Retrieves all field_dependencies and links them to the right field."""
-        print("Downloading Field Dependencies", flush=True)
+        print("Downloading Field Dependencies", flush=True, file=sys.stderr)
         dependencies = self.client.all_field_dependencies()
         # Format to dict of {child_id: {"parent_field": parent_field, "parent_value": value}
         dependencies = {
@@ -342,7 +341,7 @@ class CastorStudy:
         dataframes = self.export_to_dataframe(archived)
         # Instantiate output folder
         pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
-        print("Writing data to feather files...", flush=True)
+        print("Writing data to feather files...", flush=True, file=sys.stderr)
         dataframes["Study"] = self.export_dataframe_to_feather(
             dataframes["Study"], "Study", now
         )
@@ -568,11 +567,11 @@ class CastorStudy:
     def __link_data(self) -> None:
         """Links the study data"""
         # Get the data from the API
-        print("Downloading Study Data.", flush=True)
+        print("Downloading Study Data.", flush=True, file=sys.stderr)
         data = self.client.export_study_data()
 
         # Loop over all fields
-        for field in tqdm(data, desc="Mapping Data", file=sys.stdout):
+        for field in tqdm(data, desc="Mapping Data"):
             # Check if the record for the field exists, if not, create it
             record = self.get_single_record(field["Record ID"])
             if record is None:

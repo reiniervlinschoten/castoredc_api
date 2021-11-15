@@ -34,7 +34,7 @@ def upload_study(
     imported = []
 
     for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data", file=sys.stdout
+        castorized_dataframe.to_dict("records"), "Uploading Data"
     ):
         body = [
             {
@@ -97,7 +97,7 @@ def upload_survey(
     imported = []
 
     for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data", file=sys.stdout
+        castorized_dataframe.to_dict("records"), "Uploading Data"
     ):
         instance = create_survey_package_instance(
             study, imported, package_id, row, email
@@ -163,7 +163,7 @@ def upload_report(
     """Uploads report data to the study."""
     imported = []
     for row in tqdm(
-        castorized_dataframe.to_dict("records"), "Uploading Data", file=sys.stdout
+        castorized_dataframe.to_dict("records"), "Uploading Data"
     ):
         # Create a report instance
         instance = create_report_instance(study, imported, package_id, row)

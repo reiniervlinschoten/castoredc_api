@@ -1026,7 +1026,7 @@ class CastorClient:
             # Solution for IPython consoles (Jupiter Notebooks, Spyder3)
             asyncio.get_running_loop()
             responses = [
-                self.sync_get(url, param) for param in tqdm(params, file=sys.stdout)
+                self.sync_get(url, param) for param in tqdm(params)
             ]
         except RuntimeError:
             # No running event loop, free to use async code
@@ -1094,7 +1094,6 @@ class CastorClient:
                         asyncio.as_completed(tasks),
                         total=len(tasks),
                         desc=f"Async Downloading {idx + 1}/{len(chunks)}",
-                        file=sys.stdout,
                     )
                 ]
                 responses = responses + temp_responses
