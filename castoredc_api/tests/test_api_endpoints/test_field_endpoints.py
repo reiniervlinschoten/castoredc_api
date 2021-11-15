@@ -32,6 +32,7 @@ class TestField:
         "field_min_label": "",
         "field_max": None,
         "field_max_label": "",
+        "field_image": "",
         "field_summary_template": "",
         "field_slider_step": None,
         "report_id": "89FF2394-0D41-4D4C-89FE-AA9AB287B31E",

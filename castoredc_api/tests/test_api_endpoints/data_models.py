@@ -837,6 +837,7 @@ field_model = {
     "_links": [
         dict,
     ],
+    "field_image": [str, None]
 }
 
 field_opt_model = {

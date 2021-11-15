@@ -81,6 +81,7 @@ class TestReportDataEntry:
                 "id": "AFD46D4F-5C17-4B9B-BE19-8A5A702601C1",
                 "parent_id": "111BA2F0-BC6B-47ED-9159-802BF7600BA6",
                 "field_id": "AFD46D4F-5C17-4B9B-BE19-8A5A702601C1",
+                "field_image": "",
                 "field_number": 5,
                 "field_label": "Units",
                 "field_variable_name": "med_units",
