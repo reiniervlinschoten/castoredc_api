@@ -6,6 +6,11 @@ on:
       - "main"
     tags:
       - '**'
+    paths-ignore:
+      - 'setup.py'
+      - 'README.md'
+      - '.github/workflows/**'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

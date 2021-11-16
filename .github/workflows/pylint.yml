@@ -10,6 +10,8 @@ name: pylint
     branches:
       - '**'
     types: [opened]
+  workflow_dispatch:
+
 
 jobs:
   build:

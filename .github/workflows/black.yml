@@ -10,6 +10,8 @@ name: black
     branches:
       - '**'
     types: [opened]
+  workflow_dispatch:
+
 
 jobs:
   build:
