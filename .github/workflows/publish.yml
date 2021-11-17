@@ -6,10 +6,11 @@ on:
       - "main"
     tags:
       - '**'
-    paths-ignore:
+    paths:
+      - 'castoredc_api/client/**'
+      - 'castoredc_api/study/**'
+      - 'castoredc_api/importer/**'
       - 'setup.py'
-      - 'README.md'
-      - '.github/workflows/**'
 
 jobs:
   deploy:
