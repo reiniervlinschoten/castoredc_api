@@ -9,7 +9,7 @@ class TestCSVOutputArchived:
     """Tests whether the correct data is outputted.
     When also extracting archived data"""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="session")
     def output_data_archived(self):
         study = CastorStudy(
             auth_data.client_id,
