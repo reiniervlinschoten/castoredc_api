@@ -205,17 +205,6 @@ class CastorStudy:
             local_instance = self.get_single_form_instance_on_id(
                 instance_id=survey_instance, record_id=values["record"]
             )
-            if local_instance is None:
-                # If instance doesn't exist yet (empty survey instances)
-                # Add the empty survey_instances to the study
-                local_instance = CastorSurveyFormInstance(
-                    instance_id=survey_instance,
-                    name_of_form=values["survey"]["_embedded"]["survey"]["name"],
-                    study=self,
-                )
-                self.get_single_record(values["record"]).add_form_instance(
-                    local_instance
-                )
             local_instance.created_on = self.__get_date_or_none(
                 values["package"]["created_on"]
             )
@@ -239,16 +228,6 @@ class CastorStudy:
             local_instance = self.get_single_form_instance_on_id(
                 instance_id=instance_id, record_id=report_instance["record_id"]
             )
-            if local_instance is None:
-                local_instance = CastorReportFormInstance(
-                    instance_id=instance_id,
-                    name_of_form=report_instance["name"],
-                    study=self,
-                )
-                self.get_single_record(report_instance["record_id"]).add_form_instance(
-                    local_instance
-                )
-
             local_instance.created_on = datetime.strptime(
                 report_instance["created_on"], "%Y-%m-%d %H:%M:%S"
             ).strftime(self.configuration["datetime_seconds"])
@@ -580,10 +559,11 @@ class CastorStudy:
                 record = CastorRecord(record_id=field["Record ID"])
                 self.add_record(record)
 
-            # Check if it a data line or a record line
             if field["Form Type"] == "":
+                # If the Form Type is empty, the line indicates a record
                 pass
             else:
+                # If there is something in the form line, it indicates a data point
                 if field["Form Type"] == "Study":
                     instance_of_field = self.get_single_field(field["Field ID"])
                     instance_of_form = instance_of_field.step.form.form_id
@@ -628,15 +608,20 @@ class CastorStudy:
 
                 # Check if the field exists, if not, create it
                 # This should not be possible as there are no doubles, but checking just in case
-                data_point = form_instance.get_single_data_point(field["Field ID"])
-                if data_point is None:
-                    data_point = CastorDataPoint(
-                        field_id=field["Field ID"],
-                        raw_value=field["Value"],
-                        study=self,
-                        filled_in=field["Date"],
-                    )
-                    form_instance.add_data_point(data_point)
+                if field["Field ID"] == "":
+                    # No field ID means that the row indicates an empty report or survey
+                    # Empty is a report or survey without any datapoints
+                    pass
+                else:
+                    data_point = form_instance.get_single_data_point(field["Field ID"])
+                    if data_point is None:
+                        data_point = CastorDataPoint(
+                            field_id=field["Field ID"],
+                            raw_value=field["Value"],
+                            study=self,
+                            filled_in=field["Date"],
+                        )
+                        form_instance.add_data_point(data_point)
 
     def __export_study_data(self, archived) -> pd.DataFrame:
         """Returns a dataframe containing all study data."""
