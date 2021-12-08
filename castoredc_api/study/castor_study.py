@@ -482,6 +482,10 @@ class CastorStudy:
 
     def get_single_field(self, field_id_or_name: str) -> Optional[CastorField]:
         """Get a single CastorField based on id or name."""
+        if field_id_or_name == "":
+            # Some Castor studies have fields for which the name can be empty
+            # These are nonsensical identifiers, so we can't search on these
+            return None
         for form in self.get_all_forms():
             for step in form.get_all_steps():
                 # Search for field in each step in each form
