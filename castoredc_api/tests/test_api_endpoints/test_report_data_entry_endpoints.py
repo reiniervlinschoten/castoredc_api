@@ -100,6 +100,7 @@ class TestReportDataEntry:
                 "field_length": None,
                 "additional_config": "",
                 "exclude_on_data_export": False,
+                'field_enforce_decimals': None,
                 "option_group": None,
                 "metadata_points": [],
                 "validations": [],
