@@ -27,6 +27,7 @@ class CastorSurveyFormInstance(CastorFormInstance):
         self.progress = None
         self.completed_on = None
         self.survey_package_id = None
+        self.survey_package_name = None
 
     # Helpers
     def find_form(
