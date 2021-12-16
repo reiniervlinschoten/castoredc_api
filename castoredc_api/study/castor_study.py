@@ -217,7 +217,9 @@ class CastorStudy:
             )
             local_instance.archived = values["package"]["archived"]
             local_instance.survey_package_id = values["package"]["id"]
-            local_instance.survey_package_name = values["package"]["survey_package_name"]
+            local_instance.survey_package_name = values["package"][
+                "survey_package_name"
+            ]
 
     def __load_report_information(self) -> None:
         """Adds auxiliary data to report forms."""
