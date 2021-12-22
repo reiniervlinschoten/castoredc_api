@@ -1,3 +1,4 @@
+import copy
 from typing import List
 import pytest
 
@@ -462,3 +463,30 @@ def complete_study_with_data(
 ) -> castor_study.CastorStudy:
     """Creates a CastorStudy with linked forms, steps, and fields for use in tests."""
     return link_data_to_structure(complete_study, records, form_instances, data_points)
+
+
+@pytest.fixture(scope="session")
+def missing_data_study(complete_study) -> castor_study.CastorStudy:
+    """Creates a CastorStudy with missing data."""
+    missing_data_study = copy.deepcopy(complete_study)
+    for field_type in [
+        "checkbox",
+        "numeric",
+        "year",
+        "string",
+        "datetime",
+        "date",
+        "time",
+        "numberdate",
+    ]:
+        field = castor_field.CastorField(
+            field_id=f"MISSING-{field_type}-ID",
+            field_name=f"Missing {field_type}",
+            field_label="This is the first study field",
+            field_type=field_type,
+            field_required="1",
+            field_option_group=None,
+            field_order="1",
+        )
+        missing_data_study.get_single_step("Survey Step 1a").add_field(field)
+    return missing_data_study

@@ -10,7 +10,6 @@ import pytest
 from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import field_model
-from castoredc_api import CastorException
 
 
 class TestField:

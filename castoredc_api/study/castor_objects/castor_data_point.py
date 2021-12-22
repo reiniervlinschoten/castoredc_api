@@ -243,7 +243,7 @@ class CastorDataPoint:
     def __interpret_year(self):
         """Interprets year data while handling user missings."""
         if self.raw_value == "":
-            new_value = pd.NA
+            new_value = np.nan
         elif "Missing" in self.raw_value:
             if "measurement failed" in self.raw_value:
                 new_value = -95
@@ -263,7 +263,12 @@ class CastorDataPoint:
 
     def __interpret_numberdate(self, date_format: str):
         """Interprets numberdate data while handling user missings."""
-        if "Missing" in self.raw_value:
+        if self.raw_value == "":
+            new_value = [
+                np.nan,
+                np.nan,
+            ]
+        elif "Missing" in self.raw_value:
             if "measurement failed" in self.raw_value:
                 new_value = [
                     -95,
