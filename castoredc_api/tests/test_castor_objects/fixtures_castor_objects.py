@@ -1,3 +1,4 @@
+import copy
 from typing import List
 import pytest
 
@@ -26,7 +27,7 @@ from castoredc_api.tests.test_castor_objects.helpers_castor_objects import (
 )
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def fields() -> List[castor_field.CastorField]:
     """Creates CastorFields for use in tests."""
     field1 = castor_field.CastorField(
@@ -203,7 +204,7 @@ def fields() -> List[castor_field.CastorField]:
     ]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def steps() -> List[castor_step.CastorStep]:
     """Creates CastorSteps for use in tests."""
     step1 = castor_step.CastorStep("Survey Step 1a", "FAKE-SURVEY-STEP-ID1", "1")
@@ -218,7 +219,7 @@ def steps() -> List[castor_step.CastorStep]:
     return [step1, step2, step3, step4, step5, step6, step7, step8, step9]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def forms() -> List[castor_form.CastorForm]:
     """Creates CastorForms for use in tests."""
     form1 = castor_form.CastorForm("Fake Survey", "FAKE-SURVEY-ID1", "Survey", "1")
@@ -230,7 +231,7 @@ def forms() -> List[castor_form.CastorForm]:
     return [form1, form2, form3, form4]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def data_points(
     complete_study: castor_study.CastorStudy,
 ) -> List[castor_data_point.CastorDataPoint]:
@@ -319,7 +320,7 @@ def data_points(
     ]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def form_instances(
     complete_study: castor_study.CastorStudy,
 ) -> List[castor_form_instance.CastorFormInstance]:
@@ -368,7 +369,7 @@ def form_instances(
     ]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def records() -> List[castor_record.CastorRecord]:
     """Creates CastorRecords for use in tests."""
     record1 = castor_record.CastorRecord("110001")
@@ -377,7 +378,7 @@ def records() -> List[castor_record.CastorRecord]:
     return [record1, record2, record3]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def study() -> castor_study.CastorStudy:
     """Creates a CastorStudy for use in tests."""
     study = castor_study.CastorStudy("", "", "FAKE-ID", "", test=True)
@@ -392,7 +393,7 @@ def study() -> castor_study.CastorStudy:
     return study
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def study_with_forms(
     study: castor_study.CastorStudy, forms: List[castor_form.CastorForm]
 ) -> castor_study.CastorStudy:
@@ -400,7 +401,7 @@ def study_with_forms(
     return link_study_with_forms(study, forms)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def forms_with_steps(
     forms: List[castor_form.CastorForm], steps: List[castor_step.CastorStep]
 ) -> List[castor_form.CastorForm]:
@@ -408,7 +409,7 @@ def forms_with_steps(
     return link_forms_with_steps(forms, steps)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def steps_with_fields(
     steps: List[castor_step.CastorStep], fields: List[castor_field.CastorField]
 ) -> List[castor_step.CastorStep]:
@@ -416,7 +417,7 @@ def steps_with_fields(
     return link_steps_with_fields(steps, fields)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def complete_study(
     study: castor_study.CastorStudy,
     forms: List[castor_form.CastorForm],
@@ -427,7 +428,7 @@ def complete_study(
     return link_everything(study, forms, steps, fields)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def study_with_records(
     complete_study: castor_study.CastorStudy, records: List[castor_record.CastorRecord]
 ) -> castor_study.CastorStudy:
@@ -435,7 +436,7 @@ def study_with_records(
     return link_study_with_records(complete_study, records)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def records_with_form_instances(
     records: List[castor_record.CastorRecord],
     form_instances: List[castor_form_instance.CastorFormInstance],
@@ -444,7 +445,7 @@ def records_with_form_instances(
     return link_records_with_instances(records, form_instances)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def instances_with_data_points(
     form_instances: List[castor_form_instance.CastorFormInstance],
     data_points: List[castor_data_point.CastorDataPoint],
@@ -453,7 +454,7 @@ def instances_with_data_points(
     return link_instances_with_data_points(form_instances, data_points)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def complete_study_with_data(
     complete_study: castor_study.CastorStudy,
     records: List[castor_record.CastorRecord],
@@ -462,3 +463,30 @@ def complete_study_with_data(
 ) -> castor_study.CastorStudy:
     """Creates a CastorStudy with linked forms, steps, and fields for use in tests."""
     return link_data_to_structure(complete_study, records, form_instances, data_points)
+
+
+@pytest.fixture(scope="session")
+def missing_data_study(complete_study) -> castor_study.CastorStudy:
+    """Creates a CastorStudy with missing data."""
+    missing_data_study = copy.deepcopy(complete_study)
+    for field_type in [
+        "checkbox",
+        "numeric",
+        "year",
+        "string",
+        "datetime",
+        "date",
+        "time",
+        "numberdate",
+    ]:
+        field = castor_field.CastorField(
+            field_id=f"MISSING-{field_type}-ID",
+            field_name=f"Missing {field_type}",
+            field_label="This is the first study field",
+            field_type=field_type,
+            field_required="1",
+            field_option_group=None,
+            field_order="1",
+        )
+        missing_data_study.get_single_step("Survey Step 1a").add_field(field)
+    return missing_data_study

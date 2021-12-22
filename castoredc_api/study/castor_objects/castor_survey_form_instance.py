@@ -10,6 +10,8 @@ if typing.TYPE_CHECKING:
 class CastorSurveyFormInstance(CastorFormInstance):
     """Object representing a Castor survey form instance."""
 
+    # pylint: disable=too-many-instance-attributes
+
     def __init__(
         self,
         instance_id: str,
@@ -27,6 +29,7 @@ class CastorSurveyFormInstance(CastorFormInstance):
         self.progress = None
         self.completed_on = None
         self.survey_package_id = None
+        self.survey_package_name = None
 
     # Helpers
     def find_form(

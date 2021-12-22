@@ -10,7 +10,6 @@ import pytest
 from httpx import HTTPStatusError
 
 from castoredc_api.tests.test_api_endpoints.data_models import field_model
-from castoredc_api import CastorException
 
 
 class TestField:
@@ -39,6 +38,7 @@ class TestField:
         "field_length": None,
         "additional_config": '{"showReportOfAllPhases":"0"}',
         "exclude_on_data_export": False,
+        "field_enforce_decimals": None,
         "option_group": None,
         "metadata_points": [],
         "validations": [],

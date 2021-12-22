@@ -5,6 +5,9 @@ Testing class for the CastorStudy class.
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
+import pytest
+
+from castoredc_api import CastorException
 from castoredc_api.study.castor_objects.castor_record import CastorRecord
 from castoredc_api.study.castor_study import CastorStudy
 from castoredc_api.study.castor_objects.castor_form import CastorForm
@@ -155,6 +158,11 @@ class TestCastorStudy:
         field = complete_study.get_single_field("Survey Field 22q11")
         assert field is None
 
+    def test_study_get_single_field_empty(self, complete_study):
+        """Tests failing to get a field from the study."""
+        field = complete_study.get_single_field("")
+        assert field is None
+
     def test_study_get_study_fields(self, complete_study):
         """Tests getting all study fields."""
         fields = complete_study.get_all_study_fields()
@@ -178,3 +186,11 @@ class TestCastorStudy:
         for field in fields:
             assert type(field) is CastorField
             assert field.step.form.form_type == "Report"
+
+    def test_handle_data_edge_case(self, complete_study):
+        """Tests edge case of handling data where form type is wrong."""
+        with pytest.raises(CastorException) as e:
+            complete_study._CastorStudy__handle_data(
+                {"Form Type": "Wrong Type"}, "record"
+            )
+        assert "Form Type: Wrong Type does not exist." in str(e.value)

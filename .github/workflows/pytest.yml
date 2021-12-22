@@ -35,6 +35,8 @@ jobs:
         IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
       run: |
+        sudo sysctl -w net.ipv4.tcp_keepalive_time=60
+        sudo ethtool -K eth0 tso off gso off gro off tx off rx off lro off
         cd castoredc_api
         pytest --cov=./ --cov-report=xml
     - name: "Upload coverage to Codecov"

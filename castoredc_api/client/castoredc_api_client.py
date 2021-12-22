@@ -261,10 +261,18 @@ class CastorClient:
         return self.sync_post(url, post_data)
 
     # EXPORT
-    def export_study_data(self):
+    def export_study_data(
+        self, exclude_empty_surveys=False, exclude_empty_reports=False
+    ):
         """Returns a list of dicts containing all data in the study (study, surveys, reports)."""
         url = self.study_url + "/export/data"
-        return self.sync_get(url=url, params={})["content"]
+        return self.sync_get(
+            url=url,
+            params={
+                "exclude_empty_surveys": exclude_empty_surveys,
+                "exclude_empty_reports": exclude_empty_reports,
+            },
+        )["content"]
 
     def export_study_structure(self):
         """Returns a list of dicts containing the structure of the study."""

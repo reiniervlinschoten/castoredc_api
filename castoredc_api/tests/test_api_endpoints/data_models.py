@@ -763,6 +763,7 @@ field_model = {
         str,
     ],
     "field_variable_name": [str, type(None)],
+    "field_enforce_decimals": [bool, type(None)],
     "field_type": [
         str,
     ],

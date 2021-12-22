@@ -205,17 +205,6 @@ class CastorStudy:
             local_instance = self.get_single_form_instance_on_id(
                 instance_id=survey_instance, record_id=values["record"]
             )
-            if local_instance is None:
-                # If instance doesn't exist yet (empty survey instances)
-                # Add the empty survey_instances to the study
-                local_instance = CastorSurveyFormInstance(
-                    instance_id=survey_instance,
-                    name_of_form=values["survey"]["_embedded"]["survey"]["name"],
-                    study=self,
-                )
-                self.get_single_record(values["record"]).add_form_instance(
-                    local_instance
-                )
             local_instance.created_on = self.__get_date_or_none(
                 values["package"]["created_on"]
             )
@@ -228,6 +217,9 @@ class CastorStudy:
             )
             local_instance.archived = values["package"]["archived"]
             local_instance.survey_package_id = values["package"]["id"]
+            local_instance.survey_package_name = values["package"][
+                "survey_package_name"
+            ]
 
     def __load_report_information(self) -> None:
         """Adds auxiliary data to report forms."""
@@ -239,16 +231,6 @@ class CastorStudy:
             local_instance = self.get_single_form_instance_on_id(
                 instance_id=instance_id, record_id=report_instance["record_id"]
             )
-            if local_instance is None:
-                local_instance = CastorReportFormInstance(
-                    instance_id=instance_id,
-                    name_of_form=report_instance["name"],
-                    study=self,
-                )
-                self.get_single_record(report_instance["record_id"]).add_form_instance(
-                    local_instance
-                )
-
             local_instance.created_on = datetime.strptime(
                 report_instance["created_on"], "%Y-%m-%d %H:%M:%S"
             ).strftime(self.configuration["datetime_seconds"])
@@ -482,6 +464,10 @@ class CastorStudy:
 
     def get_single_field(self, field_id_or_name: str) -> Optional[CastorField]:
         """Get a single CastorField based on id or name."""
+        if field_id_or_name == "":
+            # Some Castor studies have fields for which the name can be empty
+            # These are nonsensical identifiers, so we can't search on these
+            return None
         for form in self.get_all_forms():
             for step in form.get_all_steps():
                 # Search for field in each step in each form
@@ -570,69 +556,93 @@ class CastorStudy:
 
         # Loop over all fields
         for field in tqdm(data, desc="Mapping Data"):
-            # Check if the record for the field exists, if not, create it
-            record = self.get_single_record(field["Record ID"])
-            if record is None:
-                record = CastorRecord(record_id=field["Record ID"])
-                self.add_record(record)
+            self.__handle_row(field)
 
-            # Check if it a data line or a record line
-            if field["Form Type"] == "":
-                pass
-            else:
-                if field["Form Type"] == "Study":
-                    instance_of_field = self.get_single_field(field["Field ID"])
-                    instance_of_form = instance_of_field.step.form.form_id
-                    form_instance_id = instance_of_form
-                    form_instance = record.get_single_form_instance_on_id(
-                        form_instance_id
-                    )
-                    if form_instance is None:
-                        form_instance = CastorStudyFormInstance(
-                            instance_id=form_instance_id,
-                            name_of_form=field["Form Instance Name"],
-                            study=self,
-                        )
-                        record.add_form_instance(form_instance)
+    def __handle_row(self, field):
+        """Handles a row from the export data."""
+        # Check if the record for the field exists, if not, create it
+        record = self.get_single_record(field["Record ID"])
+        if record is None:
+            record = CastorRecord(record_id=field["Record ID"])
+            self.add_record(record)
+        if field["Form Type"] == "":
+            # If the Form Type is empty, the line indicates a record
+            pass
+        else:
+            # If it is not empty, the line indicates data
+            self.__handle_data(field, record)
 
-                elif field["Form Type"] == "Report":
-                    form_instance = record.get_single_form_instance_on_id(
-                        field["Form Instance ID"]
-                    )
-                    if form_instance is None:
-                        form_instance = CastorReportFormInstance(
-                            instance_id=field["Form Instance ID"],
-                            name_of_form=field["Form Instance Name"],
-                            study=self,
-                        )
-                        record.add_form_instance(form_instance)
-                elif field["Form Type"] == "Survey":
-                    form_instance = record.get_single_form_instance_on_id(
-                        field["Form Instance ID"]
-                    )
-                    if form_instance is None:
-                        form_instance = CastorSurveyFormInstance(
-                            instance_id=field["Form Instance ID"],
-                            name_of_form=field["Form Instance Name"],
-                            study=self,
-                        )
-                        record.add_form_instance(form_instance)
-                else:
-                    raise CastorException(
-                        f"Form Type: {field['Form Type']} does not exist."
-                    )
+    def __handle_data(self, field, record):
+        """Handles data from a row from the export data"""
+        # First check what type of form and check if it exists else create it
+        if field["Form Type"] == "Study":
+            form_instance = self.__handle_study_form(field, record)
+        elif field["Form Type"] == "Report":
+            form_instance = self.__handle_report_form(field, record)
+        elif field["Form Type"] == "Survey":
+            form_instance = self.__handle_survey_form(field, record)
+        else:
+            raise CastorException(f"Form Type: {field['Form Type']} does not exist.")
 
-                # Check if the field exists, if not, create it
-                # This should not be possible as there are no doubles, but checking just in case
-                data_point = form_instance.get_single_data_point(field["Field ID"])
-                if data_point is None:
-                    data_point = CastorDataPoint(
-                        field_id=field["Field ID"],
-                        raw_value=field["Value"],
-                        study=self,
-                        filled_in=field["Date"],
-                    )
-                    form_instance.add_data_point(data_point)
+        # Check if the field exists, if not, create it
+        if field["Field ID"] == "":
+            # No field ID means that the row indicates an empty report or survey
+            # Empty is a report or survey without any datapoints
+            pass
+        else:
+            self.__handle_data_point(field, form_instance)
+
+    def __handle_data_point(self, field, form_instance):
+        """Handles the data point from the export data"""
+        # Check if the data point already exists
+        # Should not happen, but just in case
+        data_point = form_instance.get_single_data_point(field["Field ID"])
+        if data_point is None:
+            data_point = CastorDataPoint(
+                field_id=field["Field ID"],
+                raw_value=field["Value"],
+                study=self,
+                filled_in=field["Date"],
+            )
+            form_instance.add_data_point(data_point)
+        else:
+            raise CastorException("Duplicated data point found!")
+
+    def __handle_survey_form(self, field, record):
+        form_instance = record.get_single_form_instance_on_id(field["Form Instance ID"])
+        if form_instance is None:
+            form_instance = CastorSurveyFormInstance(
+                instance_id=field["Form Instance ID"],
+                name_of_form=field["Form Instance Name"],
+                study=self,
+            )
+            record.add_form_instance(form_instance)
+        return form_instance
+
+    def __handle_report_form(self, field, record):
+        form_instance = record.get_single_form_instance_on_id(field["Form Instance ID"])
+        if form_instance is None:
+            form_instance = CastorReportFormInstance(
+                instance_id=field["Form Instance ID"],
+                name_of_form=field["Form Instance Name"],
+                study=self,
+            )
+            record.add_form_instance(form_instance)
+        return form_instance
+
+    def __handle_study_form(self, field, record):
+        instance_of_field = self.get_single_field(field["Field ID"])
+        instance_of_form = instance_of_field.step.form.form_id
+        form_instance_id = instance_of_form
+        form_instance = record.get_single_form_instance_on_id(form_instance_id)
+        if form_instance is None:
+            form_instance = CastorStudyFormInstance(
+                instance_id=form_instance_id,
+                name_of_form=field["Form Instance Name"],
+                study=self,
+            )
+            record.add_form_instance(form_instance)
+        return form_instance
 
     def __export_study_data(self, archived) -> pd.DataFrame:
         """Returns a dataframe containing all study data."""
@@ -671,6 +681,7 @@ class CastorStudy:
                     "progress",
                     "completed_on",
                     "package_id",
+                    "package_name",
                     "archived",
                 ],
                 "Survey",
@@ -993,7 +1004,9 @@ class CastorStudy:
                 record_form_data["progress"] = instance.progress
                 record_form_data["completed_on"] = instance.completed_on
                 record_form_data["package_id"] = instance.survey_package_id
+                record_form_data["package_name"] = instance.survey_package_name
                 record_form_data["archived"] = instance.archived
+
                 # Add to data
                 data.append(record_form_data)
 
