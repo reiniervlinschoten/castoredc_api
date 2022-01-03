@@ -234,12 +234,16 @@ class CastorStudy:
             local_instance.created_on = datetime.strptime(
                 report_instance["created_on"], "%Y-%m-%d %H:%M:%S"
             ).strftime(self.configuration["datetime_seconds"])
-            local_instance.parent = (
-                "No parent"
-                if report_instance["parent_id"] == ""
-                or report_instance["parent_id"] is None
-                else self.get_single_form(report_instance["parent_id"]).form_name
-            )
+            if report_instance["parent_type"] == "phase":
+                local_instance.parent = self.get_single_form(
+                    report_instance["parent_id"]
+                ).form_name
+            elif report_instance["parent_type"] == "reportInstance":
+                local_instance.parent = self.get_single_form_instance_on_id(
+                    report_instance["record_id"], report_instance["parent_id"]
+                ).name_of_form
+            else:
+                local_instance.parent = "No parent"
             local_instance.archived = report_instance["archived"]
 
     def __load_field_information(self):
