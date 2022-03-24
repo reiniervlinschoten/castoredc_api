@@ -697,10 +697,24 @@ class CastorClient:
         endpoint = f"/study/{study_id}/user/{user_id}"
         return self.retrieve_general_data(endpoint)
 
-    def invite_user_study(self, study_id, institute_id, email, message):
+    def invite_user_study(
+        self,
+        study_id,
+        institute_id,
+        email,
+        message,
+        manage_permissions=None,
+        institute_permissions=None,
+    ):
         """Invites user with email to the study linked to institute_id."""
         url = self.base_url + f"/study/{study_id}/user"
-        body = {"institute_id": institute_id, "email": email, "message": message}
+        body = {
+            "institute_id": institute_id,
+            "email": email,
+            "message": message,
+            "manage_permission": manage_permissions,
+            "institute_permissions": institute_permissions,
+        }
         return self.sync_post(url, body)
 
     # STUDY-DATA-ENTRY
