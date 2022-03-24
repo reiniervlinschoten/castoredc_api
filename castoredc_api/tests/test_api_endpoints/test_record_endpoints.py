@@ -34,6 +34,7 @@ class TestRecord:
     test_record = {
         "id": "000006",
         "record_id": "000006",
+        "record_status": None,
         "ccr_patient_id": "",
         "last_opened_step": "FFF23B2C-AEE6-4304-9CC4-9C7C431D5387",
         "progress": 10,
