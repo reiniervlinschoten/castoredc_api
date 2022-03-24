@@ -290,7 +290,7 @@ class CastorClient:
         return self.retrieve_all_data_by_endpoint(
             endpoint="/field",
             data_name="fields",
-            params={"include": "metadata|validations|optiongroup"},
+            params={"include": "metadata,validations,optiongroup"},
         )
 
     def single_field(self, field_id):
@@ -299,7 +299,7 @@ class CastorClient:
         return self.retrieve_data_by_id(
             endpoint="/field",
             data_id=field_id,
-            params={"include": "metadata|validations|optiongroup"},
+            params={"include": "metadata,validations,optiongroup"},
         )
 
     # FIELD DEPENDENCY
