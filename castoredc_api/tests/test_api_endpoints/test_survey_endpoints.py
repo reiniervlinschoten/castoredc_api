@@ -76,6 +76,7 @@ class TestSurveyEndpoints:
         "default_invitation_subject": "Please fill in this survey for Example Study",
         "sender_email": "no-reply@castoredc.com",
         "is_mobile": False,
+        "is_training": False,
         "expire_after_hours": None,
         "_embedded": {
             "surveys": [
@@ -143,6 +144,7 @@ class TestSurveyEndpoints:
             "record": {
                 "id": "000001",
                 "record_id": "000001",
+                "record_status": None,
                 "ccr_patient_id": "",
                 "last_opened_step": "1F1A5F3B-FD1A-45A6-9E0F-327F2EC68983",
                 "progress": 28,
@@ -221,6 +223,7 @@ class TestSurveyEndpoints:
                 "default_invitation_subject": "Please fill in this survey for Example Study",
                 "sender_email": "no-reply@castoredc.com",
                 "is_mobile": False,
+                "is_training": False,
                 "expire_after_hours": None,
                 "allow_open_survey_link": False,
                 "_embedded": {
