@@ -1025,6 +1025,10 @@ record_model = {
     "record_id": [
         str,
     ],
+    "record_status": [
+        str,
+        type(None),
+    ],
     "_embedded": [
         dict,
     ],
