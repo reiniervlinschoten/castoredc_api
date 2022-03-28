@@ -125,6 +125,7 @@ def upload_survey_data(
             record_id=row["record_id"],
             survey_package_instance_id=instance["id"],
             body=body,
+            change_reason="testing_api",
         )
         imported = handle_response(response, imported, row, study)
     except (HTTPStatusError, RequestError, JSONDecodeError) as error:

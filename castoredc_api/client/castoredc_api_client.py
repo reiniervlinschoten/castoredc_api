@@ -217,7 +217,9 @@ class CastorClient:
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
 
-    def update_survey_instance_data_record(self, record_id, survey_instance_id, body):
+    def update_survey_instance_data_record(
+        self, record_id, survey_instance_id, body, change_reason
+    ):
         """Creates/updates a survey instance.
         Returns None if record not found.
         Post Data Models:
@@ -231,11 +233,11 @@ class CastorClient:
             self.study_url
             + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
         )
-        post_data = {"data": body}
+        post_data = {"data": body, "common": {"change_reason": change_reason}}
         return self.sync_post(url, post_data)
 
     def update_survey_package_instance_data_record(
-        self, record_id, survey_package_instance_id, body, filled_on=None
+        self, record_id, survey_package_instance_id, body, change_reason, filled_on=None
     ):
         """Creates/updates a survey package instance.
         Returns None if record not found.
@@ -252,7 +254,7 @@ class CastorClient:
             self.study_url + f"/record/{record_id}/data-point-collection/"
             f"survey-package-instance/{survey_package_instance_id}"
         )
-        post_data = {"data": body}
+        post_data = {"data": body, "common": {"change_reason": change_reason}}
         # Validate and format datetime
         if filled_on:
             if isinstance(filled_on, str):
