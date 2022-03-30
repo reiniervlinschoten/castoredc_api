@@ -145,6 +145,100 @@ class TestStudy:
             in e.value.response.json()["detail"]
         )
 
+    def test_invite_user_success_permissions(self, client):
+        """Tests inviting a user to the study"""
+        body = {
+            "institute_id": "47846A79-E02E-4545-9719-95B8DDED9108",
+            "email": "castoredcapi.github@gmail.com",
+            "message": "Testing API",
+            "manage_permissions": {
+                "manage_form": True,
+                "manage_users": True,
+                "manage_settings": True,
+                "manage_encryption": True,
+                "manage_records": True,
+            },
+            "institute_permissions": [
+                {
+                    "institute_id": "47846A79-E02E-4545-9719-95B8DDED9108",
+                    "role": None,
+                    "permissions": {
+                        "add": True,
+                        "view": True,
+                        "edit": True,
+                        "delete": True,
+                        "lock": True,
+                        "query": True,
+                        "export": True,
+                        "randomization_read": True,
+                        "randomization_write": True,
+                        "sign": True,
+                        "encrypt": True,
+                        "decrypt": True,
+                        "email_addresses": True,
+                        "sdv": True,
+                        "survey_send": True,
+                        "survey_view": True,
+                    },
+                }
+            ],
+        }
+        with pytest.raises(HTTPStatusError) as e:
+            client.invite_user_study("D234215B-D956-482D-BF17-71F2BB12A2FD", **body)
+        assert "400 Client Error: Bad Request for url" in str(e.value)
+        # User already exists
+        assert (
+            "Could not send an email to the added user."
+            in e.value.response.json()["detail"]
+        )
+
+    def test_invite_user_fail_permissions(self, client):
+        """Tests inviting a user to the study"""
+        body = {
+            "institute_id": "47846A79-E02E-4545-9719-95B8DDED9108",
+            "email": "fake@emailfakeemail.com",
+            "message": "Testing API",
+            "manage_permissions": {
+                "manage_form": True,
+                "manage_users": True,
+                "manage_settings": True,
+                "manage_encryption": True,
+                "manage_records": True,
+            },
+            "institute_permissions": [
+                {
+                    "institute_id": "FAKEA79-E02E-4545-9719-95B8DDED9108",
+                    "role": None,
+                    "permissions": {
+                        "add": True,
+                        "view": True,
+                        "edit": True,
+                        "delete": True,
+                        "lock": True,
+                        "query": True,
+                        "export": True,
+                        "randomization_read": True,
+                        "randomization_write": True,
+                        "sign": True,
+                        "encrypt": True,
+                        "decrypt": True,
+                        "email_addresses": True,
+                        "sdv": True,
+                        "survey_send": True,
+                        "survey_view": True,
+                    },
+                }
+            ],
+        }
+        with pytest.raises(HTTPStatusError) as e:
+            client.invite_user_study("D234215B-D956-482D-BF17-71F2BB12A2FD", **body)
+        assert "400 Client Error: Bad Request for url" in str(e.value)
+        # Permissions are wonky, but gives a non-informative error at Castor
+        assert (
+            "Could not send an email to the added user."
+            in e.value.response.json()["detail"]
+        )
+
     def test_invite_user_fail(self, client):
         """Tests failing to invite a user"""
         body = {

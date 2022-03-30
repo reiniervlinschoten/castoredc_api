@@ -62,6 +62,7 @@ def upload_survey_async(
     study: "CastorStudy",
     package_id: str,
     email: str,
+    change_reason: str,
 ) -> dict:
     """Uploads survey data to the study."""
     data = []
@@ -69,8 +70,7 @@ def upload_survey_async(
     for row in castorized_dataframe.to_dict("records"):
         data.append({"row": row, "package_id": package_id, "email": email})
     # Upload data
-    imported = asyncio.run(async_update_survey_data(data, study))
-
+    imported = asyncio.run(async_update_survey_data(data, study, change_reason))
     # Save output
     pd.DataFrame(imported).to_csv(
         pathlib.Path(

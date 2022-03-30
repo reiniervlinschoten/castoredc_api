@@ -89,6 +89,7 @@ def upload_survey(
     study: "CastorStudy",
     package_id: str,
     email: str,
+    change_reason: str,
 ) -> dict:
     """Uploads survey data to the study."""
     imported = []
@@ -100,7 +101,9 @@ def upload_survey(
         # Create body to send
         body = create_survey_body(instance, row, study)
         # Upload the data
-        imported = upload_survey_data(body, study, imported, instance, row)
+        imported = upload_survey_data(
+            body, study, imported, instance, row, change_reason
+        )
 
     # Save output
     pd.DataFrame(imported).to_csv(
@@ -116,7 +119,12 @@ def upload_survey(
 
 
 def upload_survey_data(
-    body: list, study: "CastorStudy", imported: list, instance: dict, row: dict
+    body: list,
+    study: "CastorStudy",
+    imported: list,
+    instance: dict,
+    row: dict,
+    change_reason: str,
 ) -> dict:
     """Tries to upload the survey data."""
     try:
@@ -125,6 +133,7 @@ def upload_survey_data(
             record_id=row["record_id"],
             survey_package_instance_id=instance["id"],
             body=body,
+            change_reason=change_reason,
         )
         imported = handle_response(response, imported, row, study)
     except (HTTPStatusError, RequestError, JSONDecodeError) as error:

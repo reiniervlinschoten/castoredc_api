@@ -553,6 +553,7 @@ package_model = {
         str,
     ],
     "is_mobile": [bool],
+    "is_training": [bool],
     "expire_after_hours": [int, type(None)],
     "_embedded": [
         dict,
@@ -1023,6 +1024,10 @@ record_model = {
     ],
     "record_id": [
         str,
+    ],
+    "record_status": [
+        str,
+        type(None),
     ],
     "_embedded": [
         dict,

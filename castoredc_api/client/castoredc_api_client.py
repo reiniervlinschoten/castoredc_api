@@ -217,7 +217,9 @@ class CastorClient:
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
 
-    def update_survey_instance_data_record(self, record_id, survey_instance_id, body):
+    def update_survey_instance_data_record(
+        self, record_id, survey_instance_id, body, change_reason
+    ):
         """Creates/updates a survey instance.
         Returns None if record not found.
         Post Data Models:
@@ -231,11 +233,11 @@ class CastorClient:
             self.study_url
             + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
         )
-        post_data = {"data": body}
+        post_data = {"data": body, "common": {"change_reason": change_reason}}
         return self.sync_post(url, post_data)
 
     def update_survey_package_instance_data_record(
-        self, record_id, survey_package_instance_id, body, filled_on=None
+        self, record_id, survey_package_instance_id, body, change_reason, filled_on=None
     ):
         """Creates/updates a survey package instance.
         Returns None if record not found.
@@ -252,7 +254,7 @@ class CastorClient:
             self.study_url + f"/record/{record_id}/data-point-collection/"
             f"survey-package-instance/{survey_package_instance_id}"
         )
-        post_data = {"data": body}
+        post_data = {"data": body, "common": {"change_reason": change_reason}}
         # Validate and format datetime
         if filled_on:
             if isinstance(filled_on, str):
@@ -290,7 +292,7 @@ class CastorClient:
         return self.retrieve_all_data_by_endpoint(
             endpoint="/field",
             data_name="fields",
-            params={"include": "metadata|validations|optiongroup"},
+            params={"include": "metadata,validations,optiongroup"},
         )
 
     def single_field(self, field_id):
@@ -299,7 +301,7 @@ class CastorClient:
         return self.retrieve_data_by_id(
             endpoint="/field",
             data_id=field_id,
-            params={"include": "metadata|validations|optiongroup"},
+            params={"include": "metadata,validations,optiongroup"},
         )
 
     # FIELD DEPENDENCY
@@ -697,10 +699,24 @@ class CastorClient:
         endpoint = f"/study/{study_id}/user/{user_id}"
         return self.retrieve_general_data(endpoint)
 
-    def invite_user_study(self, study_id, institute_id, email, message):
+    def invite_user_study(
+        self,
+        study_id,
+        institute_id,
+        email,
+        message,
+        manage_permissions=None,
+        institute_permissions=None,
+    ):
         """Invites user with email to the study linked to institute_id."""
         url = self.base_url + f"/study/{study_id}/user"
-        body = {"institute_id": institute_id, "email": email, "message": message}
+        body = {
+            "institute_id": institute_id,
+            "email": email,
+            "message": message,
+            "manage_permission": manage_permissions,
+            "institute_permissions": institute_permissions,
+        }
         return self.sync_post(url, body)
 
     # STUDY-DATA-ENTRY

@@ -117,11 +117,19 @@ def upload_data(
         )
         if use_async:
             upload = upload_survey_async(
-                castorized_dataframe, study, target_form["id"], email
+                castorized_dataframe,
+                study,
+                target_form["id"],
+                email,
+                f"api_upload_{target}_{upload_datetime}",
             )
         else:
             upload = upload_survey(
-                castorized_dataframe, study, target_form["id"], email
+                castorized_dataframe,
+                study,
+                target_form["id"],
+                email,
+                f"api_upload_{target}_{upload_datetime}",
             )
     elif target == "Report":
         target_form = study.get_single_form_name(target_name)
