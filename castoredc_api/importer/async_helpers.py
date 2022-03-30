@@ -67,7 +67,9 @@ async def async_upload_study_data(item, client, study):
     return feedback
 
 
-async def async_update_survey_data(data: list, study: "CastorStudy") -> list:
+async def async_update_survey_data(
+    data: list, study: "CastorStudy", change_reason: str
+) -> list:
     """Updates the Castor EDC database with given survey datapoints."""
     # Split list to handle error when len(tasks) > max_connections
     chunks = [
@@ -82,7 +84,10 @@ async def async_update_survey_data(data: list, study: "CastorStudy") -> list:
             timeout=study.client.timeout,
             limits=study.client.limits,
         ) as client:
-            tasks = [async_upload_survey_data(item, client, study) for item in chunk]
+            tasks = [
+                async_upload_survey_data(item, client, study, change_reason)
+                for item in chunk
+            ]
 
             # Show progress bar when handling responses
             temp_responses = [
@@ -97,7 +102,7 @@ async def async_update_survey_data(data: list, study: "CastorStudy") -> list:
     return responses
 
 
-async def async_upload_survey_data(item, client, study):
+async def async_upload_survey_data(item, client, study, change_reason):
     """Coroutine to upload a single row of survey data to a new survey and handle the response."""
     # Copy so we don't overwrite dict
     feedback = copy.deepcopy(item["row"])
@@ -116,7 +121,7 @@ async def async_upload_survey_data(item, client, study):
             + f"/record/{item['row']['record_id']}/data-point-collection/"
             f"survey-package-instance/{instance['id']}"
         )
-        json = {"data": body}
+        json = {"data": body, "common": {"change_reason": change_reason}}
         feedback = await async_upload_data(client, feedback, json, study, url)
     except httpx.HTTPStatusError as error:
         feedback["error"] = error.response.json()
