@@ -49,6 +49,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        cd castoredc_api
         pytest tests/test_castor_objects --cov=./ --cov-append
 
     - name: Running Integration Tests
@@ -60,6 +61,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        cd castoredc_api
         pytest tests/test_integration --cov=./ --cov-append
 
     - name: Running Output Tests
@@ -71,6 +73,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        cd castoredc_api
         pytest tests/test_output --cov=./ --cov-append
 
     - name: Running Import Tests
@@ -82,6 +85,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        cd castoredc_api
         pytest tests/test_import --cov=./ --cov-append
 
     - name: "Upload coverage to Codecov"
