@@ -38,7 +38,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest test_api_endpoints --cov=./ --cov-report=xml
+        pytest tests/test_api_endpoints --cov=./ --cov-report=xml
 
     - name: Running Object Tests
       env:
@@ -49,8 +49,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
-        cd castoredc_api
-        pytest test_castor_objects --cov=./ --cov-append
+        pytest tests/test_castor_objects --cov=./ --cov-append
 
     - name: Running Integration Tests
       env:
@@ -61,8 +60,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
-        cd castoredc_api
-        pytest test_integration --cov=./ --cov-append
+        pytest tests/test_integration --cov=./ --cov-append
 
     - name: Running Output Tests
       env:
@@ -73,8 +71,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
-        cd castoredc_api
-        pytest test_output --cov=./ --cov-append
+        pytest tests/test_output --cov=./ --cov-append
 
     - name: Running Import Tests
       env:
@@ -85,8 +82,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
-        cd castoredc_api
-        pytest test_import --cov=./ --cov-append
+        pytest tests/test_import --cov=./ --cov-append
 
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v2
