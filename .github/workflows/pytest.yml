@@ -50,7 +50,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_castor_objects --cov=./ --cov-append
+        pytest tests/test_castor_objects --cov-append
 
     - name: Running Integration Tests
       env:
@@ -62,7 +62,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_integration --cov=./ --cov-append
+        pytest tests/test_integration --cov-append
 
     - name: Running Output Tests
       env:
@@ -74,7 +74,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_output --cov=./ --cov-append
+        pytest tests/test_output --cov-append
 
     - name: Running Import Tests
       env:
@@ -86,7 +86,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_import --cov=./ --cov-append
+        pytest tests/test_import --cov-append
 
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v2
