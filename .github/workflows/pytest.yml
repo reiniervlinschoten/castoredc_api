@@ -62,7 +62,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        coverage run -m -a  tests/test_integration
+        coverage run -m -a pytest tests/test_integration
 
     - name: Running Output Tests
       env:
