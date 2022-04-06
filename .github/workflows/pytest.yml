@@ -87,6 +87,7 @@ jobs:
       run: |
         cd castoredc_api
         coverage run -m -a pytest tests/test_import
+        coverage xml
 
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v2
