@@ -27,7 +27,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest pytest-cov csv-diff
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Running Tests
+
+    - name: Running Client Tests
       env:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
@@ -36,10 +37,57 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
-        sudo sysctl -w net.ipv4.tcp_keepalive_time=60
-        sudo ethtool -K eth0 tso off gso off gro off tx off rx off lro off
         cd castoredc_api
-        pytest --cov=./ --cov-report=xml
+        pytest tests/test_api_endpoints --cov=./ --cov-report=xml
+
+    - name: Running Object Tests
+      env:
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        CLIENT_STUDY_ID: ${{ secrets.CLIENT_STUDY_ID }}
+        IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
+        STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
+        SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+      run: |
+        cd castoredc_api
+        pytest tests/test_castor_objects --cov=./ --cov-append
+
+    - name: Running Integration Tests
+      env:
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        CLIENT_STUDY_ID: ${{ secrets.CLIENT_STUDY_ID }}
+        IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
+        STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
+        SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+      run: |
+        cd castoredc_api
+        pytest tests/test_integration --cov=./ --cov-append
+
+    - name: Running Output Tests
+      env:
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        CLIENT_STUDY_ID: ${{ secrets.CLIENT_STUDY_ID }}
+        IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
+        STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
+        SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+      run: |
+        cd castoredc_api
+        pytest tests/test_output --cov=./ --cov-append
+
+    - name: Running Import Tests
+      env:
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        CLIENT_STUDY_ID: ${{ secrets.CLIENT_STUDY_ID }}
+        IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
+        STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
+        SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+      run: |
+        cd castoredc_api
+        pytest tests/test_import --cov=./ --cov-append
+
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v2
       with:
