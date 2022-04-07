@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-cov csv-diff
+        pip install pytest coverage csv-diff
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Running Client Tests
@@ -38,7 +38,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_api_endpoints --cov=./ --cov-report=xml
+        coverage run -m pytest tests/test_api_endpoints
 
     - name: Running Object Tests
       env:
@@ -50,7 +50,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_castor_objects --cov-append
+        coverage run -m -a pytest tests/test_castor_objects
 
     - name: Running Integration Tests
       env:
@@ -62,7 +62,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_integration --cov-append
+        coverage run -m -a pytest tests/test_integration
 
     - name: Running Output Tests
       env:
@@ -74,7 +74,7 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_output --cov-append
+        coverage run -m -a pytest tests/test_output
 
     - name: Running Import Tests
       env:
@@ -86,7 +86,8 @@ jobs:
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
         cd castoredc_api
-        pytest tests/test_import --cov-append
+        coverage run -m -a pytest tests/test_import
+        coverage xml
 
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v2
