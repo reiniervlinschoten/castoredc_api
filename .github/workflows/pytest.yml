@@ -24,6 +24,7 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
+        sudo ethtool -K eth0 tx off rx off
         python -m pip install --upgrade pip
         pip install pytest coverage csv-diff
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
@@ -37,6 +38,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
         coverage run -m pytest tests/test_api_endpoints
 
@@ -49,6 +51,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
         coverage run -m -a pytest tests/test_castor_objects
 
@@ -61,6 +64,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
         coverage run -m -a pytest tests/test_integration
 
@@ -73,6 +77,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
         coverage run -m -a pytest tests/test_output
 
@@ -85,6 +90,7 @@ jobs:
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
       run: |
+        sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
         coverage run -m -a pytest tests/test_import
         coverage xml
