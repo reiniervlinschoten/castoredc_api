@@ -21,6 +21,9 @@ class TestSurveyStep:
         "survey_step_id": "C19211FE-1C53-43F9-BC85-460DF1255153",
         "survey_step_name": "Questions about your well-being",
         "survey_step_description": "The steps in a survey represent survey pages.",
+        "label_bold_if_required": True,
+        "form_numbering": "visible",
+        "field_alignment": "left-aligned",
         "survey_step_number": 1,
         "_embedded": {
             "survey": {
