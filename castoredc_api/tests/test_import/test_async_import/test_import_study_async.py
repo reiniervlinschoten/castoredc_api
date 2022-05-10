@@ -128,6 +128,7 @@ class TestImportStudyAsync:
                     "his_family": "2;3;4",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -144,6 +145,7 @@ class TestImportStudyAsync:
                     "his_family": "1;2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -160,6 +162,7 @@ class TestImportStudyAsync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -176,6 +179,7 @@ class TestImportStudyAsync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -192,6 +196,7 @@ class TestImportStudyAsync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -209,6 +214,7 @@ class TestImportStudyAsync:
                     "pat_race": "1",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -222,6 +228,7 @@ class TestImportStudyAsync:
                     "pat_race": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -234,6 +241,7 @@ class TestImportStudyAsync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -247,6 +255,7 @@ class TestImportStudyAsync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -263,6 +272,7 @@ class TestImportStudyAsync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -286,6 +296,7 @@ class TestImportStudyAsync:
                     "his_family": "2;3;4",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110002": [
@@ -302,6 +313,7 @@ class TestImportStudyAsync:
                     "his_family": "1;2",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110003": [
@@ -318,6 +330,7 @@ class TestImportStudyAsync:
                     "his_family": "0",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110004": [
@@ -334,6 +347,7 @@ class TestImportStudyAsync:
                     "his_family": "5;7",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110005": [
@@ -350,6 +364,7 @@ class TestImportStudyAsync:
                     "his_family": "8",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
     }
