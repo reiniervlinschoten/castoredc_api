@@ -274,7 +274,7 @@ class CastorClient:
                 "exclude_empty_surveys": exclude_empty_surveys,
                 "exclude_empty_reports": exclude_empty_reports,
             },
-            timeout=httpx.Timeout(10.0, read=300)
+            timeout=httpx.Timeout(10.0, read=300),
         )["content"]
 
     def export_study_structure(self):
@@ -1091,9 +1091,7 @@ class CastorClient:
     def sync_get(self, url: str, params: dict, timeout=None) -> dict:
         """Synchronous querying of Castor API with a single get requests."""
         if timeout:
-            response = self.client.get(
-                url=url, params=params, timeout=timeout
-            )
+            response = self.client.get(url=url, params=params, timeout=timeout)
         else:
             response = self.client.get(url=url, params=params)
         return self.handle_response(response)
