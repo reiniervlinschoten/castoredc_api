@@ -138,6 +138,7 @@ class TestImportReportSync:
                     "med_units": "3",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -151,6 +152,7 @@ class TestImportReportSync:
                     "med_other_unit": "mg/4 weeks",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -164,6 +166,7 @@ class TestImportReportSync:
                     "med_other_unit": "mg/8 weeks",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -176,6 +179,7 @@ class TestImportReportSync:
                     "med_units": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -188,6 +192,7 @@ class TestImportReportSync:
                     "med_units": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -203,9 +208,16 @@ class TestImportReportSync:
                     "med_units": "3",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
-        "110002": [{"success": {"med_start": "17-08-2018"}, "failed": {}}],
+        "110002": [
+            {
+                "success": {"med_start": "17-08-2018"},
+                "failed": {},
+                "error": {},
+            }
+        ],
         "110003": [
             {
                 "success": {
@@ -216,10 +228,15 @@ class TestImportReportSync:
                     "med_other_unit": "mg/8 weeks",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
-            {"success": {"med_name": "Thioguanine", "med_units": "2"}, "failed": {}}
+            {
+                "success": {"med_name": "Thioguanine", "med_units": "2"},
+                "failed": {},
+                "error": {},
+            }
         ],
         "110005": [
             {
@@ -230,6 +247,7 @@ class TestImportReportSync:
                     "med_dose": "10",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -245,6 +263,7 @@ class TestImportReportSync:
                     "med_units": "3",
                 },
                 "failed": {},
+                "error": {},
             },
             {
                 "success": {
@@ -256,6 +275,7 @@ class TestImportReportSync:
                     "med_other_unit": "mg/4 weeks",
                 },
                 "failed": {},
+                "error": {},
             },
             {
                 "success": {
@@ -267,6 +287,7 @@ class TestImportReportSync:
                     "med_other_unit": "mg/8 weeks",
                 },
                 "failed": {},
+                "error": {},
             },
         ],
         "110002": [
@@ -279,6 +300,7 @@ class TestImportReportSync:
                     "med_units": "2",
                 },
                 "failed": {},
+                "error": {},
             },
             {
                 "success": {
@@ -289,6 +311,7 @@ class TestImportReportSync:
                     "med_units": "2",
                 },
                 "failed": {},
+                "error": {},
             },
         ],
     }

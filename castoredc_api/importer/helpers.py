@@ -649,9 +649,9 @@ def create_feedback(imported):
     "Creates feedback from the (un)successful imports"
     feedback_total = {}
     for row in imported:
-        success = row.get("success")
-        failed = row.get("failed")
-        error = row.get("error")
+        success = row.get("success", {})
+        failed = row.get("failed", {})
+        error = row.get("error", {})
 
         if row["record_id"] not in feedback_total:
             feedback_total[row["record_id"]] = [

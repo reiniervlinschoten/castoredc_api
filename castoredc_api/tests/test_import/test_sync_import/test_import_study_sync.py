@@ -122,6 +122,7 @@ class TestImportStudySync:
                     "his_family": "2;3;4",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -138,6 +139,7 @@ class TestImportStudySync:
                     "his_family": "1;2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -154,6 +156,7 @@ class TestImportStudySync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -170,6 +173,7 @@ class TestImportStudySync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -186,6 +190,7 @@ class TestImportStudySync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -203,6 +208,7 @@ class TestImportStudySync:
                     "pat_race": "1",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -216,6 +222,7 @@ class TestImportStudySync:
                     "pat_race": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -228,6 +235,7 @@ class TestImportStudySync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -241,6 +249,7 @@ class TestImportStudySync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -257,6 +266,7 @@ class TestImportStudySync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
