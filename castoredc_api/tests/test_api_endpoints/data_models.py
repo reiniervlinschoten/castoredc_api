@@ -724,6 +724,15 @@ survey_step_model = {
     "_links": [
         dict,
     ],
+    "label_bold_if_required": [
+        bool,
+    ],
+    "form_numbering": [
+        str,
+    ],
+    "field_alignment": [
+        str,
+    ],
 }
 
 field_dep_model = {
