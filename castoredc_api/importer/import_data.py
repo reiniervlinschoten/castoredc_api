@@ -62,6 +62,7 @@ def import_data(
         study=study,
         format_options=configuration,
     )
+
     # Tests if Error is anywhere in the dataframe
     if "Error" in castorized_dataframe.to_string():
         castorized_dataframe.to_csv(
@@ -80,6 +81,16 @@ def import_data(
     upload = upload_data(
         castorized_dataframe, study, target, target_name, email, use_async
     )
+
+    # Print results
+    success = sum([len(row["success"]) for key, item in upload.items() for row in item])
+    failed = sum([len(row["failed"]) for key, item in upload.items() for row in item])
+    error = sum([len(row["error"]) for key, item in upload.items() for row in item])
+
+    print(f"Success: {success} \n"
+          f"Failure: {failed} \n"
+          f"Error: {error}")
+
     return upload
 
 
