@@ -83,13 +83,11 @@ def import_data(
     )
 
     # Print results
-    success = sum([len(row["success"]) for key, item in upload.items() for row in item])
-    failed = sum([len(row["failed"]) for key, item in upload.items() for row in item])
-    error = sum([len(row["error"]) for key, item in upload.items() for row in item])
-
-    print(f"Success: {success} \n"
-          f"Failure: {failed} \n"
-          f"Error: {error}")
+    print(
+        f"Success: {sum([len(row['success']) for key, item in upload.items() for row in item])} \n"
+        f"Failure: {sum([len(row['failed']) for key, item in upload.items() for row in item])} \n"
+        f"Error: {sum([len(row['error']) for key, item in upload.items() for row in item])}"
+    )
 
     return upload
 
