@@ -10,6 +10,8 @@
 [![conda-forge](https://img.shields.io/conda/v/conda-forge/castoredc_api)](https://anaconda.org/conda-forge/castoredc_api)
 
 ## Features
+#### Supports CastorEDC Release 2022.2
+
 This is a Python package for interacting with the API of Castor Electronic Data Capture (EDC). 
 The package contains functions to interact with all the endpoints defined on https://data.castoredc.com/api#/.
 Within the package are functions for easy export and import of your data through the API.
