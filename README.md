@@ -10,6 +10,8 @@
 [![conda-forge](https://img.shields.io/conda/v/conda-forge/castoredc_api)](https://anaconda.org/conda-forge/castoredc_api)
 
 ## Features
+#### Supports CastorEDC Release 2022.2
+
 This is a Python package for interacting with the API of Castor Electronic Data Capture (EDC). 
 The package contains functions to interact with all the endpoints defined on https://data.castoredc.com/api#/.
 Within the package are functions for easy export and import of your data through the API.
@@ -416,6 +418,11 @@ imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
 
 1. Python Version >= 3.8
 2. See [requirements.txt](requirements.txt)
+
+## Known Issues
+1. Async import and export cannot be used in an IPython environment, see [this discussion](https://github.com/reiniervlinschoten/castoredc_api/pull/39#discussion_r740389868)
+2. Feather export is uncompressed, see [this issue](https://github.com/ContinuumIO/anaconda-issues/issues/12500)
+3. Studies with a large number of data (> 2.5M data points) cannot currently be exported as the Castor EDC server times out
 
 ## Contributing
 

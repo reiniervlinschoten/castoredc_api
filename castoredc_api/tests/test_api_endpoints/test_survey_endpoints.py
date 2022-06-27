@@ -77,6 +77,9 @@ class TestSurveyEndpoints:
         "sender_email": "no-reply@castoredc.com",
         "is_mobile": False,
         "is_training": False,
+        "is_repeatable": False,
+        "is_resumable": False,
+        "as_needed": False,
         "expire_after_hours": None,
         "_embedded": {
             "surveys": [
@@ -224,6 +227,9 @@ class TestSurveyEndpoints:
                 "sender_email": "no-reply@castoredc.com",
                 "is_mobile": False,
                 "is_training": False,
+                "is_repeatable": False,
+                "is_resumable": False,
+                "as_needed": False,
                 "expire_after_hours": None,
                 "allow_open_survey_link": False,
                 "_embedded": {
@@ -400,7 +406,7 @@ class TestSurveyEndpoints:
             client.all_survey_package_instances(
                 record_id="000001", finished_on="14-08-2020"
             )
-        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
+        assert "422 Client Error: Unprocessable Content for url" in str(e.value)
 
     def test_all_survey_package_instance_record_fail(
         self, client, all_survey_package_instances
@@ -449,7 +455,7 @@ class TestSurveyEndpoints:
 
         with pytest.raises(HTTPStatusError) as e:
             client.create_survey_package_instance(**body)
-        assert "422 Client Error: Unprocessable Entity for url:" in str(e.value)
+        assert "422 Client Error: Unprocessable Content for url:" in str(e.value)
 
         new_amount = len(client.all_survey_package_instances(record_id="000001"))
         assert new_amount == old_amount

@@ -456,9 +456,10 @@ class TestDataPoint:
             }
             for field in fields
         ]
-        feedback = client.update_study_data_record("000018", common, data)
-        assert feedback["total_processed"] == 5
-        assert feedback["total_failed"] == 5
+
+        with pytest.raises(HTTPStatusError) as e:
+            feedback = client.update_study_data_record("000018", common, data)
+        assert "500 Server Error: Internal Server Error for url" in str(e.value)
 
     def test_create_study_data_points_fail_record(self, client):
         """Tests failing to change data in the study"""
@@ -541,11 +542,11 @@ class TestDataPoint:
         ]
 
         # Update the report
-        feedback = client.update_report_data_record(
-            "000020", "D9E60041-E674-4197-819B-2C4F16E05B04", common, data
-        )
-        assert feedback["total_processed"] == 5
-        assert feedback["total_failed"] == 5
+        with pytest.raises(HTTPStatusError) as e:
+            feedback = client.update_report_data_record(
+                "000020", "D9E60041-E674-4197-819B-2C4F16E05B04", common, data
+            )
+        assert "500 Server Error: Internal Server Error for url" in str(e.value)
 
     def test_create_report_data_points_fail_record(self, client):
         """Tests failing to change report data based on record id"""
@@ -630,11 +631,11 @@ class TestDataPoint:
         ]
 
         # Update the survey
-        feedback = client.update_survey_instance_data_record(
-            "000020", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data, "testing api"
-        )
-        assert feedback["total_processed"] == 5
-        assert feedback["total_failed"] == 5
+        with pytest.raises(HTTPStatusError) as e:
+            feedback = client.update_survey_instance_data_record(
+                "000020", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data, "testing api"
+            )
+        assert "500 Server Error: Internal Server Error for url" in str(e.value)
 
     def test_create_survey_instance_data_points_fail_record(self, client):
         """Tests failing to change survey data based on record id"""

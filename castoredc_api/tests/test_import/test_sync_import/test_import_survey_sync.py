@@ -121,7 +121,7 @@ class TestImportSurveySync:
                 email="python_wrapper@you-spam.com",
             )
 
-        assert str(e.value) == self.survey_error_wrong_field
+        assert str(e.value) == self.survey_error
 
     survey_success = {
         "110001": [
@@ -134,6 +134,7 @@ class TestImportSurveySync:
                     "VAS": "25",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -146,6 +147,7 @@ class TestImportSurveySync:
                     "VAS": "88",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -158,6 +160,7 @@ class TestImportSurveySync:
                     "VAS": "13",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -167,13 +170,21 @@ class TestImportSurveySync:
             {
                 "success": {"SF12_1": "3", "SF12_3": "2", "SF12_12": "3", "VAS": "25"},
                 "failed": {},
+                "error": {},
             }
         ],
-        "110002": [{"success": {"SF12_2": "4", "SF12_12": "6"}, "failed": {}}],
+        "110002": [
+            {
+                "success": {"SF12_2": "4", "SF12_12": "6"},
+                "failed": {},
+                "error": {},
+            }
+        ],
         "110003": [
             {
                 "success": {"SF12_1": "1", "SF12_2": "3", "SF12_12": "5", "VAS": "13"},
                 "failed": {},
+                "error": {},
             }
         ],
     }

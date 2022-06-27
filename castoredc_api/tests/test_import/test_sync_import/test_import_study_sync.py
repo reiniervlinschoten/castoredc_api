@@ -104,8 +104,7 @@ class TestImportStudySync:
                 label_data=True,
                 target="Study",
             )
-
-        assert str(e.value) == self.study_error_wrong_field
+        assert str(e.value) == self.study_error
 
     study_success = {
         "110001": [
@@ -122,6 +121,7 @@ class TestImportStudySync:
                     "his_family": "2;3;4",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -138,6 +138,7 @@ class TestImportStudySync:
                     "his_family": "1;2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -154,6 +155,7 @@ class TestImportStudySync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -170,6 +172,7 @@ class TestImportStudySync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -186,6 +189,7 @@ class TestImportStudySync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -203,6 +207,7 @@ class TestImportStudySync:
                     "pat_race": "1",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -216,6 +221,7 @@ class TestImportStudySync:
                     "pat_race": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -228,6 +234,7 @@ class TestImportStudySync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -241,6 +248,7 @@ class TestImportStudySync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -257,6 +265,7 @@ class TestImportStudySync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }

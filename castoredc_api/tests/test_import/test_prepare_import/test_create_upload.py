@@ -18,6 +18,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final.xlsx"
@@ -38,6 +40,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final.xlsx"
@@ -58,6 +62,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_missings.xlsx"
@@ -78,6 +84,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_missings.xlsx"
@@ -98,6 +106,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_errors.xlsx"
@@ -118,6 +128,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_errors.xlsx"
@@ -138,6 +150,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final.xlsx"
@@ -158,6 +172,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final.xlsx"
@@ -178,6 +194,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_missings.xlsx"
@@ -198,6 +216,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_missings.xlsx"
@@ -218,6 +238,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_errors.xlsx"
@@ -238,6 +260,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_final_errors.xlsx"
@@ -258,6 +282,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final.xlsx"
@@ -278,6 +304,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final.xlsx"
@@ -298,6 +326,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_missings.xlsx"
@@ -318,6 +348,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_missings.xlsx"
@@ -338,6 +370,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_errors.xlsx"
@@ -358,6 +392,8 @@ class TestCreateUpload:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_errors.xlsx"
