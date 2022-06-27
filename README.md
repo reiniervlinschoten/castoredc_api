@@ -419,6 +419,11 @@ imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
 1. Python Version >= 3.8
 2. See [requirements.txt](requirements.txt)
 
+## Known Issues
+1. Async import and export cannot be used in an IPython environment, see [this discussion](https://github.com/reiniervlinschoten/castoredc_api/pull/39#discussion_r740389868)
+2. Feather export is uncompressed, see [this issue](https://github.com/ContinuumIO/anaconda-issues/issues/12500)
+3. Studies with a large number of data (> 2.5M data points) cannot currently be exported as the Castor EDC server times out
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
