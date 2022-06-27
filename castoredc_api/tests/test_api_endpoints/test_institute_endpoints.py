@@ -99,5 +99,5 @@ class TestInstitute:
                 "country_id": -55,
             }
             client.create_institute(**body)
-        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
+        assert "422 Client Error: Unprocessable Content for url" in str(e.value)
         assert "Failed Validation" in e.value.response.json()["detail"]
