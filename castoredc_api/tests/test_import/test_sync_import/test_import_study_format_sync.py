@@ -92,6 +92,7 @@ class TestImportStudyFormatSync:
                     "his_family": "2;3;4",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -108,6 +109,7 @@ class TestImportStudyFormatSync:
                     "his_family": "1;2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -124,6 +126,7 @@ class TestImportStudyFormatSync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -140,6 +143,7 @@ class TestImportStudyFormatSync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -156,6 +160,7 @@ class TestImportStudyFormatSync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -173,6 +178,7 @@ class TestImportStudyFormatSync:
                     "pat_race": "1",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -186,6 +192,7 @@ class TestImportStudyFormatSync:
                     "pat_race": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -198,6 +205,7 @@ class TestImportStudyFormatSync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -211,6 +219,7 @@ class TestImportStudyFormatSync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -227,6 +236,7 @@ class TestImportStudyFormatSync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }

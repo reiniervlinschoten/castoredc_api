@@ -141,6 +141,7 @@ class TestImportSurveyAsync:
                     "VAS": "25",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -153,6 +154,7 @@ class TestImportSurveyAsync:
                     "VAS": "88",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -165,6 +167,7 @@ class TestImportSurveyAsync:
                     "VAS": "13",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -174,13 +177,21 @@ class TestImportSurveyAsync:
             {
                 "success": {"SF12_1": "3", "SF12_3": "2", "SF12_12": "3", "VAS": "25"},
                 "failed": {},
+                "error": {},
             }
         ],
-        "110002": [{"success": {"SF12_2": "4", "SF12_12": "6"}, "failed": {}}],
+        "110002": [
+            {
+                "success": {"SF12_2": "4", "SF12_12": "6"},
+                "failed": {},
+                "error": {},
+            }
+        ],
         "110003": [
             {
                 "success": {"SF12_1": "1", "SF12_2": "3", "SF12_12": "5", "VAS": "13"},
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -205,6 +216,7 @@ class TestImportSurveyAsync:
                         "Survey Package Instance and Field Id do not match",
                     ]
                 },
+                "error": {},
             }
         ],
         "110002": [
@@ -222,6 +234,7 @@ class TestImportSurveyAsync:
                         "Survey Package Instance and Field Id do not match",
                     ]
                 },
+                "error": {},
             }
         ],
         "110003": [
@@ -239,6 +252,7 @@ class TestImportSurveyAsync:
                         "Survey Package Instance and Field Id do not match",
                     ]
                 },
+                "error": {},
             }
         ],
     }
