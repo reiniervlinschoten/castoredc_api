@@ -104,8 +104,7 @@ class TestImportStudySync:
                 label_data=True,
                 target="Study",
             )
-
-        assert str(e.value) == self.study_error_wrong_field
+        assert str(e.value) == self.study_error
 
     study_success = {
         "110001": [

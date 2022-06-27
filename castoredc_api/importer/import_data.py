@@ -61,6 +61,8 @@ def import_data(
         label_data=label_data,
         study=study,
         format_options=configuration,
+        target=target,
+        target_name=target_name,
     )
 
     # Tests if Error is anywhere in the dataframe

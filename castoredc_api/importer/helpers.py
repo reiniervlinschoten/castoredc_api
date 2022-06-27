@@ -101,6 +101,8 @@ def castorize_column(
     study: "CastorStudy",
     variable_translation: typing.Optional[typing.Dict],
     format_options: dict,
+    target,
+    target_name,
 ) -> dict:
     """Translates the values in a column to Castorized values ready for import."""
     if new_name[0] == "record_id":
@@ -115,17 +117,75 @@ def castorize_column(
         return_value = {new_name[0]: record_column}
     else:
         return_value = castorize_column_helper(
-            label_data, new_name, study, to_import, variable_translation, format_options
+            label_data,
+            new_name,
+            study,
+            to_import,
+            variable_translation,
+            format_options,
+            target,
+            target_name,
         )
     return return_value
 
 
 def castorize_column_helper(
-    label_data, new_name, study, to_import, variable_translation, format_options
+    label_data,
+    new_name,
+    study,
+    to_import,
+    variable_translation,
+    format_options,
+    target,
+    target_name,
 ):
     """Helper function for selecting the correct way to castorize a column."""
     target_field = study.get_single_field(new_name[0])
-    if target_field.field_type in ["checkbox", "dropdown", "radio"]:
+    # Check if we want to validate field exists for parent
+    # This can be None for testing purposes
+    if target == "Study":
+        # Check for study
+        if target_field.step.form.form_type != "Study":
+            return {
+                new_name[0]: [
+                    "Error: field is not child of given target" for _ in to_import
+                ]
+            }
+    elif target == "Report":
+        # Check for reports)
+        if target_field.step.form.form_name != target_name:
+            return {
+                new_name[0]: [
+                    "Error: field is not child of given target" for _ in to_import
+                ]
+            }
+    elif target == "Survey":
+        # Check for surveys (need to extract all forms in given survey package)
+        # TODO: remove this here and put in main structure, see also #47
+        package = next(
+            (
+                item
+                for item in study.client.all_survey_packages()
+                if item["name"] == target_name
+            ),
+            None,
+        )
+        if package is None:
+            return {
+                new_name[0]: ["Error: survey package does not exist" for _ in to_import]
+            }
+        elif target_field.step.form.form_name not in [
+            survey["name"] for survey in package["_embedded"]["surveys"]
+        ]:
+            return {
+                new_name[0]: [
+                    "Error: field is not child of given target" for _ in to_import
+                ]
+            }
+
+    if target_field is None:
+        return_value = {new_name[0]: ["Error: field does not exist" for _ in to_import]}
+    elif target_field.field_type in ["checkbox", "dropdown", "radio"]:
         return_value = castorize_optiongroup_column_helper(
             label_data, new_name, study, target_field, to_import, variable_translation
         )
@@ -552,6 +612,8 @@ def create_upload(
     label_data: bool,
     study: "CastorStudy",
     format_options: dict,
+    target: typing.Optional[str],
+    target_name: typing.Optional[str],
 ) -> pd.DataFrame:
     """Returns a upload-ready dataframe from a path to an Excel file."""
     to_upload = read_excel(path_to_upload)
@@ -574,6 +636,8 @@ def create_upload(
             study=study,
             variable_translation=variable_translation,
             format_options=format_options,
+            target=target,
+            target_name=target_name,
         )
         new_data = {**new_data, **new_column}
     return pd.DataFrame.from_dict(new_data)

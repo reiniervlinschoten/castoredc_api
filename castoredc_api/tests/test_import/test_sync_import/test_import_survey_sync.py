@@ -121,7 +121,7 @@ class TestImportSurveySync:
                 email="python_wrapper@you-spam.com",
             )
 
-        assert str(e.value) == self.survey_error_wrong_field
+        assert str(e.value) == self.survey_error
 
     survey_success = {
         "110001": [

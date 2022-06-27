@@ -41,6 +41,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -60,6 +62,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"his_family": ["2;3;4", "1;2", "0", "5;7", "8"]}
 
@@ -77,6 +81,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "base_bl_date": [
@@ -102,6 +108,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "onset_stroke": [
@@ -127,6 +135,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"pat_race": ["1", "2", "3", "4", "5"]}
 
@@ -144,6 +154,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -173,6 +185,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -198,6 +212,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"base_hb": ["8.3", "7.2", "9.1", "3.2", "10.3"]}
 
@@ -219,6 +235,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"base_hb": ["8.3", "15", "9.1", "3.2", "10.3"]}
 
@@ -236,6 +254,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"pat_sex": ["0", "0", "1", "1", "0"]}
 
@@ -255,6 +275,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "med_units": ["3", "7", "7", "2", "2"],
@@ -275,6 +297,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"VAS": ["25", "88", "13"]}
 
@@ -292,6 +316,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "med_name": [
@@ -317,6 +343,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "onset_trombectomy": ["09:25", "06:33", "12:24", "23:23", "08:14"]
@@ -336,6 +364,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "pat_birth_year": ["1999", "1956", "1945", "1933", "1921"]
@@ -359,6 +389,8 @@ class TestValueTranslation:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "pat_birth_year": ["1999", "1900", "1945", "1933", "1921"]
@@ -403,6 +435,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "record_id": ["110001", "110002", "110003", "110004", "110005"]
@@ -422,6 +456,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"his_family": [None, None, "0", "5;7", "8"]}
 
@@ -439,6 +475,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "base_bl_date": [
@@ -464,6 +502,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "onset_stroke": [
@@ -489,6 +529,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"pat_race": ["1", "2", None, "4", "5"]}
 
@@ -506,6 +548,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -531,6 +575,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"base_hb": ["8.3", None, "9.1", "3.2", "10.3"]}
 
@@ -548,6 +594,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"pat_sex": ["0", "0", None, "1", "0"]}
 
@@ -567,6 +615,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "med_units": ["3", None, "7", "2", None],
@@ -587,6 +637,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"VAS": ["25", None, "13"]}
 
@@ -604,6 +656,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "med_name": ["Azathioprine", None, None, "Thioguanine", "Tofacitinib"]
@@ -623,6 +677,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "onset_trombectomy": ["09:25", "06:33", "12:24", None, "08:14"]
@@ -642,6 +698,8 @@ class TestValueTranslationMissing:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"pat_birth_year": ["1999", None, None, None, "1921"]}
 
@@ -684,6 +742,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         # Record checking fails at the import stage
         assert import_column == {
@@ -710,6 +770,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "his_family": [
@@ -735,6 +797,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "base_bl_date": [
@@ -760,6 +824,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "onset_stroke": [
@@ -785,6 +851,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "pat_race": [
@@ -810,6 +878,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "fac_V_leiden": [
@@ -835,6 +905,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "base_hb": [
@@ -860,6 +932,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "pat_sex": [
@@ -887,6 +961,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "med_units": ["7", "7", "7", "7", "7"],
@@ -907,6 +983,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "VAS": ["Error: not a number", "Error: not a number", "Error: not a number"]
@@ -926,6 +1004,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {"med_name": ["cant", "be", "wrong", "cuz", "text"]}
 
@@ -943,6 +1023,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "onset_trombectomy": [
@@ -968,6 +1050,8 @@ class TestValueTranslationFail:
                 "datetime": "%d-%m-%Y;%H:%M",
                 "time": "%H:%M",
             },
+            target=None,
+            target_name=None,
         )
         assert import_column == {
             "pat_birth_year": [

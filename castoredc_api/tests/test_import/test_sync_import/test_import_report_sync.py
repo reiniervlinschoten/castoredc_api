@@ -124,8 +124,7 @@ class TestImportReportSync:
                 target="Report",
                 target_name="Medication",
             )
-
-        assert str(e.value) == self.report_error_wrong_field
+        assert str(e.value) == self.report_error
 
     report_success = {
         "110001": [
