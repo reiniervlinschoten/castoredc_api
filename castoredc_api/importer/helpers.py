@@ -161,7 +161,8 @@ def castorize_column_helper(
             }
     elif target == "Survey":
         # Check for surveys (need to extract all forms in given survey package)
-        # TODO: remove this here and put in main structure, see also #47
+        # TODO Add survey package structure building to Study object # pylint: disable=fixme
+        # And then remove it here
         package = next(
             (
                 item
@@ -174,7 +175,7 @@ def castorize_column_helper(
             return {
                 new_name[0]: ["Error: survey package does not exist" for _ in to_import]
             }
-        elif target_field.step.form.form_name not in [
+        if target_field.step.form.form_name not in [
             survey["name"] for survey in package["_embedded"]["surveys"]
         ]:
             return {
@@ -183,6 +184,28 @@ def castorize_column_helper(
                 ]
             }
 
+    return_value = choose_column_castorizer(
+        format_options,
+        label_data,
+        new_name,
+        study,
+        target_field,
+        to_import,
+        variable_translation,
+    )
+    return return_value
+
+
+def choose_column_castorizer(
+    format_options,
+    label_data,
+    new_name,
+    study,
+    target_field,
+    to_import,
+    variable_translation,
+):
+    """Chooses the correct function to castorize the column."""
     if target_field is None:
         return_value = {new_name[0]: ["Error: field does not exist" for _ in to_import]}
     elif target_field.field_type in ["checkbox", "dropdown", "radio"]:
