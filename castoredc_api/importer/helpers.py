@@ -385,7 +385,11 @@ def castorize_num_column(data: list, target_field: "CastorField"):
                 # Test if data point is convertible to float
                 numeric_datapoint = float(datapoint)
                 # Test if between bounds
-                if target_field.field_max > numeric_datapoint > target_field.field_min:
+                if (
+                    target_field.field_max
+                    >= numeric_datapoint
+                    >= target_field.field_min
+                ):
                     new_list.append(datapoint)
                 else:
                     new_list.append("Error: number out of bounds")
@@ -402,7 +406,7 @@ def castorize_year_column(data: list, target_field: "CastorField"):
             new_list.append(None)
         else:
             try:
-                if target_field.field_max > int(datapoint) > target_field.field_min:
+                if target_field.field_max >= int(datapoint) >= target_field.field_min:
                     new_list.append(datapoint)
                 else:
                     new_list.append("Error: year out of bounds")
@@ -484,8 +488,8 @@ def castorize_numberdate_column(
                     # Test if between bounds
                     if (
                         target_field.field_max
-                        > numeric_datapoint
-                        > target_field.field_min
+                        >= numeric_datapoint
+                        >= target_field.field_min
                     ):
                         new_value.append(split[0])
                     else:

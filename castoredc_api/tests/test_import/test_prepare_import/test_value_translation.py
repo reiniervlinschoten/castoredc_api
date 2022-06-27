@@ -155,6 +155,35 @@ class TestValueTranslation:
             ]
         }
 
+    def test_numberdate_field_edgecase_success(self, import_study):
+        """Tests whether the proper format is returned
+        when castorizing a numberdate field with an edge case (max value allowed)."""
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_study_values_edgecase_numberdate_number.xlsx"
+        )
+        column = dataframe["factor V Leiden"]
+        import_column = castorize_column(
+            to_import=column,
+            new_name=["fac_V_leiden"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
+        )
+        assert import_column == {
+            "fac_V_leiden": [
+                "55;16-03-2021",
+                "90;17-03-2021",
+                "-45;18-03-2022",
+                "28;19-03-2022",
+                "5;20-03-2023",
+            ]
+        }
+
     def test_numeric_field_success(self, study_value_data, import_study):
         """Tests whether the proper format is returned when castorizing a number field."""
         column = study_value_data["baseline hemoglobin"]
@@ -171,6 +200,27 @@ class TestValueTranslation:
             },
         )
         assert import_column == {"base_hb": ["8.3", "7.2", "9.1", "3.2", "10.3"]}
+
+    def test_numeric_field_edgecase_success(self, import_study):
+        """Tests whether the proper format is returned when
+        castorizing a number field with an edge case (max value allowed)."""
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_study_values_edgecase_number.xlsx"
+        )
+        column = dataframe["baseline hemoglobin"]
+        import_column = castorize_column(
+            to_import=column,
+            new_name=["base_hb"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
+        )
+        assert import_column == {"base_hb": ["8.3", "15", "9.1", "3.2", "10.3"]}
 
     def test_radio_field_success(self, study_value_data, import_study):
         """Tests whether the proper format is returned when castorizing a radio field."""
@@ -289,6 +339,29 @@ class TestValueTranslation:
         )
         assert import_column == {
             "pat_birth_year": ["1999", "1956", "1945", "1933", "1921"]
+        }
+
+    def test_year_field_edgecase_success(self, import_study):
+        """Tests whether the proper format is returned
+        when castorizing a year field with an edge case (max value allowed)."""
+        dataframe = read_excel(
+            "tests/test_import/data_files_for_import_tests/data_file_study_values_edgecase_year.xlsx"
+        )
+        column = dataframe["year of birth"]
+        import_column = castorize_column(
+            to_import=column,
+            new_name=["pat_birth_year"],
+            label_data=False,
+            study=import_study,
+            variable_translation=None,
+            format_options={
+                "date": "%d-%m-%Y",
+                "datetime": "%d-%m-%Y;%H:%M",
+                "time": "%H:%M",
+            },
+        )
+        assert import_column == {
+            "pat_birth_year": ["1999", "1900", "1945", "1933", "1921"]
         }
 
 
