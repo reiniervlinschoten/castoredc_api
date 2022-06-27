@@ -61,9 +61,15 @@ def import_data(
         label_data=label_data,
         study=study,
         format_options=configuration,
+        target=target,
+        target_name=target_name,
     )
+
     # Tests if Error is anywhere in the dataframe
-    if "Error" in castorized_dataframe.to_string():
+    if (
+        "Error"
+        in castorized_dataframe.to_string()  # pylint: disable=unsupported-membership-test
+    ):
         castorized_dataframe.to_csv(
             pathlib.Path(
                 pathlib.Path.cwd(),
@@ -80,6 +86,14 @@ def import_data(
     upload = upload_data(
         castorized_dataframe, study, target, target_name, email, use_async
     )
+
+    # Print results
+    print(
+        f"Success: {sum(len(row['success']) for key, item in upload.items() for row in item)} \n"
+        f"Failure: {sum(len(row['failed']) for key, item in upload.items() for row in item)} \n"
+        f"Error: {sum(len(row['error']) for key, item in upload.items() for row in item)}"
+    )
+
     return upload
 
 

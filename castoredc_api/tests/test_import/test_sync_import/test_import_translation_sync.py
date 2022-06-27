@@ -116,6 +116,7 @@ class TestImportTranslationSync:
                     "his_family": "2;3;4",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -132,6 +133,7 @@ class TestImportTranslationSync:
                     "his_family": "1;2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -148,6 +150,7 @@ class TestImportTranslationSync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -164,6 +167,7 @@ class TestImportTranslationSync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -180,6 +184,7 @@ class TestImportTranslationSync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -197,6 +202,7 @@ class TestImportTranslationSync:
                     "pat_race": "1",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -210,6 +216,7 @@ class TestImportTranslationSync:
                     "pat_race": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -222,6 +229,7 @@ class TestImportTranslationSync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -235,6 +243,7 @@ class TestImportTranslationSync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -251,6 +260,7 @@ class TestImportTranslationSync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -270,6 +280,7 @@ class TestImportTranslationSync:
                     "med_units": "3",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -283,6 +294,7 @@ class TestImportTranslationSync:
                     "med_other_unit": "mg/4 weeks",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -296,6 +308,7 @@ class TestImportTranslationSync:
                     "med_other_unit": "mg/8 weeks",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -308,6 +321,7 @@ class TestImportTranslationSync:
                     "med_units": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -320,6 +334,7 @@ class TestImportTranslationSync:
                     "med_units": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }

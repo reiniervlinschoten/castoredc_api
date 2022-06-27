@@ -18,6 +18,8 @@ class TestCreateUploadFormat:
                 "datetime": "%B %d %Y %I:%M %p",
                 "time": "%I:%M %p",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final.xlsx"
@@ -38,6 +40,8 @@ class TestCreateUploadFormat:
                 "datetime": "%B %d %Y %I:%M %p",
                 "time": "%I:%M %p",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_missings.xlsx"
@@ -58,6 +62,8 @@ class TestCreateUploadFormat:
                 "datetime": "%B %d %Y %I:%M %p",
                 "time": "%I:%M %p",
             },
+            target=None,
+            target_name=None,
         )
         comparison = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_final_format_errors.xlsx"

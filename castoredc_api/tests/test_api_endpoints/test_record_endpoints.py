@@ -166,7 +166,7 @@ class TestRecord:
         record = create_record(fake=True)
         with pytest.raises(HTTPStatusError) as e:
             client.create_record(**record)
-        assert "422 Client Error: Unprocessable Entity for url:" in str(e.value)
+        assert "422 Client Error: Unprocessable Content for url:" in str(e.value)
 
         new_records = client.all_records()
         new_len = len(new_records)

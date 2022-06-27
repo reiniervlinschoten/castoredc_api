@@ -117,18 +117,18 @@ class TestImportSurveyAsync:
 
     def test_import_survey_error_during_upload_failed_field(self, import_study):
         """Tests if uploading data with an error during the upload process fails properly"""
-        imported = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_labels_nonexistent_field.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file_nonexistent_field.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Survey",
-            target_name="My first survey package",
-            email="python_wrapper@you-spam.com",
-            use_async=True,
-        )
-
-        assert imported == self.survey_error_wrong_field
+        with pytest.raises(CastorException) as e:
+            import_data(
+                data_source_path="tests/test_import/data_files_for_import_tests/data_file_survey_labels_nonexistent_field.xlsx",
+                column_link_path="tests/test_import/link_files_for_import_tests/survey_link_file_nonexistent_field.xlsx",
+                study=import_study,
+                label_data=True,
+                target="Survey",
+                target_name="My first survey package",
+                email="python_wrapper@you-spam.com",
+                use_async=True,
+            )
+        assert str(e.value) == self.survey_error
 
     survey_success = {
         "110001": [
@@ -141,6 +141,7 @@ class TestImportSurveyAsync:
                     "VAS": "25",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -153,6 +154,7 @@ class TestImportSurveyAsync:
                     "VAS": "88",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -165,6 +167,7 @@ class TestImportSurveyAsync:
                     "VAS": "13",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -174,13 +177,21 @@ class TestImportSurveyAsync:
             {
                 "success": {"SF12_1": "3", "SF12_3": "2", "SF12_12": "3", "VAS": "25"},
                 "failed": {},
+                "error": {},
             }
         ],
-        "110002": [{"success": {"SF12_2": "4", "SF12_12": "6"}, "failed": {}}],
+        "110002": [
+            {
+                "success": {"SF12_2": "4", "SF12_12": "6"},
+                "failed": {},
+                "error": {},
+            }
+        ],
         "110003": [
             {
                 "success": {"SF12_1": "1", "SF12_2": "3", "SF12_12": "5", "VAS": "13"},
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -205,6 +216,7 @@ class TestImportSurveyAsync:
                         "Survey Package Instance and Field Id do not match",
                     ]
                 },
+                "error": {},
             }
         ],
         "110002": [
@@ -222,6 +234,7 @@ class TestImportSurveyAsync:
                         "Survey Package Instance and Field Id do not match",
                     ]
                 },
+                "error": {},
             }
         ],
         "110003": [
@@ -239,6 +252,7 @@ class TestImportSurveyAsync:
                         "Survey Package Instance and Field Id do not match",
                     ]
                 },
+                "error": {},
             }
         ],
     }

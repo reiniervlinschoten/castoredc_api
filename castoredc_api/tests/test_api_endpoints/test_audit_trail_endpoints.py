@@ -41,6 +41,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -56,6 +57,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -71,6 +73,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -86,6 +89,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -101,6 +105,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -121,6 +126,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -140,6 +146,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -155,6 +162,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -175,6 +183,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -192,6 +201,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -209,6 +219,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -226,6 +237,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -243,6 +255,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -278,6 +291,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -315,6 +329,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -330,6 +345,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -345,6 +361,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -360,6 +377,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -375,6 +393,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -395,6 +414,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -414,6 +434,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -429,6 +450,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -449,6 +471,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -466,6 +489,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -483,6 +507,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -500,6 +525,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -517,6 +543,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -552,6 +579,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -589,6 +617,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -624,6 +653,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -661,6 +691,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -696,6 +727,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -733,6 +765,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -748,6 +781,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -763,6 +797,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -778,6 +813,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -793,6 +829,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -813,6 +850,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -832,6 +870,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -847,6 +886,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -867,6 +907,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -884,6 +925,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -901,6 +943,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -918,6 +961,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -935,6 +979,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -970,6 +1015,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -1007,6 +1053,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1027,6 +1074,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1047,6 +1095,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1062,6 +1111,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -1077,6 +1127,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -1092,6 +1143,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1107,6 +1159,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1127,6 +1180,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -1146,6 +1200,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -1161,6 +1216,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1181,6 +1237,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -1198,6 +1255,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1215,6 +1273,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1232,6 +1291,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1249,6 +1309,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -1284,6 +1345,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -1321,6 +1383,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1336,6 +1399,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -1351,6 +1415,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -1366,6 +1431,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1381,6 +1447,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1401,6 +1468,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -1420,6 +1488,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -1435,6 +1504,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1455,6 +1525,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -1472,6 +1543,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1489,6 +1561,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1506,6 +1579,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1523,6 +1597,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -1558,6 +1633,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -1595,6 +1671,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1610,6 +1687,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -1625,6 +1703,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -1640,6 +1719,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1655,6 +1735,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1675,6 +1756,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -1694,6 +1776,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -1709,6 +1792,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1729,6 +1813,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -1746,6 +1831,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1763,6 +1849,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1780,6 +1867,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -1797,6 +1885,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -1832,6 +1921,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -1869,6 +1959,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1884,6 +1975,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -1899,6 +1991,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -1914,6 +2007,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -1929,6 +2023,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -1949,6 +2044,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -1968,6 +2064,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -1983,6 +2080,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -2003,6 +2101,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -2020,6 +2119,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2037,6 +2137,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2054,6 +2155,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2071,6 +2173,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2086,6 +2189,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -2101,6 +2205,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -2116,6 +2221,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2131,6 +2237,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -2151,6 +2258,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -2170,6 +2278,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -2185,6 +2294,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -2205,6 +2315,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -2222,6 +2333,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2239,6 +2351,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2256,6 +2369,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2273,6 +2387,7 @@ class TestAuditTrail:
             "event_type": "Sub-survey of package invitation created",
             "user_id": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "user_name": "AUTOMATION_ENGINE_OR_UNKNOWN",
+            "user_role": None,
             "user_email": "AUTOMATION_ENGINE_OR_UNKNOWN",
             "event_details": {
                 "Archived": 0,
@@ -2308,6 +2423,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -2345,6 +2461,7 @@ class TestAuditTrail:
             "event_type": "Permissions - User invited to study",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Account Created": "2021-10-12 15:27:29",
@@ -2363,6 +2480,7 @@ class TestAuditTrail:
             "event_type": "Role created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": [],
         },
@@ -2378,6 +2496,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2393,6 +2512,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -2408,6 +2528,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -2423,6 +2544,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2438,6 +2560,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -2458,6 +2581,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -2477,6 +2601,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -2492,6 +2617,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -2512,6 +2638,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -2529,6 +2656,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2546,6 +2674,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2563,6 +2692,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2580,6 +2710,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -2617,6 +2748,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2632,6 +2764,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -2647,6 +2780,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -2662,6 +2796,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2677,6 +2812,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -2697,6 +2833,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -2716,6 +2853,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -2731,6 +2869,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -2751,6 +2890,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -2768,6 +2908,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2785,6 +2926,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2802,6 +2944,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -2819,6 +2962,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -2856,6 +3000,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -2893,6 +3038,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -2930,6 +3076,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2945,6 +3092,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -2960,6 +3108,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -2975,6 +3124,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -2990,6 +3140,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3010,6 +3161,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -3029,6 +3181,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -3044,6 +3197,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3064,6 +3218,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -3081,6 +3236,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3098,6 +3254,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3115,6 +3272,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3132,6 +3290,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -3169,6 +3328,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3189,6 +3349,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3209,6 +3370,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3224,6 +3386,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -3239,6 +3402,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -3254,6 +3418,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3269,6 +3434,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3289,6 +3455,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -3308,6 +3475,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -3323,6 +3491,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3343,6 +3512,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -3360,6 +3530,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3377,6 +3548,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3394,6 +3566,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3411,6 +3584,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -3448,6 +3622,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3463,6 +3638,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -3478,6 +3654,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -3493,6 +3670,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3508,6 +3686,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3528,6 +3707,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -3547,6 +3727,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -3562,6 +3743,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3582,6 +3764,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -3599,6 +3782,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3616,6 +3800,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3633,6 +3818,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3650,6 +3836,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -3687,6 +3874,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3702,6 +3890,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -3717,6 +3906,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -3732,6 +3922,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3747,6 +3938,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3767,6 +3959,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -3786,6 +3979,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -3801,6 +3995,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -3821,6 +4016,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -3838,6 +4034,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3855,6 +4052,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3872,6 +4070,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -3889,6 +4088,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation locked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -3926,6 +4126,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3941,6 +4142,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -3956,6 +4158,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -3971,6 +4174,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -3986,6 +4190,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -4006,6 +4211,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -4025,6 +4231,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -4040,6 +4247,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -4060,6 +4268,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -4077,6 +4286,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -4094,6 +4304,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -4111,6 +4322,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -4128,6 +4340,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -4143,6 +4356,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Diastolic blood pressure in mmHg"',
@@ -4158,6 +4372,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Laboratory", Field: "Hematocrit value"',
@@ -4173,6 +4388,7 @@ class TestAuditTrail:
             "event_type": "Report instance result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Report "Unscheduled visit", Step: "Physical exam", Field: "Systolic blood pressure in mmHg"',
@@ -4188,6 +4404,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -4208,6 +4425,7 @@ class TestAuditTrail:
             "event_type": "Record randomized",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Progress": 0,
@@ -4227,6 +4445,7 @@ class TestAuditTrail:
             "event_type": "Record result",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Current Location": 'Phase: "Baseline", Step: "Randomization", Field: "Randomization allocation"',
@@ -4242,6 +4461,7 @@ class TestAuditTrail:
             "event_type": "Record created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Created By": "PythonAPI Github (castoredcapi.github@gmail.com)",
@@ -4262,6 +4482,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000003",
@@ -4279,6 +4500,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -4296,6 +4518,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -4313,6 +4536,7 @@ class TestAuditTrail:
             "event_type": "Report instance created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Record Id": "000005",
@@ -4330,6 +4554,7 @@ class TestAuditTrail:
             "event_type": "Survey package invitation unlocked",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Archived": False,
@@ -4367,6 +4592,7 @@ class TestAuditTrail:
             "event_type": "Permissions - User invited to study",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": {
                 "Account Created": "2021-10-12 15:27:29",
@@ -4385,6 +4611,7 @@ class TestAuditTrail:
             "event_type": "Role created",
             "user_id": "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             "user_name": "PythonAPI Github",
+            "user_role": None,
             "user_email": "castoredcapi.github@gmail.com",
             "event_details": [],
         },

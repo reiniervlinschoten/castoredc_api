@@ -102,16 +102,16 @@ class TestImportStudyAsync:
 
     def test_import_study_error_during_upload_failed_field(self, import_study):
         """Tests if uploading data with an error during the upload process fails properly"""
-        imported_data = import_data(
-            data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_nonexistent_field.xlsx",
-            column_link_path="tests/test_import/link_files_for_import_tests/study_link_file_nonexistent_field.xlsx",
-            study=import_study,
-            label_data=True,
-            target="Study",
-            use_async=True,
-        )
-
-        assert imported_data == self.study_wrong_field
+        with pytest.raises(CastorException) as e:
+            import_data(
+                data_source_path="tests/test_import/data_files_for_import_tests/data_file_study_labels_nonexistent_field.xlsx",
+                column_link_path="tests/test_import/link_files_for_import_tests/study_link_file_nonexistent_field.xlsx",
+                study=import_study,
+                label_data=True,
+                target="Study",
+                use_async=True,
+            )
+        assert str(e.value) == self.study_error
 
     study_success = {
         "110001": [
@@ -128,6 +128,7 @@ class TestImportStudyAsync:
                     "his_family": "2;3;4",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -144,6 +145,7 @@ class TestImportStudyAsync:
                     "his_family": "1;2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -160,6 +162,7 @@ class TestImportStudyAsync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -176,6 +179,7 @@ class TestImportStudyAsync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -192,6 +196,7 @@ class TestImportStudyAsync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -209,6 +214,7 @@ class TestImportStudyAsync:
                     "pat_race": "1",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110002": [
@@ -222,6 +228,7 @@ class TestImportStudyAsync:
                     "pat_race": "2",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110003": [
@@ -234,6 +241,7 @@ class TestImportStudyAsync:
                     "his_family": "0",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110004": [
@@ -247,6 +255,7 @@ class TestImportStudyAsync:
                     "his_family": "5;7",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
         "110005": [
@@ -263,6 +272,7 @@ class TestImportStudyAsync:
                     "his_family": "8",
                 },
                 "failed": {},
+                "error": {},
             }
         ],
     }
@@ -286,6 +296,7 @@ class TestImportStudyAsync:
                     "his_family": "2;3;4",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110002": [
@@ -302,6 +313,7 @@ class TestImportStudyAsync:
                     "his_family": "1;2",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110003": [
@@ -318,6 +330,7 @@ class TestImportStudyAsync:
                     "his_family": "0",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110004": [
@@ -334,6 +347,7 @@ class TestImportStudyAsync:
                     "his_family": "5;7",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
         "110005": [
@@ -350,6 +364,7 @@ class TestImportStudyAsync:
                     "his_family": "8",
                 },
                 "failed": {"med_name": ["BAD_REQUEST", "Unsupported field type"]},
+                "error": {},
             }
         ],
     }
