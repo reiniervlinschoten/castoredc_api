@@ -29,7 +29,7 @@ class CastorClient:
     }
 
     # Limits for server load
-    max_connections = 30
+    max_connections = 15
     timeout = httpx.Timeout(10.0, read=60)
     limits = httpx.Limits(max_connections=max_connections)
 
@@ -274,6 +274,7 @@ class CastorClient:
                 "exclude_empty_surveys": exclude_empty_surveys,
                 "exclude_empty_reports": exclude_empty_reports,
             },
+            timeout=httpx.Timeout(10.0, read=300),
         )["content"]
 
     def export_study_structure(self):
@@ -1087,9 +1088,12 @@ class CastorClient:
         return response["total_items"]
 
     # Synchronous API Interaction
-    def sync_get(self, url: str, params: dict) -> dict:
+    def sync_get(self, url: str, params: dict, timeout=None) -> dict:
         """Synchronous querying of Castor API with a single get requests."""
-        response = self.client.get(url=url, params=params)
+        if timeout:
+            response = self.client.get(url=url, params=params, timeout=timeout)
+        else:
+            response = self.client.get(url=url, params=params)
         return self.handle_response(response)
 
     def sync_post(self, url, body):
