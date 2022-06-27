@@ -41,7 +41,7 @@ class TestDeviceToken:
         with pytest.raises(HTTPStatusError) as e:
             # Record already has a token
             client.create_token("000024", "NEW-API-TOKEN")
-        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
+        assert "422 Client Error: Unprocessable Content for url" in str(e.value)
 
     def test_update_token_success(self, client):
         """Tests if updating a token works."""

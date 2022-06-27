@@ -33,6 +33,7 @@ class TestStudy:
         "main_contact": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "expected_centers": 2,
         "expected_records": 50,
+        "trial_registry_id": "",
         "slug": "python-wrapper",
         "version": "0.61",
         "duration": 15,

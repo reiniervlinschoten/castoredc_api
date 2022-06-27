@@ -330,6 +330,7 @@ study_model = {
         str,
     ],
     "expected_centers": [int, type(None)],
+    "trial_registry_id": [str, type(None)],
     "duration": [int, type(None)],
     "expected_records": [int, type(None)],
     "slug": [
@@ -555,6 +556,9 @@ package_model = {
     "is_mobile": [bool],
     "is_training": [bool],
     "expire_after_hours": [int, type(None)],
+    "is_repeatable": [bool],
+    "is_resumable": [bool],
+    "as_needed": [bool],
     "_embedded": [
         dict,
     ],

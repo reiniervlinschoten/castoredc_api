@@ -101,7 +101,7 @@ class TestStep:
         }
         with pytest.raises(HTTPStatusError) as e:
             client.create_role(**body)
-        assert "422 Client Error: Unprocessable Entity for url" in str(e.value)
+        assert "422 Client Error: Unprocessable Content for url" in str(e.value)
         # User already exists
         assert "User Role name already exists." in e.value.response.json()["detail"]
 
