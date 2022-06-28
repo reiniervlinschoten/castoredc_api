@@ -14,6 +14,15 @@ def client():
 
 
 @pytest.fixture(scope="class")
+def write_client():
+    client = CastorClient(
+        auth_data.client_id, auth_data.client_secret, "data.castoredc.com"
+    )
+    client.link_study(auth_data.write_client_study_id)
+    return client
+
+
+@pytest.fixture(scope="class")
 def item_totals(client):
     def return_item_totals(endpoint, base=False):
         return client.request_size(endpoint, base)
