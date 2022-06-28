@@ -44,7 +44,6 @@ class TestRecord:
             client.single_randomization("FAKE42")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    @pytest.mark.xfail(reason="Randomisation not yet activated")
     def test_randomize_success(self, write_client):
         """Tests randomizing a new record."""
         record = {
