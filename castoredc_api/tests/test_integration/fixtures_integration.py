@@ -37,7 +37,7 @@ def integration_study_mapped(integration_study):
     return integration_study
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def integration_study_format_mapped(integration_study_format):
     integration_study_format.map_data()
     return integration_study_format

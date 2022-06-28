@@ -61,7 +61,7 @@ class TestQuery:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_queries(self, client):
         """Get all queries in the study."""
         all_queries = client.all_queries()

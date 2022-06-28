@@ -54,7 +54,7 @@ class TestFieldOptionGroup:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_field_opts(self, client):
         """Gets all field optiongroups from the API."""
         all_field_opts = client.all_field_optiongroups()

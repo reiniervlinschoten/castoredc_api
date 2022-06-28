@@ -43,7 +43,7 @@ class TestStep:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_steps(self, client):
         """Returns all study steps."""
         all_steps = client.all_steps()

@@ -82,7 +82,7 @@ class TestRecord:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_records(self, client):
         """Returns all records in the study."""
         all_records = client.all_records()

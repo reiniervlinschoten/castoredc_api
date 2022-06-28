@@ -66,7 +66,7 @@ class TestReportInstance:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_report_instances(self, client):
         """Returns all report instances in the study."""
         all_report_instances = client.all_report_instances()

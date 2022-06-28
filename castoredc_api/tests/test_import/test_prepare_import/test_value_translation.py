@@ -6,21 +6,21 @@ from castoredc_api.importer.helpers import read_excel, castorize_column
 class TestValueTranslation:
     """Tests the helper functions for translation of external variable values to Castor values."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_value_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_values.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def medication_value_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_values.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def survey_value_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_values.xlsx"
@@ -400,21 +400,21 @@ class TestValueTranslation:
 class TestValueTranslationMissing:
     """Tests the helper functions for translation of external variable values to Castor values with missing values."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_value_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_values_missings.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def medication_value_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_values_missings.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def survey_value_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_values_missings.xlsx"
@@ -707,21 +707,21 @@ class TestValueTranslationMissing:
 class TestValueTranslationFail:
     """Tests the helper functions for translation of erronous external variable values to Castor values."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_value_data_error(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_values_errors.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def medication_value_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_values_errors.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def survey_value_data_error(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_values_errors.xlsx"

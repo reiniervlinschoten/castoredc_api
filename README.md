@@ -420,13 +420,35 @@ imported_data = import_data(data_source_path="PATH/TO/YOUR/LABELLED/STUDY/DATA",
 2. See [requirements.txt](requirements.txt)
 
 ## Known Issues
+
 1. Async import and export cannot be used in an IPython environment, see [this discussion](https://github.com/reiniervlinschoten/castoredc_api/pull/39#discussion_r740389868)
 2. Feather export is uncompressed, see [this issue](https://github.com/ContinuumIO/anaconda-issues/issues/12500)
 3. Studies with a large number of data (> 2.5M data points) cannot currently be exported as the Castor EDC server times out
 
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Running Tests
+
+Want to contribute to the testing suite? Or test possible changes you want to contribute?
+Tests can be ran via two methods: on Github and on your local machine.
+
+On Github: when you create a pull request for this project, Pytest automatically runs for the testing suite (see [pytest.yml](.github/workflows/pytest.yml)).
+If you have added a whole new testing module, don't forget to add this to the pytest.yml file. Within the repository, applicable access rights have been set for the client.
+Use the following fixtures for the respective modules you want to test:
+* Testing API read endpoints: client
+* Testing API write endpoints: write_client
+* Testing output:
+  * For structure output to Python: integration_study & integration_study_format
+  * For data output to Python: integration_study_mapped & integration_study_format_mapped
+  * For data output to csv: output_data
+* Testing importing of data: import_study
+
+Locally: You can only run tests locally when you have read and write access to the correct Castor Studies. 
+Please send a message to the repository owner to ask for the correct access, with information on why.
+Access and correct study IDs will then be given to run the tests.
 
 ## Versioning
 

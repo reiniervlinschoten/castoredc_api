@@ -34,7 +34,7 @@ class TestInstitute:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_institutes(self, client):
         """Gets all institutes from the API"""
         all_institutes = client.all_institutes()

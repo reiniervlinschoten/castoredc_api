@@ -42,7 +42,7 @@ class TestReportStep:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def reports_with_steps(self, client):
         """Returns all the reports in the study with their corresponding steps."""
         reports_with_steps = {}

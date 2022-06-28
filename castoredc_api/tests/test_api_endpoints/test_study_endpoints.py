@@ -45,7 +45,7 @@ class TestStudy:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_studies(self, write_client):
         """Get all studies."""
         all_studies = write_client.all_studies()

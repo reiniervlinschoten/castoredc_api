@@ -51,7 +51,7 @@ class TestField:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_fields(self, client):
         """Get all fields from the API."""
         all_fields = client.all_fields()

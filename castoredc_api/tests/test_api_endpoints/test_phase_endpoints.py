@@ -30,7 +30,7 @@ class TestPhase:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_phases(self, client):
         """Get all phases in the study."""
         all_phases = client.all_phases()

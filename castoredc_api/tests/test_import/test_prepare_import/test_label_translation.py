@@ -6,21 +6,21 @@ from castoredc_api.importer.helpers import read_excel, castorize_column
 class TestLabelTranslation:
     """Tests the helper functions for translation of external variable labels to Castor labels."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_label_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_labels.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def medication_label_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_labels.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def survey_label_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_labels.xlsx"
@@ -321,21 +321,21 @@ class TestLabelTranslation:
 class TestLabelTranslationMissing:
     """Tests the helper functions for translation of external variable labels to Castor labels with missing labels."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_label_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_labels_missings.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def medication_label_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_missings.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def survey_label_data(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_labels_missings.xlsx"
@@ -628,21 +628,21 @@ class TestLabelTranslationMissing:
 class TestLabelTranslationFail:
     """Tests the helper functions for translation of erronous external variable labels to Castor labels."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_label_data_error(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_labels_errors.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def medication_label_data_error(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_report_medication_labels_errors.xlsx"
         )
         return dataframe
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def survey_label_data_error(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_survey_labels_errors.xlsx"

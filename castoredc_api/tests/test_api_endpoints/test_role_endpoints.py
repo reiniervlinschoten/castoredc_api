@@ -40,7 +40,7 @@ class TestStep:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_roles(self, write_client):
         """Returns all study roles."""
         all_roles = write_client.all_roles()

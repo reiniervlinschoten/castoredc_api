@@ -30,7 +30,7 @@ class TestFieldDependency:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_field_dependencies(self, client):
         """Get all field dependencies from the Castor database."""
         all_field_dependencies = client.all_field_dependencies()

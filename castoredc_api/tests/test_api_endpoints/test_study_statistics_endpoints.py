@@ -20,7 +20,7 @@ class TestStatistics:
     r_model_keys = stats_records_model.keys()
     i_model_keys = stats_institutes_model.keys()
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def stats(self, client):
         """Returns study statistics"""
         stats = client.statistics()

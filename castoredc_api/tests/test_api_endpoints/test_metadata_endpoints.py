@@ -31,7 +31,7 @@ class TestMetadata:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_metadata(self, client):
         """Get all metadata"""
         all_metadata = client.all_metadata()
