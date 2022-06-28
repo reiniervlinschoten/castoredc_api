@@ -145,30 +145,38 @@ class TestRecord:
             client.single_record("FAKE06")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    def test_create_record_success(self, client):
+    def test_create_record_success(self, write_client):
         """Tests creating a new record."""
-        len_records = len(client.all_records())
+        len_records = len(write_client.all_records())
 
-        record = create_record(fake=False)
-        created = client.create_record(**record)
+        record = {
+            "institute_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41A632",
+            "email": "totallyfake@fakeemail.com",
+            "ccr_patient_id": None,
+        }
+        created = write_client.create_record(**record)
         new_record_id = created["id"]
 
-        new_records = client.all_records()
+        new_records = write_client.all_records()
         new_len = len(new_records)
 
         assert new_len == (len_records + 1)
         assert new_record_id in [record["id"] for record in new_records]
 
-    def test_create_record_fail(self, client):
+    def test_create_record_fail(self, write_client):
         """Tests if creating a record for a non-existing institute raises an error."""
-        len_records = len(client.all_records())
+        len_records = len(write_client.all_records())
 
-        record = create_record(fake=True)
+        record = {
+            "institute_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41FAKE",
+            "email": "totallyfake@fakeemail.com",
+            "ccr_patient_id": None,
+        }
         with pytest.raises(HTTPStatusError) as e:
-            client.create_record(**record)
+            write_client.create_record(**record)
         assert "422 Client Error: Unprocessable Content for url:" in str(e.value)
 
-        new_records = client.all_records()
+        new_records = write_client.all_records()
         new_len = len(new_records)
 
         assert new_len == len_records

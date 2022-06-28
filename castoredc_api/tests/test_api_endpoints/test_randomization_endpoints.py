@@ -53,7 +53,6 @@ class TestRecord:
         }
         created = write_client.create_record(**record)
         new_record_id = created["id"]
-        print(new_record_id)
         randomization = write_client.create_randomization(new_record_id)
         api_keys = randomization.keys()
         # Tests if the model length is the same
