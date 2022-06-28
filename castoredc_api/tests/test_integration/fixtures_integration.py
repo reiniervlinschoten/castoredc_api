@@ -4,7 +4,7 @@ from castoredc_api.auth import auth_data
 from castoredc_api.study.castor_study import CastorStudy
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def integration_study():
     study = CastorStudy(
         auth_data.client_id,
@@ -15,7 +15,7 @@ def integration_study():
     return study
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def integration_study_format():
     study = CastorStudy(
         auth_data.client_id,
@@ -31,7 +31,7 @@ def integration_study_format():
     return study
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def integration_study_mapped(integration_study):
     integration_study.map_data()
     return integration_study

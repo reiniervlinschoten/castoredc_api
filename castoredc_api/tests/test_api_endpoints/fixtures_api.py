@@ -4,7 +4,7 @@ import pytest
 from castoredc_api import CastorClient
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def client():
     client = CastorClient(
         auth_data.client_id, auth_data.client_secret, "data.castoredc.com"
@@ -13,7 +13,7 @@ def client():
     return client
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def write_client():
     client = CastorClient(
         auth_data.client_id, auth_data.client_secret, "data.castoredc.com"
@@ -22,7 +22,7 @@ def write_client():
     return client
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def item_totals(client):
     def return_item_totals(endpoint, base=False):
         return client.request_size(endpoint, base)

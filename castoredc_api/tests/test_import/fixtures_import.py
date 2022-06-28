@@ -4,7 +4,7 @@ from castoredc_api.study.castor_study import CastorStudy
 from castoredc_api.auth import auth_data
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def import_study():
     study = CastorStudy(
         auth_data.client_id,
