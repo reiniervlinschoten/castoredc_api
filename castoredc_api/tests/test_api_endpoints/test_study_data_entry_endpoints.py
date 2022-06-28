@@ -149,38 +149,38 @@ class TestStudyDataEntry:
             )
         assert "500 Server Error: Internal Server Error for url:" in str(e.value)
 
-    def test_update_single_study_field_record_success(self, client):
+    def test_update_single_study_field_record_success(self, write_client):
         """Tests changing a single study field."""
-        record = "000010"
-        field = "7E7868E1-946B-41EF-A96D-E3248251C6F1"
-        post_value = allowed_value(client, field)
+        record = "110001"
+        field = "4E6E5ECF-B195-416A-9813-4714141C1B93"
+        post_value = allowed_value(write_client, field)
 
         # Update the field
         change_reason = "Testing API"
-        client.update_single_study_field_record(
+        write_client.update_single_study_field_record(
             record, field, change_reason, post_value
         )
 
         # Check if changing worked
-        new_value = client.single_study_field_record(record, field)
+        new_value = write_client.single_study_field_record(record, field)
         assert new_value["value"] == str(post_value)
 
-    def test_update_single_study_field_record_fail(self, client):
+    def test_update_single_study_field_record_fail(self, write_client):
         """Tests failing to change a single study field."""
-        record = "000010"
-        field = "7E7868E1-946B-41EF-A96D-E3248251C6F1"
-        post_value = allowed_value(client, field)
-        old_value = client.single_study_field_record(record, field)
+        record = "110001"
+        field = "4E6E5ECF-B195-416A-9813-4714141C1B93"
+        post_value = allowed_value(write_client, field)
+        old_value = write_client.single_study_field_record(record, field)
 
         # Update the field
         change_reason = "Testing API"
 
         with pytest.raises(HTTPStatusError) as e:
-            client.update_single_study_field_record(
+            write_client.update_single_study_field_record(
                 record, "FAKE" + field + "FAKE", change_reason, post_value
             )
 
         assert "500 Server Error: Internal Server Error for url:" in str(e.value)
 
-        new_value = client.single_study_field_record(record, field)
+        new_value = write_client.single_study_field_record(record, field)
         assert new_value["value"] == old_value["value"]

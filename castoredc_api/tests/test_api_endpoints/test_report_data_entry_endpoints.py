@@ -195,7 +195,7 @@ class TestReportDataEntry:
     def test_update_report_instance_single_field_record_success(self, write_client):
         """Tests updating a single field from a report instance"""
         # Get all filled in report data points
-        field = 'E08E1580-5E85-49BE-A547-89C2E15385A5'
+        field = "E08E1580-5E85-49BE-A547-89C2E15385A5"
         post_value = allowed_value(write_client, field)
 
         # Update the field
@@ -217,7 +217,7 @@ class TestReportDataEntry:
     def test_update_report_instance_single_field_record_fail(self, write_client):
         """Tests failing to update a single field from a report instance"""
         # Get all filled in report data points
-        field = 'E08E1580-5E85-49BE-A547-89C2E15385A5'
+        field = "E08E1580-5E85-49BE-A547-89C2E15385A5"
         post_value = allowed_value(write_client, field)
         old_value = write_client.single_report_instance_single_field_record(
             "110001", "2CDE922C-6333-4D18-B8DC-912004D30FB5", field

@@ -24,7 +24,7 @@ def create_survey_package_instance_body(record_id, fake):
     if fake:
         random_package = "FAKE"
     else:
-        random_package = "71C01598-4682-4A4C-90E6-69C0BD38EA47"
+        random_package = "4AAEDF4B-0137-46BD-BC4C-CC3E4BBF1588"
 
     return {
         "survey_package_id": random_package,
@@ -436,63 +436,63 @@ class TestSurveyEndpoints:
         assert "404 Client Error: Not Found for url" in str(e.value)
 
     # POST
-    def test_create_survey_package_instance_success(self, client):
+    def test_create_survey_package_instance_success(self, write_client):
         """Tests creating a new survey package instance"""
-        old_amount = len(client.all_survey_package_instances(record_id="000001"))
-        body = create_survey_package_instance_body("000001", fake=False)
+        old_amount = len(write_client.all_survey_package_instances(record_id="110001"))
+        body = create_survey_package_instance_body("110001", fake=False)
 
-        feedback = client.create_survey_package_instance(**body)
+        feedback = write_client.create_survey_package_instance(**body)
 
-        new_amount = len(client.all_survey_package_instances(record_id="000001"))
+        new_amount = len(write_client.all_survey_package_instances(record_id="110001"))
 
-        assert feedback["record_id"] == "000001"
+        assert feedback["record_id"] == "110001"
         assert new_amount == old_amount + 1
 
-    def test_create_survey_package_instance_fail(self, client):
+    def test_create_survey_package_instance_fail(self, write_client):
         """Tests failing to create a new survey package instance by wrong survey_instance_id"""
-        body = create_survey_package_instance_body("000001", fake=True)
-        old_amount = len(client.all_survey_package_instances(record_id="000001"))
+        body = create_survey_package_instance_body("110001", fake=True)
+        old_amount = len(write_client.all_survey_package_instances(record_id="110001"))
 
         with pytest.raises(HTTPStatusError) as e:
-            client.create_survey_package_instance(**body)
+            write_client.create_survey_package_instance(**body)
         assert "422 Client Error: Unprocessable Content for url:" in str(e.value)
 
-        new_amount = len(client.all_survey_package_instances(record_id="000001"))
+        new_amount = len(write_client.all_survey_package_instances(record_id="110001"))
         assert new_amount == old_amount
 
-    def test_lock_unlock_survey_package_instance_success(self, client):
+    def test_lock_unlock_survey_package_instance_success(self, write_client):
         """Tests patching (locking/unlocking) a survey_package_instance"""
-        package = client.single_survey_package_instance(
-            "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C"
+        package = write_client.single_survey_package_instance(
+            "CEF2F230-9F52-45C7-A92D-27B93A5E2B23"
         )
         old_status = package["locked"]
 
         target_status = not old_status
-        client.lock_unlock_survey_package_instance(
-            "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C", target_status
+        write_client.lock_unlock_survey_package_instance(
+            "CEF2F230-9F52-45C7-A92D-27B93A5E2B23", target_status
         )
 
-        package = client.single_survey_package_instance(
-            "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C"
+        package = write_client.single_survey_package_instance(
+            "CEF2F230-9F52-45C7-A92D-27B93A5E2B23"
         )
         new_status = package["locked"]
         assert new_status is not old_status
 
-    def test_lock_unlock_survey_package_instance_failure(self, client):
+    def test_lock_unlock_survey_package_instance_failure(self, write_client):
         """Tests failing to lock/unlock a survey_package_instance"""
-        package = client.single_survey_package_instance(
-            "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C"
+        package = write_client.single_survey_package_instance(
+            "CEF2F230-9F52-45C7-A92D-27B93A5E2B23"
         )
         old_status = package["locked"]
         target_status = not old_status
         fake_id = "23B4FD48-BA41-4C9B-BAEF-D5C3DD5FFAKE"
 
         with pytest.raises(HTTPStatusError) as e:
-            client.lock_unlock_survey_package_instance(fake_id, target_status)
+            write_client.lock_unlock_survey_package_instance(fake_id, target_status)
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-        package = client.single_survey_package_instance(
-            "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C"
+        package = write_client.single_survey_package_instance(
+            "CEF2F230-9F52-45C7-A92D-27B93A5E2B23"
         )
         new_status = package["locked"]
         assert new_status is old_status

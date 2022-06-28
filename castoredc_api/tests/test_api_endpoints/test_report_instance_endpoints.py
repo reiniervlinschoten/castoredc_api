@@ -21,7 +21,7 @@ def create_report_instance(record_id, fake):
     if fake:
         report_id = "FAKEB401-6100-4CF5-A95F-3402B55EAC48'"
     else:
-        report_id = "770DB401-6100-4CF5-A95F-3402B55EAC48"
+        report_id = "748531C3-140E-4A9F-BF4B-5D930ACBA9B4"
 
     return {
         "record_id": record_id,
@@ -143,84 +143,88 @@ class TestReportInstance:
             )
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    def test_create_report_instance_record_success(self, client):
+    def test_create_report_instance_record_success(self, write_client):
         """Tests creating a report for a record."""
         # Get baseline
-        record_reports = client.all_report_instances_record("000003")
+        record_reports = write_client.all_report_instances_record("110001")
         amount_reports = len(record_reports)
 
         # Create a record
-        report_instance = create_report_instance("000003", fake=False)
-        created = client.create_report_instance_record(**report_instance)
+        report_instance = create_report_instance("110001", fake=False)
+        created = write_client.create_report_instance_record(**report_instance)
 
         # Tests if creating was successful
         assert created["name"] == report_instance["report_name_custom"]
         assert created["record_id"] == report_instance["record_id"]
 
         # Tests if it was added to the database
-        record_reports = client.all_report_instances_record("000003")
+        record_reports = write_client.all_report_instances_record("110001")
         new_amount = len(record_reports)
         assert amount_reports + 1 == new_amount
 
-    def test_create_report_instance_record_fail(self, client):
+    def test_create_report_instance_record_fail(self, write_client):
         """Tests if a proper error is thrown when report creation failed."""
         # Get baseline
-        record_reports = client.all_report_instances_record("000004")
+        record_reports = write_client.all_report_instances_record("110001")
         amount_reports = len(record_reports)
-        report_instance = create_report_instance("000004", fake=True)
+        report_instance = create_report_instance("110001", fake=True)
 
         # Create the record
         with pytest.raises(HTTPStatusError) as e:
-            client.create_report_instance_record(**report_instance)
+            write_client.create_report_instance_record(**report_instance)
         assert "400 Client Error: Bad Request for url:" in str(e.value)
 
         # Test that nothing changed
-        record_reports = client.all_report_instances_record("000004")
+        record_reports = write_client.all_report_instances_record("110001")
         new_amount = len(record_reports)
         assert amount_reports == new_amount
 
-    def test_create_multiple_report_instances_record_success(self, client):
+    def test_create_multiple_report_instances_record_success(self, write_client):
         """Tests creating multiple report instances at once."""
         # Get baseline
-        record_reports = client.all_report_instances_record("000005")
+        record_reports = write_client.all_report_instances_record("110001")
         amount_reports = len(record_reports)
 
         # Create reports
         reports = []
         for i in range(0, 3):
-            report_instance = create_report_instance("000005", fake=False)
+            report_instance = create_report_instance("110001", fake=False)
             reports.append(report_instance)
 
         # Create reports
-        created = client.create_multiple_report_instances_record("000005", reports)
+        created = write_client.create_multiple_report_instances_record(
+            "110001", reports
+        )
 
         # Assert creation was successful
         assert created["total_success"] == 3
         assert created["total_failed"] == 0
 
         # Assert changes in the database
-        record_reports = client.all_report_instances_record("000005")
+        record_reports = write_client.all_report_instances_record("110001")
         new_amount = len(record_reports)
         assert amount_reports + 3 == new_amount
 
-    def test_create_multiple_report_instances_record_fail(self, client):
+    def test_create_multiple_report_instances_record_fail(self, write_client):
         """Tests multiple creation doesn't throw an error, but gives a warning from the database."""
         # Get baseline
-        record_reports = client.all_report_instances_record("000006")
+        record_reports = write_client.all_report_instances_record("110001")
         amount_reports = len(record_reports)
 
         # Create reports
         reports = []
         for i in range(0, 3):
-            report_instance = create_report_instance("000006", fake=True)
+            report_instance = create_report_instance("110001", fake=True)
             reports.append(report_instance)
-        created = client.create_multiple_report_instances_record("000006", reports)
+        created = write_client.create_multiple_report_instances_record(
+            "110001", reports
+        )
 
         # Assert creation has failed
         assert created["total_success"] == 0
         assert created["total_failed"] == 3
 
         # Assert database has not changed
-        record_reports = client.all_report_instances_record("000006")
+        record_reports = write_client.all_report_instances_record("110001")
         new_amount = len(record_reports)
         assert amount_reports == new_amount
