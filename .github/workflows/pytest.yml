@@ -6,10 +6,20 @@ name: pytest
       - '**'
     tags:
       - '**'
+    paths:
+      - 'castoredc_api/client/**'
+      - 'castoredc_api/study/**'
+      - 'castoredc_api/importer/**'
+      - 'castoredc_api/tests/**'
   pull_request:
     branches:
       - '**'
     types: [opened]
+    paths:
+      - 'castoredc_api/client/**'
+      - 'castoredc_api/study/**'
+      - 'castoredc_api/importer/**'
+      - 'castoredc_api/tests/**'
   workflow_dispatch:
 
 
