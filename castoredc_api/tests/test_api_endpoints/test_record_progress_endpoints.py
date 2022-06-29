@@ -18,7 +18,7 @@ class TestRecordProgress:
     record_progress_keys = record_progress_model.keys()
     steps_keys = steps_model.keys()
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def progress_report(self, client):
         """Get all progress reports from the study."""
         progress_report = client.record_progress()

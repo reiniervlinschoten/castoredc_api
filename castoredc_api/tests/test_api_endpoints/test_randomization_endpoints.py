@@ -6,6 +6,8 @@ Link: https://data.castoredc.com/api#/randomization
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
+import random
+
 import pytest
 from httpx import HTTPStatusError
 from castoredc_api.tests.test_api_endpoints.data_models import randomization_model
@@ -42,12 +44,16 @@ class TestRecord:
             client.single_randomization("FAKE42")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    def test_randomize_success(self, client):
+    def test_randomize_success(self, write_client):
         """Tests randomizing a new record."""
-        record = create_record(fake=False)
-        created = client.create_record(**record)
+        record = {
+            "institute_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41A632",
+            "email": "totallyfake@fakeemail.com",
+            "ccr_patient_id": None,
+        }
+        created = write_client.create_record(**record)
         new_record_id = created["id"]
-        randomization = client.create_randomization(new_record_id)
+        randomization = write_client.create_randomization(new_record_id)
         api_keys = randomization.keys()
         # Tests if the model length is the same
         assert len(self.model_keys) == len(api_keys)

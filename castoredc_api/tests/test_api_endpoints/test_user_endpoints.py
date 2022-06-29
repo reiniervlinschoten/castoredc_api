@@ -15,7 +15,7 @@ from castoredc_api.tests.test_api_endpoints.data_models import user_model
 class TestUser:
     model_keys = user_model.keys()
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_users(self, client):
         """Returns all users"""
         all_users = client.all_users()

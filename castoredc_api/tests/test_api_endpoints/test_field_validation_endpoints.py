@@ -30,7 +30,7 @@ class TestFieldValidation:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_field_vals(self, client):
         """Gets all field validations from the API"""
         all_field_vals = client.all_field_validations()
