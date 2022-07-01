@@ -20,7 +20,7 @@ setup(
         "tqdm>=4.62.0",
         "httpx>=0.19.0",
     ],
-    tests_require=["pytest"],
+    tests_require=["pytest", "pytest-httpx"],
     license="MIT",
     long_description=long_description,
     long_description_content_type="text/markdown",
