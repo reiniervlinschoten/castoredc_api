@@ -27,7 +27,6 @@ def mock_auth(httpx_mock):
     return httpx_mock
 
 
-@pytest.mark.xfail
 def test_clients_are_distinct(mock_auth):
     client1 = CastorClient(
         "DUMMY_CLIENT_ID", "DUMMY_CLIENT_SECRET", "data.castoredc.com"
