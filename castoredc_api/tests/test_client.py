@@ -1,10 +1,16 @@
 import json
 import secrets
+import sys
 
 import httpx
 import pytest
 from castoredc_api import CastorClient
 from pytest_httpx import HTTPXMock
+
+if sys.version_info >= (3, 8):
+    from importlib import metadata as pkg_metadata
+else:
+    import importlib_metadata as pkg_metadata
 
 
 @pytest.fixture
@@ -36,3 +42,14 @@ def test_clients_are_distinct(mock_auth):
     )
 
     assert client1.headers is not client2.headers
+
+
+def test_client_sets_correct_user_agent(httpx_mock, mock_auth):
+    # This makes an HTTP request on instantiation to exchange client secrets
+    # for a token, so there's no need to make another HTTP request in this test.
+    _ = CastorClient("DUMMY_CLIENT_ID", "DUMMY_CLIENT_SECRET", "data.castoredc.com")
+
+    assert (
+        httpx_mock.get_request().headers["user-agent"]
+        == f"python-castoredc_api/{pkg_metadata.version('castoredc_api')}"
+    )

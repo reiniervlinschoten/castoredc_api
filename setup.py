@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -19,6 +19,9 @@ setup(
         "openpyxl>=3.0.7",
         "tqdm>=4.62.0",
         "httpx>=0.19.0",
+        # importlib.metadata was only introduced in Python 3.8, but the
+        # "importlib-metadata" package provides it for older Python versions.
+        'importlib-metadata >= 1.0 ; python_version < "3.8"',
     ],
     tests_require=["pytest", "pytest-httpx"],
     license="MIT",
