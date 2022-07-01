@@ -1,9 +1,10 @@
 """Module for interacting with the Castor EDC API."""
+
+import asyncio
 import csv
 from datetime import datetime
 from itertools import chain
-import asyncio
-from typing import Optional, List, Union
+from typing import List, Optional, Union
 
 import httpx
 from httpx import HTTPStatusError
@@ -23,11 +24,6 @@ class CastorClient:
     # Necessary number of public methods to interact with API
 
     # INITIALIZATION
-    headers = {
-        "accept": "*/*",  # "application/hal+json; text/csv",
-        "Content-Type": "application/json; charset=utf-8",
-    }
-
     # Limits for server load
     max_connections = 15
     timeout = httpx.Timeout(10.0, read=60)
@@ -40,6 +36,10 @@ class CastorClient:
         # Instantiate URLs
         self.base_url = f"https://{url}/api"
         self.auth_url = f"https://{url}/oauth/token"
+        self.headers = {
+            "accept": "*/*",  # "application/hal+json; text/csv",
+            "Content-Type": "application/json; charset=utf-8",
+        }
 
         # Grab authentication token for given client
         token = self.request_auth_token(client_id, client_secret)
