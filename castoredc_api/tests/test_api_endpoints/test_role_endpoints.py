@@ -35,21 +35,21 @@ class TestStep:
         },
         "_links": {
             "self": {
-                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/role/Admin"
+                "href": "https://data.castoredc.com/api/study/1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001/role/Admin"
             }
         },
     }
 
-    @pytest.fixture(scope="class")
-    def all_roles(self, client):
+    @pytest.fixture(scope="function")
+    def all_roles(self, write_client):
         """Returns all study roles."""
-        all_roles = client.all_roles()
+        all_roles = write_client.all_roles()
         return all_roles
 
-    def test_all_roles_amount(self, all_roles, item_totals):
+    def test_all_roles_amount(self, all_roles, item_totals, write_client):
         """Tests if all_steps returns all steps from the study."""
         assert len(all_roles) > 0, "No roles found in the study, is this right?"
-        assert len(all_roles) == item_totals("/role")
+        assert len(all_roles) == write_client.request_size("/role", False)
 
     def test_all_roles_model(self, all_roles):
         """Tests the model of all study steps."""
@@ -66,18 +66,18 @@ class TestStep:
         """Tests the data of all study roles."""
         assert all_roles[0] == self.test_role
 
-    def test_single_role_success(self, client):
+    def test_single_role_success(self, write_client):
         """Test retrieving a single role."""
-        role = client.single_role("ADMIN")
+        role = write_client.single_role("ADMIN")
         assert role == self.test_role
 
-    def test_single_step_fail(self, client):
+    def test_single_step_fail(self, write_client):
         """Test failing to retrieve a single role."""
         with pytest.raises(HTTPStatusError) as e:
-            client.single_step("FAKE")
+            write_client.single_step("FAKE")
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    def test_create_role_success(self, client):
+    def test_create_role_success(self, write_client):
         """Test successfully creating a new role"""
         body = {
             "name": "API Tester",
@@ -100,12 +100,12 @@ class TestStep:
             },
         }
         with pytest.raises(HTTPStatusError) as e:
-            client.create_role(**body)
+            write_client.create_role(**body)
         assert "422 Client Error: Unprocessable Content for url" in str(e.value)
         # User already exists
         assert "User Role name already exists." in e.value.response.json()["detail"]
 
-    def test_create_role_fail(self, client):
+    def test_create_role_fail(self, write_client):
         """Test failing to create a new role"""
         body = {
             "name": "Error Role",
@@ -128,7 +128,7 @@ class TestStep:
             },
         }
         with pytest.raises(HTTPStatusError) as e:
-            client.create_role(**body)
+            write_client.create_role(**body)
         assert "400 Client Error: Bad Request for url" in str(e.value)
         # User already exists
         assert "Invalid request parameters" in e.value.response.json()["detail"]

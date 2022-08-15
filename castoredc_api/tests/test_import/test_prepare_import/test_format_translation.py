@@ -6,7 +6,7 @@ from castoredc_api.importer.helpers import read_excel, castorize_column
 class TestFormatTranslation:
     """Tests the helper functions for translation of external variable values to Castor values."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_value_data_format(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_values_format.xlsx"
@@ -237,7 +237,7 @@ class TestFormatTranslation:
 class TestFormatTranslationMissing:
     """Tests the helper functions for translation of external variable values to Castor values with missing values."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_value_data_format_missing(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_values_missings_format.xlsx"
@@ -474,7 +474,7 @@ class TestFormatTranslationMissing:
 class TestFormatTranslationFail:
     """Tests the helper functions for translation of erronous external variable values to Castor values."""
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def study_value_data_format_error(self):
         dataframe = read_excel(
             "tests/test_import/data_files_for_import_tests/data_file_study_values_errors_format.xlsx"

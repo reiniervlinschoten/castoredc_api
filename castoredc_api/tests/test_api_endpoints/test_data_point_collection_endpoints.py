@@ -409,14 +409,13 @@ class TestDataPoint:
         assert "404 Client Error: Not Found for url" in str(e.value)
 
     # POST
-    def test_create_study_data_points_success(self, client):
+    def test_create_study_data_points_success(self, write_client):
         """Tests changing data in the study"""
         fields = [
-            "942A5086-88AD-44B4-A63C-85F945EAFCC7",
-            "084A0536-C3E3-4088-94B0-14F1D61D61FF",
-            "F0DB55D5-63F9-459D-9822-16A4BE09DB24",
-            "B0312D85-D7E6-480B-8144-0B3E08726FDB",
-            "D8EA7764-AF24-4A68-B14C-DB8EFDBC43FA",
+            "06DF6CC2-0B3C-4A2B-B42F-736E3253E827",
+            "87A51856-A18C-4F0D-A7F4-1DADDE25E5DA",
+            "CB2AC1D7-2FC9-4D6B-B77D-E6ABA5E8B84C",
+            "4428A986-493A-44CE-A141-2B7ACEF79504",
         ]
 
         common = {"change_reason": "Testing API", "confirmed_changes": True}
@@ -424,25 +423,24 @@ class TestDataPoint:
         data = [
             {
                 "field_id": field,
-                "field_value": allowed_value(client, field),
+                "field_value": allowed_value(write_client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
             for field in fields
         ]
 
-        feedback = client.update_study_data_record("000018", common, data)
-        assert feedback["total_processed"] == 5
+        feedback = write_client.update_study_data_record("110001", common, data)
+        assert feedback["total_processed"] == 4
         assert feedback["total_failed"] == 0
 
-    def test_create_study_data_points_fail_ids(self, client):
+    def test_create_study_data_points_fail_ids(self, write_client):
         """Tests failing to change data in the study based on field id"""
         fields = [
-            "942A5086-88AD-44B4-A63C-85F945EAFCC7",
-            "084A0536-C3E3-4088-94B0-14F1D61D61FF",
-            "F0DB55D5-63F9-459D-9822-16A4BE09DB24",
-            "B0312D85-D7E6-480B-8144-0B3E08726FDB",
-            "D8EA7764-AF24-4A68-B14C-DB8EFDBC43FA",
+            "06DF6CC2-0B3C-4A2B-B42F-736E3253E827",
+            "87A51856-A18C-4F0D-A7F4-1DADDE25E5DA",
+            "CB2AC1D7-2FC9-4D6B-B77D-E6ABA5E8B84C",
+            "4428A986-493A-44CE-A141-2B7ACEF79504",
         ]
 
         common = {"change_reason": "Testing API", "confirmed_changes": True}
@@ -450,7 +448,7 @@ class TestDataPoint:
         data = [
             {
                 "field_id": field + "FAKE",
-                "field_value": allowed_value(client, field),
+                "field_value": allowed_value(write_client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -458,24 +456,23 @@ class TestDataPoint:
         ]
 
         with pytest.raises(HTTPStatusError) as e:
-            feedback = client.update_study_data_record("000018", common, data)
+            write_client.update_study_data_record("110001", common, data)
         assert "500 Server Error: Internal Server Error for url" in str(e.value)
 
-    def test_create_study_data_points_fail_record(self, client):
+    def test_create_study_data_points_fail_record(self, write_client):
         """Tests failing to change data in the study"""
         fields = [
-            "942A5086-88AD-44B4-A63C-85F945EAFCC7",
-            "084A0536-C3E3-4088-94B0-14F1D61D61FF",
-            "F0DB55D5-63F9-459D-9822-16A4BE09DB24",
-            "B0312D85-D7E6-480B-8144-0B3E08726FDB",
-            "D8EA7764-AF24-4A68-B14C-DB8EFDBC43FA",
+            "06DF6CC2-0B3C-4A2B-B42F-736E3253E827",
+            "87A51856-A18C-4F0D-A7F4-1DADDE25E5DA",
+            "CB2AC1D7-2FC9-4D6B-B77D-E6ABA5E8B84C",
+            "4428A986-493A-44CE-A141-2B7ACEF79504",
         ]
 
         common = {"change_reason": "Testing API", "confirmed_changes": True}
         data = [
             {
                 "field_id": field,
-                "field_value": allowed_value(client, field),
+                "field_value": allowed_value(write_client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -483,17 +480,17 @@ class TestDataPoint:
         ]
 
         with pytest.raises(HTTPStatusError) as e:
-            client.update_study_data_record("00FAKE", common, data)
+            write_client.update_study_data_record("00FAKE", common, data)
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    def test_create_report_data_points_success(self, client):
+    def test_create_report_data_points_success(self, write_client):
         """Tests changing report data"""
         fields = [
-            "572590BA-A1E8-4BE0-9256-F1B6842C05EB",
-            "F33AD264-6483-4E7F-9E1F-CF1E2655661C",
-            "4DA988EE-8D82-43D4-B6CF-02FF63EC9569",
-            "FE481CDF-1F62-4542-8735-DE9DB843F0AE",
-            "C6D2C69D-C126-429A-812A-21765519D23E",
+            "25363BB4-8A2C-4364-B9E7-8BF05D8DEFA6",
+            "2F0158B6-F702-43B4-AD61-EC48C23B4F64",
+            "F9816680-07E1-448C-A17B-2ED9A0DA1018",
+            "78313CE7-51EA-4FB4-860F-92D3B40E970A",
+            "8FD64224-E829-40BF-A4D2-7B20AADE1102",
         ]
 
         # Instantiate fake data
@@ -502,8 +499,8 @@ class TestDataPoint:
         data = [
             {
                 "field_id": field,
-                "instance_id": "D9E60041-E674-4197-819B-2C4F16E05B04",
-                "field_value": allowed_value(client, field),
+                "instance_id": "2CDE922C-6333-4D18-B8DC-912004D30FB5",
+                "field_value": allowed_value(write_client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -511,20 +508,19 @@ class TestDataPoint:
         ]
 
         # Update the report
-        feedback = client.update_report_data_record(
-            "000020", "D9E60041-E674-4197-819B-2C4F16E05B04", common, data
+        feedback = write_client.update_report_data_record(
+            "110001", "2CDE922C-6333-4D18-B8DC-912004D30FB5", common, data
         )
         assert feedback["total_processed"] == 5
         assert feedback["total_failed"] == 0
 
-    def test_create_report_data_points_fail_ids(self, client):
-        """Tests failing to change report data based on field id"""
+    def test_create_report_data_points_fail_ids(self, write_client):
         fields = [
-            "572590BA-A1E8-4BE0-9256-F1B6842C05EB",
-            "F33AD264-6483-4E7F-9E1F-CF1E2655661C",
-            "4DA988EE-8D82-43D4-B6CF-02FF63EC9569",
-            "FE481CDF-1F62-4542-8735-DE9DB843F0AE",
-            "C6D2C69D-C126-429A-812A-21765519D23E",
+            "25363BB4-8A2C-4364-B9E7-8BF05D8DEFA6",
+            "2F0158B6-F702-43B4-AD61-EC48C23B4F64",
+            "F9816680-07E1-448C-A17B-2ED9A0DA1018",
+            "78313CE7-51EA-4FB4-860F-92D3B40E970A",
+            "8FD64224-E829-40BF-A4D2-7B20AADE1102",
         ]
 
         # Instantiate fake data
@@ -533,8 +529,8 @@ class TestDataPoint:
         data = [
             {
                 "field_id": field + "FAKE",
-                "instance_id": "D9E60041-E674-4197-819B-2C4F16E05B04",
-                "field_value": allowed_value(client, field),
+                "instance_id": "2CDE922C-6333-4D18-B8DC-912004D30FB5",
+                "field_value": allowed_value(write_client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -543,19 +539,19 @@ class TestDataPoint:
 
         # Update the report
         with pytest.raises(HTTPStatusError) as e:
-            feedback = client.update_report_data_record(
-                "000020", "D9E60041-E674-4197-819B-2C4F16E05B04", common, data
+            write_client.update_report_data_record(
+                "110001", "2CDE922C-6333-4D18-B8DC-912004D30FB5", common, data
             )
         assert "500 Server Error: Internal Server Error for url" in str(e.value)
 
-    def test_create_report_data_points_fail_record(self, client):
+    def test_create_report_data_points_fail_record(self, write_client):
         """Tests failing to change report data based on record id"""
         fields = [
-            "572590BA-A1E8-4BE0-9256-F1B6842C05EB",
-            "F33AD264-6483-4E7F-9E1F-CF1E2655661C",
-            "4DA988EE-8D82-43D4-B6CF-02FF63EC9569",
-            "FE481CDF-1F62-4542-8735-DE9DB843F0AE",
-            "C6D2C69D-C126-429A-812A-21765519D23E",
+            "25363BB4-8A2C-4364-B9E7-8BF05D8DEFA6",
+            "2F0158B6-F702-43B4-AD61-EC48C23B4F64",
+            "F9816680-07E1-448C-A17B-2ED9A0DA1018",
+            "78313CE7-51EA-4FB4-860F-92D3B40E970A",
+            "8FD64224-E829-40BF-A4D2-7B20AADE1102",
         ]
 
         # Instantiate fake data
@@ -564,8 +560,8 @@ class TestDataPoint:
         data = [
             {
                 "field_id": field,
-                "instance_id": "D9E60041-E674-4197-819B-2C4F16E05B04",
-                "field_value": allowed_value(client, field),
+                "instance_id": "2CDE922C-6333-4D18-B8DC-912004D30FB5",
+                "field_value": allowed_value(write_client, field),
                 "change_reason": "Testing API",
                 "confirmed_changes": True,
             }
@@ -574,8 +570,8 @@ class TestDataPoint:
 
         # Update the report
         with pytest.raises(HTTPStatusError) as e:
-            client.update_report_data_record(
-                "00FAKE", "D9E60041-E674-4197-819B-2C4F16E05B04", common, data
+            write_client.update_report_data_record(
+                "00FAKE", "2CDE922C-6333-4D18-B8DC-912004D30FB5", common, data
             )
         assert "404 Client Error: Not Found for url:" in str(e.value)
 

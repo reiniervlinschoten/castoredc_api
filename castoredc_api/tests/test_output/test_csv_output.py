@@ -8,7 +8,7 @@ from castoredc_api.study.castor_study import CastorStudy
 class TestCSVOutput:
     """Tests whether the correct data is outputted."""
 
-    @pytest.fixture(scope="session")
+    @pytest.fixture(scope="function")
     def output_data(self):
         study = CastorStudy(
             auth_data.client_id,

@@ -192,53 +192,44 @@ class TestReportDataEntry:
             )
         assert "404 Client Error: Not Found for url" in str(e.value)
 
-    def test_update_report_instance_single_field_record_success(self, client):
+    def test_update_report_instance_single_field_record_success(self, write_client):
         """Tests updating a single field from a report instance"""
         # Get all filled in report data points
-        field = "F610012E-B618-40A7-AA36-6C8BD959A1F1"
-        post_value = allowed_value(client, field)
+        field = "E08E1580-5E85-49BE-A547-89C2E15385A5"
+        post_value = allowed_value(write_client, field)
 
         # Update the field
         change_reason = "Testing API"
-        client.update_report_instance_single_field_record(
-            "000002",
-            "34963D7D-D82A-43B3-B24F-5F184CFD440E",
+        write_client.update_report_instance_single_field_record(
+            "110001",
+            "2CDE922C-6333-4D18-B8DC-912004D30FB5",
             field,
             change_reason,
             post_value,
         )
 
         # Check if changing worked
-        new_value = client.single_report_instance_single_field_record(
-            "000002", "34963D7D-D82A-43B3-B24F-5F184CFD440E", field
+        new_value = write_client.single_report_instance_single_field_record(
+            "110001", "2CDE922C-6333-4D18-B8DC-912004D30FB5", field
         )
         assert new_value["value"] == str(post_value)
 
-    def test_update_report_instance_single_field_record_fail(self, client):
+    def test_update_report_instance_single_field_record_fail(self, write_client):
         """Tests failing to update a single field from a report instance"""
         # Get all filled in report data points
-        field = "F610012E-B618-40A7-AA36-6C8BD959A1F1"
-        post_value = allowed_value(client, field)
-        old_value = client.single_report_instance_single_field_record(
-            "000002", "34963D7D-D82A-43B3-B24F-5F184CFD440E", field
-        )
-        # Update the field
-        change_reason = "Testing API"
-        client.update_report_instance_single_field_record(
-            "000002",
-            "34963D7D-D82A-43B3-B24F-5F184CFD440E",
-            field,
-            change_reason,
-            post_value,
+        field = "E08E1580-5E85-49BE-A547-89C2E15385A5"
+        post_value = allowed_value(write_client, field)
+        old_value = write_client.single_report_instance_single_field_record(
+            "110001", "2CDE922C-6333-4D18-B8DC-912004D30FB5", field
         )
 
         # Update the field
         change_reason = "Testing API"
 
         with pytest.raises(HTTPStatusError) as e:
-            client.update_report_instance_single_field_record(
-                "000002",
-                "34963D7D-D82A-43B3-B24F-5F184CFD440E",
+            write_client.update_report_instance_single_field_record(
+                "110001",
+                "2CDE922C-6333-4D18-B8DC-912004D30FB5",
                 field + "FAKE",
                 change_reason,
                 post_value,
@@ -246,7 +237,7 @@ class TestReportDataEntry:
         assert "404 Client Error: Not Found for url" in str(e.value)
 
         # Check if changing actually failed
-        new_value = client.single_report_instance_single_field_record(
-            "000002", "34963D7D-D82A-43B3-B24F-5F184CFD440E", field
+        new_value = write_client.single_report_instance_single_field_record(
+            "110001", "2CDE922C-6333-4D18-B8DC-912004D30FB5", field
         )
         assert new_value["value"] == old_value["value"]

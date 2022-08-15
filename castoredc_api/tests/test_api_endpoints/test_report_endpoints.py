@@ -29,7 +29,7 @@ class TestReport:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_reports(self, client):
         """Gets all reports from the study."""
         all_reports = client.all_reports()

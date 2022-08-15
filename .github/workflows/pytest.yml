@@ -6,10 +6,20 @@ name: pytest
       - '**'
     tags:
       - '**'
+    paths:
+      - 'castoredc_api/client/**'
+      - 'castoredc_api/study/**'
+      - 'castoredc_api/importer/**'
+      - 'castoredc_api/tests/**'
   pull_request:
     branches:
       - '**'
     types: [opened]
+    paths:
+      - 'castoredc_api/client/**'
+      - 'castoredc_api/study/**'
+      - 'castoredc_api/importer/**'
+      - 'castoredc_api/tests/**'
   workflow_dispatch:
 
 
@@ -42,6 +52,7 @@ jobs:
         IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+        WRITE_STUDY_ID: ${{ secrets.WRITE_STUDY_ID }}
       run: |
         sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
@@ -55,6 +66,7 @@ jobs:
         IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+        WRITE_STUDY_ID: ${{ secrets.WRITE_STUDY_ID }}
       run: |
         sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
@@ -68,6 +80,7 @@ jobs:
         IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+        WRITE_STUDY_ID: ${{ secrets.WRITE_STUDY_ID }}
       run: |
         sudo ethtool -K eth0 tx off rx off
         cd castoredc_api
@@ -94,6 +107,7 @@ jobs:
         IMPORT_STUDY_ID: ${{ secrets.IMPORT_STUDY_ID }}
         STUDY_STUDY_ID: ${{ secrets.STUDY_STUDY_ID }}
         SPECIAL_STUDY_ID: ${{ secrets.SPECIAL_STUDY_ID }}
+        WRITE_STUDY_ID: ${{ secrets.WRITE_STUDY_ID }}
       run: |
         sudo ethtool -K eth0 tx off rx off
         cd castoredc_api

@@ -27,7 +27,7 @@ class TestMetadataType:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def all_metadata_types(self, client):
         """Gets all metadata types from the API."""
         all_metadata_types = client.all_metadata_types()

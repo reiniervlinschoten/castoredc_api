@@ -48,7 +48,7 @@ class TestSurveyStep:
         },
     }
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope="function")
     def surveys_with_steps(self, client):
         """Returns all surveys with their corresponding steps"""
         surveys_with_steps = {}

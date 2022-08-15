@@ -9,10 +9,10 @@ import math
 import random
 
 
-def allowed_value(client, field_id):
+def allowed_value(write_client, field_id):
     """Creates and returns a value that is allowed for the given field_id."""
     # Get information on the field
-    field = client.single_field(field_id)
+    field = write_client.single_field(field_id)
 
     # Get the allowed values to update
     if field["field_type"] == "numeric":
