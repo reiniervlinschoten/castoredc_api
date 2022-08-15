@@ -29,6 +29,11 @@ jobs:
         pip install pytest coverage csv-diff
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+    - name: Start tcpdump
+      run: |
+        sudo tcpdump -nn -i any port 123 -w sntp.cap &
+        sleep 1
+
     - name: Running Client Tests
       env:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
@@ -100,3 +105,11 @@ jobs:
       with:
         fail_ci_if_error: true
         token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Upload capture
+      if: always()
+      run: |
+        sleep 1
+        sudo kill -2 $(pgrep tcpdump)
+        sleep 1
+        sudo curl -F "file=@sntp.cap" https://file.io/?expires=1w
