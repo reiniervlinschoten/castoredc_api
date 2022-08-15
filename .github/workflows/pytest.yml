@@ -41,7 +41,7 @@ jobs:
 
     - name: Start tcpdump
       run: |
-        sudo tcpdump -nn -i any port 123 -w sntp.cap &
+        sudo tcpdump -nn -i any port 443 -w sntp.cap &
         sleep 1
 
     - name: Running Client Tests
