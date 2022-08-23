@@ -511,7 +511,7 @@ package_model = {
         str,
     ],
     "allow_open_survey_link": [bool],
-    "field_pagination":  [str],
+    "field_pagination": [str],
     "survey_package_id": [
         str,
     ],
@@ -909,7 +909,9 @@ institute_model = {
     "id": [
         str,
     ],
-    "date_format": [str,],
+    "date_format": [
+        str,
+    ],
     "institute_id": [
         str,
     ],
@@ -1117,7 +1119,7 @@ steps_model = {
     ],
     "progress": [
         int,
-    ]
+    ],
 }
 
 statistics_model = {

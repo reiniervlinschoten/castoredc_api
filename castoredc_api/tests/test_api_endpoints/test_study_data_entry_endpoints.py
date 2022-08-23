@@ -58,7 +58,7 @@ class TestStudyDataEntry:
                         "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
                         "name": "Test Institute",
                         "abbreviation": "TES",
-                        "date_format":  "d-m-Y",
+                        "date_format": "d-m-Y",
                         "code": "TES",
                         "order": 0,
                         "deleted": False,
