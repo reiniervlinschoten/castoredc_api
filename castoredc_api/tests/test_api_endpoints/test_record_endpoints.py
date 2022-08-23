@@ -50,7 +50,7 @@ class TestRecord:
         },
         "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "updated_on": {
-            "date": "2020-07-03 14:13:44.000000",
+            "date": "2020-07-03 12:13:44.000000",
             "timezone_type": 3,
             "timezone": "Europe/Amsterdam",
         },
@@ -68,6 +68,7 @@ class TestRecord:
                 "order": 0,
                 "deleted": False,
                 "country_id": 169,
+                "date_format": "d-m-Y",
                 "_links": {
                     "self": {
                         "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5"

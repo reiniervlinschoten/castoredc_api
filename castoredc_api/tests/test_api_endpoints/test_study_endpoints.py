@@ -24,7 +24,7 @@ class TestStudy:
         "study_id": "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001",
         "name": "PythonWrapperTest - Client (Write)",
         "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-        "created_on": "2022-06-28 09:13:41",
+        "created_on": "2022-06-28 07:13:41",
         "trial_registry_id": "",
         "live": True,
         "randomization_enabled": True,
@@ -84,7 +84,7 @@ class TestStudy:
         """Tests failing to return a study"""
         with pytest.raises(HTTPStatusError) as e:
             write_client.single_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert "403 Client Error: Forbidden for url" in str(e.value)
+        assert "404 Client Error: Not Found for url:" in str(e.value)
 
     def test_all_users_success(self, write_client):
         """Tests if the API returns all users belonging to a study"""
@@ -106,7 +106,7 @@ class TestStudy:
         """Tests failing to return all users for a study"""
         with pytest.raises(HTTPStatusError) as e:
             write_client.all_users_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert "403 Client Error: Forbidden for url" in str(e.value)
+        assert "404 Client Error: Not Found for url" in str(e.value)
 
     def test_single_user_success(self, write_client):
         """Tests returning a single user"""

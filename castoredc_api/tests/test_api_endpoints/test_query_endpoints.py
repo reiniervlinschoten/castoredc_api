@@ -30,7 +30,7 @@ class TestQuery:
         },
         "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "updated_on": {
-            "date": "2019-09-23 12:16:37.000000",
+            "date": "2019-09-23 10:16:37.000000",
             "timezone_type": 3,
             "timezone": "Europe/Amsterdam",
         },

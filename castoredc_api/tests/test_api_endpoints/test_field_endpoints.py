@@ -34,6 +34,7 @@ class TestField:
         "field_image": "",
         "field_summary_template": "",
         "field_slider_step": None,
+        "field_slider_step_value": None,
         "report_id": "89FF2394-0D41-4D4C-89FE-AA9AB287B31E",
         "field_length": None,
         "additional_config": '{"showReportOfAllPhases":"0"}',

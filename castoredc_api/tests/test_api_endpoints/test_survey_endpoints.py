@@ -79,6 +79,7 @@ class TestSurveyEndpoints:
         "is_training": False,
         "is_repeatable": False,
         "is_resumable": False,
+        "field_pagination": "none",
         "as_needed": False,
         "expire_after_hours": None,
         "_embedded": {
@@ -116,6 +117,7 @@ class TestSurveyEndpoints:
         "survey_package_id": "71C01598-4682-4A4C-90E6-69C0BD38EA47",
         "survey_url_string": "DUQKNQNN",
         "progress": 100,
+        "received_on": None,
         "invitation_subject": "Please fill in this survey for Example Study",
         "invitation_content": 'Dear participant,\n\nYou are participating in the study "Example Study" and we would like to ask you to fill in a survey.\n\nPlease click the link below to complete our survey.\n\n{url}\n\n{logo}',
         "created_on": {
@@ -163,7 +165,7 @@ class TestSurveyEndpoints:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2021-10-20 16:25:16.000000",
+                    "date": "2021-10-20 14:25:16.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },
@@ -177,6 +179,7 @@ class TestSurveyEndpoints:
                         "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
                         "name": "Test Institute",
                         "abbreviation": "TES",
+                        "date_format": "d-m-Y",
                         "code": "TES",
                         "order": 0,
                         "deleted": False,
@@ -199,6 +202,7 @@ class TestSurveyEndpoints:
                 "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
                 "name": "Test Institute",
                 "abbreviation": "TES",
+                "date_format": "d-m-Y",
                 "code": "TES",
                 "order": 0,
                 "deleted": False,
@@ -231,6 +235,7 @@ class TestSurveyEndpoints:
                 "is_resumable": False,
                 "as_needed": False,
                 "expire_after_hours": None,
+                "field_pagination": "none",
                 "allow_open_survey_link": False,
                 "_embedded": {
                     "surveys": [

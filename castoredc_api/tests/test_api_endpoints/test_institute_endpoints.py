@@ -24,6 +24,7 @@ class TestInstitute:
         "name": "Franciscus Gasthuis",
         "abbreviation": "SFG",
         "code": "SFG",
+        "date_format": "d-m-Y",
         "order": 11,
         "deleted": False,
         "country_id": 169,
