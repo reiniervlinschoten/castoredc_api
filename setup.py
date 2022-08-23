@@ -14,11 +14,11 @@ setup(
     url="https://github.com/reiniervlinschoten/castoredc_api",
     packages=find_packages(include=("castoredc_api", "castoredc_api.*")),
     install_requires=[
-        "pandas>=1.3.1",
-        "numpy>=1.21.1",
-        "openpyxl>=3.0.7",
-        "tqdm>=4.62.0",
-        "httpx>=0.19.0",
+        "pandas>=1.4.3",
+        "numpy>=1.23.2",
+        "openpyxl>=3.0.10",
+        "tqdm>=4.64.0",
+        "httpx>=0.23.0",
         # importlib.metadata was only introduced in Python 3.8, but the
         # "importlib-metadata" package provides it for older Python versions.
         'importlib-metadata >= 1.0 ; python_version < "3.8"',
