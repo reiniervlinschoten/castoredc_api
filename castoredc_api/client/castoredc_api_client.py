@@ -989,7 +989,7 @@ class CastorClient:
             "client_secret": client_secret,
             "grant_type": "client_credentials",
         }
-        response = self.client.post(url=self.auth_url, data=json.dumps(auth_data))
+        response = self.client.post(url=self.auth_url, content=json.dumps(auth_data))
         response.raise_for_status()
         content = response.json()
         return content["access_token"]
