@@ -2,7 +2,6 @@
 
 import asyncio
 import csv
-import importlib.metadata
 import json
 import sys
 from datetime import datetime
@@ -46,8 +45,8 @@ class CastorClient:
         self.auth_url = f"https://{url}/oauth/token"
 
         try:
-            self.package_version = pkg_metadata.version('castoredc_api')
-        except importlib.metadata.PackageNotFoundError:
+            self.package_version = pkg_metadata.version("castoredc_api")
+        except pkg_metadata.PackageNotFoundError:
             self.package_version = "Github Tests"
 
         # Instantiate client
