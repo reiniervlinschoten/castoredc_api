@@ -336,7 +336,7 @@ class TestSurveyEndpoints:
         """Test calling on a non-existent survey"""
         with pytest.raises(HTTPStatusError) as e:
             client.single_survey("D70C1273-B5D8-45CD-BFE8-A0BA75C4FAKE")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     # SURVEY PACKAGES
     def test_all_survey_packages(self, all_survey_packages):
@@ -357,7 +357,7 @@ class TestSurveyEndpoints:
         """Test calling on a non-existent survey package"""
         with pytest.raises(HTTPStatusError) as e:
             client.single_survey_package("71C01598-4682-4A4C-90E6-69C0BD38FAKE")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     # SURVEY PACKAGE INSTANCES
     def test_all_survey_package_instances(self, all_survey_package_instances):
@@ -411,7 +411,7 @@ class TestSurveyEndpoints:
             client.all_survey_package_instances(
                 record_id="000001", finished_on="14-08-2020"
             )
-        assert "422 Client Error: Unprocessable Content for url" in str(e.value)
+        assert "Client error '422 Unprocessable Content'" in str(e.value)
 
     def test_all_survey_package_instance_record_fail(
         self, client, all_survey_package_instances
@@ -419,7 +419,7 @@ class TestSurveyEndpoints:
         """Test filtering on non-existent record"""
         with pytest.raises(HTTPStatusError) as e:
             client.all_survey_package_instances(record_id="00FAKE")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     def test_single_survey_package_instance_success(
         self, client, all_survey_package_instances
@@ -438,7 +438,7 @@ class TestSurveyEndpoints:
             client.single_survey_package_instance(
                 "115DF660-A00A-4927-9E5F-A07D030DFAKE"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     # POST
     def test_create_survey_package_instance_success(self, write_client):
@@ -460,7 +460,7 @@ class TestSurveyEndpoints:
 
         with pytest.raises(HTTPStatusError) as e:
             write_client.create_survey_package_instance(**body)
-        assert "422 Client Error: Unprocessable Content for url:" in str(e.value)
+        assert "Client error '422 Unprocessable Content'" in str(e.value)
 
         new_amount = len(write_client.all_survey_package_instances(record_id="110001"))
         assert new_amount == old_amount
@@ -494,7 +494,7 @@ class TestSurveyEndpoints:
 
         with pytest.raises(HTTPStatusError) as e:
             write_client.lock_unlock_survey_package_instance(fake_id, target_status)
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
         package = write_client.single_survey_package_instance(
             "CEF2F230-9F52-45C7-A92D-27B93A5E2B23"
@@ -539,7 +539,7 @@ class TestSurveyEndpoints:
 
         with pytest.raises(HTTPStatusError) as e:
             client.update_start_time_survey_package_instance("000001", fake_id, now)
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
         package = client.single_survey_package_instance(
             "3936CDF8-7F8E-45B4-9957-1BCEEAC78DD4"

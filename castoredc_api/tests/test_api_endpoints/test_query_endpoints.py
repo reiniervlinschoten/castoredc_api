@@ -99,4 +99,4 @@ class TestQuery:
         """Tests if single_query returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_query("FAKE9130-EBDA-446A-9E21-35FE590C4DE3")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)

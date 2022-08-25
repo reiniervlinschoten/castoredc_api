@@ -144,7 +144,7 @@ class TestRecord:
         """Tests if single record returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_record("FAKE06")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     def test_create_record_success(self, write_client):
         """Tests creating a new record."""
@@ -175,7 +175,7 @@ class TestRecord:
         }
         with pytest.raises(HTTPStatusError) as e:
             write_client.create_record(**record)
-        assert "422 Client Error: Unprocessable Content for url:" in str(e.value)
+        assert "Client error '422 Unprocessable Content'" in str(e.value)
 
         new_records = write_client.all_records()
         new_len = len(new_records)

@@ -42,7 +42,7 @@ class TestRecord:
         """Tests if single randomization returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_randomization("FAKE42")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     def test_randomize_success(self, write_client):
         """Tests randomizing a new record."""
@@ -66,4 +66,4 @@ class TestRecord:
         """Tests if randomizing a record properly errors."""
         with pytest.raises(HTTPStatusError) as e:
             client.create_randomization("FAKE42")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)

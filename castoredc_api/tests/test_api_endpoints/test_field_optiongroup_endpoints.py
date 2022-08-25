@@ -96,4 +96,4 @@ class TestFieldOptionGroup:
         """Tests if single field_opt returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_field_optiongroup("FAKEF1BC-1329-43B5-B494-DFBB87C21E99")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)

@@ -86,22 +86,22 @@ class TestCountry:
         """Tests if retrieving a non-existent (edge case: upper range) country ID raises an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_country(252)
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     def test_single_country_failure_negative(self, client):
         """Tests if retrieving a non-existent (edge case: negative) country ID raises an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_country(-1)
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     def test_single_country_failure_zero(self, client):
         """Tests if retrieving a non-existent (edge case: zero) country ID raises an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_country(0)
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
 
     def test_single_country_failure_one(self, client):
         """Tests if retrieving a non-existent (edge case: lower range) country ID raises an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_country(1)
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert "Client error '404 Not Found" in str(e.value)
