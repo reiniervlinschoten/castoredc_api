@@ -2,6 +2,7 @@
 
 import asyncio
 import csv
+import importlib.metadata
 import json
 import sys
 from datetime import datetime
@@ -44,12 +45,17 @@ class CastorClient:
         self.base_url = f"https://{url}/api"
         self.auth_url = f"https://{url}/oauth/token"
 
+        try:
+            self.package_version = pkg_metadata.version('castoredc_api')
+        except importlib.metadata.PackageNotFoundError:
+            self.package_version = "Github Tests"
+
         # Instantiate client
         self.client = httpx.Client(
             headers={
                 "accept": "*/*",  # "application/hal+json; text/csv",
                 "Content-Type": "application/json; charset=utf-8",
-                "User-Agent": f"python-castoredc_api/{pkg_metadata.version('castoredc_api')}",
+                "User-Agent": f"python-castoredc_api/{self.package_version}",
             },
             limits=self.limits,
             timeout=self.timeout,
