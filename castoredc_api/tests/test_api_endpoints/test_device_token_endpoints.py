@@ -26,7 +26,7 @@ class TestDeviceToken:
         """Tests if single token returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_token("FAKE24")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_token_success(self, client):
         """Tests if creating a token works."""
@@ -41,7 +41,7 @@ class TestDeviceToken:
         with pytest.raises(HTTPStatusError) as e:
             # Record already has a token
             client.create_token("000024", "NEW-API-TOKEN")
-        assert "Client error '422 Unprocessable Content'" in str(e.value)
+        assert e.value.response.status_code == 422
 
     def test_update_token_success(self, client):
         """Tests if updating a token works."""
@@ -54,7 +54,7 @@ class TestDeviceToken:
         """Tests if failing to update a token fails properly"""
         with pytest.raises(HTTPStatusError) as e:
             client.update_token("FAKE24", "NEW-API-TOKEN")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_delete_token_success(self, client):
         """Tests if deleting a token works."""
@@ -72,4 +72,4 @@ class TestDeviceToken:
         """Tests if failing to update a token fails properly"""
         with pytest.raises(HTTPStatusError) as e:
             client.delete_token("000024")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404

@@ -68,4 +68,4 @@ class TestPhase:
         """Tests if single phase returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_phase("FAKE95D-4F8D-4B4A-96A1-14D026D0328E")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404

@@ -75,7 +75,7 @@ class TestStep:
         """Test failing to retrieve a single role."""
         with pytest.raises(HTTPStatusError) as e:
             write_client.single_step("FAKE")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_role_success(self, write_client):
         """Test successfully creating a new role"""
@@ -101,7 +101,7 @@ class TestStep:
         }
         with pytest.raises(HTTPStatusError) as e:
             write_client.create_role(**body)
-        assert "Client error '422 Unprocessable Content'" in str(e.value)
+        assert e.value.response.status_code == 422
         # User already exists
         assert "User Role name already exists." in e.value.response.json()["detail"]
 
@@ -129,6 +129,6 @@ class TestStep:
         }
         with pytest.raises(HTTPStatusError) as e:
             write_client.create_role(**body)
-        assert "Client error '400 Bad Request'" in str(e.value)
+        assert e.value.response.status_code == 400
         # User already exists
         assert "Invalid request parameters" in e.value.response.json()["detail"]

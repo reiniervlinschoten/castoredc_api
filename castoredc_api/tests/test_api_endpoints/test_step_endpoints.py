@@ -77,4 +77,4 @@ class TestStep:
     def test_single_step_fail(self, all_steps, client):
         with pytest.raises(HTTPStatusError) as e:
             client.single_step("F6BB55C9-FC35-4375-86D0-A4F5E239FAKE")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404

@@ -81,4 +81,4 @@ class TestReportStep:
                 "89FF2394-0D41-4D4C-89FE-AA9AB287B31E",
                 "111BA2F0-BC6B-47ED-9159-802BF760FAKE",
             )
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404

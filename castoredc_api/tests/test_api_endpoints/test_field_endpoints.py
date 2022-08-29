@@ -91,4 +91,4 @@ class TestField:
         """Tests if single field returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_field("FAKE5B4D-D362-4A54-9063-7D3CBAAC0F21")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404

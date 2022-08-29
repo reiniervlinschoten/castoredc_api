@@ -91,4 +91,4 @@ class TestSurveyStep:
                 "D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E",
                 "C19211FE-1C53-43F9-BC85-460DF125FAKE",
             )
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404

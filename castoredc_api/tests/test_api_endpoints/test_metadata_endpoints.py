@@ -71,4 +71,4 @@ class TestMetadata:
         """Tests if single metadata returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_metadata("FAKE5E29-02BB-4C90-AA02-5F27A300D99E")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404

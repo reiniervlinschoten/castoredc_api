@@ -47,7 +47,7 @@ class CastorClient:
         try:
             self.package_version = pkg_metadata.version("castoredc_api")
         except pkg_metadata.PackageNotFoundError:
-            self.package_version = "Github Tests"
+            self.package_version = "dev"
 
         # Instantiate client
         self.client = httpx.Client(

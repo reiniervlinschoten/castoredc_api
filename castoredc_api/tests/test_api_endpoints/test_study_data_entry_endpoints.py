@@ -134,7 +134,7 @@ class TestStudyDataEntry:
         """Test failing to return all study_data_points for a record"""
         with pytest.raises(HTTPStatusError) as e:
             client.all_study_fields_record("00FAKE")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_study_data_point_record_success(self, client):
         """Tests returning a single study data point for a record"""
@@ -149,7 +149,7 @@ class TestStudyDataEntry:
             client.single_study_field_record(
                 "000004", "28D1A17B-51C3-4BDC-A604-7B2F6D5DFAKE"
             )
-        assert "Server error '500 Internal Server Error'" in str(e.value)
+        assert e.value.response.status_code == 500
 
     def test_update_single_study_field_record_success(self, write_client):
         """Tests changing a single study field."""
@@ -182,7 +182,7 @@ class TestStudyDataEntry:
                 record, "FAKE" + field + "FAKE", change_reason, post_value
             )
 
-        assert "Server error '500 Internal Server Error'" in str(e.value)
+        assert e.value.response.status_code == 500
 
         new_value = write_client.single_study_field_record(record, field)
         assert new_value["value"] == old_value["value"]

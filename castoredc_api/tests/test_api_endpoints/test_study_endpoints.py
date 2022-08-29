@@ -84,7 +84,7 @@ class TestStudy:
         """Tests failing to return a study"""
         with pytest.raises(HTTPStatusError) as e:
             write_client.single_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert "Client error '404 Not Found'" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_all_users_success(self, write_client):
         """Tests if the API returns all users belonging to a study"""
@@ -106,7 +106,7 @@ class TestStudy:
         """Tests failing to return all users for a study"""
         with pytest.raises(HTTPStatusError) as e:
             write_client.all_users_study("D234215B-D956-482D-BF17-71F2BB12FAKE")
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_user_success(self, write_client):
         """Tests returning a single user"""
@@ -128,7 +128,7 @@ class TestStudy:
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001",
                 "B23ABCC4-3A53-FB32-7B78-3960CC90FAKE",
             )
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_invite_user_success(self, write_client):
         """Tests inviting a user to the study"""
@@ -141,7 +141,7 @@ class TestStudy:
             write_client.invite_user_study(
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001", **body
             )
-        assert "Client error '400 Bad Request'" in str(e.value)
+        assert e.value.response.status_code == 400
         # User already exists
         assert (
             "Could not send an email to the added user."
@@ -190,7 +190,7 @@ class TestStudy:
             write_client.invite_user_study(
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001", **body
             )
-        assert "Client error '400 Bad Request'" in str(e.value)
+        assert e.value.response.status_code == 400
         # User already exists
         assert (
             "Could not send an email to the added user."
@@ -239,7 +239,7 @@ class TestStudy:
             write_client.invite_user_study(
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001", **body
             )
-        assert "Client error '400 Bad Request'" in str(e.value)
+        assert e.value.response.status_code == 400
         # Permissions are wonky, but gives a non-informative error at Castor
         assert (
             "Could not send an email to the added user."
@@ -257,5 +257,5 @@ class TestStudy:
             write_client.invite_user_study(
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001", **body
             )
-        assert "Client error '400 Bad Request'" in str(e.value)
+        assert e.value.response.status_code == 400
         assert "BAD_REQUEST" in e.value.response.json()["detail"]

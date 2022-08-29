@@ -173,7 +173,7 @@ class TestReportDataEntry:
             client.single_report_instance_all_fields_record(
                 "00FAKE", "2711B1EF-6118-4EBD-9858-47E4830C4EC5"
             )
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_report_instance_single_field_record_success(self, client):
         """Tests returning a single field from a report instance"""
@@ -192,7 +192,7 @@ class TestReportDataEntry:
                 "2711B1EF-6118-4EBD-9858-47E4830C4EC5",
                 "AFD46D4F-5C17-4B9B-BE19-8A5A7026FAKE",
             )
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_update_report_instance_single_field_record_success(self, write_client):
         """Tests updating a single field from a report instance"""
@@ -236,7 +236,7 @@ class TestReportDataEntry:
                 change_reason,
                 post_value,
             )
-        assert "Client error '404 Not Found" in str(e.value)
+        assert e.value.response.status_code == 404
 
         # Check if changing actually failed
         new_value = write_client.single_report_instance_single_field_record(
