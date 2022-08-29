@@ -30,7 +30,7 @@ class TestQuery:
         },
         "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "updated_on": {
-            "date": "2019-09-23 12:16:37.000000",
+            "date": "2019-09-23 10:16:37.000000",
             "timezone_type": 3,
             "timezone": "Europe/Amsterdam",
         },
@@ -99,4 +99,4 @@ class TestQuery:
         """Tests if single_query returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_query("FAKE9130-EBDA-446A-9E21-35FE590C4DE3")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404

@@ -32,7 +32,7 @@ class TestDataPoint:
             "field_id": "05353909-4BFB-4547-8700-AD6755FE82DB",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2019-10-28 14:05:28",
+            "updated_on": "2019-10-28 13:05:28",
             "report_instance_id": "124EBE17-8AEF-4A74-BBA7-68DF75693FBD",
             "report_instance_name": "46286061",
         },
@@ -40,7 +40,7 @@ class TestDataPoint:
             "field_id": "345C89CE-4CF9-4C44-8186-CF813EA7C181",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2019-10-28 14:05:28",
+            "updated_on": "2019-10-28 13:05:28",
             "report_instance_id": "124EBE17-8AEF-4A74-BBA7-68DF75693FBD",
             "report_instance_name": "46286061",
         },
@@ -48,7 +48,7 @@ class TestDataPoint:
             "field_id": "9E780182-2DF6-423B-A3BE-7934BFED0747",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2019-10-28 14:05:28",
+            "updated_on": "2019-10-28 13:05:28",
             "report_instance_id": "124EBE17-8AEF-4A74-BBA7-68DF75693FBD",
             "report_instance_name": "46286061",
         },
@@ -56,7 +56,7 @@ class TestDataPoint:
             "field_id": "9F64DFE1-4C5E-4BCC-93B6-3624FA9FC2A4",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2019-10-28 14:05:28",
+            "updated_on": "2019-10-28 13:05:28",
             "report_instance_id": "124EBE17-8AEF-4A74-BBA7-68DF75693FBD",
             "report_instance_name": "46286061",
         },
@@ -64,7 +64,7 @@ class TestDataPoint:
             "field_id": "C8BD45CE-46C3-43D8-BD2A-DF584A046CF7",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2019-10-28 14:05:28",
+            "updated_on": "2019-10-28 13:05:28",
             "report_instance_id": "124EBE17-8AEF-4A74-BBA7-68DF75693FBD",
             "report_instance_name": "46286061",
         },
@@ -72,7 +72,7 @@ class TestDataPoint:
             "field_id": "CF963988-E9CE-4CEB-A706-CDFA4916A934",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2019-10-28 14:05:28",
+            "updated_on": "2019-10-28 13:05:28",
             "report_instance_id": "124EBE17-8AEF-4A74-BBA7-68DF75693FBD",
             "report_instance_name": "46286061",
         },
@@ -80,7 +80,7 @@ class TestDataPoint:
             "field_id": "F610012E-B618-40A7-AA36-6C8BD959A1F1",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2019-10-28 14:05:28",
+            "updated_on": "2019-10-28 13:05:28",
             "report_instance_id": "124EBE17-8AEF-4A74-BBA7-68DF75693FBD",
             "report_instance_name": "46286061",
         },
@@ -90,7 +90,7 @@ class TestDataPoint:
             "field_id": "5D3843C7-8341-45DD-A769-8A5D24E6CDA5",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2020-08-14 11:59:20",
+            "updated_on": "2020-08-14 09:59:20",
             "survey_instance_id": "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
             "survey_name": "QOL Survey",
         },
@@ -98,7 +98,7 @@ class TestDataPoint:
             "field_id": "6C87B052-1289-4AB2-8D4F-D15AF4DDF950",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2020-08-14 11:59:20",
+            "updated_on": "2020-08-14 09:59:20",
             "survey_instance_id": "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
             "survey_name": "QOL Survey",
         },
@@ -106,7 +106,7 @@ class TestDataPoint:
             "field_id": "A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2",
             "field_value": "5",
             "record_id": "000005",
-            "updated_on": "2020-08-14 11:59:20",
+            "updated_on": "2020-08-14 09:59:20",
             "survey_instance_id": "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
             "survey_name": "QOL Survey",
         },
@@ -114,7 +114,7 @@ class TestDataPoint:
             "field_id": "ED12B07E-EDA8-4D64-8268-BE751BD5DB36",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2020-08-14 11:59:20",
+            "updated_on": "2020-08-14 09:59:20",
             "survey_instance_id": "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
             "survey_name": "QOL Survey",
         },
@@ -122,7 +122,7 @@ class TestDataPoint:
             "field_id": "FC4FAA2D-08FD-41F7-B482-444B2B6D3116",
             "field_value": "1",
             "record_id": "000005",
-            "updated_on": "2020-08-14 11:59:20",
+            "updated_on": "2020-08-14 09:59:20",
             "survey_instance_id": "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
             "survey_name": "QOL Survey",
         },
@@ -132,7 +132,7 @@ class TestDataPoint:
             "field_id": "5D3843C7-8341-45DD-A769-8A5D24E6CDA5",
             "field_value": "1",
             "record_id": "000002",
-            "updated_on": "2020-05-13 16:17:58",
+            "updated_on": "2020-05-13 14:17:58",
             "survey_instance_id": "F61EF287-9BD1-4047-AB46-88E0F69DD120",
             "survey_name": "QOL Survey",
             "survey_package_instance_id": "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C",
@@ -141,7 +141,7 @@ class TestDataPoint:
             "field_id": "6C87B052-1289-4AB2-8D4F-D15AF4DDF950",
             "field_value": "1",
             "record_id": "000002",
-            "updated_on": "2020-05-13 16:17:58",
+            "updated_on": "2020-05-13 14:17:58",
             "survey_instance_id": "F61EF287-9BD1-4047-AB46-88E0F69DD120",
             "survey_name": "QOL Survey",
             "survey_package_instance_id": "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C",
@@ -150,7 +150,7 @@ class TestDataPoint:
             "field_id": "A6E8C700-1A2B-4A87-AE1F-E8DC2C2F72C2",
             "field_value": "5",
             "record_id": "000002",
-            "updated_on": "2020-05-13 16:17:58",
+            "updated_on": "2020-05-13 14:17:58",
             "survey_instance_id": "F61EF287-9BD1-4047-AB46-88E0F69DD120",
             "survey_name": "QOL Survey",
             "survey_package_instance_id": "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C",
@@ -159,7 +159,7 @@ class TestDataPoint:
             "field_id": "ED12B07E-EDA8-4D64-8268-BE751BD5DB36",
             "field_value": "1",
             "record_id": "000002",
-            "updated_on": "2020-05-13 16:17:58",
+            "updated_on": "2020-05-13 14:17:58",
             "survey_instance_id": "F61EF287-9BD1-4047-AB46-88E0F69DD120",
             "survey_name": "QOL Survey",
             "survey_package_instance_id": "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C",
@@ -168,7 +168,7 @@ class TestDataPoint:
             "field_id": "FC4FAA2D-08FD-41F7-B482-444B2B6D3116",
             "field_value": "1",
             "record_id": "000002",
-            "updated_on": "2020-05-13 16:17:58",
+            "updated_on": "2020-05-13 14:17:58",
             "survey_instance_id": "F61EF287-9BD1-4047-AB46-88E0F69DD120",
             "survey_name": "QOL Survey",
             "survey_package_instance_id": "23B4FD48-BA41-4C9B-BAEF-D5C3DD5F8E5C",
@@ -255,7 +255,7 @@ class TestDataPoint:
             client.single_report_instance_data_points(
                 "124EBE17-8AEF-4A74-BBA7-68DF7569FAKE"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     @pytest.mark.xfail(reason="Castor Database Error", strict=True)
     def test_single_survey_instance_data_points_success(self, client):
@@ -271,7 +271,7 @@ class TestDataPoint:
             client.single_survey_instance_data_points(
                 "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF88FAKE"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_survey_package_instance_data_points_success(self, client):
         """Tests if single_survey_package_instance_data_points returns the proper data"""
@@ -286,7 +286,7 @@ class TestDataPoint:
             client.single_survey_package_instance_data_points(
                 "23B4FD48-BA41-4C9B-BAEF-D5C3DD5FFAKE"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     # ALL DATA - RECORD SPECIFIC
     def test_all_study_data_points_record_success(self, client):
@@ -304,7 +304,7 @@ class TestDataPoint:
         """Tests if returning data from a non-existent records throws an error"""
         with pytest.raises(HTTPStatusError) as e:
             client.all_study_data_points_record("00FAKE")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_all_report_data_points_record_success(self, client):
         """Tests returning data from a specific record is the right model"""
@@ -321,7 +321,7 @@ class TestDataPoint:
         """Tests if returning data from a non-existent records throws an error"""
         with pytest.raises(HTTPStatusError) as e:
             client.all_report_data_points_record("00FAKE")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_all_survey_data_points_record_success(self, client):
         """Tests returning data from a specific record is the right model"""
@@ -338,7 +338,7 @@ class TestDataPoint:
         """Tests if returning data from a non-existent records throws an error"""
         with pytest.raises(HTTPStatusError) as e:
             client.all_survey_data_points_record("00FAKE")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     # SINGLE SURVEY/REPORT - RECORD SPECIFIC
     def test_single_report_data_points_record_success(self, client):
@@ -360,7 +360,7 @@ class TestDataPoint:
             client.single_report_data_points_record(
                 "00FAKE", "0D73C569-AF56-4388-88F4-BC785D9463D5"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_survey_package_data_points_record_success(self, client):
         """Tests returning data from a specific survey package for a specific record is the right model"""
@@ -381,7 +381,7 @@ class TestDataPoint:
             client.single_survey_package_data_points_record(
                 "000001", "115DF660-A00A-4927-9E5F-A07D030D4FAKE"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_survey_data_points_record_success(
         self,
@@ -406,7 +406,7 @@ class TestDataPoint:
                 "000001", "6530D4AB-4705-4864-92AE-B0EC6200FAKE"
             )
 
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     # POST
     def test_create_study_data_points_success(self, write_client):
@@ -457,7 +457,7 @@ class TestDataPoint:
 
         with pytest.raises(HTTPStatusError) as e:
             write_client.update_study_data_record("110001", common, data)
-        assert "500 Server Error: Internal Server Error for url" in str(e.value)
+        assert e.value.response.status_code == 500
 
     def test_create_study_data_points_fail_record(self, write_client):
         """Tests failing to change data in the study"""
@@ -481,7 +481,7 @@ class TestDataPoint:
 
         with pytest.raises(HTTPStatusError) as e:
             write_client.update_study_data_record("00FAKE", common, data)
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_report_data_points_success(self, write_client):
         """Tests changing report data"""
@@ -542,7 +542,7 @@ class TestDataPoint:
             write_client.update_report_data_record(
                 "110001", "2CDE922C-6333-4D18-B8DC-912004D30FB5", common, data
             )
-        assert "500 Server Error: Internal Server Error for url" in str(e.value)
+        assert e.value.response.status_code == 500
 
     def test_create_report_data_points_fail_record(self, write_client):
         """Tests failing to change report data based on record id"""
@@ -573,7 +573,7 @@ class TestDataPoint:
             write_client.update_report_data_record(
                 "00FAKE", "2CDE922C-6333-4D18-B8DC-912004D30FB5", common, data
             )
-        assert "404 Client Error: Not Found for url:" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_survey_instance_data_points_success(
         self,
@@ -631,7 +631,7 @@ class TestDataPoint:
             feedback = client.update_survey_instance_data_record(
                 "000020", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data, "testing api"
             )
-        assert "500 Server Error: Internal Server Error for url" in str(e.value)
+        assert e.value.response.status_code == 500
 
     def test_create_survey_instance_data_points_fail_record(self, client):
         """Tests failing to change survey data based on record id"""
@@ -657,7 +657,7 @@ class TestDataPoint:
             client.update_survey_instance_data_record(
                 "00FAKE", "2182E629-E0E7-4BB4-B671-CDD2C968BEFD", data, "testing api"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_survey_package_instance_data_points_success(
         self,
@@ -742,7 +742,7 @@ class TestDataPoint:
             client.update_survey_package_instance_data_record(
                 "00FAKE", "98BD5FCD-95B9-4B79-9A99-F37E3B6EEE22", data, "testing_api"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_survey_package_instance_all_fields_filled_on_success(
         self,

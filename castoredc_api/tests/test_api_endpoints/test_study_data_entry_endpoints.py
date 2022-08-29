@@ -23,7 +23,7 @@ class TestStudyDataEntry:
         "field_variable_name": "ic_versions",
         "field_id": "28D1A17B-51C3-4BDC-A604-7B2F6D5D5924",
         "value": "1",
-        "updated_on": "2019-11-04 16:47:38",
+        "updated_on": "2019-11-04 15:47:38",
         "_embedded": {
             "record": {
                 "id": "000004",
@@ -44,7 +44,7 @@ class TestStudyDataEntry:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2020-08-14 15:20:27.000000",
+                    "date": "2020-08-14 13:20:27.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },
@@ -58,6 +58,7 @@ class TestStudyDataEntry:
                         "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
                         "name": "Test Institute",
                         "abbreviation": "TES",
+                        "date_format": "d-m-Y",
                         "code": "TES",
                         "order": 0,
                         "deleted": False,
@@ -94,6 +95,7 @@ class TestStudyDataEntry:
                 "field_max_label": "",
                 "field_summary_template": "",
                 "field_slider_step": None,
+                "field_slider_step_value": None,
                 "report_id": "",
                 "field_length": None,
                 "additional_config": "",
@@ -132,7 +134,7 @@ class TestStudyDataEntry:
         """Test failing to return all study_data_points for a record"""
         with pytest.raises(HTTPStatusError) as e:
             client.all_study_fields_record("00FAKE")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_study_data_point_record_success(self, client):
         """Tests returning a single study data point for a record"""
@@ -147,7 +149,7 @@ class TestStudyDataEntry:
             client.single_study_field_record(
                 "000004", "28D1A17B-51C3-4BDC-A604-7B2F6D5DFAKE"
             )
-        assert "500 Server Error: Internal Server Error for url:" in str(e.value)
+        assert e.value.response.status_code == 500
 
     def test_update_single_study_field_record_success(self, write_client):
         """Tests changing a single study field."""
@@ -180,7 +182,7 @@ class TestStudyDataEntry:
                 record, "FAKE" + field + "FAKE", change_reason, post_value
             )
 
-        assert "500 Server Error: Internal Server Error for url:" in str(e.value)
+        assert e.value.response.status_code == 500
 
         new_value = write_client.single_study_field_record(record, field)
         assert new_value["value"] == old_value["value"]

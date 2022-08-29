@@ -137,7 +137,7 @@ class TestSurveyDataEntry:
             client.single_survey_instance_all_fields_record(
                 "00FAKE", "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     @pytest.mark.xfail(reason="Castor Database Error", strict=True)
     def test_single_survey_instance_single_field_record_success(self, client):
@@ -157,7 +157,7 @@ class TestSurveyDataEntry:
                 "1FFBCDD8-2FC2-4838-B6DD-0EAE3FF8818E",
                 "FC4FAA2D-08FD-41F7-B482-444B2B6D3116",
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_update_survey_instance_single_field_record_success(self, client):
         """Tests correctly changing a single survey field"""
@@ -199,7 +199,7 @@ class TestSurveyDataEntry:
                 post_value,
                 change_reason,
             )
-        assert "400 Client Error: Bad Request for url:" in str(e.value)
+        assert e.value.response.status_code == 400
 
         # Check if changing failed
         new_value = client.single_survey_instance_single_field_record(

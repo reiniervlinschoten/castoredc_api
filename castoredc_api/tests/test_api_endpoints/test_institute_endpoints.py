@@ -24,6 +24,7 @@ class TestInstitute:
         "name": "Franciscus Gasthuis",
         "abbreviation": "SFG",
         "code": "SFG",
+        "date_format": "d-m-Y",
         "order": 11,
         "deleted": False,
         "country_id": 169,
@@ -74,7 +75,7 @@ class TestInstitute:
         """Tests if single institute returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_institute("FAKE6A79-E02E-4545-9719-95B8DDED9108")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_institute_success(self, write_client):
         """Tests if creating an institute works."""
@@ -86,7 +87,7 @@ class TestInstitute:
                 "country_id": 169,
             }
             write_client.create_institute(**body)
-        assert "400 Client Error: Bad Request for url" in str(e.value)
+        assert e.value.response.status_code == 400
         assert "Institute already exists" in e.value.response.json()["detail"]
 
     def test_create_institute_failure(self, write_client):
@@ -99,5 +100,5 @@ class TestInstitute:
                 "country_id": -55,
             }
             write_client.create_institute(**body)
-        assert "422 Client Error: Unprocessable Content for url" in str(e.value)
+        assert e.value.response.status_code == 422
         assert "Failed Validation" in e.value.response.json()["detail"]

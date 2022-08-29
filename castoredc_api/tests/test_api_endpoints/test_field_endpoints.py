@@ -34,6 +34,7 @@ class TestField:
         "field_image": "",
         "field_summary_template": "",
         "field_slider_step": None,
+        "field_slider_step_value": None,
         "report_id": "89FF2394-0D41-4D4C-89FE-AA9AB287B31E",
         "field_length": None,
         "additional_config": '{"showReportOfAllPhases":"0"}',
@@ -90,4 +91,4 @@ class TestField:
         """Tests if single field returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_field("FAKE5B4D-D362-4A54-9063-7D3CBAAC0F21")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404

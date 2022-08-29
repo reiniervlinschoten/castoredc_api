@@ -68,4 +68,4 @@ class TestFieldValidation:
         """Tests if single field_opt returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_field_validation("2")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404

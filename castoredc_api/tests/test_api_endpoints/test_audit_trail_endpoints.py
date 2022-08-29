@@ -35,7 +35,7 @@ class TestAuditTrail:
 
     test_audit_trail_model = {
         "datetime": {
-            "date": "2022-06-28 09:13:49.000000",
+            "date": "2022-06-28 07:13:49.000000",
             "timezone_type": 3,
             "timezone": "Europe/Amsterdam",
         },

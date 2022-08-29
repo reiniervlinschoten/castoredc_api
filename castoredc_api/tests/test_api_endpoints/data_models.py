@@ -511,6 +511,7 @@ package_model = {
         str,
     ],
     "allow_open_survey_link": [bool],
+    "field_pagination": [str],
     "survey_package_id": [
         str,
     ],
@@ -602,6 +603,7 @@ survey_package_instance_model = {
         str,
     ],
     "sent_on": [dict, type(None)],
+    "received_on": [dict, type(None)],
     "first_opened_on": [dict, type(None)],
     "finished_on": [dict, type(None)],
     "available_from": [dict],
@@ -817,6 +819,9 @@ field_model = {
     ],
     "field_slider_step": [
         str,
+        type(None),
+    ],
+    "field_slider_step_value": [
         int,
         type(None),
     ],
@@ -902,6 +907,9 @@ field_val_model = {
 
 institute_model = {
     "id": [
+        str,
+    ],
+    "date_format": [
         str,
     ],
     "institute_id": [
@@ -1108,6 +1116,9 @@ steps_model = {
     ],
     "signed": [
         bool,
+    ],
+    "progress": [
+        int,
     ],
 }
 

@@ -41,7 +41,7 @@ class TestReportInstance:
         "parent_type": "",
         "record_id": "110002",
         "report_name": "Unscheduled visit",
-        "created_on": "2019-10-14 16:58:12",
+        "created_on": "2019-10-14 14:58:12",
         "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "archived": False,
         "_embedded": {
@@ -101,7 +101,7 @@ class TestReportInstance:
         """Tests if single report_instance returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_report_instance("FAKEE5BD-E728-4575-B467-142EA83813DE")
-        assert "400 Client Error: Bad Request for url:" in str(e.value)
+        assert e.value.response.status_code == 400
 
     def test_all_report_instances_record_success(self, client):
         """Tests if the model that is returned if filtered on record is proper."""
@@ -119,7 +119,7 @@ class TestReportInstance:
         """Tests if a proper error is thrown when the wrong record is filtered on."""
         with pytest.raises(HTTPStatusError) as e:
             client.all_report_instances_record("FAKE01")
-        assert "404 Client Error: Not Found for url:" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_report_instance_record_success(self, client):
         """Tests if the model of a single report after filtering on record is right"""
@@ -141,7 +141,7 @@ class TestReportInstance:
             client.single_report_instance_record(
                 "000001", "61870790-F83E-4B1B-AF09-6F2CBA4632EA"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_report_instance_record_success(self, write_client):
         """Tests creating a report for a record."""
@@ -172,7 +172,7 @@ class TestReportInstance:
         # Create the record
         with pytest.raises(HTTPStatusError) as e:
             write_client.create_report_instance_record(**report_instance)
-        assert "400 Client Error: Bad Request for url:" in str(e.value)
+        assert e.value.response.status_code == 400
 
         # Test that nothing changed
         record_reports = write_client.all_report_instances_record("110001")

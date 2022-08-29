@@ -44,4 +44,4 @@ class TestUser:
         """Tests if single_user fails correctly"""
         with pytest.raises(HTTPStatusError) as e:
             client.single_user(all_users[0]["id"] + "FAKE")
-        assert "403 Client Error: Forbidden for url" in str(e.value)
+        assert e.value.response.status_code == 403

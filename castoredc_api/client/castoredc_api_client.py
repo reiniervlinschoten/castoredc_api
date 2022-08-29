@@ -1,13 +1,21 @@
 """Module for interacting with the Castor EDC API."""
+
+import asyncio
 import csv
+import json
+import sys
 from datetime import datetime
 from itertools import chain
-import asyncio
-from typing import Optional, List, Union
+from typing import List, Optional, Union
 
 import httpx
 from httpx import HTTPStatusError
 from tqdm import tqdm
+
+if sys.version_info >= (3, 8):
+    from importlib import metadata as pkg_metadata
+else:
+    import importlib_metadata as pkg_metadata
 
 
 class CastorException(Exception):
@@ -23,11 +31,6 @@ class CastorClient:
     # Necessary number of public methods to interact with API
 
     # INITIALIZATION
-    headers = {
-        "accept": "*/*",  # "application/hal+json; text/csv",
-        "Content-Type": "application/json; charset=utf-8",
-    }
-
     # Limits for server load
     max_connections = 15
     timeout = httpx.Timeout(10.0, read=60)
@@ -41,17 +44,28 @@ class CastorClient:
         self.base_url = f"https://{url}/api"
         self.auth_url = f"https://{url}/oauth/token"
 
-        # Grab authentication token for given client
-        token = self.request_auth_token(client_id, client_secret)
-        self.headers["authorization"] = "Bearer " + token
-
-        # Instantiate global study variables
-        self.study_url = None
+        try:
+            self.package_version = pkg_metadata.version("castoredc_api")
+        except pkg_metadata.PackageNotFoundError:
+            self.package_version = "dev"
 
         # Instantiate client
         self.client = httpx.Client(
-            headers=self.headers, limits=self.limits, timeout=self.timeout
+            headers={
+                "accept": "*/*",  # "application/hal+json; text/csv",
+                "Content-Type": "application/json; charset=utf-8",
+                "User-Agent": f"python-castoredc_api/{self.package_version}",
+            },
+            limits=self.limits,
+            timeout=self.timeout,
         )
+
+        # Grab authentication token for given client
+        token = self.request_auth_token(client_id, client_secret)
+        self.client.headers["authorization"] = "Bearer " + token
+
+        # Instantiate global study variables
+        self.study_url = None
 
     def link_study(self, study_id):
         """Link a study based on the study_id."""
@@ -980,7 +994,7 @@ class CastorClient:
             "client_secret": client_secret,
             "grant_type": "client_credentials",
         }
-        response = httpx.post(url=self.auth_url, data=auth_data)
+        response = self.client.post(url=self.auth_url, content=json.dumps(auth_data))
         response.raise_for_status()
         content = response.json()
         return content["access_token"]
@@ -1161,3 +1175,8 @@ class CastorClient:
         else:
             raise CastorException(f"{content_type} not supported")
         return data
+
+    @property
+    def headers(self):
+        """Return the headers that will be sent with each request"""
+        return self.client.headers

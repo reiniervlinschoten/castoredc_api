@@ -26,7 +26,7 @@ class TestReportDataEntry:
         "field_id": "AFD46D4F-5C17-4B9B-BE19-8A5A702601C1",
         "report_instance_id": "2711B1EF-6118-4EBD-9858-47E4830C4EC5",
         "value": "1",
-        "updated_on": "2020-08-14 14:55:46",
+        "updated_on": "2020-08-14 12:55:46",
         "_embedded": {
             "record": {
                 "id": "000004",
@@ -47,7 +47,7 @@ class TestReportDataEntry:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2020-08-14 15:20:27.000000",
+                    "date": "2020-08-14 13:20:27.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },
@@ -61,6 +61,7 @@ class TestReportDataEntry:
                         "institute_id": "1CFF5802-0B07-471F-B97E-B5166332F2C5",
                         "name": "Test Institute",
                         "abbreviation": "TES",
+                        "date_format": "d-m-Y",
                         "code": "TES",
                         "order": 0,
                         "deleted": False,
@@ -97,6 +98,7 @@ class TestReportDataEntry:
                 "field_max_label": "",
                 "field_summary_template": "",
                 "field_slider_step": None,
+                "field_slider_step_value": None,
                 "report_id": "",
                 "field_length": None,
                 "additional_config": "",
@@ -122,7 +124,7 @@ class TestReportDataEntry:
                 "record_id": "000004",
                 "report_name": "Medication",
                 "archived": False,
-                "created_on": "2020-08-14 11:13:54",
+                "created_on": "2020-08-14 09:13:54",
                 "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "_embedded": {
                     "report": {
@@ -171,7 +173,7 @@ class TestReportDataEntry:
             client.single_report_instance_all_fields_record(
                 "00FAKE", "2711B1EF-6118-4EBD-9858-47E4830C4EC5"
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_single_report_instance_single_field_record_success(self, client):
         """Tests returning a single field from a report instance"""
@@ -190,7 +192,7 @@ class TestReportDataEntry:
                 "2711B1EF-6118-4EBD-9858-47E4830C4EC5",
                 "AFD46D4F-5C17-4B9B-BE19-8A5A7026FAKE",
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_update_report_instance_single_field_record_success(self, write_client):
         """Tests updating a single field from a report instance"""
@@ -234,7 +236,7 @@ class TestReportDataEntry:
                 change_reason,
                 post_value,
             )
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
         # Check if changing actually failed
         new_value = write_client.single_report_instance_single_field_record(

@@ -50,7 +50,7 @@ class TestRecord:
         },
         "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "updated_on": {
-            "date": "2020-07-03 14:13:44.000000",
+            "date": "2020-07-03 12:13:44.000000",
             "timezone_type": 3,
             "timezone": "Europe/Amsterdam",
         },
@@ -68,6 +68,7 @@ class TestRecord:
                 "order": 0,
                 "deleted": False,
                 "country_id": 169,
+                "date_format": "d-m-Y",
                 "_links": {
                     "self": {
                         "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/institute/1CFF5802-0B07-471F-B97E-B5166332F2C5"
@@ -143,7 +144,7 @@ class TestRecord:
         """Tests if single record returns an error."""
         with pytest.raises(HTTPStatusError) as e:
             client.single_record("FAKE06")
-        assert "404 Client Error: Not Found for url" in str(e.value)
+        assert e.value.response.status_code == 404
 
     def test_create_record_success(self, write_client):
         """Tests creating a new record."""
@@ -174,7 +175,7 @@ class TestRecord:
         }
         with pytest.raises(HTTPStatusError) as e:
             write_client.create_record(**record)
-        assert "422 Client Error: Unprocessable Content for url:" in str(e.value)
+        assert e.value.response.status_code == 422
 
         new_records = write_client.all_records()
         new_len = len(new_records)
