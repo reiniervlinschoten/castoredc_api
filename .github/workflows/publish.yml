@@ -68,4 +68,9 @@ jobs:
       run: |
         grayskull pypi castoredc_api
         conda build castoredc_api
-        anaconda -t $CONDA_TOKEN upload /usr/share/miniconda/conda-bld/noarch/castoredc_api*.tar.bz2
+        CONDA_OUTPUT=/usr/share/miniconda/conda-bld/
+        conda convert --platform all $CONDA_OUTPUT/linux-64/*.tar.bz2 -o CONDA_OUTPUT
+        for platform in linux-32 linux-64 win-32 win-64 osx-64; do
+            echo "Uploading file for $platform"
+            anaconda -t $CONDA_TOKEN upload CONDA_OUTPUT/$platform/castoredc_api*.tar.bz2
+        done
