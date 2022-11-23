@@ -59,7 +59,7 @@ class TestInstitute:
     def test_all_institutes(self, all_institutes, item_totals):
         """Tests if the proper number of institutes is returned in the API."""
         assert (
-                len(all_institutes) > 0
+            len(all_institutes) > 0
         ), "No institutes found in the study, is this right?"
         assert len(all_institutes) == item_totals("/institute")
 

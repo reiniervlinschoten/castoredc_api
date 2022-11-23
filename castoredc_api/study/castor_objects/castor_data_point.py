@@ -131,7 +131,7 @@ class CastorDataPoint:
                 new_value = pd.Period(
                     datetime.strptime(self.raw_value, "%d-%m-%Y;%H:%M"), freq="S"
                 ).strftime(datetime_format)
-            except:
+            except ValueError:
                 new_value = pd.Period(
                     datetime.strptime(self.raw_value, "%d-%m-%Y"), freq="S"
                 ).strftime(datetime_format)

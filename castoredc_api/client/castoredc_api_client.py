@@ -364,9 +364,7 @@ class CastorClient:
     # INSTITUTES/SITES
     def all_institutes(self):
         """Returns a list of dicts of all sites."""
-        return self.retrieve_all_data_by_endpoint(
-            endpoint="/site", data_name="sites"
-        )
+        return self.retrieve_all_data_by_endpoint(endpoint="/site", data_name="sites")
 
     def single_institute(self, site_id):
         """Returns a single dict of a site.
