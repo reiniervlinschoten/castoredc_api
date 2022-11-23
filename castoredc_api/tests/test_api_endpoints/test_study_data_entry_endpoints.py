@@ -115,7 +115,7 @@ class TestStudyDataEntry:
         },
         "_links": {
             "self": {
-                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/000004/data-point/study/28D1A17B-51C3-4BDC-A604-7B2F6D5D5924"
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/record/28D1A17B-51C3-4BDC-A604-7B2F6D5D5924/data-point/study/28D1A17B-51C3-4BDC-A604-7B2F6D5D5924"
             }
         },
     }
