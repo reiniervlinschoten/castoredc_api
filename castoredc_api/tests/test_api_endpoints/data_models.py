@@ -254,6 +254,7 @@ user_model = {
     "email_address": [
         str,
     ],
+    # "site": [str, type(None)],
     "institute": [str, type(None)],
     "department": [str, type(None)],
     "last_login": [
@@ -283,9 +284,11 @@ user_study_model = {
     "email_address": [
         str,
     ],
+    # "site": [str, type(None)],
     "institute": [str, type(None)],
     "department": [str, type(None)],
     "manage_permissions": [dict],
+    # "site_permissions": [list],
     "institute_permissions": [list],
     "last_login": [
         str,
@@ -578,6 +581,12 @@ survey_package_instance_model = {
     "record_id": [
         str,
     ],
+    # "site_id": [
+    #     str,
+    # ],
+    # "site_name": [
+    #     str,
+    # ],
     "institute_id": [
         str,
     ],
@@ -912,7 +921,7 @@ institute_model = {
     "date_format": [
         str,
     ],
-    "institute_id": [
+    "site_id": [
         str,
     ],
     "name": [
@@ -997,6 +1006,9 @@ query_model = {
         str,
     ],
     "record_id": [
+        str,
+    ],
+    "participant_id": [
         str,
     ],
     "field_id": [
@@ -1138,12 +1150,21 @@ stats_records_model = {
     "total_count": [
         int,
     ],
+    # "sites": [
+    #     list,
+    # ],
     "institutes": [
         list,
     ],
 }
 
 stats_institutes_model = {
+    # "site_id": [
+    #     str,
+    # ],
+    # "site_name": [
+    #     str,
+    # ],
     "institute_id": [
         str,
     ],

@@ -361,22 +361,20 @@ class CastorClient:
             endpoint="/field-validation", data_id=field_validation_id
         )
 
-    # INSTITUTES
+    # INSTITUTES/SITES
     def all_institutes(self):
-        """Returns a list of dicts of all institutes."""
-        return self.retrieve_all_data_by_endpoint(
-            endpoint="/institute", data_name="institutes"
-        )
+        """Returns a list of dicts of all sites."""
+        return self.retrieve_all_data_by_endpoint(endpoint="/site", data_name="sites")
 
-    def single_institute(self, institute_id):
-        """Returns a single dict of an institute.
+    def single_institute(self, site_id):
+        """Returns a single dict of a site.
         Returns None if id not found."""
-        return self.retrieve_data_by_id(endpoint="/institute", data_id=institute_id)
+        return self.retrieve_data_by_id(endpoint="/site", data_id=site_id)
 
     def create_institute(self, name, abbreviation, code, country_id):
         """Creates a institute for the study.
         Returns None if creation failed."""
-        url = self.study_url + "/institute"
+        url = self.study_url + "/site"
         body = [
             {
                 "name": name,
@@ -386,6 +384,21 @@ class CastorClient:
             }
         ]
         return self.sync_post(url, body)
+
+    # New names
+    def all_sites(self):
+        """Returns a list of dicts of all sites."""
+        return self.all_institutes()
+
+    def single_site(self, site_id):
+        """Returns a single dict of a site.
+        Returns None if id not found."""
+        return self.single_institute(site_id)
+
+    def create_site(self, name, abbreviation, code, country_id):
+        """Creates a institute for the study.
+        Returns None if creation failed."""
+        return self.create_institute(name, abbreviation, code, country_id)
 
     # METADATA
     def all_metadata(self):

@@ -19,6 +19,7 @@ class TestQuery:
     test_query = {
         "id": "CAEC9130-EBDA-446A-9E21-35FE590C4DE3",
         "record_id": "110001",
+        "participant_id": "110001",
         "field_id": "B90870EE-EE37-4AC0-B845-DE428C0E000A",
         "status": "New",
         "first_query_remark": "Quite low, is this right?",

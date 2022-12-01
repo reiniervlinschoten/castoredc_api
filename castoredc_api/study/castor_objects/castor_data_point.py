@@ -127,9 +127,14 @@ class CastorDataPoint:
             else:
                 new_value = "Missing value not recognized"
         else:
-            new_value = pd.Period(
-                datetime.strptime(self.raw_value, "%d-%m-%Y;%H:%M"), freq="S"
-            ).strftime(datetime_format)
+            try:
+                new_value = pd.Period(
+                    datetime.strptime(self.raw_value, "%d-%m-%Y;%H:%M"), freq="S"
+                ).strftime(datetime_format)
+            except ValueError:
+                new_value = pd.Period(
+                    datetime.strptime(self.raw_value, "%d-%m-%Y"), freq="S"
+                ).strftime(datetime_format)
 
         return new_value
 
