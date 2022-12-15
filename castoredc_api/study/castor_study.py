@@ -44,6 +44,7 @@ class CastorStudy:
         url: str,
         test=False,
         format_options=None,
+        pass_keyerrors=False,
     ) -> None:
         """Create a CastorStudy object."""
         self.study_id = study_id
@@ -60,6 +61,8 @@ class CastorStudy:
         if test is False:
             self.client = CastorClient(client_id, client_secret, url)
             self.client.link_study(study_id)
+        # Optionnally pass missing keys forward as field values
+        self.pass_keyerrors = pass_keyerrors
         # List of all forms in the study - structure
         self.forms_on_id = {}
         self.forms_on_name = {}

@@ -212,13 +212,16 @@ class CastorDataPoint:
         # Values to names
         if value_list == [""]:
             new_values = [""]
+        elif study.pass_keyerrors:
+            new_values = [link.get(value, value) for value in value_list]
         else:
             try:
                 new_values = [link[value] for value in value_list]
             except KeyError as error:
                 raise CastorException(
-                    f"Value without label in {self.raw_value} "
-                    f"for a datapoint of field: {self.field_id} ({self.instance_of.field_name}"
+                    f"Optional value mapping failed."
+                    f"Key `{self.raw_value}` not present in the keys of optional values"
+                    f"of field: {self.field_id} ({self.instance_of.field_name})"
                 ) from error
         # Return a string, for multiple answers separate them with |
         new_value = "|".join(new_values)
