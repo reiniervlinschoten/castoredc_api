@@ -61,7 +61,7 @@ class CastorStudy:
         if test is False:
             self.client = CastorClient(client_id, client_secret, url)
             self.client.link_study(study_id)
-        # Optionnally pass missing keys forward as field values
+        # Optionally pass missing keys forward as field values
         self.pass_keyerrors = pass_keyerrors
         # List of all forms in the study - structure
         self.forms_on_id = {}
