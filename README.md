@@ -1,5 +1,5 @@
 # CastorEDC API
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+[![MIT License](https://img.shields.io/github/license/reiniervlinschoten/castoredc_api)](https://github.com/reiniervlinschoten/castoredc_api/blob/main/LICENSE.md)
 [![pylint](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml/badge.svg)](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pylint.yml)
 [![pytest](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pytest.yml/badge.svg)](https://github.com/reiniervlinschoten/castoredc_api/actions/workflows/pytest.yml)
 [![coverage](https://img.shields.io/codecov/c/github/reiniervlinschoten/castoredc_api)](https://app.codecov.io/gh/reiniervlinschoten/castoredc_api)
@@ -10,7 +10,7 @@
 [![conda-forge](https://img.shields.io/conda/v/conda-forge/castoredc_api)](https://anaconda.org/conda-forge/castoredc_api)
 
 ## Features
-#### Supports CastorEDC Release 2022.4
+#### Supports CastorEDC Release 2022.5
 
 This is a Python package for interacting with the API of Castor Electronic Data Capture (EDC). 
 The package contains functions to interact with all the endpoints defined on https://data.castoredc.com/api#/.
