@@ -866,7 +866,8 @@ field_model = {
     "_links": [
         dict,
     ],
-    "field_image": [str, None],
+    "field_image": [str, type(None)],
+    "randomize_option_order": [bool]
 }
 
 field_opt_model = {
