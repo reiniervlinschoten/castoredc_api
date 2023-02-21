@@ -6,6 +6,7 @@ import json
 import sys
 from datetime import datetime
 from itertools import chain
+from json import JSONDecodeError
 from typing import List, Optional, Union
 
 import httpx
@@ -535,9 +536,13 @@ class CastorClient:
                 endpoint="/report-instance", data_name="reportInstances", params=params
             )
         except HTTPStatusError as error:
-            if error.response.json()["detail"] == "There are no report instances.":
-                return []
-            raise error from error
+            try:
+                if error.response.json()["detail"] == "There are no report instances.":
+                    return []
+                raise error from error
+            except JSONDecodeError:
+                # If the json cannot be decoded, raise the parent error
+                raise error from error
 
     def single_report_instance(self, report_instance_id):
         """Returns a single dict of an report_instance.
