@@ -141,6 +141,11 @@ def castorize_column_helper(
 ):
     """Helper function for selecting the correct way to castorize a column."""
     target_field = study.get_single_field(new_name[0])
+    if target_field is None:
+        raise CastorException(
+            f"{new_name[0]} was not found in the study. Is this a valid variable name?"
+        )
+
     # Check if we want to validate field exists for parent
     # This can be None for testing purposes
     if target == "Study":

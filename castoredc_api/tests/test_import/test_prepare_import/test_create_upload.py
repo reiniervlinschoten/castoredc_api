@@ -1,3 +1,6 @@
+import pytest
+
+from castoredc_api import CastorException
 from castoredc_api.importer.helpers import read_excel, create_upload
 
 
@@ -399,3 +402,25 @@ class TestCreateUpload:
             "tests/test_import/data_files_for_import_tests/data_file_survey_final_errors.xlsx"
         )
         assert to_upload.equals(comparison)
+
+    def test_create_upload_nonexistent_field(self, import_study):
+        """Tests if when given a field that does not exist anywhere in the study, the right error is thrown"""
+        with pytest.raises(CastorException) as e:
+            create_upload(
+                path_to_upload="tests/test_import/data_files_for_import_tests/data_file_study_values.xlsx",
+                path_to_col_link="tests/test_import/link_files_for_import_tests/study_link_file_field_not_exists.xlsx",
+                path_to_translation=None,
+                path_to_merge=None,
+                label_data=False,
+                study=import_study,
+                format_options={
+                    "date": "%d-%m-%Y",
+                    "datetime": "%d-%m-%Y;%H:%M",
+                    "time": "%H:%M",
+                },
+                target=None,
+                target_name=None,
+            )
+        assert "was not found in the study. Is this a valid variable name" in str(
+            e.value
+        )
