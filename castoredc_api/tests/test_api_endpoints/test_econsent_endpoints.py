@@ -12,7 +12,6 @@ from httpx import HTTPStatusError
 from castoredc_api.tests.test_api_endpoints.test_record_endpoints import create_record
 
 
-
 class TestEconsent:
     @pytest.mark.xfail(
         reason="Econsent not enable on testing databases",
@@ -24,7 +23,7 @@ class TestEconsent:
         assert response == {
             "econsent_subject_id": "SUBJECTID",
             "econsent_study_id": "STUDYID",
-            "econsent_region": "STUDYREGION"
+            "econsent_region": "STUDYREGION",
         }
 
     def test_econsent_get_failure(self, client):
@@ -39,25 +38,31 @@ class TestEconsent:
     )
     def test_econsent_post_success(self, client):
         """Tests if econsent returns the proper data."""
-        response = client.create_econsent("000024", **{
-            "econsent_subject_id": "SUBJECTID",
-            "econsent_study_id": "STUDYID",
-            "econsent_region": "STUDYREGION"
-        })
+        response = client.create_econsent(
+            "000024",
+            **{
+                "econsent_subject_id": "SUBJECTID",
+                "econsent_study_id": "STUDYID",
+                "econsent_region": "STUDYREGION",
+            }
+        )
         assert response == {
             "econsent_subject_id": "SUBJECTID",
             "econsent_study_id": "STUDYID",
-            "econsent_region": "STUDYREGION"
+            "econsent_region": "STUDYREGION",
         }
 
     def test_econsent_post_failure(self, client):
         """Tests if single token returns an error."""
         with pytest.raises(HTTPStatusError) as e:
-            client.create_econsent("000024", **{
-            "econsent_subject_id": "SUBJECTID",
-            "econsent_study_id": "STUDYID",
-            "econsent_region": "STUDYREGION"
-        })
+            client.create_econsent(
+                "000024",
+                **{
+                    "econsent_subject_id": "SUBJECTID",
+                    "econsent_study_id": "STUDYID",
+                    "econsent_region": "STUDYREGION",
+                }
+            )
         assert e.value.response.status_code == 404
 
     @pytest.mark.xfail(
@@ -66,23 +71,29 @@ class TestEconsent:
     )
     def test_econsent_patch_success(self, client):
         """Tests if econsent returns the proper data."""
-        response = client.update_econsent("000024", **{
-            "econsent_subject_id": "SUBJECTID",
-            "econsent_study_id": "STUDYID",
-            "econsent_region": "STUDYREGION"
-        })
+        response = client.update_econsent(
+            "000024",
+            **{
+                "econsent_subject_id": "SUBJECTID",
+                "econsent_study_id": "STUDYID",
+                "econsent_region": "STUDYREGION",
+            }
+        )
         assert response == {
             "econsent_subject_id": "SUBJECTID",
             "econsent_study_id": "STUDYID",
-            "econsent_region": "STUDYREGION"
+            "econsent_region": "STUDYREGION",
         }
 
     def test_econsent_patch_failure(self, client):
         """Tests if single token returns an error."""
         with pytest.raises(HTTPStatusError) as e:
-            client.update_econsent("000024", **{
-            "econsent_subject_id": "SUBJECTID",
-            "econsent_study_id": "STUDYID",
-            "econsent_region": "STUDYREGION"
-        })
+            client.update_econsent(
+                "000024",
+                **{
+                    "econsent_subject_id": "SUBJECTID",
+                    "econsent_study_id": "STUDYID",
+                    "econsent_region": "STUDYREGION",
+                }
+            )
         assert e.value.response.status_code == 404

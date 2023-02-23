@@ -30,6 +30,8 @@ class CastorClient:
     # Necessary number of arguments to interact with API
     # pylint: disable=too-many-public-methods
     # Necessary number of public methods to interact with API
+    # pylint: disable=too-many-lines
+    # Necessary number of lines to interact with API
 
     # INITIALIZATION
     # Limits for server load
@@ -355,26 +357,28 @@ class CastorClient:
             endpoint="/participant", data_id=f"{record_id}/econsent"
         )
 
-    def create_econsent(self, record_id, econsent_subject_id, econsent_study_id, econsent_region):
+    def create_econsent(
+        self, record_id, econsent_subject_id, econsent_study_id, econsent_region
+    ):
         """Creates econsent information about record"""
-        url = (
-            self.study_url
-            + f"/participant/{record_id}/econsent"
-        )
-        post_data = {"econsent_subject_id": econsent_subject_id,
-                     "econsent_study_id": econsent_study_id,
-                     "econsent_region": econsent_region}
+        url = self.study_url + f"/participant/{record_id}/econsent"
+        post_data = {
+            "econsent_subject_id": econsent_subject_id,
+            "econsent_study_id": econsent_study_id,
+            "econsent_region": econsent_region,
+        }
         return self.sync_post(url, post_data)
 
-    def update_econsent(self, record_id, econsent_subject_id, econsent_study_id, econsent_region):
+    def update_econsent(
+        self, record_id, econsent_subject_id, econsent_study_id, econsent_region
+    ):
         """Updates econsent information about record"""
-        url = (
-            self.study_url
-            + f"/participant/{record_id}/econsent"
-        )
-        post_data = {"econsent_subject_id": econsent_subject_id,
-                     "econsent_study_id": econsent_study_id,
-                     "econsent_region": econsent_region}
+        url = self.study_url + f"/participant/{record_id}/econsent"
+        post_data = {
+            "econsent_subject_id": econsent_subject_id,
+            "econsent_study_id": econsent_study_id,
+            "econsent_region": econsent_region,
+        }
         return self.sync_patch(url, post_data)
 
     # FIELD VALIDATION
