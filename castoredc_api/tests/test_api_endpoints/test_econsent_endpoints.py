@@ -12,11 +12,11 @@ from httpx import HTTPStatusError
 from castoredc_api.tests.test_api_endpoints.test_record_endpoints import create_record
 
 
-@pytest.mark.xfail(
-    reason="Econsent not enable on testing databases",
-    strict=True,
-)
 class TestEconsent:
+    @pytest.mark.xfail(
+        reason="Econsent not enable on testing databases",
+        strict=True,
+    )
     def test_econsent_get_success(self, client):
         """Tests if econsent returns the proper data."""
         response = client.get_econsent("000024")
@@ -32,6 +32,10 @@ class TestEconsent:
             client.get_econsent("FAKE24")
         assert e.value.response.status_code == 404
 
+    @pytest.mark.xfail(
+        reason="Econsent not enable on testing databases",
+        strict=True,
+    )
     def test_econsent_post_success(self, client):
         """Tests if econsent returns the proper data."""
         response = client.create_econsent(
@@ -48,6 +52,10 @@ class TestEconsent:
             "econsent_region": "STUDYREGION",
         }
 
+    @pytest.mark.xfail(
+        reason="Econsent not enable on testing databases",
+        strict=True,
+    )
     def test_econsent_post_failure(self, client):
         """Tests if single token returns an error."""
         with pytest.raises(HTTPStatusError) as e:
@@ -61,6 +69,10 @@ class TestEconsent:
             )
         assert e.value.response.status_code == 404
 
+    @pytest.mark.xfail(
+        reason="Econsent not enable on testing databases",
+        strict=True,
+    )
     def test_econsent_patch_success(self, client):
         """Tests if econsent returns the proper data."""
         response = client.update_econsent(
@@ -77,6 +89,10 @@ class TestEconsent:
             "econsent_region": "STUDYREGION",
         }
 
+    @pytest.mark.xfail(
+        reason="Econsent not enable on testing databases",
+        strict=True,
+    )
     def test_econsent_patch_failure(self, client):
         """Tests if single token returns an error."""
         with pytest.raises(HTTPStatusError) as e:
