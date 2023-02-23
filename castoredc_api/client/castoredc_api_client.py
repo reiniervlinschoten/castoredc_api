@@ -348,6 +348,35 @@ class CastorClient:
             endpoint="/field-optiongroup", data_id=field_optiongroup_id
         )
 
+    # ECONSENT
+    def get_econsent(self, record_id):
+        """Returns econsent information about record"""
+        return self.retrieve_data_by_id(
+            endpoint="/participant", data_id=f"{record_id}/econsent"
+        )
+
+    def create_econsent(self, record_id, econsent_subject_id, econsent_study_id, econsent_region):
+        """Creates econsent information about record"""
+        url = (
+            self.study_url
+            + f"/participant/{record_id}/econsent"
+        )
+        post_data = {"econsent_subject_id": econsent_subject_id,
+                     "econsent_study_id": econsent_study_id,
+                     "econsent_region": econsent_region}
+        return self.sync_post(url, post_data)
+
+    def update_econsent(self, record_id, econsent_subject_id, econsent_study_id, econsent_region):
+        """Updates econsent information about record"""
+        url = (
+            self.study_url
+            + f"/participant/{record_id}/econsent"
+        )
+        post_data = {"econsent_subject_id": econsent_subject_id,
+                     "econsent_study_id": econsent_study_id,
+                     "econsent_region": econsent_region}
+        return self.sync_patch(url, post_data)
+
     # FIELD VALIDATION
     def all_field_validations(self):
         """Returns a list of dicts of all field validations."""
