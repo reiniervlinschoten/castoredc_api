@@ -28,7 +28,8 @@ from castoredc_api.study.castor_objects import (
 class CastorStudy:
     """Object representing a study in Castor.
     Functions as the head of a tree for all interrelations.
-    Needs an authenticated api_client that is linked to the same study_id to call data."""
+    Needs an authenticated api_client that is linked to the same study_id to call data.
+    """
 
     # pylint: disable=too-many-instance-attributes
     # Necessary number of attributes to allow caching of information
@@ -44,6 +45,7 @@ class CastorStudy:
         url: str,
         test=False,
         format_options=None,
+        pass_keyerrors=False,
     ) -> None:
         """Create a CastorStudy object."""
         self.study_id = study_id
@@ -60,6 +62,8 @@ class CastorStudy:
         if test is False:
             self.client = CastorClient(client_id, client_secret, url)
             self.client.link_study(study_id)
+        # Optionally pass missing keys forward as field values
+        self.pass_keyerrors = pass_keyerrors
         # List of all forms in the study - structure
         self.forms_on_id = {}
         self.forms_on_name = {}
@@ -541,7 +545,8 @@ class CastorStudy:
         self, instance_id: str, instance_type: str
     ) -> Optional[CastorForm]:
         """Returns the form of which the given id is an instance.
-        instance_id is id for type: Report, name for type: Survey, or id for type: Study"""
+        instance_id is id for type: Report, name for type: Survey, or id for type: Study
+        """
         if instance_type == "Study":
             form = self.get_single_form(instance_id)
         elif instance_type in ("Report", "Survey"):

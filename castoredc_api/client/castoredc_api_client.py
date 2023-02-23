@@ -84,7 +84,8 @@ class CastorClient:
         event_types: Optional[List] = None,
     ):
         """Returns a dict of the audit trail.
-        date_from and date_to need to be a datetime object or strings formatted as yyyy-mm-dd."""
+        date_from and date_to need to be a datetime object or strings formatted as yyyy-mm-dd.
+        """
         url = self.study_url + "/audit-trail"
         # Format and validate dates
         if isinstance(date_from, str):
