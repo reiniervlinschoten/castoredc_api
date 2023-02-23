@@ -165,7 +165,7 @@ class TestSurveyEndpoints:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2021-10-20 14:25:16.000000",
+                    "date": "2021-10-20 12:25:16.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },

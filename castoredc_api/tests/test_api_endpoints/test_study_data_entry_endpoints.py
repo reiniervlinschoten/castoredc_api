@@ -23,7 +23,7 @@ class TestStudyDataEntry:
         "field_variable_name": "ic_versions",
         "field_id": "28D1A17B-51C3-4BDC-A604-7B2F6D5D5924",
         "value": "1",
-        "updated_on": "2019-11-04 15:47:38",
+        "updated_on": "2019-11-04 14:47:38",
         "_embedded": {
             "record": {
                 "id": "000004",
@@ -44,7 +44,7 @@ class TestStudyDataEntry:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2020-08-14 13:20:27.000000",
+                    "date": "2020-08-14 11:20:27.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },
@@ -103,6 +103,7 @@ class TestStudyDataEntry:
                 "field_enforce_decimals": None,
                 "option_group": None,
                 "metadata_points": [],
+                "randomize_option_order": False,
                 "validations": [],
                 "dependency_parents": [],
                 "dependency_children": [],

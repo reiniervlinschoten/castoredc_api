@@ -45,7 +45,7 @@ class TestField:
         "validations": [],
         "dependency_parents": [],
         "dependency_children": [],
-        'randomize_option_order': False,
+        "randomize_option_order": False,
         "_links": {
             "self": {
                 "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/field/07FAD531-6335-44FD-8C5B-A59FA396F12F"

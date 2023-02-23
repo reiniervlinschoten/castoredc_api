@@ -50,7 +50,7 @@ class TestRecord:
         },
         "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
         "updated_on": {
-            "date": "2020-07-03 12:13:44.000000",
+            "date": "2020-07-03 10:13:44.000000",
             "timezone_type": 3,
             "timezone": "Europe/Amsterdam",
         },

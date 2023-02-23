@@ -867,7 +867,7 @@ field_model = {
         dict,
     ],
     "field_image": [str, type(None)],
-    "randomize_option_order": [bool]
+    "randomize_option_order": [bool],
 }
 
 field_opt_model = {
