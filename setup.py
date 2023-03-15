@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="castoredc_api",
-    version="0.1.7",
+    version="0.1.7.post1",
     description="Python wrapper for the Castor EDC API",
     author="Reinier van Linschoten",
     author_email="mail@reiniervl.com",
@@ -19,7 +19,7 @@ setup(
         "openpyxl>=3.0.9",
         "tqdm>=4.64.0",
         "httpx>=0.23.0",
-        "ratelimiter>=1.2.0.post0",
+        "ratelimiter>=1.2.0",
         # importlib.metadata was only introduced in Python 3.8, but the
         # "importlib-metadata" package provides it for older Python versions.
         'importlib-metadata >= 1.0 ; python_version < "3.8"',
