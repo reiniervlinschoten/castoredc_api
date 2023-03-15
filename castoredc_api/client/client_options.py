@@ -7,8 +7,8 @@ MAX_CONNECTIONS = 15
 TIMEOUT = httpx.Timeout(10.0, read=60)
 LIMITS = httpx.Limits(max_connections=MAX_CONNECTIONS)
 # Rate limit is 600 calls per 10 minutes per api endpoint
-SYNC_LIMIT = 3
-PERIOD_LIMIT = 20
+SYNC_LIMIT = 600
+PERIOD_LIMIT = 600
 ASYNC_LIMIT = SYNC_LIMIT / MAX_CONNECTIONS
 
 
