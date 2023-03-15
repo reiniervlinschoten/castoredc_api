@@ -19,7 +19,7 @@ setup(
         "openpyxl>=3.0.9",
         "tqdm>=4.64.0",
         "httpx>=0.23.0",
-        "aiometer>=0.4.0",
+        "ratelimiter>=1.2.0.post0",
         # importlib.metadata was only introduced in Python 3.8, but the
         # "importlib-metadata" package provides it for older Python versions.
         'importlib-metadata >= 1.0 ; python_version < "3.8"',

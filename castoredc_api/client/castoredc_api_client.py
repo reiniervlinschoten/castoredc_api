@@ -11,7 +11,10 @@ from typing import List, Optional, Union
 
 import httpx
 from httpx import HTTPStatusError
+from ratelimiter import RateLimiter
 from tqdm import tqdm
+
+from castoredc_api.client import client_options
 
 if sys.version_info >= (3, 8):
     from importlib import metadata as pkg_metadata
@@ -33,12 +36,6 @@ class CastorClient:
     # pylint: disable=too-many-lines
     # Necessary number of lines to interact with API
 
-    # INITIALIZATION
-    # Limits for server load
-    max_connections = 15
-    timeout = httpx.Timeout(10.0, read=60)
-    limits = httpx.Limits(max_connections=max_connections)
-
     def __init__(self, client_id, client_secret, url):
         """Create a CastorClient to communicate with a Castor database.
         Links the CastorClient to an account with client_id and client_secret.
@@ -46,6 +43,18 @@ class CastorClient:
         # Instantiate URLs
         self.base_url = f"https://{url}/api"
         self.auth_url = f"https://{url}/oauth/token"
+
+        self.sync_rate_limiter = RateLimiter(
+            max_calls=client_options.SYNC_LIMIT,
+            period=client_options.PERIOD_LIMIT,
+            callback=client_options.limit_callback,
+        )
+
+        self.async_rate_limiter = RateLimiter(
+            max_calls=client_options.ASYNC_LIMIT,
+            period=client_options.PERIOD_LIMIT,
+            callback=client_options.limit_callback,
+        )
 
         try:
             self.package_version = pkg_metadata.version("castoredc_api")
@@ -59,8 +68,8 @@ class CastorClient:
                 "Content-Type": "application/json; charset=utf-8",
                 "User-Agent": f"python-castoredc_api/{self.package_version}",
             },
-            limits=self.limits,
-            timeout=self.timeout,
+            limits=client_options.LIMITS,
+            timeout=client_options.TIMEOUT,
         )
 
         # Grab authentication token for given client
@@ -76,6 +85,7 @@ class CastorClient:
 
     # API ENDPOINTS
     # AUDIT TRAIL
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def audit_trail(
         self,
         date_from: Union[str, datetime],
@@ -103,30 +113,35 @@ class CastorClient:
         return self.sync_get(url, params)["items"]
 
     # COUNTRY
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_countries(self):
         """Returns a list of dicts of all available countries."""
         endpoint = "/country"
         raw_data = self.retrieve_general_data(endpoint=endpoint)
         return raw_data["results"]
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_country(self, country_id):
         """Returns a dict with the given country based on country_id."""
         endpoint = f"/country/{country_id}"
         return self.retrieve_general_data(endpoint=endpoint)
 
     # DATA-POINT-COLLECTION GET (STUDY)
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_study_data_points(self):
         """Returns a list of dicts of all filled in study data."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/data-point-collection/study", data_name="items"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_report_data_points(self):
         """Returns a list of dicts all filled in report data."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/data-point-collection/report-instance", data_name="items"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_survey_data_points(self):
         """Returns a list of dicts all filled in survey data."""
         return self.retrieve_all_data_by_endpoint(
@@ -134,16 +149,19 @@ class CastorClient:
         )
 
     # DATA-POINT-COLLECTION GET (INSTANCE)
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_instance_data_points(self, report_id):
         """Returns a list of the data for given report_id."""
         url = f"/data-point-collection/report-instance/{report_id}"
         return self.retrieve_data_points(url)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_instance_data_points(self, survey_instance_id):
         """Returns a list of data from a single survey instance id."""
         url = f"/data-point-collection/survey-instance/{survey_instance_id}"
         return self.retrieve_data_points(url)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_package_instance_data_points(self, survey_package_instance_id):
         """Returns a list of data from a single survey package instance.
         Returns None if package not found."""
@@ -151,36 +169,42 @@ class CastorClient:
         return self.retrieve_data_points(url)
 
     # DATA-POINT-COLLECTION GET (RECORD)
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_study_data_points_record(self, record_id):
         """Returns a list of all study data collected for given record.
         Returns None if record not found."""
         url = f"/record/{record_id}/data-point-collection/study"
         return self.retrieve_data_points(url)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_report_data_points_record(self, record_id):
         """Returns a list of all report data collected for given record.
         Returns None if record not found."""
         url = f"/record/{record_id}/data-point-collection/report-instance"
         return self.retrieve_data_points(url)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_data_points_record(self, record_id, report_id):
         """Returns a list of the data for given report_id for given.
         Returns None if record or report not found."""
         url = f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
         return self.retrieve_data_points(url)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_survey_data_points_record(self, record_id):
         """Returns a list of all survey data collected for given record.
         Returns None if record not found."""
         url = f"/record/{record_id}/data-point-collection/survey-instance"
         return self.retrieve_data_points(url)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_data_points_record(self, record_id, survey_instance_id):
         """Returns a list of data from a single survey instance
         collected for given record record_id. Returns None if record not found."""
         url = f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
         return self.retrieve_data_points(url)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_package_data_points_record(
         self, record_id, survey_package_instance_id
     ):
@@ -193,6 +217,7 @@ class CastorClient:
         return self.retrieve_data_points(url)
 
     # DATA-POINT-COLLECTION POST (RECORD)
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_study_data_record(self, record_id, common, body):
         """Creates/updates a collection of field values.
         Returns None if record not found.
@@ -212,6 +237,7 @@ class CastorClient:
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_report_data_record(self, record_id, report_id, common, body):
         """Creates/updates a report instance.
         Returns None if record not found.
@@ -235,6 +261,7 @@ class CastorClient:
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_survey_instance_data_record(
         self, record_id, survey_instance_id, body, change_reason
     ):
@@ -254,6 +281,7 @@ class CastorClient:
         post_data = {"data": body, "common": {"change_reason": change_reason}}
         return self.sync_post(url, post_data)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_survey_package_instance_data_record(
         self, record_id, survey_package_instance_id, body, change_reason, filled_on=None
     ):
@@ -281,6 +309,7 @@ class CastorClient:
         return self.sync_post(url, post_data)
 
     # EXPORT
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def export_study_data(
         self, exclude_empty_surveys=False, exclude_empty_reports=False
     ):
@@ -295,17 +324,20 @@ class CastorClient:
             timeout=httpx.Timeout(10.0, read=300),
         )["content"]
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def export_study_structure(self):
         """Returns a list of dicts containing the structure of the study."""
         url = self.study_url + "/export/structure"
         return self.sync_get(url=url, params={})["content"]
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def export_option_groups(self):
         """Returns a list of dicts containing all option groups in the study."""
         url = self.study_url + "/export/optiongroups"
         return self.sync_get(url=url, params={})["content"]
 
     # FIELDS
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_fields(self):
         """Returns a list of dicts of all fields."""
         return self.retrieve_all_data_by_endpoint(
@@ -314,6 +346,7 @@ class CastorClient:
             params={"include": "metadata,validations,optiongroup"},
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_field(self, field_id):
         """Returns a dict of a single field.
         Returns None if field_id not found."""
@@ -324,12 +357,14 @@ class CastorClient:
         )
 
     # FIELD DEPENDENCY
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_field_dependencies(self):
         """Returns a list of dicts of all field depencencies."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/field-dependency", data_name="fieldDependencies"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_field_dependency(self, field_dependency_id):
         """Returns a single dict of a field dependency.
         Returns None if id not found."""
@@ -338,12 +373,14 @@ class CastorClient:
         )
 
     # FIELD OPTION GROUP
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_field_optiongroups(self):
         """Returns a list of dicts of all field option groups."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/field-optiongroup", data_name="fieldOptionGroups"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_field_optiongroup(self, field_optiongroup_id):
         """Returns a single dict of a field optiongroup.
         Returns None if id not found."""
@@ -352,12 +389,14 @@ class CastorClient:
         )
 
     # ECONSENT
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def get_econsent(self, record_id):
         """Returns econsent information about record"""
         return self.retrieve_data_by_id(
             endpoint="/participant", data_id=f"{record_id}/econsent"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_econsent(
         self, record_id, econsent_subject_id, econsent_study_id, econsent_region
     ):
@@ -370,6 +409,7 @@ class CastorClient:
         }
         return self.sync_post(url, post_data)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_econsent(
         self, record_id, econsent_subject_id, econsent_study_id, econsent_region
     ):
@@ -383,12 +423,14 @@ class CastorClient:
         return self.sync_patch(url, post_data)
 
     # FIELD VALIDATION
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_field_validations(self):
         """Returns a list of dicts of all field validations."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/field-validation", data_name="fieldValidations"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_field_validation(self, field_validation_id):
         """Returns a single dict of a field validation.
         Returns None if id not found."""
@@ -397,15 +439,18 @@ class CastorClient:
         )
 
     # INSTITUTES/SITES
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_institutes(self):
         """Returns a list of dicts of all sites."""
         return self.retrieve_all_data_by_endpoint(endpoint="/site", data_name="sites")
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_institute(self, site_id):
         """Returns a single dict of a site.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/site", data_id=site_id)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_institute(self, name, abbreviation, code, country_id):
         """Creates a institute for the study.
         Returns None if creation failed."""
@@ -421,39 +466,46 @@ class CastorClient:
         return self.sync_post(url, body)
 
     # New names
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_sites(self):
         """Returns a list of dicts of all sites."""
         return self.all_institutes()
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_site(self, site_id):
         """Returns a single dict of a site.
         Returns None if id not found."""
         return self.single_institute(site_id)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_site(self, name, abbreviation, code, country_id):
         """Creates a institute for the study.
         Returns None if creation failed."""
         return self.create_institute(name, abbreviation, code, country_id)
 
     # METADATA
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_metadata(self):
         """Returns a list of dicts of all metadata."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/metadata", data_name="metadatas"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_metadata(self, metadata_id):
         """Returns a single dict of an metadata.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/metadata", data_id=metadata_id)
 
     # METADATATYPE
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_metadata_types(self):
         """Returns a list of dicts of all metadatatypes."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/metadatatype", data_name="metadatatypes"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_metadata_type(self, metadatatype_id):
         """Returns a single dict of an metadatatype.
         Returns None if id not found."""
@@ -462,61 +514,72 @@ class CastorClient:
         )
 
     # PHASES
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_phases(self):
         """Returns a list of dicts of all phases."""
         return self.retrieve_all_data_by_endpoint(endpoint="/phase", data_name="phases")
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_phase(self, phase_id):
         """Returns a single dict of an phase.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/phase", data_id=phase_id)
 
     # QUERIES
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_queries(self):
         """Returns a list of dicts of all queries."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/query", data_name="queries"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_query(self, query_id):
         """Returns a single dict of an query.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/query", data_id=query_id)
 
     # RANDOMIZATION
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_randomization(self, record_id):
         """Gets randomisation details for a single record."""
         return self.retrieve_data_by_id(
             endpoint="/record", data_id=f"{record_id}/randomization"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_randomization(self, record_id):
         """Randomizes a single record."""
         url = self.study_url + f"/record/{record_id}/randomization"
         return self.sync_post(url=url, body={})
 
     # RECORD-DEVICE-TOKEN
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_token(self, record_id):
         """Gets the device token for a single record."""
         url = self.study_url + f"/record/{record_id}/device-token"
         return self.sync_get(url, params={})
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_token(self, record_id, token):
         """Creates a token for a record."""
         url = self.study_url + f"/record/{record_id}/device-token"
         return self.sync_post(url=url, body={"device_token": token})
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_token(self, record_id, token):
         """Updates a token for a record."""
         url = self.study_url + f"/record/{record_id}/device-token"
         return self.sync_patch(url=url, body={"device_token": token})
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def delete_token(self, record_id):
         """Deletes the token for a record."""
         url = self.study_url + f"/record/{record_id}/device-token"
         return self.sync_delete(url, params={})
 
     # RECORDS
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_records(self, institute_id=None, archived=None):
         """Returns a list of dicts of all records.
         Archived can be None (all records), 0 (unarchived records)
@@ -530,11 +593,13 @@ class CastorClient:
             endpoint="/record", data_name="records", params=params
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_record(self, record_id):
         """Returns a dict of a record.
         Returns None when record not found."""
         return self.retrieve_data_by_id(endpoint="/record", data_id=record_id)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_record(self, institute_id, email, record_id=None, ccr_patient_id=None):
         """Creates a record. Record_id is only necessary when id generation
         strategy is set to free text. Ccr_patient_id is an optional parameter.
@@ -549,18 +614,21 @@ class CastorClient:
         return self.sync_post(url, body)
 
     # REPORTS
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_reports(self):
         """Returns a list of dicts of all reports."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/report", data_name="reports"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report(self, report_id):
         """Returns a single dict of an report.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/report", data_id=report_id)
 
     # REPORT INSTANCES
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_report_instances(self, archived=0):
         """Returns a list of dicts of all non-archived report_instances.
         Supply argument archived=1 to also add archived report instances"""
@@ -578,6 +646,7 @@ class CastorClient:
                 # If the json cannot be decoded, raise the parent error
                 raise error from error
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_instance(self, report_instance_id):
         """Returns a single dict of an report_instance.
         Returns None if id not found."""
@@ -585,6 +654,7 @@ class CastorClient:
             endpoint="/report-instance", data_id=report_instance_id
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_report_instances_record(self, record_id, archived=0):
         """Returns a list of dicts of all report_instances for record_id.
         Set archived to 1 to also retrieve archived report instances.
@@ -595,6 +665,7 @@ class CastorClient:
             endpoint=formatted_endpoint, data_name="reportInstances", params=params
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_instance_record(self, record_id, report_instance_id):
         """Returns a dict containing the given report for record.
         Returns None if record or report not found."""
@@ -603,6 +674,7 @@ class CastorClient:
             endpoint=formatted_endpoint, data_id=report_instance_id
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_report_instance_record(
         self, record_id, report_id, report_name_custom, parent_id=None
     ):
@@ -616,6 +688,7 @@ class CastorClient:
         }
         return self.sync_post(url, body)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_multiple_report_instances_record(self, record_id, body):
         """Creates multiple report instances for a record.
         Body should be a list of dictionaries formatted according to:
@@ -628,6 +701,7 @@ class CastorClient:
         return self.sync_post(url, data)
 
     # REPORT-DATA-ENTRY
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_instance_all_fields_record(self, record_id, report_instance_id):
         """Returns a list of all data for a report for a record.
         Returns None if report not found for given id."""
@@ -636,6 +710,7 @@ class CastorClient:
             endpoint=formatted_url, data_name="ReportDataPoints"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_instance_single_field_record(
         self, record_id, report_instance_id, field_id
     ):
@@ -646,6 +721,7 @@ class CastorClient:
         formatted_url = f"/record/{record_id}/data-point/report"
         return self.retrieve_data_by_id(endpoint=formatted_url, data_id=data_point)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_report_instance_single_field_record(
         self,
         record_id,
@@ -677,6 +753,7 @@ class CastorClient:
         return self.sync_post(url, body)
 
     # REPORT-STEP
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_all_steps(self, report_id):
         """Returns a list of dicts of all steps of a single report.
         Returns None if report not found."""
@@ -685,6 +762,7 @@ class CastorClient:
             endpoint=endpoint, data_name="report_steps"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_single_step(self, report_id, report_step_id):
         """Returns a single dict of a step of a report.
         Returns None if report or step not found."""
@@ -692,17 +770,20 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint=endpoint, data_id=report_step_id)
 
     # ROLE
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_roles(self):
         """Returns a list of dicts of all study roles."""
         return self.sync_get(url=self.study_url + "/role", params={})["_embedded"][
             "roles"
         ]
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_role(self, role_id):
         """Returns a single dict of a role in the study.
         Returns None if id not found.."""
         return self.retrieve_data_by_id(endpoint="/role", data_id=role_id)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_role(self, name, description, permissions):
         """Creates a new role for the study.
         Permissions should be in the form of: {
@@ -726,16 +807,19 @@ class CastorClient:
         return self.sync_post(url=url, body=body)
 
     # STEP
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_steps(self):
         """Returns a list of dicts of all study steps."""
         return self.retrieve_all_data_by_endpoint(endpoint="/step", data_name="steps")
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_step(self, step_id):
         """Returns a single dict of a step in the study.
         Returns None if id not found.."""
         return self.retrieve_data_by_id(endpoint="/step", data_id=step_id)
 
     # STUDY
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_studies(self):
         """Returns a list of dicts of studies you have access to."""
         endpoint = "/study"
@@ -744,12 +828,14 @@ class CastorClient:
         )
         return all_studies
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_study(self, study_id):
         """Returns a dict of a single study.
         Returns None if study not found or not authorized to view study."""
         endpoint = f"/study/{study_id}"
         return self.retrieve_general_data(endpoint)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_users_study(self, study_id):
         """Returns a list of dicts of users that have access to this study.
         Returns None if study not found or not authorized to view study."""
@@ -759,6 +845,7 @@ class CastorClient:
         )
         return all_users
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_user_study(self, study_id, user_id):
         """Returns a user for given study.
         Returns None if study/user not found or not authorized to view study.
@@ -766,6 +853,7 @@ class CastorClient:
         endpoint = f"/study/{study_id}/user/{user_id}"
         return self.retrieve_general_data(endpoint)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def invite_user_study(
         self,
         study_id,
@@ -787,18 +875,21 @@ class CastorClient:
         return self.sync_post(url, body)
 
     # STUDY-DATA-ENTRY
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_study_fields_record(self, record_id):
         """Returns a list of all study fields of a record.
         Returns None if record not found."""
         endpoint = f"/record/{record_id}/data-point/study"
         return self.retrieve_all_data_by_endpoint(endpoint, data_name="StudyDataPoints")
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_study_field_record(self, record_id, field_id):
         """Returns the value for a single field for a record in the study.
         Returns None if record or field not found."""
         endpoint = f"/record/{record_id}/data-point/study"
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_single_study_field_record(
         self, record_id, field_id, change_reason, field_value=None, file=None
     ):
@@ -820,29 +911,34 @@ class CastorClient:
         return self.sync_post(url, body)
 
     # STATISTICS
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def statistics(self):
         """Returns statistics for the linked study"""
         endpoint = "statistics"
         return self.retrieve_data_by_id("", endpoint)
 
     # SURVEY
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_surveys(self):
         """Returns a list of dicts of all available surveys."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/survey", data_name="surveys"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey(self, survey_id):
         """Returns a single dict of a survey in the study.
         Returns None if id not found."""
         return self.retrieve_data_by_id(endpoint="/survey", data_id=survey_id)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_survey_packages(self):
         """Returns a list of dicts of all available survey packages."""
         return self.retrieve_all_data_by_endpoint(
             endpoint="/surveypackage", data_name="survey_packages"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_package(self, survey_package_id):
         """Returns a single dict of a survey package in the study.
         Returns None if id not found."""
@@ -850,6 +946,7 @@ class CastorClient:
             endpoint="/surveypackage", data_id=survey_package_id
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_survey_package_instances(
         self,
         record_id=None,
@@ -881,6 +978,7 @@ class CastorClient:
         )
         return data
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_package_instance(self, survey_package_instance_id):
         """Returns a single dict of a survey package in the study.
         Returns None if id not found."""
@@ -888,6 +986,7 @@ class CastorClient:
             endpoint="/surveypackageinstance", data_id=survey_package_instance_id
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_survey_package_instance(
         self,
         survey_package_id,
@@ -914,6 +1013,7 @@ class CastorClient:
         }
         return self.sync_post(url, body)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def lock_unlock_survey_package_instance(self, survey_package_instance_id, status):
         """Lock/unlock survey package."""
         url = self.study_url + f"/surveypackageinstance/{survey_package_instance_id}"
@@ -922,6 +1022,7 @@ class CastorClient:
         }
         return self.sync_patch(url, body)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_start_time_survey_package_instance(
         self,
         record_id: str,
@@ -942,6 +1043,7 @@ class CastorClient:
         return self.sync_patch(url, body)
 
     # SURVEY-DATA-ENTRY
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_instance_all_fields_record(self, record_id, survey_instance_id):
         """Retrieves a list of fields with data for a single survey.
         Returns None if record or survey not found."""
@@ -950,6 +1052,7 @@ class CastorClient:
             endpoint, data_name="SurveyDataPoints"
         )
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_instance_single_field_record(
         self, record_id, survey_instance_id, field_id
     ):
@@ -958,6 +1061,7 @@ class CastorClient:
         endpoint = f"/record/{record_id}/data-point/survey/{survey_instance_id}"
         return self.retrieve_data_by_id(endpoint, data_id=field_id)
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_survey_instance_single_field_record(
         self, record_id, survey_instance_id, field_id, field_value, change_reason
     ):
@@ -976,12 +1080,14 @@ class CastorClient:
         return self.sync_post(url, body)
 
     # SURVEY-STEP
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_all_steps(self, survey_id):
         """Retrieves a list of dicts of steps for a single survey.
         Returns None if survey not found."""
         endpoint = f"/survey/{survey_id}/survey-step"
         return self.retrieve_all_data_by_endpoint(endpoint, data_name="survey_steps")
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_single_step(self, survey_id, survey_step_id):
         """Retrieves a dict of a single survey step.
         Returns None if survey or step not found."""
@@ -989,17 +1095,20 @@ class CastorClient:
         return self.retrieve_data_by_id(endpoint, data_id=survey_step_id)
 
     # USER
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_users(self):
         """Retrieves list of users that current user is authorized to see."""
         endpoint = "/user"
         return self.retrieve_general_data(endpoint, embedded=True, data_id="user")
 
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_user(self, user_id):
         """Retrieves a single user by ID."""
         endpoint = f"/user/{user_id}"
         return self.retrieve_general_data(endpoint)
 
     # RECORD PROGRESS
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def record_progress(self):
         """Returns progress of all records."""
         return self.retrieve_all_data_by_endpoint(
@@ -1007,6 +1116,7 @@ class CastorClient:
         )
 
     # VERIFICATIONS
+    @RateLimiter(**client_options.SYNC_OPTIONS)
     def verifications(
         self,
         record_id: Optional[str] = None,
@@ -1191,24 +1301,27 @@ class CastorClient:
         """
         # Split list to handle error when len(tasks) > max_connections
         chunks = [
-            params[x : x + self.max_connections]
-            for x in range(0, len(params), self.max_connections)
+            params[x : x + client_options.MAX_CONNECTIONS]
+            for x in range(0, len(params), client_options.MAX_CONNECTIONS)
         ]
         responses = []
-        for idx, chunk in enumerate(chunks):
-            async with httpx.AsyncClient(
-                headers=self.headers, timeout=self.timeout, limits=self.limits
-            ) as client:
-                tasks = [client.get(url=url, params=param) for param in chunk]
-                temp_responses = [
-                    await response
-                    for response in tqdm(
-                        asyncio.as_completed(tasks),
-                        total=len(tasks),
-                        desc=f"Async Downloading {idx + 1}/{len(chunks)}",
-                    )
-                ]
-                responses = responses + temp_responses
+        with self.async_rate_limiter:
+            for idx, chunk in enumerate(chunks):
+                async with httpx.AsyncClient(
+                    headers=self.headers,
+                    timeout=client_options.TIMEOUT,
+                    limits=client_options.LIMITS,
+                ) as client:
+                    tasks = [client.get(url=url, params=param) for param in chunk]
+                    temp_responses = [
+                        await response
+                        for response in tqdm(
+                            asyncio.as_completed(tasks),
+                            total=len(tasks),
+                            desc=f"Async Downloading {idx + 1}/{len(chunks)}",
+                        )
+                    ]
+                    responses = responses + temp_responses
         return responses
 
     @staticmethod

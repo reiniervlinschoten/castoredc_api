@@ -7,6 +7,7 @@ from json import JSONDecodeError
 import httpx
 from tqdm import tqdm
 
+from castoredc_api.client import client_options
 from castoredc_api.importer.helpers import (
     create_survey_body,
     create_report_body,
@@ -21,29 +22,31 @@ async def async_update_study_data(data: list, study: "CastorStudy") -> list:
     """Updates the Castor EDC database with given study datapoints."""
     # Split list to handle error when len(tasks) > max_connections
     chunks = [
-        data[x : x + study.client.max_connections]
-        for x in range(0, len(data), study.client.max_connections)
+        data[x : x + client_options.MAX_CONNECTIONS]
+        for x in range(0, len(data), client_options.MAX_CONNECTIONS)
     ]
     responses = []
+
     # Create a new client for each chunk because of problem when tasks > max_connections
     for idx, chunk in enumerate(chunks):
-        async with httpx.AsyncClient(
-            headers=study.client.headers,
-            timeout=study.client.timeout,
-            limits=study.client.limits,
-        ) as client:
-            tasks = [async_upload_study_data(item, client, study) for item in chunk]
+        with study.client.async_rate_limiter:
+            async with httpx.AsyncClient(
+                headers=study.client.headers,
+                timeout=client_options.TIMEOUT,
+                limits=client_options.LIMITS,
+            ) as client:
+                tasks = [async_upload_study_data(item, client, study) for item in chunk]
 
-            # Show progress bar while running tasks
-            temp_responses = [
-                await response
-                for response in tqdm(
-                    asyncio.as_completed(tasks),
-                    total=len(tasks),
-                    desc=f"Async Uploading {idx + 1}/{len(chunks)}",
-                )
-            ]
-            responses = responses + temp_responses
+                # Show progress bar while running tasks
+                temp_responses = [
+                    await response
+                    for response in tqdm(
+                        asyncio.as_completed(tasks),
+                        total=len(tasks),
+                        desc=f"Async Uploading {idx + 1}/{len(chunks)}",
+                    )
+                ]
+                responses = responses + temp_responses
     return responses
 
 
@@ -73,32 +76,33 @@ async def async_update_survey_data(
     """Updates the Castor EDC database with given survey datapoints."""
     # Split list to handle error when len(tasks) > max_connections
     chunks = [
-        data[x : x + study.client.max_connections]
-        for x in range(0, len(data), study.client.max_connections)
+        data[x : x + client_options.MAX_CONNECTIONS]
+        for x in range(0, len(data), client_options.MAX_CONNECTIONS)
     ]
     responses = []
     # Create a new client for each chunk because of problem when tasks > max_connections
     for idx, chunk in enumerate(chunks):
-        async with httpx.AsyncClient(
-            headers=study.client.headers,
-            timeout=study.client.timeout,
-            limits=study.client.limits,
-        ) as client:
-            tasks = [
-                async_upload_survey_data(item, client, study, change_reason)
-                for item in chunk
-            ]
+        with study.client.async_rate_limiter:
+            async with httpx.AsyncClient(
+                headers=study.client.headers,
+                timeout=client_options.TIMEOUT,
+                limits=client_options.LIMITS,
+            ) as client:
+                tasks = [
+                    async_upload_survey_data(item, client, study, change_reason)
+                    for item in chunk
+                ]
 
-            # Show progress bar when handling responses
-            temp_responses = [
-                await response
-                for response in tqdm(
-                    asyncio.as_completed(tasks),
-                    total=len(tasks),
-                    desc=f"Async Uploading {idx + 1}/{len(chunks)}",
-                )
-            ]
-            responses = responses + temp_responses
+                # Show progress bar when handling responses
+                temp_responses = [
+                    await response
+                    for response in tqdm(
+                        asyncio.as_completed(tasks),
+                        total=len(tasks),
+                        desc=f"Async Uploading {idx + 1}/{len(chunks)}",
+                    )
+                ]
+                responses = responses + temp_responses
     return responses
 
 
@@ -161,29 +165,32 @@ async def async_update_report_data(data: list, study: "CastorStudy") -> list:
     """Updates the Castor EDC database with given report datapoints."""
     # Split list to handle error when len(tasks) > max_connections
     chunks = [
-        data[x : x + study.client.max_connections]
-        for x in range(0, len(data), study.client.max_connections)
+        data[x : x + client_options.MAX_CONNECTIONS]
+        for x in range(0, len(data), client_options.MAX_CONNECTIONS)
     ]
     responses = []
     # Create a new client for each chunk because of problem when tasks > max_connections
     for idx, chunk in enumerate(chunks):
-        async with httpx.AsyncClient(
-            headers=study.client.headers,
-            timeout=study.client.timeout,
-            limits=study.client.limits,
-        ) as client:
-            tasks = [async_upload_report_data(item, client, study) for item in chunk]
+        with study.client.async_rate_limiter:
+            async with httpx.AsyncClient(
+                headers=study.client.headers,
+                timeout=client_options.TIMEOUT,
+                limits=client_options.LIMITS,
+            ) as client:
+                tasks = [
+                    async_upload_report_data(item, client, study) for item in chunk
+                ]
 
-            # Show progress bar while handling responses
-            temp_responses = [
-                await response
-                for response in tqdm(
-                    asyncio.as_completed(tasks),
-                    total=len(tasks),
-                    desc=f"Async Uploading {idx + 1}/{len(chunks)}",
-                )
-            ]
-            responses = responses + temp_responses
+                # Show progress bar while handling responses
+                temp_responses = [
+                    await response
+                    for response in tqdm(
+                        asyncio.as_completed(tasks),
+                        total=len(tasks),
+                        desc=f"Async Uploading {idx + 1}/{len(chunks)}",
+                    )
+                ]
+                responses = responses + temp_responses
     return responses
 
 

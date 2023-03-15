@@ -32,21 +32,22 @@ def upload_study(
     """Uploads study data to the study."""
     imported = []
 
-    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
-        body = [
-            {
-                "field_id": study.get_single_field(field).field_id,
-                "field_value": row[field],
-                "change_reason": f"api_upload_Study_{upload_datetime}",
-                "confirmed_changes": True,
-            }
-            for field in row
-            # Skip record_id and empty fields
-            if (field != "record_id" and row[field] is not None)
-        ]
+    with study.client.sync_rate_limiter:
+        for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
+            body = [
+                {
+                    "field_id": study.get_single_field(field).field_id,
+                    "field_value": row[field],
+                    "change_reason": f"api_upload_Study_{upload_datetime}",
+                    "confirmed_changes": True,
+                }
+                for field in row
+                # Skip record_id and empty fields
+                if (field != "record_id" and row[field] is not None)
+            ]
 
-        # Upload the data
-        imported = upload_study_data(body, study, common, imported, row)
+            # Upload the data
+            imported = upload_study_data(body, study, common, imported, row)
 
     # Output log of upload
     pd.DataFrame(imported).to_csv(
@@ -94,16 +95,17 @@ def upload_survey(
     """Uploads survey data to the study."""
     imported = []
 
-    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
-        instance = create_survey_package_instance(
-            study, imported, package_id, row, email
-        )
-        # Create body to send
-        body = create_survey_body(instance, row, study)
-        # Upload the data
-        imported = upload_survey_data(
-            body, study, imported, instance, row, change_reason
-        )
+    with study.client.sync_rate_limiter:
+        for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
+            instance = create_survey_package_instance(
+                study, imported, package_id, row, email
+            )
+            # Create body to send
+            body = create_survey_body(instance, row, study)
+            # Upload the data
+            imported = upload_survey_data(
+                body, study, imported, instance, row, change_reason
+            )
 
     # Save output
     pd.DataFrame(imported).to_csv(
@@ -166,24 +168,25 @@ def upload_report(
 ) -> dict:
     """Uploads report data to the study."""
     imported = []
-    for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
-        # Create a report instance
-        instance = create_report_instance(study, imported, package_id, row)
-        # Create the report body
-        body = create_report_body(instance, row, study, upload_datetime)
+    with study.client.sync_rate_limiter:
+        for row in tqdm(castorized_dataframe.to_dict("records"), "Uploading Data"):
+            # Create a report instance
+            instance = create_report_instance(study, imported, package_id, row)
+            # Create the report body
+            body = create_report_body(instance, row, study, upload_datetime)
 
-        # Upload the data
-        imported = upload_report_data(body, study, imported, instance, row, common)
-        # Save output
-        pd.DataFrame(imported).to_csv(
-            pathlib.Path(
-                pathlib.Path.cwd(),
-                "output",
-                f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
-                + "successful_upload.csv",
-            ),
-            index=False,
-        )
+            # Upload the data
+            imported = upload_report_data(body, study, imported, instance, row, common)
+            # Save output
+            pd.DataFrame(imported).to_csv(
+                pathlib.Path(
+                    pathlib.Path.cwd(),
+                    "output",
+                    f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')}"
+                    + "successful_upload.csv",
+                ),
+                index=False,
+            )
     feedback = create_feedback(imported)
     return feedback
 
