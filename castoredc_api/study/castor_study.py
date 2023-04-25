@@ -135,8 +135,7 @@ class CastorStudy:
 
     # DATA MAPPING
     def map_data(self, archived: bool = False) -> None:
-        """Maps the data for the study. Archived controls whether archived data is extracted
-        """
+        """Maps the data for the study. Archived controls whether archived data is extracted"""
         self.map_structure()
         self.update_links(archived)
         self.__link_data(archived)
@@ -166,9 +165,9 @@ class CastorStudy:
         }
         # Create dict with link instance_id: form_id
         self.form_links["Report"] = {
-            instance_id: self.all_report_instances[instance_id]["_embedded"][
-                "report"
-            ]["id"]
+            instance_id: self.all_report_instances[instance_id]["_embedded"]["report"][
+                "id"
+            ]
             for instance_id in self.all_report_instances
         }
 
@@ -186,7 +185,11 @@ class CastorStudy:
     def __load_record_information(self, archived: bool) -> None:
         """Adds auxiliary data to records."""
         print("Downloading Record Information.", flush=True, file=sys.stderr)
-        record_data = self.client.all_records() if archived else self.client.all_records(archived=0)
+        record_data = (
+            self.client.all_records()
+            if archived
+            else self.client.all_records(archived=0)
+        )
         for record_api in tqdm(record_data, desc="Augmenting Record Data"):
             record = self.get_single_record(record_api["id"])
             record.institute = record_api["_embedded"]["institute"]["name"]
@@ -288,10 +291,7 @@ class CastorStudy:
         """Maps all survey packages for easier finding."""
         print("Downloading Survey Packages", flush=True, file=sys.stderr)
         all_survey_packages = self.client.all_survey_packages()
-        self.all_survey_packages = {
-                item["name"]: item
-                for item in all_survey_packages
-                }
+        self.all_survey_packages = {item["name"]: item for item in all_survey_packages}
 
     # FIELD DEPENDENCIES
     def __map_field_dependencies(self) -> None:
@@ -312,7 +312,7 @@ class CastorStudy:
     # DATA ANALYSIS
     def export_to_dataframe(self, archived=False) -> dict:
         """Exports all data from a study into a dict of dataframes for statistical analysis."""
-        # TODO: change this to the correct archived,
+        # TODO: change this to the correct archived, # pylint: disable=fixme
         #  fails now because the parameter does not seem to be handled correctly server side
         self.map_data(archived=True)
         dataframes = {

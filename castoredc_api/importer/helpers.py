@@ -685,14 +685,18 @@ def handle_http_error(error, imported, row):
         try:
             row["error"] = error.response.json()
         except JSONDecodeError:
-            row["error"] = f"JSONDecodeError while handling error for {error.request.url} \n" \
-                                f"with status code {error.response.status_code}"
+            row["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
         row["error"] = error.response.json()
     elif isinstance(error, httpx.RequestError):
         row["error"] = f"Request Error for {error.request.url}."
     elif isinstance(error, JSONDecodeError):
-        row["error"] = f"JSONDecodeError while handling error for {error.request.url} \n" \
-                       f"with status code {error.response.status_code}"
+        row["error"] = (
+            f"JSONDecodeError while handling error for {error.request.url} \n"
+            f"with status code {error.response.status_code}"
+        )
     # Add error row to the dataset
     imported.append(row)
     # Output data for error checking

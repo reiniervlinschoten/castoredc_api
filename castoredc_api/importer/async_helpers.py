@@ -65,8 +65,10 @@ async def async_upload_study_data(item, client, study):
         try:
             feedback["error"] = error.response.json()
         except JSONDecodeError:
-            feedback["error"] = f"JSONDecodeError while handling error for {error.request.url} \n" \
-                                f"with status code {error.response.status_code}"
+            feedback["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
     return feedback
@@ -133,8 +135,10 @@ async def async_upload_survey_data(item, client, study, change_reason):
         try:
             feedback["error"] = error.response.json()
         except JSONDecodeError:
-            feedback["error"] = f"JSONDecodeError while handling error for {error.request.url} \n" \
-                                f"with status code {error.response.status_code}"
+            feedback["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
     return feedback
@@ -222,8 +226,10 @@ async def async_upload_report_data(item, client, study):
         try:
             feedback["error"] = error.response.json()
         except JSONDecodeError:
-            feedback["error"] = f"JSONDecodeError while handling error for {error.request.url} \n" \
-                                f"with status code {error.response.status_code}"
+            feedback["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
     return feedback
