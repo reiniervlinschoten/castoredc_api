@@ -134,16 +134,17 @@ class CastorStudy:
         self.__map_survey_packages()
 
     # DATA MAPPING
-    def map_data(self) -> None:
-        """Maps the data for the study."""
+    def map_data(self, archived: bool = False) -> None:
+        """Maps the data for the study. Archived controls whether archived data is extracted
+        """
         self.map_structure()
-        self.update_links()
-        self.__link_data()
-        self.__load_record_information()
-        self.__load_survey_information()
+        self.update_links(archived)
+        self.__link_data(archived)
+        self.__load_record_information(archived)
+        self.__load_survey_information(archived)
         self.__load_report_information()
 
-    def update_links(self) -> None:
+    def update_links(self, archived: bool) -> None:
         """Creates the links between form and form instances."""
         # Reset form links
         self.form_links = {}
@@ -155,11 +156,13 @@ class CastorStudy:
         print("Downloading Report Instances.", flush=True, file=sys.stderr)
         # Save this data from the database to save time later
         report_instances = self.client.all_report_instances(archived=0)
-        archived_report_instances = self.client.all_report_instances(archived=1)
+        if archived:
+            archived_report_instances = self.client.all_report_instances(archived=1)
+            report_instances = report_instances + archived_report_instances
         # Create dict with link id: object
         self.all_report_instances = {
             report_instance["id"]: report_instance
-            for report_instance in report_instances + archived_report_instances
+            for report_instance in report_instances
         }
         # Create dict with link instance_id: form_id
         self.form_links["Report"] = {
@@ -180,10 +183,10 @@ class CastorStudy:
         }
 
     # AUXILIARY DATA
-    def __load_record_information(self) -> None:
+    def __load_record_information(self, archived: bool) -> None:
         """Adds auxiliary data to records."""
         print("Downloading Record Information.", flush=True, file=sys.stderr)
-        record_data = self.client.all_records()
+        record_data = self.client.all_records() if archived else self.client.all_records(archived=0)
         for record_api in tqdm(record_data, desc="Augmenting Record Data"):
             record = self.get_single_record(record_api["id"])
             record.institute = record_api["_embedded"]["institute"]["name"]
@@ -193,7 +196,7 @@ class CastorStudy:
             )
             record.archived = record_api["archived"]
 
-    def __load_survey_information(self) -> None:
+    def __load_survey_information(self, archived: bool) -> None:
         """Adds auxiliary data to survey forms."""
         print("Downloading Survey Information.", flush=True, file=sys.stderr)
         survey_package_data = self.client.all_survey_package_instances()
@@ -206,6 +209,7 @@ class CastorStudy:
             }
             for package in survey_package_data
             for survey in package["_embedded"]["survey_instances"]
+            if not package["archived"] or archived
         }
         for survey_instance, values in tqdm(
             survey_data.items(), desc="Augmenting Survey Data"
@@ -572,11 +576,11 @@ class CastorStudy:
         return form
 
     # PRIVATE HELPER FUNCTIONS
-    def __link_data(self) -> None:
+    def __link_data(self, archived: bool) -> None:
         """Links the study data"""
         # Get the data from the API
         print("Downloading Study Data.", flush=True, file=sys.stderr)
-        data = self.client.export_study_data()
+        data = self.client.export_study_data(archived)
 
         # Loop over all fields
         for field in tqdm(data, desc="Mapping Data"):

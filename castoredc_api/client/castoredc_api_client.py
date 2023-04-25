@@ -311,13 +311,14 @@ class CastorClient:
     # EXPORT
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def export_study_data(
-        self, exclude_empty_surveys=False, exclude_empty_reports=False
+        self, exclude_empty_surveys=False, exclude_empty_reports=False, archived=False
     ):
         """Returns a list of dicts containing all data in the study (study, surveys, reports)."""
         url = self.study_url + "/export/data"
         return self.sync_get(url=url, params={
             "exclude_empty_surveys": exclude_empty_surveys,
             "exclude_empty_reports": exclude_empty_reports,
+            "archived": archived
         })["content"]
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
