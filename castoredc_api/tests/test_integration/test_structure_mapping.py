@@ -44,7 +44,7 @@ class TestStudyMap:
     def test_study_form_links_model(self, integration_study):
         """Tests if the links are in the right format."""
         integration_study.map_structure()
-        integration_study.update_links()
+        integration_study.update_links(False)
         assert len(integration_study.form_links.keys()) == 2
         assert type(integration_study.form_links["Report"]) is dict
         assert type(integration_study.form_links["Survey"]) is dict
@@ -52,7 +52,7 @@ class TestStudyMap:
     def test_study_form_links_form(self, integration_study):
         """Tests if the links contain the right forms."""
         integration_study.map_structure()
-        integration_study.update_links()
+        integration_study.update_links(False)
         assert "89FF2394-0D41-4D4C-89FE-AA9AB287B31E" in list(
             integration_study.form_links["Report"].values()
         )
@@ -73,7 +73,7 @@ class TestStudyMap:
     def test_study_form_links_form_instances(self, integration_study):
         """Tests if the links contain the right form instances."""
         integration_study.map_structure()
-        integration_study.update_links()
+        integration_study.update_links(False)
         # Test Reports
         assert (
             "89FF2394-0D41-4D4C-89FE-AA9AB287B31E"

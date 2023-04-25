@@ -312,7 +312,9 @@ class CastorStudy:
     # DATA ANALYSIS
     def export_to_dataframe(self, archived=False) -> dict:
         """Exports all data from a study into a dict of dataframes for statistical analysis."""
-        self.map_data()
+        # TODO: change this to the correct archived,
+        #  fails now because the parameter does not seem to be handled correctly server side
+        self.map_data(archived=True)
         dataframes = {
             "Study": self.__export_study_data(archived),
             "Surveys": self.__export_survey_data(archived),
@@ -324,7 +326,7 @@ class CastorStudy:
         """Exports all data to csv files.
         Returns dict with file locations."""
         now = f"{datetime.now().strftime('%Y%m%d %H%M%S.%f')[:-3]}"
-        dataframes = self.export_to_dataframe(archived)
+        dataframes = self.export_to_dataframe(archived=archived)
         # Instantiate output folder
         pathlib.Path(pathlib.Path.cwd(), "output").mkdir(parents=True, exist_ok=True)
         # Export dataframes
@@ -580,7 +582,7 @@ class CastorStudy:
         """Links the study data"""
         # Get the data from the API
         print("Downloading Study Data.", flush=True, file=sys.stderr)
-        data = self.client.export_study_data(archived)
+        data = self.client.export_study_data(archived=archived)
 
         # Loop over all fields
         for field in tqdm(data, desc="Mapping Data"):

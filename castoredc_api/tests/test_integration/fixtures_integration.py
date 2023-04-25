@@ -36,6 +36,10 @@ def integration_study_mapped(integration_study):
     integration_study.map_data()
     return integration_study
 
+@pytest.fixture(scope="function")
+def integration_study_mapped_archived(integration_study):
+    integration_study.map_data(archived=True)
+    return integration_study
 
 @pytest.fixture(scope="function")
 def integration_study_format_mapped(integration_study_format):
