@@ -165,17 +165,7 @@ def castorize_column_helper(
                 ]
             }
     elif target == "Survey":
-        # Check for surveys (need to extract all forms in given survey package)
-        # TODO Add survey package structure building to Study object # pylint: disable=fixme
-        # And then remove it here
-        package = next(
-            (
-                item
-                for item in study.client.all_survey_packages()
-                if item["name"] == target_name
-            ),
-            None,
-        )
+        package = study.all_survey_packages.get(target_name, None)
         if package is None:
             return {
                 new_name[0]: ["Error: survey package does not exist" for _ in to_import]

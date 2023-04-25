@@ -74,7 +74,8 @@ class CastorStudy:
         # List of dictionaries of optiongroups
         self.optiongroups = {}
         # Container variables to save time querying the database
-        self.__all_report_instances = {}
+        self.all_report_instances = {}
+        self.all_survey_packages = {}
 
     # STRUCTURE MAPPING
     def map_structure(self) -> None:
@@ -85,7 +86,8 @@ class CastorStudy:
         self.form_links = {}
         self.records = {}
         self.optiongroups = {}
-        self.__all_report_instances = {}
+        self.all_report_instances = {}
+        self.all_survey_packages = {}
         # Get the structure from the API
         print("Downloading Study Structure.", flush=True, file=sys.stderr)
         data = self.client.export_study_structure()
@@ -128,6 +130,9 @@ class CastorStudy:
         self.__map_field_dependencies()
         self.__load_optiongroups()
 
+        # Map the survey packages
+        self.__map_survey_packages()
+
     # DATA MAPPING
     def map_data(self) -> None:
         """Maps the data for the study."""
@@ -152,16 +157,16 @@ class CastorStudy:
         report_instances = self.client.all_report_instances(archived=0)
         archived_report_instances = self.client.all_report_instances(archived=1)
         # Create dict with link id: object
-        self.__all_report_instances = {
+        self.all_report_instances = {
             report_instance["id"]: report_instance
             for report_instance in report_instances + archived_report_instances
         }
         # Create dict with link instance_id: form_id
         self.form_links["Report"] = {
-            instance_id: self.__all_report_instances[instance_id]["_embedded"][
+            instance_id: self.all_report_instances[instance_id]["_embedded"][
                 "report"
             ]["id"]
-            for instance_id in self.__all_report_instances
+            for instance_id in self.all_report_instances
         }
 
     # OPTIONGROUPS
@@ -228,7 +233,7 @@ class CastorStudy:
     def __load_report_information(self) -> None:
         """Adds auxiliary data to report forms."""
         for instance_id, report_instance in tqdm(
-            self.__all_report_instances.items(),
+            self.all_report_instances.items(),
             "Augmenting Report Data",
         ):
             # Test if instance in study
@@ -273,6 +278,16 @@ class CastorStudy:
             )
         )
         return date
+
+    # SURVEY PACKAGES
+    def __map_survey_packages(self) -> None:
+        """Maps all survey packages for easier finding."""
+        print("Downloading Survey Packages", flush=True, file=sys.stderr)
+        all_survey_packages = self.client.all_survey_packages()
+        self.all_survey_packages = {
+                item["name"]: item
+                for item in all_survey_packages
+                }
 
     # FIELD DEPENDENCIES
     def __map_field_dependencies(self) -> None:
