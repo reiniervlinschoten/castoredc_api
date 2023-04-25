@@ -33,7 +33,7 @@ class TestSurveyStep:
                 "description": "",
                 "intro_text": "##### This is the survey intro text. Here you can add some information for the participant that they will see before they start filling in the survey.\n```\n\n\n```\n##### Check the help text in the survey form editor to see how you can format this text or add images and links.\n```\n\n\n```\n### For example, you can use hashtags to make the text bigger or add headings.",
                 "outro_text": "",
-                "survey_steps": [],
+                "survey_forms": [],
                 "_links": {
                     "self": {
                         "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey/D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"

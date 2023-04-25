@@ -26,7 +26,7 @@ class TestReportDataEntry:
         "field_id": "AFD46D4F-5C17-4B9B-BE19-8A5A702601C1",
         "report_instance_id": "2711B1EF-6118-4EBD-9858-47E4830C4EC5",
         "value": "1",
-        "updated_on": "2020-08-14 10:55:46",
+        "updated_on": "2020-08-14 14:55:46",
         "_embedded": {
             "record": {
                 "id": "000004",
@@ -47,7 +47,7 @@ class TestReportDataEntry:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2020-08-14 11:20:27.000000",
+                    "date": "2020-08-14 15:20:27.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },
@@ -125,7 +125,7 @@ class TestReportDataEntry:
                 "record_id": "000004",
                 "report_name": "Medication",
                 "archived": False,
-                "created_on": "2020-08-14 07:13:54",
+                "created_on": "2020-08-14 11:13:54",
                 "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "_embedded": {
                     "report": {
