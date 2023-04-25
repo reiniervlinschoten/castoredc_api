@@ -345,10 +345,11 @@ def castorize_optiongroup_datapoint(
     other_name: str,
 ) -> typing.Optional[list]:
     """Translates a list of values split by ; into Castor Values."""
-    # If the datapoint was None or NaN, return an empty datapoint
-    if not isinstance(values, list):
-        if pd.isnull(values):
-            new_values = None
+    # If the datapoint was Missing, return an empty datapoint
+    if values is None:
+        new_values = None
+    elif values[0] == "MISSING-DATA-POINT":
+        new_values = None
 
     else:
         new_values = []
@@ -600,7 +601,7 @@ def merge_row(row: pd.Series) -> str:
     """Merges multiple columns in a row to a single column."""
     row = row.dropna()
     row = ";".join(row.values.astype(str))
-    row = np.nan if row == "" else row
+    row = "MISSING-DATA-POINT" if row == "" else row
     return row
 
 
