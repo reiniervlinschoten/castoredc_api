@@ -62,11 +62,15 @@ async def async_upload_study_data(item, client, study):
         json = {"common": item["common"], "data": item["body"]}
         feedback = await async_upload_data(client, feedback, json, study, url)
     except httpx.HTTPStatusError as error:
-        feedback["error"] = error.response.json()
+        try:
+            feedback["error"] = error.response.json()
+        except JSONDecodeError:
+            feedback["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
-    except JSONDecodeError:
-        feedback["error"] = "JSONDecodeError while handling Error."
     return feedback
 
 
@@ -128,11 +132,15 @@ async def async_upload_survey_data(item, client, study, change_reason):
         json = {"data": body, "common": {"change_reason": change_reason}}
         feedback = await async_upload_data(client, feedback, json, study, url)
     except httpx.HTTPStatusError as error:
-        feedback["error"] = error.response.json()
+        try:
+            feedback["error"] = error.response.json()
+        except JSONDecodeError:
+            feedback["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
-    except JSONDecodeError:
-        feedback["error"] = "JSONDecodeError while handling Error."
     return feedback
 
 
@@ -215,11 +223,15 @@ async def async_upload_report_data(item, client, study):
         json = {"data": body, "common": item["common"]}
         feedback = await async_upload_data(client, feedback, json, study, url)
     except httpx.HTTPStatusError as error:
-        feedback["error"] = error.response.json()
+        try:
+            feedback["error"] = error.response.json()
+        except JSONDecodeError:
+            feedback["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
     except httpx.RequestError as error:
         feedback["error"] = f"Request Error for {error.request.url}."
-    except JSONDecodeError:
-        feedback["error"] = "JSONDecodeError while handling Error."
     return feedback
 
 

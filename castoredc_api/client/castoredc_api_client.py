@@ -311,7 +311,7 @@ class CastorClient:
     # EXPORT
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def export_study_data(
-        self, exclude_empty_surveys=False, exclude_empty_reports=False
+        self, exclude_empty_surveys=False, exclude_empty_reports=False, archived=False
     ):
         """Returns a list of dicts containing all data in the study (study, surveys, reports)."""
         url = self.study_url + "/export/data"
@@ -320,8 +320,8 @@ class CastorClient:
             params={
                 "exclude_empty_surveys": exclude_empty_surveys,
                 "exclude_empty_reports": exclude_empty_reports,
+                "archived": archived,
             },
-            timeout=httpx.Timeout(10.0, read=300),
         )["content"]
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
@@ -1264,12 +1264,9 @@ class CastorClient:
         return response["total_items"]
 
     # Synchronous API Interaction
-    def sync_get(self, url: str, params: dict, timeout=None) -> dict:
+    def sync_get(self, url: str, params: dict) -> dict:
         """Synchronous querying of Castor API with a single get requests."""
-        if timeout:
-            response = self.client.get(url=url, params=params, timeout=timeout)
-        else:
-            response = self.client.get(url=url, params=params)
+        response = self.client.get(url=url, params=params)
         return self.handle_response(response)
 
     def sync_post(self, url, body):

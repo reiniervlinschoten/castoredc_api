@@ -14,7 +14,7 @@ from castoredc_api.tests.test_api_endpoints.test_record_endpoints import create_
 
 class TestEconsent:
     @pytest.mark.xfail(
-        reason="Econsent not enable on testing databases",
+        reason="Econsent not enabled on testing databases",
         strict=True,
     )
     def test_econsent_get_success(self, client):
@@ -33,7 +33,7 @@ class TestEconsent:
         assert e.value.response.status_code == 404
 
     @pytest.mark.xfail(
-        reason="Econsent not enable on testing databases",
+        reason="Econsent not enabled on testing databases",
         strict=True,
     )
     def test_econsent_post_success(self, client):
@@ -53,7 +53,7 @@ class TestEconsent:
         }
 
     @pytest.mark.xfail(
-        reason="Econsent not enable on testing databases",
+        reason="Econsent not enabled on testing databases",
         strict=True,
     )
     def test_econsent_post_failure(self, client):
@@ -70,7 +70,7 @@ class TestEconsent:
         assert e.value.response.status_code == 404
 
     @pytest.mark.xfail(
-        reason="Econsent not enable on testing databases",
+        reason="Econsent not enabled on testing databases",
         strict=True,
     )
     def test_econsent_patch_success(self, client):
@@ -90,7 +90,7 @@ class TestEconsent:
         }
 
     @pytest.mark.xfail(
-        reason="Econsent not enable on testing databases",
+        reason="Econsent not enabled on testing databases",
         strict=True,
     )
     def test_econsent_patch_failure(self, client):

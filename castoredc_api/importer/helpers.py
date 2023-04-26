@@ -165,17 +165,7 @@ def castorize_column_helper(
                 ]
             }
     elif target == "Survey":
-        # Check for surveys (need to extract all forms in given survey package)
-        # TODO Add survey package structure building to Study object # pylint: disable=fixme
-        # And then remove it here
-        package = next(
-            (
-                item
-                for item in study.client.all_survey_packages()
-                if item["name"] == target_name
-            ),
-            None,
-        )
+        package = study.all_survey_packages.get(target_name, None)
         if package is None:
             return {
                 new_name[0]: ["Error: survey package does not exist" for _ in to_import]
@@ -355,10 +345,11 @@ def castorize_optiongroup_datapoint(
     other_name: str,
 ) -> typing.Optional[list]:
     """Translates a list of values split by ; into Castor Values."""
-    # If the datapoint was None or NaN, return an empty datapoint
-    if not isinstance(values, list):
-        if pd.isnull(values):
-            new_values = None
+    # If the datapoint was Missing, return an empty datapoint
+    if values is None:
+        new_values = None
+    elif values[0] == "MISSING-DATA-POINT":
+        new_values = None
 
     else:
         new_values = []
@@ -610,7 +601,7 @@ def merge_row(row: pd.Series) -> str:
     """Merges multiple columns in a row to a single column."""
     row = row.dropna()
     row = ";".join(row.values.astype(str))
-    row = np.nan if row == "" else row
+    row = "MISSING-DATA-POINT" if row == "" else row
     return row
 
 
@@ -692,11 +683,21 @@ def format_feedback(feedback_row, study):
 def handle_http_error(error, imported, row):
     """Handles HTTP Errors by outputting imported data and raising an error."""
     if isinstance(error, httpx.HTTPStatusError):
+        try:
+            row["error"] = error.response.json()
+        except JSONDecodeError:
+            row["error"] = (
+                f"JSONDecodeError while handling error for {error.request.url} \n"
+                f"with status code {error.response.status_code}"
+            )
         row["error"] = error.response.json()
     elif isinstance(error, httpx.RequestError):
         row["error"] = f"Request Error for {error.request.url}."
     elif isinstance(error, JSONDecodeError):
-        row["error"] = f"JSONDecodeError while handling Error for {error.request.url}."
+        row["error"] = (
+            f"JSONDecodeError while handling error for {error.request.url} \n"
+            f"with status code {error.response.status_code}"
+        )
     # Add error row to the dataset
     imported.append(row)
     # Output data for error checking

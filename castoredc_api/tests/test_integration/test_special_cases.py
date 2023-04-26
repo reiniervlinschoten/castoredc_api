@@ -15,7 +15,7 @@ class TestSpecialCases:
             auth_data.test_special_study_id,
             "data.castoredc.com",
         )
-        study.map_data()
+        study.map_data(archived=True)
         # Parent is a study phase
         assert (
             study.get_single_form_instance_on_id(

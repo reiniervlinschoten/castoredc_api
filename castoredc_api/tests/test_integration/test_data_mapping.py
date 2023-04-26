@@ -1,10 +1,10 @@
 class TestDataMap:
     """Tests the integration between CastorEDCClient and the CastorObjects that map the study data."""
 
-    def test_records_exist(self, integration_study_mapped):
+    def test_records_exist(self, integration_study_mapped_archived):
         record_ids = [
-            integration_study_mapped.records[record].record_id
-            for record in integration_study_mapped.records
+            integration_study_mapped_archived.records[record].record_id
+            for record in integration_study_mapped_archived.records
         ]
         # Record with leading zeroes
         assert "000001" in record_ids

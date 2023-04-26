@@ -501,7 +501,7 @@ survey_model = {
     "outro_text": [
         str,
     ],
-    "survey_steps": [
+    "survey_forms": [
         list,
     ],
     "_links": [

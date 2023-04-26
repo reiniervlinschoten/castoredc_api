@@ -50,7 +50,7 @@ class TestSurveyEndpoints:
         "description": "",
         "intro_text": "##### This is the survey intro text. Here you can add some information for the participant that they will see before they start filling in the survey.\n```\n\n\n```\n##### Check the help text in the survey form editor to see how you can format this text or add images and links.\n```\n\n\n```\n### For example, you can use hashtags to make the text bigger or add headings.",
         "outro_text": "",
-        "survey_steps": [],
+        "survey_forms": [],
         "_links": {
             "self": {
                 "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey/D70C1273-B5D8-45CD-BFE8-A0BA75C44B7E"
@@ -102,7 +102,7 @@ class TestSurveyEndpoints:
         },
         "_links": {
             "self": {
-                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/surveypackage/71C01598-4682-4A4C-90E6-69C0BD38EA47"
+                "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey-package/71C01598-4682-4A4C-90E6-69C0BD38EA47"
             }
         },
     }
@@ -165,7 +165,7 @@ class TestSurveyEndpoints:
                 },
                 "updated_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
                 "updated_on": {
-                    "date": "2021-10-20 12:25:16.000000",
+                    "date": "2021-10-20 16:25:16.000000",
                     "timezone_type": 3,
                     "timezone": "Europe/Amsterdam",
                 },
@@ -257,7 +257,7 @@ class TestSurveyEndpoints:
                 },
                 "_links": {
                     "self": {
-                        "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/surveypackage/71C01598-4682-4A4C-90E6-69C0BD38EA47"
+                        "href": "https://data.castoredc.com/api/study/D234215B-D956-482D-BF17-71F2BB12A2FD/survey-package/71C01598-4682-4A4C-90E6-69C0BD38EA47"
                     }
                 },
             },
