@@ -126,11 +126,7 @@ class TestSurveyEndpoints:
             "timezone": "Europe/Amsterdam",
         },
         "created_by": "B23ABCC4-3A53-FB32-7B78-3960CC907F25",
-        "available_from": {
-            "date": "2019-10-14 09:42:27.000000",
-            "timezone_type": 3,
-            "timezone": "Europe/Amsterdam",
-        },
+        "available_from": None,
         "expire_on": None,
         "sent_on": None,
         "first_opened_on": None,
