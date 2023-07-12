@@ -6,6 +6,9 @@ Link: https://data.castoredc.com/api#/study
 @author: R.C.A. van Linschoten
 https://orcid.org/0000-0003-3052-596X
 """
+import random
+from datetime import datetime
+
 import pytest
 from httpx import HTTPStatusError
 
@@ -134,19 +137,13 @@ class TestStudy:
         """Tests inviting a user to the study"""
         body = {
             "institute_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41A632",
-            "email": "castoredcapi.github@gmail.com",
+            "email": f"castoredcapi{datetime.now().strftime('%d%m%Y%H%M%S')}@franciscus.nl",
             "message": "Testing API",
         }
-        with pytest.raises(HTTPStatusError) as e:
-            write_client.invite_user_study(
+        user = write_client.invite_user_study(
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001", **body
             )
-        assert e.value.response.status_code == 400
-        # User already exists
-        assert (
-                "Could not send an email to the added user."
-                in e.value.response.json()["detail"]
-        )
+        assert isinstance(user["id"], str)
 
     def test_invite_user_success_permissions(self, write_client):
         """Tests inviting a user to the study"""
@@ -285,16 +282,15 @@ class TestStudy:
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001",
                 "B23ABCC4-3A53-FB32-7B78-3960CC90FAKE",
             )
-        assert e.value.response.status_code == 400
-        assert "BAD_REQUEST" in e.value.response.json()["detail"]
+        assert e.value.response.status_code == 404
+        assert "User not found" in e.value.response.json()["detail"]
 
     def test_change_user_permissions_success(self, write_client):
         """Tests changing a users permissions"""
         body = {
-            "institute_permissions": [
+            "site_permissions": [
                 {
-                    "institute_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41A632",
-                    "role": None,
+                    "site_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41A632",
                     "permissions": {
                         "add": True,
                         "view": True,
@@ -311,15 +307,22 @@ class TestStudy:
                         "email_addresses": True,
                         "sdv": True,
                         "survey_send": True,
-                        "survey_view": True,
+                        "survey_view": True
                     },
                 }
             ],
+            "manage_permissions": {
+                "manage_form": True,
+                "manage_users": True,
+                "manage_settings": True,
+                "manage_encryption": True,
+                "manage_records": True
+            }
         }
 
         user = write_client.update_permissions_user_study(
             "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001",
-            "TODOUSERID", # TODO
+            "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
             **body
         )
 
@@ -328,9 +331,9 @@ class TestStudy:
     def test_change_user_permissions_fail(self, write_client):
         """Tests failing to change user permissions"""
         body = {
-            "institute_permissions": [
+            "site_permissions": [
                 {
-                    "institute_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41FAKE",
+                    "site_id": "EBCA14F3-56E9-4F7A-9AD6-DD6E5C41FAKE",
                     "role": None,
                     "permissions": {
                         "add": True,
@@ -352,13 +355,19 @@ class TestStudy:
                     },
                 }
             ],
+            "manage_permissions": {
+                "manage_form": True,
+                "manage_users": True,
+                "manage_settings": True,
+                "manage_encryption": True,
+                "manage_records": True,
+            }
         }
 
         with pytest.raises(HTTPStatusError) as e:
             write_client.update_permissions_user_study(
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001",
-                "TODOUSERID",  # TODO
+                "06A8C79E-F76F-4824-AB1A-93F0457CFAKE",
                 **body
             )
         assert e.value.response.status_code == 400
-        assert "BAD_REQUEST" in e.value.response.json()["detail"]

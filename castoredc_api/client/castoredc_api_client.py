@@ -881,24 +881,20 @@ class CastorClient:
     ):
         """Deletes a user from the study."""
         url = self.base_url + f"/study/{study_id}/user/{user_id}"
-        body = {
-            "study_id": study_id,
-            "user_id": user_id
-        }
-        return self.sync_delete(url, body)
+        return self.sync_delete(url, params={})
 
     def update_permissions_user_study(
             self,
             study_id,
             user_id,
             manage_permissions,
-            institute_permissions
+            site_permissions
     ):
         """Updates permissions for a user."""
         url = self.base_url + f"/study/{study_id}/user/{user_id}"
         body = {
-            "manage_permission": manage_permissions,
-            "institute_permissions": institute_permissions
+            "manage_permissions": manage_permissions,
+            "site_permissions": site_permissions
         }
         return self.sync_put(url, body)
 
@@ -1313,11 +1309,12 @@ class CastorClient:
         """Helper function to send delete to url."""
         response = self.client.delete(url=url, params=params)
         response.raise_for_status()
-        return {"code": response.status_code, "json": response.json()}
+        return {"code": response.status_code}
 
-    def sync_put(self, url, params: dict):
+    def sync_put(self, url, body: dict):
         """Helper function to send put to url."""
-        response = self.client.put(url=url, params=params)
+        response = self.client.put(url=url, json=body)
+        print(response.json())
         response.raise_for_status()
         return {"code": response.status_code, "json": response.json()}
 
