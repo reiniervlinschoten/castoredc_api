@@ -312,9 +312,7 @@ class CastorStudy:
     # DATA ANALYSIS
     def export_to_dataframe(self, archived=False) -> dict:
         """Exports all data from a study into a dict of dataframes for statistical analysis."""
-        # TODO: change this to the correct archived, # pylint: disable=fixme
-        #  fails now because the parameter does not seem to be handled correctly server side
-        self.map_data(archived=True)
+        self.map_data(archived=archived)
         dataframes = {
             "Study": self.__export_study_data(archived),
             "Surveys": self.__export_survey_data(archived),
