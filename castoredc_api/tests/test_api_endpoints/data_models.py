@@ -615,7 +615,7 @@ survey_package_instance_model = {
     "received_on": [dict, type(None)],
     "first_opened_on": [dict, type(None)],
     "finished_on": [dict, type(None)],
-    "available_from": [dict],
+    "available_from": [dict, type(None)],
     "expire_on": [str, type(None)],
     "all_fields_filled_on": [dict, type(None)],
     "started_on": [dict, type(None)],

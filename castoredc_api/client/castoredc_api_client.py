@@ -874,6 +874,22 @@ class CastorClient:
         }
         return self.sync_post(url, body)
 
+    def delete_user_study(self, study_id, user_id):
+        """Deletes a user from the study."""
+        url = self.base_url + f"/study/{study_id}/user/{user_id}"
+        return self.sync_delete(url, params={})
+
+    def update_permissions_user_study(
+        self, study_id, user_id, manage_permissions, site_permissions
+    ):
+        """Updates permissions for a user."""
+        url = self.base_url + f"/study/{study_id}/user/{user_id}"
+        body = {
+            "manage_permissions": manage_permissions,
+            "site_permissions": site_permissions,
+        }
+        return self.sync_put(url, body)
+
     # STUDY-DATA-ENTRY
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_study_fields_record(self, record_id):
@@ -1285,7 +1301,14 @@ class CastorClient:
         """Helper function to send delete to url."""
         response = self.client.delete(url=url, params=params)
         response.raise_for_status()
-        return response.json()
+        return {"code": response.status_code}
+
+    def sync_put(self, url, body: dict):
+        """Helper function to send put to url."""
+        response = self.client.put(url=url, json=body)
+        print(response.json())
+        response.raise_for_status()
+        return {"code": response.status_code, "json": response.json()}
 
     # Asynchronous API Interaction
     async def async_get(self, url: str, params: list) -> list:
