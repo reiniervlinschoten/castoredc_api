@@ -87,11 +87,11 @@ class CastorClient:
     # AUDIT TRAIL
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def audit_trail(
-        self,
-        date_from: Union[str, datetime],
-        date_to: Union[str, datetime],
-        user_id: Optional[str] = None,
-        event_types: Optional[List] = None,
+            self,
+            date_from: Union[str, datetime],
+            date_to: Union[str, datetime],
+            user_id: Optional[str] = None,
+            event_types: Optional[List] = None,
     ):
         """Returns a dict of the audit trail.
         date_from and date_to need to be a datetime object or strings formatted as yyyy-mm-dd.
@@ -206,7 +206,7 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_package_data_points_record(
-        self, record_id, survey_package_instance_id
+            self, record_id, survey_package_instance_id
     ):
         """Returns a list of data from a single survey package instance
         collected for given record record_id. Returns None if record not found"""
@@ -255,15 +255,15 @@ class CastorClient:
                 }]
         """
         url = (
-            self.study_url
-            + f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
+                self.study_url
+                + f"/record/{record_id}/data-point-collection/report-instance/{report_id}"
         )
         post_data = {"common": common, "data": body}
         return self.sync_post(url, post_data)
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_survey_instance_data_record(
-        self, record_id, survey_instance_id, body, change_reason
+            self, record_id, survey_instance_id, body, change_reason
     ):
         """Creates/updates a survey instance.
         Returns None if record not found.
@@ -275,15 +275,15 @@ class CastorClient:
                 }]
         """
         url = (
-            self.study_url
-            + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
+                self.study_url
+                + f"/record/{record_id}/data-point-collection/survey-instance/{survey_instance_id}"
         )
         post_data = {"data": body, "common": {"change_reason": change_reason}}
         return self.sync_post(url, post_data)
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_survey_package_instance_data_record(
-        self, record_id, survey_package_instance_id, body, change_reason, filled_on=None
+            self, record_id, survey_package_instance_id, body, change_reason, filled_on=None
     ):
         """Creates/updates a survey package instance.
         Returns None if record not found.
@@ -297,8 +297,8 @@ class CastorClient:
                 }]
         """
         url = (
-            self.study_url + f"/record/{record_id}/data-point-collection/"
-            f"survey-package-instance/{survey_package_instance_id}"
+                self.study_url + f"/record/{record_id}/data-point-collection/"
+                                 f"survey-package-instance/{survey_package_instance_id}"
         )
         post_data = {"data": body, "common": {"change_reason": change_reason}}
         # Validate and format datetime
@@ -311,7 +311,7 @@ class CastorClient:
     # EXPORT
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def export_study_data(
-        self, exclude_empty_surveys=False, exclude_empty_reports=False, archived=False
+            self, exclude_empty_surveys=False, exclude_empty_reports=False, archived=False
     ):
         """Returns a list of dicts containing all data in the study (study, surveys, reports)."""
         url = self.study_url + "/export/data"
@@ -398,7 +398,7 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_econsent(
-        self, record_id, econsent_subject_id, econsent_study_id, econsent_region
+            self, record_id, econsent_subject_id, econsent_study_id, econsent_region
     ):
         """Creates econsent information about record"""
         url = self.study_url + f"/participant/{record_id}/econsent"
@@ -411,7 +411,7 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_econsent(
-        self, record_id, econsent_subject_id, econsent_study_id, econsent_region
+            self, record_id, econsent_subject_id, econsent_study_id, econsent_region
     ):
         """Updates econsent information about record"""
         url = self.study_url + f"/participant/{record_id}/econsent"
@@ -676,7 +676,7 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_report_instance_record(
-        self, record_id, report_id, report_name_custom, parent_id=None
+            self, record_id, report_id, report_name_custom, parent_id=None
     ):
         """Creates a report instance for a record.
         Returns None if creation failed."""
@@ -712,7 +712,7 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_report_instance_single_field_record(
-        self, record_id, report_instance_id, field_id
+            self, record_id, report_instance_id, field_id
     ):
         """Returns a data point for a report for a record.
         Returns None if report not found for given record or field not found
@@ -723,13 +723,13 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_report_instance_single_field_record(
-        self,
-        record_id,
-        report_ins_id,
-        field_id,
-        change_reason,
-        field_value=None,
-        file=None,
+            self,
+            record_id,
+            report_ins_id,
+            field_id,
+            change_reason,
+            field_value=None,
+            file=None,
     ):
         """Updates a report field value. Either field_value or file needs to be None.
         Returns None if data creation failed."""
@@ -855,13 +855,13 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def invite_user_study(
-        self,
-        study_id,
-        institute_id,
-        email,
-        message,
-        manage_permissions=None,
-        institute_permissions=None,
+            self,
+            study_id,
+            institute_id,
+            email,
+            message,
+            manage_permissions=None,
+            institute_permissions=None,
     ):
         """Invites user with email to the study linked to institute_id."""
         url = self.base_url + f"/study/{study_id}/user"
@@ -873,6 +873,34 @@ class CastorClient:
             "institute_permissions": institute_permissions,
         }
         return self.sync_post(url, body)
+
+    def delete_user_study(
+            self,
+            study_id,
+            user_id
+    ):
+        """Deletes a user from the study."""
+        url = self.base_url + f"/study/{study_id}/user/{user_id}"
+        body = {
+            "study_id": study_id,
+            "user_id": user_id
+        }
+        return self.sync_delete(url, body)
+
+    def update_permissions_user_study(
+            self,
+            study_id,
+            user_id,
+            manage_permissions,
+            institute_permissions
+    ):
+        """Updates permissions for a user."""
+        url = self.base_url + f"/study/{study_id}/user/{user_id}"
+        body = {
+            "manage_permission": manage_permissions,
+            "institute_permissions": institute_permissions
+        }
+        return self.sync_put(url, body)
 
     # STUDY-DATA-ENTRY
     @RateLimiter(**client_options.SYNC_OPTIONS)
@@ -891,7 +919,7 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_single_study_field_record(
-        self, record_id, field_id, change_reason, field_value=None, file=None
+            self, record_id, field_id, change_reason, field_value=None, file=None
     ):
         """Update a data point for a record.
         Returns None if target not found."""
@@ -948,14 +976,14 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def all_survey_package_instances(
-        self,
-        record_id=None,
-        ccr_patient_id=None,
-        finished_on=None,
-        finished_on_gt=None,
-        finished_on_gte=None,
-        finished_on_lt=None,
-        finished_on_lte=None,
+            self,
+            record_id=None,
+            ccr_patient_id=None,
+            finished_on=None,
+            finished_on_gt=None,
+            finished_on_gte=None,
+            finished_on_lt=None,
+            finished_on_lte=None,
     ):
         """Returns a list of dicts of all available survey packages. Filterable."""
         endpoint = "/surveypackageinstance"
@@ -988,15 +1016,15 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def create_survey_package_instance(
-        self,
-        survey_package_id,
-        record_id,
-        email_address,
-        ccr_patient_id=None,
-        package_invitation_subject=None,
-        package_invitation=None,
-        auto_send=None,
-        auto_lock_on_finish=None,
+            self,
+            survey_package_id,
+            record_id,
+            email_address,
+            ccr_patient_id=None,
+            package_invitation_subject=None,
+            package_invitation=None,
+            auto_send=None,
+            auto_lock_on_finish=None,
     ):
         """Create a survey package.
         Arguments marked with None are non-obligatory."""
@@ -1024,16 +1052,16 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_start_time_survey_package_instance(
-        self,
-        record_id: str,
-        survey_package_instance_id: str,
-        date_time: Union[str, datetime],
+            self,
+            record_id: str,
+            survey_package_instance_id: str,
+            date_time: Union[str, datetime],
     ):
         """Updates start time of survey package. Datetime is UTC time.
         Datetime should be datetime or string in the format: "yyyy-mm-dd hh:mm:ss"""
         url = (
-            self.study_url
-            + f"/record/{record_id}/surveypackageinstance/{survey_package_instance_id}"
+                self.study_url
+                + f"/record/{record_id}/surveypackageinstance/{survey_package_instance_id}"
         )
         if isinstance(date_time, str):
             date_time = datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
@@ -1054,7 +1082,7 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def single_survey_instance_single_field_record(
-        self, record_id, survey_instance_id, field_id
+            self, record_id, survey_instance_id, field_id
     ):
         """Retrieves a single field with data for the given survey.
         Returns None if record, survey or field not found."""
@@ -1063,13 +1091,13 @@ class CastorClient:
 
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def update_survey_instance_single_field_record(
-        self, record_id, survey_instance_id, field_id, field_value, change_reason
+            self, record_id, survey_instance_id, field_id, field_value, change_reason
     ):
         """Update a field result for a survey (package) instance.
         Returns None if survey not found"""
         url = (
-            self.study_url
-            + f"/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}"
+                self.study_url
+                + f"/record/{record_id}/data-point/survey/{survey_instance_id}/{field_id}"
         )
         body = {
             "field_value": str(field_value),
@@ -1118,12 +1146,12 @@ class CastorClient:
     # VERIFICATIONS
     @RateLimiter(**client_options.SYNC_OPTIONS)
     def verifications(
-        self,
-        record_id: Optional[str] = None,
-        date_from: Union[str, datetime, None] = None,
-        date_to: Union[str, datetime, None] = None,
-        verification_types: Optional[List] = None,
-        entity_types: Optional[List] = None,
+            self,
+            record_id: Optional[str] = None,
+            date_from: Union[str, datetime, None] = None,
+            date_to: Union[str, datetime, None] = None,
+            verification_types: Optional[List] = None,
+            entity_types: Optional[List] = None,
     ):
         """Returns a dict of the verifications.
         date_from and date_to need to datetime or string formatted as yyyy-mm-dd."""
@@ -1285,7 +1313,13 @@ class CastorClient:
         """Helper function to send delete to url."""
         response = self.client.delete(url=url, params=params)
         response.raise_for_status()
-        return response.json()
+        return {"code": response.status_code, "json": response.json()}
+
+    def sync_put(self, url, params: dict):
+        """Helper function to send put to url."""
+        response = self.client.put(url=url, params=params)
+        response.raise_for_status()
+        return {"code": response.status_code, "json": response.json()}
 
     # Asynchronous API Interaction
     async def async_get(self, url: str, params: list) -> list:
@@ -1298,16 +1332,16 @@ class CastorClient:
         """
         # Split list to handle error when len(tasks) > max_connections
         chunks = [
-            params[x : x + client_options.MAX_CONNECTIONS]
+            params[x: x + client_options.MAX_CONNECTIONS]
             for x in range(0, len(params), client_options.MAX_CONNECTIONS)
         ]
         responses = []
         with self.async_rate_limiter:
             for idx, chunk in enumerate(chunks):
                 async with httpx.AsyncClient(
-                    headers=self.headers,
-                    timeout=client_options.TIMEOUT,
-                    limits=client_options.LIMITS,
+                        headers=self.headers,
+                        timeout=client_options.TIMEOUT,
+                        limits=client_options.LIMITS,
                 ) as client:
                     tasks = [client.get(url=url, params=param) for param in chunk]
                     temp_responses = [
