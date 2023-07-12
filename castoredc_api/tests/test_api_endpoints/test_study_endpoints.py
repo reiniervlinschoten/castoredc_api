@@ -141,8 +141,8 @@ class TestStudy:
             "message": "Testing API",
         }
         user = write_client.invite_user_study(
-                "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001", **body
-            )
+            "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001", **body
+        )
         assert isinstance(user["id"], str)
 
     def test_invite_user_success_permissions(self, write_client):
@@ -190,8 +190,8 @@ class TestStudy:
         assert e.value.response.status_code == 400
         # User already exists
         assert (
-                "Could not send an email to the added user."
-                in e.value.response.json()["detail"]
+            "Could not send an email to the added user."
+            in e.value.response.json()["detail"]
         )
 
     def test_invite_user_fail_permissions(self, write_client):
@@ -239,8 +239,8 @@ class TestStudy:
         assert e.value.response.status_code == 400
         # Permissions are wonky, but gives a non-informative error at Castor
         assert (
-                "Could not send an email to the added user."
-                in e.value.response.json()["detail"]
+            "Could not send an email to the added user."
+            in e.value.response.json()["detail"]
         )
 
     def test_invite_user_fail(self, write_client):
@@ -307,7 +307,7 @@ class TestStudy:
                         "email_addresses": True,
                         "sdv": True,
                         "survey_send": True,
-                        "survey_view": True
+                        "survey_view": True,
                     },
                 }
             ],
@@ -316,14 +316,14 @@ class TestStudy:
                 "manage_users": True,
                 "manage_settings": True,
                 "manage_encryption": True,
-                "manage_records": True
-            }
+                "manage_records": True,
+            },
         }
 
         user = write_client.update_permissions_user_study(
             "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001",
             "06A8C79E-F76F-4824-AB1A-93F0457C5A61",
-            **body
+            **body,
         )
 
         assert user["code"] == 200
@@ -361,13 +361,13 @@ class TestStudy:
                 "manage_settings": True,
                 "manage_encryption": True,
                 "manage_records": True,
-            }
+            },
         }
 
         with pytest.raises(HTTPStatusError) as e:
             write_client.update_permissions_user_study(
                 "1BCD52D3-7AB3-4EA9-8ABE-74B4B7087001",
                 "06A8C79E-F76F-4824-AB1A-93F0457CFAKE",
-                **body
+                **body,
             )
         assert e.value.response.status_code == 400
