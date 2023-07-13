@@ -40,8 +40,8 @@ jobs:
         conda install urllib3=1.26.16
 
     - name: Debug environment
-        run: |
-          python debug_environ.py
+      run: |
+        python debug_environ.py
 
 
     - name: Wait for Pypi update
