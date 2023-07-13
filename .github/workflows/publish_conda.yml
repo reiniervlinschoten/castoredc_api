@@ -1,16 +1,11 @@
-name: publish
+name: publishconda
 
 on:
-  push:
-    branches:
-      - "main"
-    tags:
-      - '**'
-    paths:
-      - 'castoredc_api/client/**'
-      - 'castoredc_api/study/**'
-      - 'castoredc_api/importer/**'
-      - 'setup.py'
+  workflow_run:
+    workflows: ["publishpypi"]
+    types:
+      - completed
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -30,21 +25,6 @@ jobs:
         pip install setuptools wheel twine grayskull anaconda-client
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Build and publish to pypi (test)
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
-      run: |
-        python setup.py sdist bdist_wheel
-        twine upload --repository testpypi --verbose dist/*
-
-    - name: Publish to pypi (production)
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-      run: |
-        twine upload --verbose dist/*
-
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v2
       with:
@@ -58,6 +38,12 @@ jobs:
         conda install conda-verify
         conda install anaconda-client
         conda install urllib3=1.26.16
+
+    - name: Debug environment
+        run: |
+          cd .github/workflows/
+          python debug_environ.py
+
 
     - name: Wait for Pypi update
       run: sleep 600s
