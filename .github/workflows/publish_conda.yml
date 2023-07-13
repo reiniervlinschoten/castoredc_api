@@ -41,7 +41,6 @@ jobs:
 
     - name: Debug environment
         run: |
-          cd .github/workflows/
           python debug_environ.py
 
 
