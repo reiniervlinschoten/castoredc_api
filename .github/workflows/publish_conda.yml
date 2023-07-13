@@ -38,6 +38,7 @@ jobs:
         conda install conda-verify
         conda install anaconda-client
         conda install urllib3=1.26.16
+        pip install urllib3==1.26.16
 
     - name: Debug environment
       run: |
